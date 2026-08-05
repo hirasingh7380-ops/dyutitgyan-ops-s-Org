@@ -1,0 +1,6 @@
+{
+  "name": "Word Builder Mobile Game",
+  "description": "A landscape drag-and-drop word building mobile game with conditional row unlocking and word destruction mechanics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
