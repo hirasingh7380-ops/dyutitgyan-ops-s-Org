@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Volume2, VolumeX, Sparkles, BookOpen, Mic, Trophy, Edit3 } from 'lucide-react';
+import { Play, Volume2, VolumeX, BookOpen, Mic, Trophy, Edit3, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import { sounds } from '../utils/audio';
 import { GameMode } from '../types';
@@ -30,86 +30,75 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   return (
     <div
       id="home-screen-container"
-      className="relative w-full h-screen flex flex-col items-center justify-between p-3 sm:p-6 text-white select-none overflow-y-auto"
+      className="relative w-full h-full flex flex-col items-center justify-between p-2 sm:p-4 text-white select-none overflow-hidden"
     >
       {/* Top Bar with Sound Toggle */}
-      <div id="home-top-bar" className="w-full flex items-center justify-between z-20 max-w-4xl">
-        <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
+      <div id="home-top-bar" className="w-full flex items-center justify-between z-20 max-w-5xl px-2">
+        <div className="flex items-center gap-1.5 bg-black/60 px-3 py-1 rounded-full border border-white/20">
           <Trophy className="w-4 h-4 text-yellow-300" />
-          <span className="text-xs sm:text-sm font-black text-yellow-300">5 Fun Game Categories</span>
+          <span className="text-xs sm:text-sm font-bold text-yellow-300">5 Game Modes</span>
         </div>
 
         <button
           onClick={onToggleSound}
-          className="p-2 sm:p-2.5 rounded-2xl bg-black/50 hover:bg-black/70 border-2 border-white/30 text-white transition-all active:scale-95 shadow-lg flex items-center gap-2 text-xs font-bold"
+          className="px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/80 border border-white/30 text-white flex items-center gap-1.5 text-xs font-semibold active:scale-95 transition-transform"
         >
           {soundEnabled ? (
             <>
-              <Volume2 className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-300 animate-pulse" />
-              <span>Sound ON (आवाज़ चालू)</span>
+              <Volume2 className="w-4 h-4 text-yellow-300" />
+              <span>Sound: ON</span>
             </>
           ) : (
             <>
-              <VolumeX className="w-4 h-4 sm:w-5 sm:h-5 text-red-400" />
-              <span>Sound OFF (आवाज़ बंद)</span>
+              <VolumeX className="w-4 h-4 text-red-400" />
+              <span>Sound: OFF</span>
             </>
           )}
         </button>
       </div>
 
       {/* Main Home Screen Hero Content */}
-      <div id="home-hero-content" className="my-auto flex flex-col items-center text-center z-20 max-w-3xl px-2">
-        {/* Animated Main Logo */}
-        <motion.div
-          initial={{ scale: 0.8, y: -15 }}
-          animate={{ scale: 1, y: 0 }}
-          transition={{ duration: 0.5, type: 'spring' }}
-          className="flex items-center gap-1.5 sm:gap-2.5 mb-1"
-        >
-          <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-2xl bg-red-600 border-3 border-white flex items-center justify-center font-black text-yellow-300 text-2xl sm:text-4xl shadow-2xl -rotate-6">
+      <div id="home-hero-content" className="my-auto flex flex-col items-center text-center z-20 max-w-4xl w-full px-2">
+        {/* Main Logo Blocks */}
+        <div className="flex items-center gap-1.5 sm:gap-2 mb-1">
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-red-600 border-2 border-white flex items-center justify-center font-black text-yellow-300 text-xl sm:text-2xl shadow-md">
             W
           </div>
-          <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-2xl bg-yellow-400 border-3 border-white flex items-center justify-center font-black text-red-600 text-2xl sm:text-4xl shadow-2xl rotate-3">
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-amber-500 border-2 border-white flex items-center justify-center font-black text-white text-xl sm:text-2xl shadow-md">
             O
           </div>
-          <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-2xl bg-red-600 border-3 border-white flex items-center justify-center font-black text-yellow-300 text-2xl sm:text-4xl shadow-2xl -rotate-3">
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-red-600 border-2 border-white flex items-center justify-center font-black text-yellow-300 text-xl sm:text-2xl shadow-md">
             R
           </div>
-          <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-2xl bg-blue-600 border-3 border-white flex items-center justify-center font-black text-yellow-300 text-2xl sm:text-4xl shadow-2xl rotate-6">
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-blue-600 border-2 border-white flex items-center justify-center font-black text-white text-xl sm:text-2xl shadow-md">
             D
           </div>
-        </motion.div>
+        </div>
 
-        <motion.h1
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-2xl sm:text-4xl md:text-5xl font-black text-yellow-300 tracking-wider drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] uppercase"
-        >
+        <h1 className="text-xl sm:text-3xl font-black text-yellow-300 tracking-normal uppercase">
           WORD & ALPHABET GAME
-        </motion.h1>
+        </h1>
 
-        <p className="text-xs sm:text-base font-extrabold text-white bg-black/50 border border-white/20 px-4 py-1 rounded-full mt-1.5 shadow-lg">
-          वर्णमाला खेल (Learn Words & Sequences with Hindi Kid Sound!)
+        <p className="text-[11px] sm:text-xs font-semibold text-white/90 bg-black/60 border border-white/20 px-3 py-0.5 rounded-full mt-1">
+          Kids Learning Game with Audio
         </p>
 
         {/* Game Mode Selection Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-2.5 w-full mt-3 sm:mt-5">
+        <div className="grid grid-cols-5 gap-2 w-full mt-3 sm:mt-4">
           {/* Mode 1: Word Builder */}
           <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => handleSelectMode('WORD_BUILDER')}
-            className="bg-red-600 hover:bg-red-500 border-3 sm:border-4 border-white rounded-2xl sm:rounded-3xl p-2 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-2xl cursor-pointer"
+            className="bg-red-600 active:bg-red-700 border-2 border-white rounded-2xl p-2 text-center flex flex-col items-center justify-between gap-1 shadow-md cursor-pointer h-28 sm:h-32"
           >
-            <div className="flex items-center gap-1 text-yellow-300 font-black text-[11px] sm:text-sm">
-              <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>WORD BUILDER</span>
+            <div className="flex items-center gap-1 text-yellow-300 font-bold text-[11px] sm:text-xs">
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>BUILDER</span>
             </div>
-            <p className="text-[9px] sm:text-[11px] font-bold text-white leading-tight">
-              C + AT = CAT <br />
-              शब्द बनाओ!
+            <p className="text-[10px] sm:text-xs font-medium text-white leading-tight">
+              C + AT = CAT
             </p>
-            <div className="w-full bg-yellow-300 text-red-900 border-2 border-white py-0.5 sm:py-1 rounded-xl font-black text-[9px] sm:text-xs flex items-center justify-center gap-1 shadow-md">
+            <div className="w-full bg-yellow-300 text-red-900 border border-white py-1 rounded-lg font-bold text-[10px] sm:text-xs flex items-center justify-center gap-1">
               <Play className="w-3 h-3 fill-red-900" />
               <span>PLAY</span>
             </div>
@@ -117,20 +106,18 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
           {/* Mode 2: Fill in the Blank */}
           <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => handleSelectMode('FILL_BLANK')}
-            className="bg-sky-500 hover:bg-sky-400 border-3 sm:border-4 border-white rounded-2xl sm:rounded-3xl p-2 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-2xl cursor-pointer"
+            className="bg-sky-500 active:bg-sky-600 border-2 border-white rounded-2xl p-2 text-center flex flex-col items-center justify-between gap-1 shadow-md cursor-pointer h-28 sm:h-32"
           >
-            <div className="flex items-center gap-1 text-yellow-300 font-black text-[11px] sm:text-sm">
-              <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>FILL BLANK</span>
+            <div className="flex items-center gap-1 text-yellow-300 font-bold text-[11px] sm:text-xs">
+              <Edit3 className="w-3.5 h-3.5" />
+              <span>BLANK</span>
             </div>
-            <p className="text-[9px] sm:text-[11px] font-bold text-white leading-tight">
-              A [ _ ] C [ _ ] E <br />
-              वर्ण भरो!
+            <p className="text-[10px] sm:text-xs font-medium text-white leading-tight">
+              A _ C _ E
             </p>
-            <div className="w-full bg-yellow-300 text-sky-900 border-2 border-white py-0.5 sm:py-1 rounded-xl font-black text-[9px] sm:text-xs flex items-center justify-center gap-1 shadow-md">
+            <div className="w-full bg-yellow-300 text-sky-900 border border-white py-1 rounded-lg font-bold text-[10px] sm:text-xs flex items-center justify-center gap-1">
               <Play className="w-3 h-3 fill-sky-900" />
               <span>PLAY</span>
             </div>
@@ -138,20 +125,18 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
           {/* Mode 3: Balloon Pop */}
           <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => handleSelectMode('BALLOON_POP')}
-            className="bg-emerald-600 hover:bg-emerald-500 border-3 sm:border-4 border-white rounded-2xl sm:rounded-3xl p-2 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-2xl cursor-pointer"
+            className="bg-emerald-600 active:bg-emerald-700 border-2 border-white rounded-2xl p-2 text-center flex flex-col items-center justify-between gap-1 shadow-md cursor-pointer h-28 sm:h-32"
           >
-            <div className="flex items-center gap-1 text-yellow-300 font-black text-[11px] sm:text-sm">
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-pulse" />
-              <span>BALLOON POP</span>
+            <div className="flex items-center gap-1 text-yellow-300 font-bold text-[11px] sm:text-xs">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>BALLOON</span>
             </div>
-            <p className="text-[9px] sm:text-[11px] font-bold text-white leading-tight">
-              A वाले गुब्बारे <br />
-              फोड़ो!
+            <p className="text-[10px] sm:text-xs font-medium text-white leading-tight">
+              Pop Letters
             </p>
-            <div className="w-full bg-yellow-300 text-emerald-900 border-2 border-white py-0.5 sm:py-1 rounded-xl font-black text-[9px] sm:text-xs flex items-center justify-center gap-1 shadow-md">
+            <div className="w-full bg-yellow-300 text-emerald-900 border border-white py-1 rounded-lg font-bold text-[10px] sm:text-xs flex items-center justify-center gap-1">
               <Play className="w-3 h-3 fill-emerald-900" />
               <span>PLAY</span>
             </div>
@@ -159,20 +144,18 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
           {/* Mode 4: Click The Letter */}
           <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => handleSelectMode('CLICK_LETTER')}
-            className="bg-purple-600 hover:bg-purple-500 border-3 sm:border-4 border-white rounded-2xl sm:rounded-3xl p-2 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-2xl cursor-pointer"
+            className="bg-purple-600 active:bg-purple-700 border-2 border-white rounded-2xl p-2 text-center flex flex-col items-center justify-between gap-1 shadow-md cursor-pointer h-28 sm:h-32"
           >
-            <div className="flex items-center gap-1 text-yellow-300 font-black text-[11px] sm:text-sm">
-              <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>CLICK LETTER</span>
+            <div className="flex items-center gap-1 text-yellow-300 font-bold text-[11px] sm:text-xs">
+              <Trophy className="w-3.5 h-3.5" />
+              <span>LETTERS</span>
             </div>
-            <p className="text-[9px] sm:text-[11px] font-bold text-white leading-tight">
-              वर्णमाला पर <br />
-              क्लिक करें!
+            <p className="text-[10px] sm:text-xs font-medium text-white leading-tight">
+              A - Z / वर्ण
             </p>
-            <div className="w-full bg-yellow-300 text-purple-900 border-2 border-white py-0.5 sm:py-1 rounded-xl font-black text-[9px] sm:text-xs flex items-center justify-center gap-1 shadow-md">
+            <div className="w-full bg-yellow-300 text-purple-900 border border-white py-1 rounded-lg font-bold text-[10px] sm:text-xs flex items-center justify-center gap-1">
               <Play className="w-3 h-3 fill-purple-900" />
               <span>PLAY</span>
             </div>
@@ -180,38 +163,35 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
           {/* Mode 5: Match The Word */}
           <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => handleSelectMode('MATCH_WORD')}
-            className="bg-amber-600 hover:bg-amber-500 border-3 sm:border-4 border-white rounded-2xl sm:rounded-3xl p-2 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-2xl cursor-pointer col-span-2 sm:col-span-1"
+            className="bg-amber-600 active:bg-amber-700 border-2 border-white rounded-2xl p-2 text-center flex flex-col items-center justify-between gap-1 shadow-md cursor-pointer h-28 sm:h-32"
           >
-            <div className="flex items-center gap-1 text-yellow-300 font-black text-[11px] sm:text-sm">
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-300" />
-              <span>MATCH WORD</span>
+            <div className="flex items-center gap-1 text-yellow-300 font-bold text-[11px] sm:text-xs">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>MATCH</span>
             </div>
-            <p className="text-[9px] sm:text-[11px] font-bold text-white leading-tight">
-              A ➔ Apple <br />
-              चित्र मिलाओ!
+            <p className="text-[10px] sm:text-xs font-medium text-white leading-tight">
+              A ➔ Apple
             </p>
-            <div className="w-full bg-yellow-300 text-amber-950 border-2 border-white py-0.5 sm:py-1 rounded-xl font-black text-[9px] sm:text-xs flex items-center justify-center gap-1 shadow-md">
+            <div className="w-full bg-yellow-300 text-amber-950 border border-white py-1 rounded-lg font-bold text-[10px] sm:text-xs flex items-center justify-center gap-1">
               <Play className="w-3 h-3 fill-amber-950" />
               <span>PLAY</span>
             </div>
           </motion.button>
         </div>
 
-        {/* Sound feature note */}
-        <div className="mt-4 flex items-center gap-2 text-yellow-300 font-bold text-xs sm:text-sm bg-black/50 px-3 py-1 rounded-full border border-white/20">
-          <Mic className="w-4 h-4 animate-bounce text-yellow-300" />
-          <span>बच्चों की मजेदार हिंदी आवाज में ऑडियो सपोर्ट शामिल है!</span>
+        {/* Hindi voice indicator */}
+        <div className="mt-3 flex items-center gap-1.5 text-yellow-300 font-medium text-[11px] sm:text-xs bg-black/60 px-3 py-1 rounded-full border border-white/20">
+          <Mic className="w-3.5 h-3.5 text-yellow-300" />
+          <span>Hindi Audio Voice Included</span>
         </div>
       </div>
 
       {/* Footer info */}
-      <div id="home-footer-info" className="z-20 text-[10px] sm:text-xs text-white/80 font-bold bg-black/40 px-4 py-1 rounded-full border border-white/20">
-        Landscape Educational Game for Kids
+      <div id="home-footer-info" className="z-20 text-[10px] sm:text-xs text-white/80 font-medium bg-black/50 px-3 py-0.5 rounded-full border border-white/20">
+        Android Landscape Game
       </div>
     </div>
   );
 };
-
