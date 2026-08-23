@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Maximize2, Minimize2, RotateCw } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { RotateCw, Maximize2, Minimize2 } from 'lucide-react';
 import villageBg from '../assets/images/village_background_1785251927006.jpg';
 
 interface LandscapeWrapperProps {
@@ -7,54 +7,46 @@ interface LandscapeWrapperProps {
 }
 
 export const LandscapeWrapper: React.FC<LandscapeWrapperProps> = ({ children }) => {
-  const [isPortrait, setIsPortrait] = useState(false);
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 800,
+    height: typeof window !== 'undefined' ? window.innerHeight : 600,
+  });
+  const [forceLandscapeRotate, setForceLandscapeRotate] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
+
+  const updateDimensions = useCallback(() => {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }, []);
 
   useEffect(() => {
-    const updateOrientation = () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      setDimensions({ width: w, height: h });
-      setIsPortrait(h > w);
-    };
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    window.addEventListener('orientationchange', updateDimensions);
 
-    updateOrientation();
-    window.addEventListener('resize', updateOrientation);
-    window.addEventListener('orientationchange', updateOrientation);
-
-    // Try auto-locking orientation to landscape if supported
-    const tryOrientationLock = async () => {
-      try {
-        const screenOrientation = (window.screen.orientation || (window.screen as unknown as { mozOrientation?: string; msOrientation?: string }));
-        if (screenOrientation && 'lock' in screenOrientation) {
-          await (screenOrientation as unknown as { lock: (orientation: string) => Promise<void> }).lock('landscape');
-        }
-      } catch {
-        // Silently catch if not allowed by browser permissions
+    // Try to lock orientation to landscape if supported by browser/Android
+    try {
+      const orientation = screen.orientation as ScreenOrientation & { lock?: (type: string) => Promise<void> };
+      if (orientation && orientation.lock) {
+        orientation.lock('landscape').catch(() => {
+          // Ignore if user interaction is needed or not allowed in iframe
+        });
       }
-    };
-
-    tryOrientationLock();
+    } catch {
+      // Ignore orientation lock errors
+    }
 
     return () => {
-      window.removeEventListener('resize', updateOrientation);
-      window.removeEventListener('orientationchange', updateOrientation);
+      window.removeEventListener('resize', updateDimensions);
+      window.removeEventListener('orientationchange', updateDimensions);
     };
-  }, []);
+  }, [updateDimensions]);
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().then(() => {
-        try {
-          const screenOrientation = (window.screen.orientation || (window.screen as unknown as { mozOrientation?: string; msOrientation?: string }));
-          if (screenOrientation && 'lock' in screenOrientation) {
-            (screenOrientation as unknown as { lock: (orientation: string) => Promise<void> }).lock('landscape').catch(() => {});
-          }
-        } catch {
-          // ignore
-        }
-      }).catch(() => {});
+      document.documentElement.requestFullscreen().catch(() => {});
       setIsFullscreen(true);
     } else {
       if (document.exitFullscreen) {
@@ -64,51 +56,66 @@ export const LandscapeWrapper: React.FC<LandscapeWrapperProps> = ({ children }) 
     }
   };
 
+  const isPortrait = windowSize.height > windowSize.width;
+  const shouldRotate = isPortrait && forceLandscapeRotate;
+
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-black select-none">
-      {/* Container that rotates 90 deg automatically on portrait screens */}
+    <div
+      id="landscape-root-container"
+      className="relative w-screen h-screen overflow-hidden bg-slate-950 select-none touch-none"
+    >
+      {/* Inner Game Container with Auto-Landscape for Portrait Viewports */}
       <div
-        id="landscape-viewport-container"
+        id="landscape-inner-stage"
+        className="overflow-hidden flex flex-col justify-between text-slate-900 bg-cover bg-center bg-no-repeat transition-all duration-300"
         style={
-          isPortrait
+          shouldRotate
             ? {
-                width: `${dimensions.height}px`,
-                height: `${dimensions.width}px`,
                 position: 'absolute',
-                top: `${(dimensions.height - dimensions.width) / 2}px`,
-                left: `${(dimensions.width - dimensions.height) / 2}px`,
+                width: `${windowSize.height}px`,
+                height: `${windowSize.width}px`,
+                left: `${windowSize.width}px`,
+                top: 0,
+                transformOrigin: '0 0',
                 transform: 'rotate(90deg)',
-                transformOrigin: 'center center',
+                backgroundImage: `url(${villageBg})`,
               }
             : {
-                width: '100vw',
-                height: '100vh',
                 position: 'relative',
+                width: '100%',
+                height: '100%',
+                backgroundImage: `url(${villageBg})`,
               }
         }
-        className="overflow-hidden flex flex-col justify-between text-[#2C2C2C] bg-cover bg-center bg-no-repeat shadow-2xl"
       >
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
-          style={{ backgroundImage: `url(${villageBg})` }}
-        />
+        {children}
 
-        {/* Floating Quick Fullscreen / Landscape Enhancer */}
-        <button
-          id="btn-fullscreen-toggle"
-          onClick={toggleFullscreen}
-          className="fixed bottom-3 right-3 z-50 p-2.5 rounded-full bg-white/90 hover:bg-[#F0EDE5] text-[#5D4037] border border-[#D8CFC4] shadow-xl text-xs font-bold backdrop-blur-xs transition-transform active:scale-90 flex items-center gap-1.5 cursor-pointer"
-          title="Fullscreen Mode"
-        >
-          {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-          {isPortrait && <RotateCw className="w-3.5 h-3.5 text-amber-600 animate-spin" />}
-        </button>
+        {/* Floating Controls (Orientation Switch & Fullscreen) */}
+        <div className="fixed bottom-2 right-2 z-50 flex items-center gap-1.5 opacity-90 hover:opacity-100 transition-opacity">
+          {isPortrait && (
+            <button
+              id="btn-toggle-landscape-orientation"
+              onClick={() => setForceLandscapeRotate((prev) => !prev)}
+              className="p-2 rounded-xl bg-black/70 hover:bg-black/90 text-yellow-300 border border-white/30 shadow-lg text-[11px] font-bold flex items-center gap-1 active:scale-95 cursor-pointer backdrop-blur-xs"
+              title="Toggle Landscape Rotation"
+            >
+              <RotateCw className="w-3.5 h-3.5" />
+              <span>{forceLandscapeRotate ? 'Landscape ON' : 'Normal'}</span>
+            </button>
+          )}
 
-        {/* Content Wrapper */}
-        <div className="relative z-10 w-full h-full flex flex-col justify-between overflow-hidden">
-          {children}
+          <button
+            id="btn-fullscreen-toggle"
+            onClick={toggleFullscreen}
+            className="p-2 rounded-xl bg-black/70 hover:bg-black/90 text-white border border-white/30 shadow-lg text-xs font-bold active:scale-95 cursor-pointer backdrop-blur-xs"
+            title="Toggle Fullscreen"
+          >
+            {isFullscreen ? <Minimize2 className="w-3.5 h-3.5 text-yellow-300" /> : <Maximize2 className="w-3.5 h-3.5 text-white" />}
+          </button>
         </div>
       </div>
     </div>
   );
 };
+
+

@@ -40,12 +40,13 @@ interface MatchWordStageProps {
 }
 
 interface MatchItem {
-  id: string;
-  letter: string;
-  wordName: string;
+  id: string; // e.g. 'A'
+  letter: string; // 'A'
+  wordName: string; // 'Apple'
   svgType: string;
 }
 
+// Data sets for sets of 5 letters each
 const MATCH_SETS: { title: string; items: MatchItem[]; defaultBottomOrder?: string[] }[] = [
   {
     title: 'Level 1: A - E',
@@ -104,6 +105,7 @@ const MATCH_SETS: { title: string; items: MatchItem[]; defaultBottomOrder?: stri
   },
 ];
 
+// Vector / Realistic Image renderer for object cards matching the screenshot style
 const MatchSvgIllustration: React.FC<{ type: string }> = ({ type }) => {
   const imgMap: { [key: string]: { src: string; alt: string } } = {
     dog: { src: dogImg, alt: 'Dog' },
@@ -140,15 +142,15 @@ const MatchSvgIllustration: React.FC<{ type: string }> = ({ type }) => {
         src={item.src}
         alt={item.alt}
         referrerPolicy="no-referrer"
-        className="w-full h-full object-cover rounded-xl pointer-events-none"
+        className="w-full h-full object-cover rounded-xl sm:rounded-2xl pointer-events-none drop-shadow-md"
       />
     );
   }
 
   return (
-    <svg viewBox="0 0 100 100" className="w-14 h-14 sm:w-20 sm:h-20">
+    <svg viewBox="0 0 100 100" className="w-16 h-16 sm:w-24 sm:h-24 drop-shadow-xl">
       <circle cx="50" cy="50" r="35" fill="#f59e0b" />
-      <text x="50" y="60" fontSize="28" textAnchor="middle" fill="#fff" fontWeight="bold">?</text>
+      <text x="50" y="60" fontSize="30" textAnchor="middle" fill="#fff" fontWeight="bold">?</text>
     </svg>
   );
 };
@@ -160,21 +162,35 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
   const [levelIndex, setLevelIndex] = useState(0);
   const currentSet = MATCH_SETS[levelIndex];
 
+  // Top letter items (A, B, C, D, E)
   const [letterItems, setLetterItems] = useState<MatchItem[]>(currentSet.items);
+  // Bottom object cards
   const [objectItems, setObjectItems] = useState<MatchItem[]>([]);
+
+  // State for matched pairs (store set of matched item IDs, e.g. 'A')
   const [matchedIds, setMatchedIds] = useState<Set<string>>(new Set());
+  // Currently selected top letter ID
   const [selectedLetterId, setSelectedLetterId] = useState<string | null>(null);
+
+  // Score
   const [score, setScore] = useState(0);
 
+  // Container ref for measuring precise SVG line coordinates
   const containerRef = useRef<HTMLDivElement>(null);
   const letterRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const objectRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
+  // Line coordinates state: { id: string, x1: number, y1: number, x2: number, y2: number }
   const [lines, setLines] = useState<{ id: string; x1: number; y1: number; x2: number; y2: number }[]>([]);
+
+  // Live Line Drag state
   const [draggingFrom, setDraggingFrom] = useState<string | null>(null);
   const [dragLine, setDragLine] = useState<{ x1: number; y1: number; x2: number; y2: number } | null>(null);
+
+  // Error shake animation state
   const [errorId, setErrorId] = useState<string | null>(null);
 
+  // Initialize level items and set bottom object cards order
   useEffect(() => {
     const items = MATCH_SETS[levelIndex].items;
     setLetterItems(items);
@@ -196,6 +212,7 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
     setLines([]);
   }, [levelIndex]);
 
+  // Recalculate locked line coordinates when matches change or on window resize
   const updateLineCoordinates = () => {
     if (!containerRef.current) return;
     const containerRect = containerRef.current.getBoundingClientRect();
@@ -211,10 +228,10 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
         const oRect = oEl.getBoundingClientRect();
 
         const x1 = lRect.left + lRect.width / 2 - containerRect.left;
-        const y1 = lRect.bottom - containerRect.top - 6;
+        const y1 = lRect.bottom - containerRect.top - 8;
 
         const x2 = oRect.left + oRect.width / 2 - containerRect.left;
-        const y2 = oRect.top - containerRect.top + 6;
+        const y2 = oRect.top - containerRect.top + 8;
 
         newLines.push({ id, x1, y1, x2, y2 });
       }
@@ -229,6 +246,7 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
     return () => window.removeEventListener('resize', updateLineCoordinates);
   }, [matchedIds, levelIndex, objectItems]);
 
+  // Handle pointer down on letter tile -> Start interactive line drawing
   const handleLetterPointerDown = (item: MatchItem, e: React.PointerEvent) => {
     if (matchedIds.has(item.id)) return;
 
@@ -241,7 +259,7 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
       const containerRect = containerRef.current.getBoundingClientRect();
       const lRect = lEl.getBoundingClientRect();
       const startX = lRect.left + lRect.width / 2 - containerRect.left;
-      const startY = lRect.bottom - containerRect.top - 6;
+      const startY = lRect.bottom - containerRect.top - 8;
 
       const currentX = e.clientX - containerRect.left;
       const currentY = e.clientY - containerRect.top;
@@ -250,6 +268,7 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
     }
   };
 
+  // Global Pointer Move -> Update live line endpoint
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!draggingFrom || !dragLine || !containerRef.current) return;
 
@@ -260,22 +279,28 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
     setDragLine((prev) => (prev ? { ...prev, x2: currentX, y2: currentY } : null));
   };
 
+  // Check and register a match attempt between letter ID and target object item
   const processMatchAttempt = (letterId: string, targetObjItem: MatchItem) => {
     if (matchedIds.has(targetObjItem.id)) return;
 
     if (letterId === targetObjItem.id) {
+      // SUCCESSFUL MATCH!
       const newMatched = new Set(matchedIds).add(targetObjItem.id);
       setMatchedIds(newMatched);
       setSelectedLetterId(null);
       setScore((prev) => prev + 10);
+
+      // Play victory audio and speak e.g. "A for Apple"
       sounds.speakMatchWord(targetObjItem.letter, targetObjItem.wordName, soundEnabled);
     } else {
+      // INCORRECT MATCH!
       sounds.speakMatchWrong(soundEnabled);
       setErrorId(targetObjItem.id);
-      setTimeout(() => setErrorId(null), 400);
+      setTimeout(() => setErrorId(null), 500);
     }
   };
 
+  // Global Pointer Up -> Complete line drag & drop match evaluation
   const handlePointerUp = (e: React.PointerEvent) => {
     if (!draggingFrom) return;
 
@@ -283,28 +308,55 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
     setDraggingFrom(null);
     setDragLine(null);
 
+    let targetItem: MatchItem | null = null;
+
+    // 1. Evaluate target element directly under drop coordinates
     const targetElement = document.elementFromPoint(e.clientX, e.clientY);
     if (targetElement) {
       const cardElement = targetElement.closest('[data-object-id]');
       if (cardElement) {
         const targetId = cardElement.getAttribute('data-object-id');
-        const targetItem = objectItems.find((it) => it.id === targetId);
-        if (targetItem) {
-          processMatchAttempt(activeLetterId, targetItem);
+        targetItem = objectItems.find((it) => it.id === targetId) || null;
+      }
+    }
+
+    // 2. Mobile touch tolerance fallback: distance check to object card rects
+    if (!targetItem) {
+      for (const it of objectItems) {
+        const el = objectRefs.current[it.id];
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (
+            e.clientX >= rect.left - 30 &&
+            e.clientX <= rect.right + 30 &&
+            e.clientY >= rect.top - 30 &&
+            e.clientY <= rect.bottom + 30
+          ) {
+            targetItem = it;
+            break;
+          }
         }
       }
     }
+
+    if (targetItem) {
+      processMatchAttempt(activeLetterId, targetItem);
+    }
   };
 
+  // Handle tap / click on bottom object card
   const handleObjectClick = (item: MatchItem) => {
     if (matchedIds.has(item.id)) return;
+
     if (!selectedLetterId) {
       sounds.playSnap(soundEnabled);
       return;
     }
+
     processMatchAttempt(selectedLetterId, item);
   };
 
+  // Advance level on "Next" button click
   const handleNext = () => {
     sounds.playVictory(soundEnabled);
     setLevelIndex((prev) => (prev + 1) % MATCH_SETS.length);
@@ -322,73 +374,143 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
         backgroundImage: 'radial-gradient(circle at 50% 30%, #a2e8dd 0%, #a8e063 45%, #56ab2f 100%)',
       }}
     >
-      {/* Background Decor */}
+      {/* Cartoon Forest Background Scene */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Left Big Tree */}
+        <div className="absolute -top-10 -left-12 w-48 sm:w-80 h-full bg-amber-900/40 rounded-r-full" />
+        <div className="absolute -top-16 -left-20 w-64 sm:w-96 h-80 sm:h-[450px] bg-green-600/90 rounded-full border-b-8 border-green-400 shadow-2xl" />
+
+        {/* Right Big Tree */}
+        <div className="absolute -top-10 -right-12 w-48 sm:w-80 h-full bg-amber-900/40 rounded-l-full" />
+        <div className="absolute -top-16 -right-20 w-64 sm:w-96 h-80 sm:h-[450px] bg-green-600/90 rounded-full border-b-8 border-green-400 shadow-2xl" />
+
+        {/* Distant Hills */}
         <div className="absolute bottom-0 inset-x-0 h-40 sm:h-56 bg-gradient-to-t from-emerald-800 via-green-600 to-transparent" />
       </div>
 
-      {/* TOP HEADER */}
-      <div id="match-top-header" className="relative z-30 w-full px-3 sm:px-6 pt-2 flex items-center justify-between max-w-6xl mx-auto">
+      {/* TOP HEADER BAR */}
+      <div id="match-top-header" className="relative z-30 w-full px-4 sm:px-8 pt-3 pb-1 flex items-center justify-between max-w-7xl mx-auto">
+        {/* LEFT: Home Button */}
         <motion.button
-          whileTap={{ scale: 0.95 }}
+          id="btn-match-home"
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.94 }}
           onClick={onHome}
-          className="bg-sky-400 border-2 border-white text-yellow-300 font-bold text-base sm:text-xl px-4 sm:px-6 py-1 rounded-xl shadow cursor-pointer"
+          className="bg-sky-400 border-3 sm:border-4 border-red-600 text-yellow-300 font-black text-2xl sm:text-4xl px-6 sm:px-10 py-1 sm:py-2 rounded-2xl sm:rounded-3xl shadow-2xl cursor-pointer flex items-center justify-center"
+          style={{
+            textShadow: '2px 2px 0px #000, -1px -1px 0px #000',
+            boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.6)',
+          }}
         >
           Home
         </motion.button>
 
-        <h1 className="text-xl sm:text-3xl font-black text-red-600 uppercase tracking-wide">
-          Match The Word
-        </h1>
+        {/* CENTER TITLE: "Match the word" */}
+        <div className="flex flex-col items-center justify-center">
+          <h1
+            className="text-3xl sm:text-5xl font-black text-red-600 tracking-wide uppercase drop-shadow-lg"
+            style={{
+              textShadow: '3px 3px 0px #fef08a, -2px -2px 0px #fef08a, 2px -2px 0px #fef08a, -2px 2px 0px #fef08a, 0 4px 10px rgba(0,0,0,0.4)',
+              fontFamily: 'sans-serif',
+            }}
+          >
+            Match the word
+          </h1>
+        </div>
 
+        {/* RIGHT: Next Button */}
         <motion.button
-          whileTap={{ scale: 0.95 }}
+          id="btn-match-next"
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.94 }}
           onClick={handleNext}
-          className="bg-sky-400 border-2 border-white text-yellow-300 font-bold text-base sm:text-xl px-4 sm:px-6 py-1 rounded-xl shadow cursor-pointer"
+          className="bg-sky-400 border-3 sm:border-4 border-red-600 text-yellow-300 font-black text-2xl sm:text-4xl px-6 sm:px-10 py-1 sm:py-2 rounded-2xl sm:rounded-3xl shadow-2xl cursor-pointer flex items-center justify-center"
+          style={{
+            textShadow: '2px 2px 0px #000, -1px -1px 0px #000',
+            boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.6)',
+          }}
         >
           Next
         </motion.button>
       </div>
 
-      {/* SVG CONNECTING LINES */}
+      {/* SVG CONNECTING LINES OVERLAY LAYER */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none z-20">
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* Render active dragging live line */}
         {dragLine && (
-          <g>
+          <g id="drag-line-active">
             <line
               x1={dragLine.x1}
               y1={dragLine.y1}
               x2={dragLine.x2}
               y2={dragLine.y2}
               stroke="#ef4444"
-              strokeWidth="6"
+              strokeWidth="10"
+              strokeLinecap="round"
+              opacity="0.9"
+              filter="url(#glow)"
+            />
+            <line
+              x1={dragLine.x1}
+              y1={dragLine.y1}
+              x2={dragLine.x2}
+              y2={dragLine.y2}
+              stroke="#facc15"
+              strokeWidth="5"
+              strokeDasharray="8 6"
               strokeLinecap="round"
             />
-            <circle cx={dragLine.x1} cy={dragLine.y1} r="6" fill="#facc15" />
-            <circle cx={dragLine.x2} cy={dragLine.y2} r="6" fill="#ef4444" />
+            <circle cx={dragLine.x1} cy={dragLine.y1} r="9" fill="#facc15" />
+            <circle cx={dragLine.x2} cy={dragLine.y2} r="9" fill="#ef4444" />
           </g>
         )}
 
+        {/* Render locked matched lines */}
         {lines.map((line) => (
           <g key={line.id}>
+            {/* Outer Glow Line */}
             <line
               x1={line.x1}
               y1={line.y1}
               x2={line.x2}
               y2={line.y2}
               stroke="#22c55e"
+              strokeWidth="12"
+              strokeLinecap="round"
+              opacity="0.8"
+              filter="url(#glow)"
+            />
+            {/* Inner Core Line */}
+            <line
+              x1={line.x1}
+              y1={line.y1}
+              x2={line.x2}
+              y2={line.y2}
+              stroke="#fef08a"
               strokeWidth="6"
               strokeLinecap="round"
             />
-            <circle cx={line.x1} cy={line.y1} r="6" fill="#22c55e" />
-            <circle cx={line.x2} cy={line.y2} r="6" fill="#22c55e" />
+            {/* Start and end node dots */}
+            <circle cx={line.x1} cy={line.y1} r="8" fill="#22c55e" />
+            <circle cx={line.x2} cy={line.y2} r="8" fill="#22c55e" />
           </g>
         ))}
       </svg>
 
-      {/* PLAYING CARDS */}
-      <div className="relative z-30 flex-1 flex flex-col justify-between my-auto py-2 max-w-5xl w-full mx-auto">
-        {/* TOP ROW: LETTER TILES */}
-        <div id="match-letters-row" className="w-full px-2 flex items-center justify-around sm:justify-center sm:gap-6">
+      {/* PLAYING CANVAS CONTENT (Spaced out top and bottom rows to leave large line-drawing area in middle) */}
+      <div className="relative z-30 flex-1 flex flex-col justify-between my-auto py-2 sm:py-6 max-w-7xl w-full mx-auto">
+        {/* TOP ROW: LETTER TILES (Red boxes with thick yellow/white borders & yellow letters) */}
+        <div id="match-letters-row" className="w-full max-w-6xl mx-auto px-4 flex items-center justify-around sm:justify-center sm:gap-8">
           {letterItems.map((item) => {
             const isMatched = matchedIds.has(item.id);
             const isSelected = selectedLetterId === item.id;
@@ -398,22 +520,34 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
                 key={item.id}
                 ref={(el) => { letterRefs.current[item.id] = el; }}
                 onPointerDown={(e) => handleLetterPointerDown(item, e)}
+                whileHover={!isMatched ? { scale: 1.08 } : {}}
                 whileTap={!isMatched ? { scale: 0.92 } : {}}
-                className={`relative w-14 h-14 sm:w-20 sm:h-20 rounded-2xl border-2 sm:border-3 flex items-center justify-center cursor-grab active:cursor-grabbing transition-all shadow-md ${
+                animate={isSelected ? { scale: [1, 1.1, 1], transition: { repeat: Infinity, duration: 0.8 } } : {}}
+                className={`relative w-16 h-16 sm:w-28 sm:h-28 rounded-2xl sm:rounded-3xl border-4 sm:border-6 flex items-center justify-center cursor-grab active:cursor-grabbing transition-all duration-200 shadow-2xl ${
                   isMatched
-                    ? 'bg-emerald-600 border-yellow-300'
+                    ? 'bg-emerald-600 border-yellow-300 ring-4 ring-emerald-300/80 shadow-emerald-950/70'
                     : isSelected
-                    ? 'bg-red-600 border-yellow-300 ring-4 ring-yellow-300'
-                    : 'bg-red-600 border-white hover:bg-red-500'
+                    ? 'bg-red-600 border-yellow-300 ring-4 ring-yellow-300/90 shadow-red-950/80'
+                    : 'bg-red-600 border-yellow-400 shadow-red-950/80 hover:bg-red-500'
                 }`}
+                style={{
+                  boxShadow: 'inset 0 4px 8px rgba(255,255,255,0.5), 0 8px 16px rgba(0,0,0,0.4)',
+                }}
               >
-                <span className="font-bold text-3xl sm:text-5xl text-yellow-300 pointer-events-none">
+                {/* BIG BOLD YELLOW LETTER TEXT */}
+                <span
+                  className="font-black text-4xl sm:text-7xl text-yellow-300 pointer-events-none"
+                  style={{
+                    textShadow: '3px 3px 0px #991b1b, -2px -2px 0px #991b1b, 2px -2px 0px #991b1b, -2px 2px 0px #991b1b',
+                  }}
+                >
                   {item.letter}
                 </span>
 
+                {/* Checkmark when matched */}
                 {isMatched && (
-                  <div className="absolute -top-1.5 -right-1.5 bg-yellow-300 text-emerald-900 rounded-full p-0.5 border border-white">
-                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  <div className="absolute -top-2 -right-2 bg-yellow-300 text-emerald-900 rounded-full p-1 border-2 border-white shadow-lg pointer-events-none">
+                    <Check className="w-5 h-5 stroke-[3]" />
                   </div>
                 )}
               </motion.div>
@@ -421,8 +555,8 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
           })}
         </div>
 
-        {/* BOTTOM ROW: OBJECT CARDS */}
-        <div id="match-objects-row" className="w-full px-2 flex items-center justify-around sm:justify-center sm:gap-6">
+        {/* BOTTOM ROW: OBJECT CARDS (Pushed far down for wide drawing area) */}
+        <div id="match-objects-row" className="w-full max-w-6xl mx-auto px-2 sm:px-4 flex items-center justify-around sm:justify-center sm:gap-8">
           {objectItems.map((item) => {
             const isMatched = matchedIds.has(item.id);
             const isError = errorId === item.id;
@@ -432,23 +566,34 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
                 key={item.id}
                 data-object-id={item.id}
                 ref={(el) => { objectRefs.current[item.id] = el; }}
+                whileHover={!isMatched ? { scale: 1.06 } : {}}
                 whileTap={!isMatched ? { scale: 0.94 } : {}}
-                animate={isError ? { x: [-8, 8, -8, 8, 0] } : {}}
+                animate={isError ? { x: [-12, 12, -12, 12, 0] } : {}}
                 onClick={() => handleObjectClick(item)}
-                className={`relative w-16 h-20 sm:w-24 sm:h-32 rounded-2xl border-2 sm:border-3 flex flex-col items-center justify-center cursor-pointer transition-all shadow-md p-1 ${
+                className={`relative w-20 h-24 sm:w-36 sm:h-44 rounded-2xl sm:rounded-[32px] border-4 sm:border-[6px] flex flex-col items-center justify-center cursor-pointer transition-all duration-200 shadow-2xl p-1 sm:p-1.5 ${
                   isMatched
-                    ? 'bg-emerald-50 border-emerald-500'
-                    : 'bg-white border-blue-400 hover:border-blue-500'
+                    ? 'bg-emerald-50 border-emerald-500 ring-4 ring-emerald-300/80'
+                    : 'bg-[#fffcf7] border-[#00a2ff] hover:border-sky-300 shadow-sky-950/40'
                 }`}
+                style={{
+                  boxShadow: 'inset 0 4px 8px rgba(255,255,255,0.9), 0 8px 20px rgba(0,0,0,0.3)',
+                }}
               >
-                <div className="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                {/* Illustration SVG or High Quality 3D Image */}
+                <div className="w-full h-full flex items-center justify-center overflow-hidden rounded-xl sm:rounded-[24px]">
                   <MatchSvgIllustration type={item.svgType} />
                 </div>
 
+                {/* Item Label text when matched */}
                 {isMatched && (
-                  <span className="font-bold text-[10px] text-emerald-800 uppercase tracking-wider mt-0.5">
+                  <span className="font-black text-[10px] sm:text-xs text-emerald-800 uppercase tracking-wider pointer-events-none mt-1">
                     {item.wordName}
                   </span>
+                )}
+
+                {/* Sparkles on matched card */}
+                {isMatched && (
+                  <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-yellow-400 animate-spin pointer-events-none" />
                 )}
               </motion.div>
             );
@@ -456,14 +601,14 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
         </div>
       </div>
 
-      {/* FOOTER */}
-      <div id="match-footer" className="relative z-30 w-full px-4 py-1.5 bg-black/40 backdrop-blur-sm flex items-center justify-between">
-        <div className="text-yellow-300 font-medium text-xs">
-          {currentSet.title} • अक्षर से रेखा खींचकर चित्र मिलाएं
+      {/* FOOTER SCORE BAR */}
+      <div id="match-footer" className="relative z-30 w-full px-6 py-2 bg-black/30 backdrop-blur-md flex items-center justify-between">
+        <div className="text-yellow-300 font-bold text-xs sm:text-sm">
+          {currentSet.title} • अक्षर से रेखा खींचकर चित्र पर मिलाएं!
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className="text-yellow-300 font-bold text-xs">SCORE:</span>
-          <span className="text-white font-bold text-sm sm:text-base">{score}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-yellow-300 font-black text-sm sm:text-lg">SCORE:</span>
+          <span className="text-white font-black text-lg sm:text-2xl">{score}</span>
         </div>
       </div>
     </div>

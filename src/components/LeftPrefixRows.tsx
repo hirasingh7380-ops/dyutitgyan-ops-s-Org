@@ -11,6 +11,11 @@ interface LeftPrefixRowsProps {
   onActivateSuffix: (suffixId: string) => void;
 }
 
+// 4x4 Matrix matching the exact layout:
+// Row 1: C (AT), F (AN), M (AP), B (ALL)
+// Row 2: R (AT), M (AN), C (AP), H (ALL)
+// Row 3: H (AT), V (AN), T (AP), W (ALL)
+// Row 4: B (AT), C (AN), L (AP), T (ALL)
 const GRID_TILES: { letter: string; groupId: string }[][] = [
   [
     { letter: 'C', groupId: 'AT' },
@@ -43,12 +48,29 @@ export const LeftPrefixRows: React.FC<LeftPrefixRowsProps> = ({
   soundEnabled,
   onSelectTile,
 }) => {
+  // Handle Framer Motion Drag End for Prefix tile
+  const handleDragEnd = (tile: LetterTile, dropX: number, dropY: number) => {
+    const dropBox = document.getElementById('dropbox-main-frame');
+    if (dropBox) {
+      const rect = dropBox.getBoundingClientRect();
+      if (
+        dropX >= rect.left - 40 &&
+        dropX <= rect.right + 40 &&
+        dropY >= rect.top - 40 &&
+        dropY <= rect.bottom + 40
+      ) {
+        onSelectTile(tile);
+      }
+    }
+  };
+
   return (
     <div
       id="left-prefix-container"
-      className="flex flex-col justify-center items-center select-none z-10"
+      className="flex flex-col justify-center items-center select-none z-10 touch-none"
     >
-      <div id="prefix-grid-4x4" className="grid grid-cols-4 gap-1.5 sm:gap-2 md:gap-3">
+      {/* 4x4 Grid of Red Tiles with White Border and Yellow Text */}
+      <div id="prefix-grid-4x4" className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-3.5 lg:gap-4">
         {GRID_TILES.map((row, rowIndex) =>
           row.map((item, colIndex) => {
             const tileId = `${item.groupId}-${item.letter}`;
@@ -65,31 +87,33 @@ export const LeftPrefixRows: React.FC<LeftPrefixRowsProps> = ({
               return (
                 <div
                   key={`destroyed-${rowIndex}-${colIndex}`}
-                  className="w-11 h-9 sm:w-15 sm:h-12 md:w-18 md:h-15 rounded-xl bg-black/30 border border-white/30 flex items-center justify-center opacity-25"
+                  className="w-13 h-11 sm:w-16 sm:h-14 md:w-20 md:h-16 lg:w-24 lg:h-19 rounded-xl sm:rounded-2xl bg-black/30 border-2 border-white/40 backdrop-blur-xs flex items-center justify-center opacity-30"
                 />
               );
             }
 
             return (
-              <motion.button
+              <motion.div
                 key={`${item.groupId}-${item.letter}-${rowIndex}-${colIndex}`}
-                whileTap={{ scale: 0.9 }}
-                draggable
-                onDragStart={(e: React.DragEvent) => {
-                  sounds.playPop(soundEnabled);
-                  e.dataTransfer.setData(
-                    'text/plain',
-                    JSON.stringify({ type: 'PREFIX', tile })
-                  );
-                }}
+                drag
+                dragSnapToOrigin
+                dragElastic={0.2}
+                whileDrag={{ scale: 1.25, zIndex: 100 }}
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.92 }}
+                onDragStart={() => sounds.playPop(soundEnabled)}
+                onDragEnd={(_e, info) => handleDragEnd(tile, info.point.x, info.point.y)}
                 onClick={() => {
                   sounds.playSnap(soundEnabled);
                   onSelectTile(tile);
                 }}
-                className="w-11 h-9 sm:w-15 sm:h-12 md:w-18 md:h-15 rounded-xl bg-red-600 border-2 border-white flex items-center justify-center text-yellow-300 font-bold text-lg sm:text-2xl md:text-3xl shadow-md cursor-pointer hover:bg-red-500 transition-colors"
+                className="w-13 h-11 sm:w-16 sm:h-14 md:w-20 md:h-16 lg:w-24 lg:h-19 rounded-xl sm:rounded-2xl bg-red-600 border-2 sm:border-4 border-white flex items-center justify-center text-yellow-300 font-black text-2xl sm:text-3xl md:text-4xl shadow-xl cursor-grab active:cursor-grabbing hover:bg-red-500 transition-transform select-none touch-none"
+                style={{
+                  boxShadow: 'inset 0 3px 6px rgba(255,255,255,0.4), 0 6px 14px rgba(0,0,0,0.3)',
+                }}
               >
                 {item.letter}
-              </motion.button>
+              </motion.div>
             );
           })
         )}
@@ -97,3 +121,4 @@ export const LeftPrefixRows: React.FC<LeftPrefixRowsProps> = ({
     </div>
   );
 };
+

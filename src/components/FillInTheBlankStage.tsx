@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Trophy, RotateCcw } from 'lucide-react';
 import { FillBlankLevel } from '../types';
@@ -19,7 +19,6 @@ interface SelectedOption {
 export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
   soundEnabled,
   onHome,
-  onToggleSound,
 }) => {
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const currentLevel: FillBlankLevel = FILL_BLANK_LEVELS[currentLevelIndex];
@@ -42,6 +41,9 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
 
   const [selectedOption, setSelectedOption] = useState<SelectedOption | null>(null);
   const [wrongSlotId, setWrongSlotId] = useState<string | null>(null);
+
+  // Refs to slots for touch drag drop hit-testing
+  const slotRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Reset or change level helper
   const loadLevel = (levelIdx: number) => {
@@ -123,33 +125,30 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
     processSlotFill(selectedOption.id, selectedOption.letter, slotId, targetLetter, rowSlots, slotIdx);
   };
 
-  // HTML5 Drag & Drop handlers
-  const handleDragStart = (e: React.DragEvent, id: string, letter: string) => {
-    e.dataTransfer.setData('application/json', JSON.stringify({ id, letter }));
-    setSelectedOption({ id, letter });
-  };
+  // Handle Touch / Framer Motion Drag End for an Option Tile
+  const handleDragEnd = (optionId: string, letter: string, dropX: number, dropY: number) => {
+    // Check all slots in current level
+    for (const row of currentLevel.rows) {
+      for (let slotIdx = 0; slotIdx < row.slots.length; slotIdx++) {
+        const slot = row.slots[slotIdx];
+        if (slot.isPreFilled || filledSlots[slot.id]) continue;
 
-  const handleDrop = (e: React.DragEvent, slotId: string, targetLetter: string, rowSlots: typeof currentLevel.rows[0]['slots'], slotIdx: number) => {
-    e.preventDefault();
-    let optId: string | null = selectedOption?.id || null;
-    let optLetter: string | null = selectedOption?.letter || null;
-
-    try {
-      const jsonData = e.dataTransfer.getData('application/json');
-      if (jsonData) {
-        const parsed = JSON.parse(jsonData);
-        optId = parsed.id;
-        optLetter = parsed.letter;
+        const el = slotRefs.current[slot.id];
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          // Check if drop point is within slot bounds with generous padding for mobile fingers
+          if (
+            dropX >= rect.left - 25 &&
+            dropX <= rect.right + 25 &&
+            dropY >= rect.top - 25 &&
+            dropY <= rect.bottom + 25
+          ) {
+            processSlotFill(optionId, letter, slot.id, slot.targetLetter, row.slots, slotIdx);
+            return;
+          }
+        }
       }
-    } catch {
-      // Fallback to text data if plain text drag
-      const textData = e.dataTransfer.getData('text/plain');
-      if (textData) optLetter = textData;
     }
-
-    if (!optLetter) return;
-
-    processSlotFill(optId, optLetter, slotId, targetLetter, rowSlots, slotIdx);
   };
 
   const handleNextLevel = () => {
@@ -167,7 +166,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
   return (
     <div
       id="fill-blank-game-stage"
-      className="relative flex-1 flex flex-col justify-between w-full h-screen overflow-hidden select-none px-2 sm:px-6 py-2"
+      className="relative flex-1 flex flex-col justify-between w-full h-screen overflow-hidden select-none px-2 sm:px-6 py-2 touch-none"
     >
       {/* Top Banner Title: "fill in the blank" */}
       <div id="fill-blank-title-container" className="flex flex-col items-center justify-center pt-1 z-10">
@@ -182,9 +181,9 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
       </div>
 
       {/* Main Playing Area: Left Options | 3 Center Rows | Right Options */}
-      <div id="fill-blank-main-grid" className="flex-1 flex flex-row items-center justify-between w-full my-auto max-w-6xl mx-auto gap-2 sm:gap-4 z-10">
+      <div id="fill-blank-main-grid" className="flex-1 flex flex-row items-center justify-between w-full my-auto max-w-6xl mx-auto gap-2 sm:gap-4 md:gap-6 z-10 px-1 sm:px-4">
         {/* LEFT COLUMN OPTIONS (Red cards with white border & yellow letters) */}
-        <div id="left-options-column" className="flex flex-col gap-2 sm:gap-3 items-center justify-center">
+        <div id="left-options-column" className="flex flex-col gap-2.5 sm:gap-4 items-center justify-center">
           {currentLevel.leftOptions.map((letter, idx) => {
             const optionId = `left-${idx}`;
             const isDestroyed = destroyedOptionIds.has(optionId);
@@ -192,24 +191,31 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
 
             if (isDestroyed) {
               return (
-                <div key={optionId} className="w-11 h-11 sm:w-16 sm:h-16 md:w-20 md:h-20 opacity-0 pointer-events-none" />
+                <div key={optionId} className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 opacity-0 pointer-events-none" />
               );
             }
 
             return (
               <motion.div
                 key={optionId}
-                draggable
-                onDragStart={(e) => handleDragStart(e as unknown as React.DragEvent, optionId, letter)}
+                drag
+                dragSnapToOrigin
+                dragElastic={0.2}
+                whileDrag={{ scale: 1.2, zIndex: 100 }}
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.92 }}
+                onDragStart={() => sounds.playPop(soundEnabled)}
+                onDragEnd={(_e, info) => handleDragEnd(optionId, letter, info.point.x, info.point.y)}
                 onClick={() => {
                   sounds.playSnap(soundEnabled);
                   setSelectedOption(isSelected ? null : { id: optionId, letter });
                 }}
-                className={`w-11 h-11 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-xl sm:rounded-2xl bg-red-600 border-2 sm:border-4 ${
-                  isSelected ? 'border-yellow-300 ring-4 ring-yellow-300 scale-105' : 'border-white'
-                } flex items-center justify-center text-yellow-300 font-black text-2xl sm:text-4xl md:text-5xl shadow-xl cursor-grab active:cursor-grabbing transition-all`}
+                className={`w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-3xl bg-red-600 border-3 sm:border-4 ${
+                  isSelected ? 'border-yellow-300 ring-4 ring-yellow-300 scale-105 shadow-yellow-400/50' : 'border-white'
+                } flex items-center justify-center text-yellow-300 font-black text-3xl sm:text-5xl md:text-6xl shadow-2xl cursor-grab active:cursor-grabbing transition-all touch-none`}
+                style={{
+                  boxShadow: 'inset 0 3px 6px rgba(255,255,255,0.4), 0 8px 16px rgba(0,0,0,0.3)',
+                }}
               >
                 {letter}
               </motion.div>
@@ -222,7 +228,10 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
           {currentLevel.rows.map((row) => (
             <div
               key={row.id}
-              className="bg-white border-2 sm:border-4 border-blue-600 rounded-2xl p-1 sm:p-2.5 shadow-2xl flex items-center justify-between gap-1 sm:gap-2.5 w-full max-w-2xl"
+              className="bg-white border-3 sm:border-4 md:border-6 border-blue-600 rounded-2xl sm:rounded-3xl p-1.5 sm:p-3 shadow-2xl flex items-center justify-between gap-1.5 sm:gap-3 w-full max-w-2xl"
+              style={{
+                boxShadow: '0 10px 25px rgba(0,0,0,0.25), inset 0 2px 4px rgba(255,255,255,0.8)',
+              }}
             >
               {row.slots.map((slot, slotIdx) => {
                 const filledLetter = filledSlots[slot.id];
@@ -231,26 +240,25 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
                 return (
                   <div
                     key={slot.id}
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={(e) => handleDrop(e, slot.id, slot.targetLetter, row.slots, slotIdx)}
+                    ref={(el) => { slotRefs.current[slot.id] = el; }}
                     onClick={() => handleSlotClick(slot.id, slot.targetLetter, row.slots, slotIdx)}
-                    className={`flex-1 h-11 sm:h-16 md:h-20 rounded-xl flex items-center justify-center relative cursor-pointer border-r-2 sm:border-r-4 border-blue-600 last:border-r-0 transition-all ${
+                    className={`flex-1 h-14 sm:h-20 md:h-24 rounded-xl sm:rounded-2xl flex items-center justify-center relative cursor-pointer border-r-2 sm:border-r-4 border-blue-600 last:border-r-0 transition-all ${
                       isWrong ? 'animate-shake bg-red-200' : 'bg-white'
                     }`}
                   >
                     {filledLetter ? (
-                      /* Red Tile with White Border & Yellow Text (Color matches option cards exactly) */
+                      /* Red Tile with White Border & Yellow Text */
                       <motion.div
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-red-600 border-2 sm:border-4 border-white flex items-center justify-center text-yellow-300 font-black text-2xl sm:text-3xl md:text-4xl shadow-md"
+                        className="w-12 h-12 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-xl sm:rounded-2xl bg-red-600 border-2 sm:border-4 border-white flex items-center justify-center text-yellow-300 font-black text-2xl sm:text-4xl md:text-5xl shadow-md"
                       >
                         {filledLetter}
                       </motion.div>
                     ) : (
                       /* Empty Blank Drop Area */
-                      <div className="w-full h-full border-2 border-dashed border-blue-300/50 rounded-lg flex items-center justify-center hover:bg-blue-50/50">
-                        <span className="text-blue-300 font-bold text-xs sm:text-sm">?</span>
+                      <div className="w-full h-full border-2 sm:border-3 border-dashed border-blue-300 rounded-xl flex items-center justify-center hover:bg-blue-50/70 transition-colors">
+                        <span className="text-blue-400 font-black text-base sm:text-2xl">?</span>
                       </div>
                     )}
                   </div>
@@ -261,7 +269,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
         </div>
 
         {/* RIGHT COLUMN OPTIONS (Red cards with white border & yellow letters) */}
-        <div id="right-options-column" className="flex flex-col gap-2 sm:gap-3 items-center justify-center">
+        <div id="right-options-column" className="flex flex-col gap-2.5 sm:gap-4 items-center justify-center">
           {currentLevel.rightOptions.map((letter, idx) => {
             const optionId = `right-${idx}`;
             const isDestroyed = destroyedOptionIds.has(optionId);
@@ -269,24 +277,31 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
 
             if (isDestroyed) {
               return (
-                <div key={optionId} className="w-11 h-11 sm:w-16 sm:h-16 md:w-20 md:h-20 opacity-0 pointer-events-none" />
+                <div key={optionId} className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 opacity-0 pointer-events-none" />
               );
             }
 
             return (
               <motion.div
                 key={optionId}
-                draggable
-                onDragStart={(e) => handleDragStart(e as unknown as React.DragEvent, optionId, letter)}
+                drag
+                dragSnapToOrigin
+                dragElastic={0.2}
+                whileDrag={{ scale: 1.2, zIndex: 100 }}
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.92 }}
+                onDragStart={() => sounds.playPop(soundEnabled)}
+                onDragEnd={(_e, info) => handleDragEnd(optionId, letter, info.point.x, info.point.y)}
                 onClick={() => {
                   sounds.playSnap(soundEnabled);
                   setSelectedOption(isSelected ? null : { id: optionId, letter });
                 }}
-                className={`w-11 h-11 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-xl sm:rounded-2xl bg-red-600 border-2 sm:border-4 ${
-                  isSelected ? 'border-yellow-300 ring-4 ring-yellow-300 scale-105' : 'border-white'
-                } flex items-center justify-center text-yellow-300 font-black text-2xl sm:text-4xl md:text-5xl shadow-xl cursor-grab active:cursor-grabbing transition-all`}
+                className={`w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-3xl bg-red-600 border-3 sm:border-4 ${
+                  isSelected ? 'border-yellow-300 ring-4 ring-yellow-300 scale-105 shadow-yellow-400/50' : 'border-white'
+                } flex items-center justify-center text-yellow-300 font-black text-3xl sm:text-5xl md:text-6xl shadow-2xl cursor-grab active:cursor-grabbing transition-all touch-none`}
+                style={{
+                  boxShadow: 'inset 0 3px 6px rgba(255,255,255,0.4), 0 8px 16px rgba(0,0,0,0.3)',
+                }}
               >
                 {letter}
               </motion.div>
@@ -331,7 +346,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onHome}
-          className="bg-sky-400 border-2 sm:border-4 border-white text-yellow-300 font-black text-lg sm:text-3xl px-5 sm:px-8 py-1.5 sm:py-2 rounded-2xl sm:rounded-3xl shadow-2xl flex items-center gap-2 cursor-pointer"
+          className="bg-sky-400 border-3 sm:border-4 border-white text-yellow-300 font-black text-lg sm:text-3xl px-6 sm:px-10 py-1.5 sm:py-2.5 rounded-2xl sm:rounded-3xl shadow-2xl flex items-center gap-2 cursor-pointer"
         >
           Home
         </motion.button>
@@ -340,11 +355,11 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={handleResetLevel}
-            className="bg-red-700 border-2 sm:border-3 border-white text-white p-2 rounded-xl text-xs font-bold flex items-center gap-1 shadow-md hover:bg-red-600"
+            className="bg-red-700 border-2 sm:border-3 border-white text-white px-3 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1 shadow-md hover:bg-red-600 cursor-pointer"
             title="Reset Level"
           >
             <RotateCcw className="w-4 h-4 text-yellow-300" />
-            <span className="hidden sm:inline">Reset</span>
+            <span>Reset</span>
           </button>
 
           {/* Right: Next Button (Blue pill with yellow text) */}
@@ -353,7 +368,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleNextLevel}
-            className={`border-2 sm:border-4 border-white font-black text-lg sm:text-3xl px-6 sm:px-9 py-1.5 sm:py-2 rounded-2xl sm:rounded-3xl shadow-2xl flex items-center gap-1 cursor-pointer ${
+            className={`border-3 sm:border-4 border-white font-black text-lg sm:text-3xl px-7 sm:px-10 py-1.5 sm:py-2.5 rounded-2xl sm:rounded-3xl shadow-2xl flex items-center gap-1 cursor-pointer ${
               isLevelComplete
                 ? 'bg-yellow-400 text-red-900 animate-pulse border-white'
                 : 'bg-sky-400 text-yellow-300'

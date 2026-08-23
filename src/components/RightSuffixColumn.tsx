@@ -17,14 +17,32 @@ export const RightSuffixColumn: React.FC<RightSuffixColumnProps> = ({
   soundEnabled,
   onSelectSuffix,
 }) => {
+  // Handle Framer Motion Drag End for Suffix tile
+  const handleDragEnd = (suffixId: string, dropX: number, dropY: number) => {
+    const dropBox = document.getElementById('dropbox-main-frame');
+    if (dropBox) {
+      const rect = dropBox.getBoundingClientRect();
+      if (
+        dropX >= rect.left - 40 &&
+        dropX <= rect.right + 40 &&
+        dropY >= rect.top - 40 &&
+        dropY <= rect.bottom + 40
+      ) {
+        onSelectSuffix(suffixId);
+      }
+    }
+  };
+
   return (
     <div
       id="right-suffix-container"
-      className="flex flex-col justify-center items-center select-none z-10"
+      className="flex flex-col justify-center items-center select-none z-10 touch-none"
     >
-      <div id="suffix-column-list" className="flex flex-col gap-2 sm:gap-3">
+      <div id="suffix-column-list" className="flex flex-col gap-2.5 sm:gap-3.5 md:gap-4">
         {SUFFIX_GROUPS.map((group: SuffixGroup) => {
           const isActive = activeSuffix === group.id;
+
+          // Check progress for this group
           const groupTileIds = group.prefixes.map((p) => `${group.id}-${p}`);
           const completedCount = groupTileIds.filter((id) => destroyedTiles.has(id)).length;
           const isGroupAllCompleted = completedCount === group.prefixes.length;
@@ -33,26 +51,28 @@ export const RightSuffixColumn: React.FC<RightSuffixColumnProps> = ({
             <motion.button
               key={group.id}
               id={`suffix-btn-${group.id}`}
+              drag={!isGroupAllCompleted}
+              dragSnapToOrigin
+              dragElastic={0.2}
+              whileDrag={{ scale: 1.25, zIndex: 100 }}
+              whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.94 }}
-              draggable
-              onDragStart={(e: React.DragEvent) => {
-                sounds.playPop(soundEnabled);
-                e.dataTransfer.setData(
-                  'text/plain',
-                  JSON.stringify({ type: 'SUFFIX', id: group.id })
-                );
-              }}
+              onDragStart={() => sounds.playPop(soundEnabled)}
+              onDragEnd={(_e, info) => handleDragEnd(group.id, info.point.x, info.point.y)}
               onClick={() => {
                 sounds.playSnap(soundEnabled);
                 onSelectSuffix(group.id);
               }}
-              className={`w-14 h-9 sm:w-18 sm:h-12 md:w-22 md:h-15 rounded-xl border-2 border-white flex items-center justify-center font-bold text-lg sm:text-2xl md:text-3xl shadow-md transition-colors cursor-pointer select-none ${
+              className={`w-16 h-11 sm:w-22 sm:h-14 md:w-26 md:h-17 lg:w-30 lg:h-19 rounded-xl sm:rounded-2xl border-2 sm:border-4 border-white flex items-center justify-center font-black text-2xl sm:text-3xl md:text-4xl shadow-xl transition-transform cursor-grab active:cursor-grabbing select-none touch-none ${
                 isGroupAllCompleted
-                  ? 'bg-black/40 text-yellow-300/40 border-white/30 opacity-40'
+                  ? 'bg-red-950/60 text-yellow-300/40 border-white/50 opacity-50'
                   : isActive
-                  ? 'bg-red-600 text-yellow-300 ring-4 ring-yellow-300'
+                  ? 'bg-red-600 text-yellow-300 ring-4 ring-yellow-300 scale-105 shadow-yellow-400/50'
                   : 'bg-red-600 text-yellow-300 hover:bg-red-500'
               }`}
+              style={{
+                boxShadow: 'inset 0 3px 6px rgba(255,255,255,0.4), 0 6px 14px rgba(0,0,0,0.3)',
+              }}
             >
               {group.text}
             </motion.button>
@@ -62,3 +82,4 @@ export const RightSuffixColumn: React.FC<RightSuffixColumnProps> = ({
     </div>
   );
 };
+
