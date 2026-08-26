@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { RotateCw, Maximize2, Minimize2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Smartphone, Maximize2, Minimize2 } from 'lucide-react';
 import villageBg from '../assets/images/village_background_1785251927006.jpg';
 
 interface LandscapeWrapperProps {
@@ -7,42 +7,36 @@ interface LandscapeWrapperProps {
 }
 
 export const LandscapeWrapper: React.FC<LandscapeWrapperProps> = ({ children }) => {
-  const [windowSize, setWindowSize] = useState({
-    width: typeof window !== 'undefined' ? window.innerWidth : 800,
-    height: typeof window !== 'undefined' ? window.innerHeight : 600,
-  });
-  const [forceLandscapeRotate, setForceLandscapeRotate] = useState(true);
+  const [isPortrait, setIsPortrait] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const updateDimensions = useCallback(() => {
-    setWindowSize({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-  }, []);
-
   useEffect(() => {
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    window.addEventListener('orientationchange', updateDimensions);
+    const checkOrientation = () => {
+      if (typeof window !== 'undefined') {
+        const portrait = window.innerHeight > window.innerWidth;
+        setIsPortrait(portrait);
+      }
+    };
 
-    // Try to lock orientation to landscape if supported by browser/Android
+    checkOrientation();
+    window.addEventListener('resize', checkOrientation);
+    window.addEventListener('orientationchange', checkOrientation);
+
+    // Request native landscape lock on supported mobile browsers
     try {
       const orientation = screen.orientation as ScreenOrientation & { lock?: (type: string) => Promise<void> };
       if (orientation && orientation.lock) {
-        orientation.lock('landscape').catch(() => {
-          // Ignore if user interaction is needed or not allowed in iframe
-        });
+        orientation.lock('landscape').catch(() => {});
       }
     } catch {
-      // Ignore orientation lock errors
+      // Ignore orientation lock rejection
     }
 
     return () => {
-      window.removeEventListener('resize', updateDimensions);
-      window.removeEventListener('orientationchange', updateDimensions);
+      window.removeEventListener('resize', checkOrientation);
+      window.removeEventListener('orientationchange', checkOrientation);
     };
-  }, [updateDimensions]);
+  }, []);
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -56,66 +50,43 @@ export const LandscapeWrapper: React.FC<LandscapeWrapperProps> = ({ children }) 
     }
   };
 
-  const isPortrait = windowSize.height > windowSize.width;
-  const shouldRotate = isPortrait && forceLandscapeRotate;
-
   return (
     <div
       id="landscape-root-container"
-      className="relative w-screen h-screen overflow-hidden bg-slate-950 select-none touch-none"
+      className="relative w-screen h-screen overflow-hidden bg-slate-900 select-none touch-none"
     >
-      {/* Inner Game Container with Auto-Landscape for Portrait Viewports */}
+      {/* Main Game Container - 1:1 Clean Coordinates Without CSS 90deg Coordinate Inversion */}
       <div
         id="landscape-inner-stage"
-        className="overflow-hidden flex flex-col justify-between text-slate-900 bg-cover bg-center bg-no-repeat transition-all duration-300"
-        style={
-          shouldRotate
-            ? {
-                position: 'absolute',
-                width: `${windowSize.height}px`,
-                height: `${windowSize.width}px`,
-                left: `${windowSize.width}px`,
-                top: 0,
-                transformOrigin: '0 0',
-                transform: 'rotate(90deg)',
-                backgroundImage: `url(${villageBg})`,
-              }
-            : {
-                position: 'relative',
-                width: '100%',
-                height: '100%',
-                backgroundImage: `url(${villageBg})`,
-              }
-        }
+        className="relative w-full h-full overflow-hidden flex flex-col justify-between text-slate-900 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${villageBg})` }}
       >
         {children}
 
-        {/* Floating Controls (Orientation Switch & Fullscreen) */}
-        <div className="fixed bottom-2 right-2 z-50 flex items-center gap-1.5 opacity-90 hover:opacity-100 transition-opacity">
-          {isPortrait && (
-            <button
-              id="btn-toggle-landscape-orientation"
-              onClick={() => setForceLandscapeRotate((prev) => !prev)}
-              className="p-2 rounded-xl bg-black/70 hover:bg-black/90 text-yellow-300 border border-white/30 shadow-lg text-[11px] font-bold flex items-center gap-1 active:scale-95 cursor-pointer backdrop-blur-xs"
-              title="Toggle Landscape Rotation"
-            >
-              <RotateCw className="w-3.5 h-3.5" />
-              <span>{forceLandscapeRotate ? 'Landscape ON' : 'Normal'}</span>
-            </button>
-          )}
-
-          <button
-            id="btn-fullscreen-toggle"
-            onClick={toggleFullscreen}
-            className="p-2 rounded-xl bg-black/70 hover:bg-black/90 text-white border border-white/30 shadow-lg text-xs font-bold active:scale-95 cursor-pointer backdrop-blur-xs"
-            title="Toggle Fullscreen"
+        {/* Mobile Portrait Guidance Banner */}
+        {isPortrait && (
+          <div
+            id="mobile-portrait-banner"
+            className="fixed top-2 left-1/2 -translate-x-1/2 z-50 bg-black/85 text-yellow-300 border-2 border-yellow-400 px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 shadow-2xl animate-pulse pointer-events-none"
           >
-            {isFullscreen ? <Minimize2 className="w-3.5 h-3.5 text-yellow-300" /> : <Maximize2 className="w-3.5 h-3.5 text-white" />}
-          </button>
-        </div>
+            <Smartphone className="w-4 h-4 rotate-90 text-yellow-300" />
+            <span>Rotate phone to Landscape for full view</span>
+          </div>
+        )}
+
+        {/* Fullscreen Floating Toggle Button */}
+        <button
+          id="btn-fullscreen-toggle"
+          onClick={toggleFullscreen}
+          className="fixed bottom-2 right-2 z-50 p-2 rounded-xl bg-black/70 hover:bg-black/90 text-white border border-white/30 shadow-lg text-xs font-bold active:scale-95 cursor-pointer backdrop-blur-xs"
+          title="Toggle Fullscreen"
+        >
+          {isFullscreen ? <Minimize2 className="w-3.5 h-3.5 text-yellow-300" /> : <Maximize2 className="w-3.5 h-3.5 text-white" />}
+        </button>
       </div>
     </div>
   );
 };
+
 
 

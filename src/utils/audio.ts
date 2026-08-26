@@ -45,12 +45,12 @@ class SoundManager {
     };
 
     const item = HINDI_DATA[word.toUpperCase()] || { spell: word, word: word, hindi: word };
-    // Cheerful & clear Hindi kid phrase matching same voice
+    // Cheerful, fast & clear Hindi kid phrase matching same voice
     const speechText = `${item.spell}, ${item.word}! ${item.word} मतलब ${item.hindi}! शाबाश!`;
 
     const utterance = new SpeechSynthesisUtterance(speechText);
-    utterance.rate = 1.0; // Same standard clear speed
-    utterance.pitch = 1.35; // Same cheerful voice pitch
+    utterance.rate = 1.15; // Snappy, clear speech rate
+    utterance.pitch = 1.35; // Cheerful voice pitch
     utterance.volume = 1.0;
 
     const voice = this.getBestVoice();
@@ -79,13 +79,13 @@ class SoundManager {
     const lName = HINDI_LETTERS[letter.toUpperCase()] || letter;
     const pName = prevLetter ? (HINDI_LETTERS[prevLetter.toUpperCase()] || prevLetter) : null;
 
-    let speechText = `अरे वाह! बिल्कुल सही! ${lName}! शाबाश!`;
+    let speechText = `बिल्कुल सही! ${lName}! शाबाश!`;
     if (pName) {
-      speechText = `अरे वाह! बिल्कुल सही! ${pName} के बाद ${lName} आता है! बहुत बढ़िया!`;
+      speechText = `बिल्कुल सही! ${pName} के बाद ${lName}! बहुत बढ़िया!`;
     }
 
     const utterance = new SpeechSynthesisUtterance(speechText);
-    utterance.rate = 1.0;
+    utterance.rate = 1.15;
     utterance.pitch = 1.35;
     utterance.volume = 1.0;
 
@@ -105,14 +105,14 @@ class SoundManager {
     window.speechSynthesis.cancel();
 
     const wrongPhrases = [
-      'ओहो! यह गलत है! दूसरा अक्षर चुनो!',
-      'गलत जवाब! फिर से कोशिश करो!',
+      'ओहो! गलत है! दूसरा अक्षर चुनो!',
+      'फिर से कोशिश करो!',
       'अरे नहीं! सही अक्षर चुनो!',
     ];
     const phrase = wrongPhrases[Math.floor(Math.random() * wrongPhrases.length)];
 
     const utterance = new SpeechSynthesisUtterance(phrase);
-    utterance.rate = 1.0;
+    utterance.rate = 1.15;
     utterance.pitch = 1.35;
     utterance.volume = 1.0;
 
@@ -259,7 +259,7 @@ class SoundManager {
     const textToSpeak = `${letterName} फॉर ${wordName}! शाबाश!`;
 
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    utterance.rate = 1.0; // Natural clear speech rate
+    utterance.rate = 1.15; // Natural snappy speech rate
     utterance.pitch = 1.35; // Cheerful enthusiastic tone
     utterance.volume = 1.0;
 
@@ -280,14 +280,14 @@ class SoundManager {
     window.speechSynthesis.cancel();
 
     const wrongPhrases = [
-      'ओहो! यह गलत जोड़ी है! सही चित्र से मिलाओ!',
-      'गलत जवाब! फिर से कोशिश करो!',
+      'ओहो! गलत जोड़ी है! सही चित्र से मिलाओ!',
+      'फिर से कोशिश करो!',
       'अरे नहीं! सही अक्षर से मिलाओ!',
     ];
     const phrase = wrongPhrases[Math.floor(Math.random() * wrongPhrases.length)];
 
     const utterance = new SpeechSynthesisUtterance(phrase);
-    utterance.rate = 1.0;
+    utterance.rate = 1.15;
     utterance.pitch = 1.35;
     utterance.volume = 1.0;
 

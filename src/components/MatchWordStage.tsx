@@ -254,6 +254,14 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
     setSelectedLetterId(item.id);
     setDraggingFrom(item.id);
 
+    try {
+      if (containerRef.current) {
+        containerRef.current.setPointerCapture(e.pointerId);
+      }
+    } catch {
+      // Ignore if pointer capture is not supported
+    }
+
     const lEl = letterRefs.current[item.id];
     if (lEl && containerRef.current) {
       const containerRect = containerRef.current.getBoundingClientRect();

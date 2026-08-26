@@ -59,7 +59,7 @@ export default function App() {
         setCurrentPrefix(null);
         setIsDestroying(false);
         setDestroyingWord(null);
-      }, 10000);
+      }, 2200);
     }
   }, [currentPrefix, activeSuffix, isDestroying, soundEnabled, gameMode]);
 

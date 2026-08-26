@@ -181,9 +181,9 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
       </div>
 
       {/* Main Playing Area: Left Options | 3 Center Rows | Right Options */}
-      <div id="fill-blank-main-grid" className="flex-1 flex flex-row items-center justify-between w-full my-auto max-w-6xl mx-auto gap-2 sm:gap-4 md:gap-6 z-10 px-1 sm:px-4">
+      <div id="fill-blank-main-grid" className="flex-1 flex flex-row items-center justify-between w-full my-auto max-w-6xl mx-auto gap-2 sm:gap-4 md:gap-6 z-10 px-1 sm:px-4 overflow-visible">
         {/* LEFT COLUMN OPTIONS (Red cards with white border & yellow letters) */}
-        <div id="left-options-column" className="flex flex-col gap-2.5 sm:gap-4 items-center justify-center">
+        <div id="left-options-column" className="relative z-30 flex flex-col gap-2.5 sm:gap-4 items-center justify-center overflow-visible">
           {currentLevel.leftOptions.map((letter, idx) => {
             const optionId = `left-${idx}`;
             const isDestroyed = destroyedOptionIds.has(optionId);
@@ -200,10 +200,11 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
                 key={optionId}
                 drag
                 dragSnapToOrigin
-                dragElastic={0.2}
-                whileDrag={{ scale: 1.2, zIndex: 100 }}
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.92 }}
+                dragElastic={0}
+                dragMomentum={false}
+                whileDrag={{ scale: 1.2, zIndex: 9999 }}
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.94 }}
                 onDragStart={() => sounds.playPop(soundEnabled)}
                 onDragEnd={(_e, info) => handleDragEnd(optionId, letter, info.point.x, info.point.y)}
                 onClick={() => {
@@ -212,9 +213,10 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
                 }}
                 className={`w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-3xl bg-red-600 border-3 sm:border-4 ${
                   isSelected ? 'border-yellow-300 ring-4 ring-yellow-300 scale-105 shadow-yellow-400/50' : 'border-white'
-                } flex items-center justify-center text-yellow-300 font-black text-3xl sm:text-5xl md:text-6xl shadow-2xl cursor-grab active:cursor-grabbing transition-all touch-none`}
+                } flex items-center justify-center text-yellow-300 font-black text-3xl sm:text-5xl md:text-6xl shadow-2xl cursor-grab active:cursor-grabbing select-none touch-none`}
                 style={{
                   boxShadow: 'inset 0 3px 6px rgba(255,255,255,0.4), 0 8px 16px rgba(0,0,0,0.3)',
+                  touchAction: 'none',
                 }}
               >
                 {letter}
@@ -224,7 +226,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
         </div>
 
         {/* CENTER COLUMN: 3 Horizontal Sequence Rows */}
-        <div id="center-rows-container" className="flex-1 flex flex-col items-center justify-center gap-3 sm:gap-5 px-1 sm:px-4">
+        <div id="center-rows-container" className="relative z-10 flex-1 flex flex-col items-center justify-center gap-3 sm:gap-5 px-1 sm:px-4">
           {currentLevel.rows.map((row) => (
             <div
               key={row.id}
@@ -242,7 +244,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
                     key={slot.id}
                     ref={(el) => { slotRefs.current[slot.id] = el; }}
                     onClick={() => handleSlotClick(slot.id, slot.targetLetter, row.slots, slotIdx)}
-                    className={`flex-1 h-14 sm:h-20 md:h-24 rounded-xl sm:rounded-2xl flex items-center justify-center relative cursor-pointer border-r-2 sm:border-r-4 border-blue-600 last:border-r-0 transition-all ${
+                    className={`flex-1 h-14 sm:h-20 md:h-24 rounded-xl sm:rounded-2xl flex items-center justify-center relative cursor-pointer border-r-2 sm:border-r-4 border-blue-600 last:border-r-0 ${
                       isWrong ? 'animate-shake bg-red-200' : 'bg-white'
                     }`}
                   >
@@ -269,7 +271,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
         </div>
 
         {/* RIGHT COLUMN OPTIONS (Red cards with white border & yellow letters) */}
-        <div id="right-options-column" className="flex flex-col gap-2.5 sm:gap-4 items-center justify-center">
+        <div id="right-options-column" className="relative z-30 flex flex-col gap-2.5 sm:gap-4 items-center justify-center overflow-visible">
           {currentLevel.rightOptions.map((letter, idx) => {
             const optionId = `right-${idx}`;
             const isDestroyed = destroyedOptionIds.has(optionId);
@@ -286,10 +288,11 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
                 key={optionId}
                 drag
                 dragSnapToOrigin
-                dragElastic={0.2}
-                whileDrag={{ scale: 1.2, zIndex: 100 }}
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.92 }}
+                dragElastic={0}
+                dragMomentum={false}
+                whileDrag={{ scale: 1.2, zIndex: 9999 }}
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.94 }}
                 onDragStart={() => sounds.playPop(soundEnabled)}
                 onDragEnd={(_e, info) => handleDragEnd(optionId, letter, info.point.x, info.point.y)}
                 onClick={() => {
@@ -298,9 +301,10 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
                 }}
                 className={`w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-3xl bg-red-600 border-3 sm:border-4 ${
                   isSelected ? 'border-yellow-300 ring-4 ring-yellow-300 scale-105 shadow-yellow-400/50' : 'border-white'
-                } flex items-center justify-center text-yellow-300 font-black text-3xl sm:text-5xl md:text-6xl shadow-2xl cursor-grab active:cursor-grabbing transition-all touch-none`}
+                } flex items-center justify-center text-yellow-300 font-black text-3xl sm:text-5xl md:text-6xl shadow-2xl cursor-grab active:cursor-grabbing select-none touch-none`}
                 style={{
                   boxShadow: 'inset 0 3px 6px rgba(255,255,255,0.4), 0 8px 16px rgba(0,0,0,0.3)',
+                  touchAction: 'none',
                 }}
               >
                 {letter}
