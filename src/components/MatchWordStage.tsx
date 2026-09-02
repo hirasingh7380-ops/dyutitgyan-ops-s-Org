@@ -377,7 +377,7 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className="relative w-full h-screen overflow-hidden select-none flex flex-col justify-between touch-none"
+      className="relative w-full h-full max-h-full overflow-hidden select-none flex flex-col justify-between touch-none"
       style={{
         backgroundImage: 'radial-gradient(circle at 50% 30%, #a2e8dd 0%, #a8e063 45%, #56ab2f 100%)',
       }}
@@ -397,17 +397,17 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
       </div>
 
       {/* TOP HEADER BAR */}
-      <div id="match-top-header" className="relative z-30 w-full px-4 sm:px-8 pt-3 pb-1 flex items-center justify-between max-w-7xl mx-auto">
+      <div id="match-top-header" className="relative z-30 w-full px-2 sm:px-6 pt-1 sm:pt-2 pb-0.5 flex items-center justify-between max-w-7xl mx-auto shrink-0">
         {/* LEFT: Home Button */}
         <motion.button
           id="btn-match-home"
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.94 }}
           onClick={onHome}
-          className="bg-sky-400 border-3 sm:border-4 border-red-600 text-yellow-300 font-black text-2xl sm:text-4xl px-6 sm:px-10 py-1 sm:py-2 rounded-2xl sm:rounded-3xl shadow-2xl cursor-pointer flex items-center justify-center"
+          className="bg-sky-400 border-2 sm:border-3 border-red-600 text-yellow-300 font-black text-sm sm:text-2xl px-4 sm:px-8 py-1 sm:py-1.5 rounded-xl sm:rounded-2xl shadow-xl cursor-pointer flex items-center justify-center"
           style={{
-            textShadow: '2px 2px 0px #000, -1px -1px 0px #000',
-            boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.6)',
+            textShadow: '1px 1px 0px #000, -1px -1px 0px #000',
+            boxShadow: '0 6px 12px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.6)',
           }}
         >
           Home
@@ -416,9 +416,9 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
         {/* CENTER TITLE: "Match the word" */}
         <div className="flex flex-col items-center justify-center">
           <h1
-            className="text-3xl sm:text-5xl font-black text-red-600 tracking-wide uppercase drop-shadow-lg"
+            className="text-xl sm:text-3xl md:text-4xl font-black text-red-600 tracking-wide uppercase drop-shadow-lg"
             style={{
-              textShadow: '3px 3px 0px #fef08a, -2px -2px 0px #fef08a, 2px -2px 0px #fef08a, -2px 2px 0px #fef08a, 0 4px 10px rgba(0,0,0,0.4)',
+              textShadow: '2px 2px 0px #fef08a, -2px -2px 0px #fef08a, 2px -2px 0px #fef08a, -2px 2px 0px #fef08a, 0 3px 6px rgba(0,0,0,0.3)',
               fontFamily: 'sans-serif',
             }}
           >
@@ -432,10 +432,10 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.94 }}
           onClick={handleNext}
-          className="bg-sky-400 border-3 sm:border-4 border-red-600 text-yellow-300 font-black text-2xl sm:text-4xl px-6 sm:px-10 py-1 sm:py-2 rounded-2xl sm:rounded-3xl shadow-2xl cursor-pointer flex items-center justify-center"
+          className="bg-sky-400 border-2 sm:border-3 border-red-600 text-yellow-300 font-black text-sm sm:text-2xl px-4 sm:px-8 py-1 sm:py-1.5 rounded-xl sm:rounded-2xl shadow-xl cursor-pointer flex items-center justify-center"
           style={{
-            textShadow: '2px 2px 0px #000, -1px -1px 0px #000',
-            boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.6)',
+            textShadow: '1px 1px 0px #000, -1px -1px 0px #000',
+            boxShadow: '0 6px 12px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.6)',
           }}
         >
           Next
@@ -515,10 +515,10 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
         ))}
       </svg>
 
-      {/* PLAYING CANVAS CONTENT (Spaced out top and bottom rows to leave large line-drawing area in middle) */}
-      <div className="relative z-30 flex-1 flex flex-col justify-between my-auto py-2 sm:py-6 max-w-7xl w-full mx-auto">
-        {/* TOP ROW: LETTER TILES (Red boxes with thick yellow/white borders & yellow letters) */}
-        <div id="match-letters-row" className="w-full max-w-6xl mx-auto px-4 flex items-center justify-around sm:justify-center sm:gap-8">
+      {/* PLAYING CANVAS CONTENT (Spaced out top and bottom rows with maximum vertical separation) */}
+      <div className="relative z-30 flex-1 flex flex-col justify-between w-full max-w-7xl mx-auto py-1 sm:py-3 px-2 sm:px-6 my-auto">
+        {/* TOP ROW: LETTER TILES (Anchored at the top) */}
+        <div id="match-letters-row" className="w-full max-w-5xl mx-auto px-2 flex items-center justify-around sm:justify-center sm:gap-8 pt-1">
           {letterItems.map((item) => {
             const isMatched = matchedIds.has(item.id);
             const isSelected = selectedLetterId === item.id;
@@ -531,7 +531,7 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
                 whileHover={!isMatched ? { scale: 1.08 } : {}}
                 whileTap={!isMatched ? { scale: 0.92 } : {}}
                 animate={isSelected ? { scale: [1, 1.1, 1], transition: { repeat: Infinity, duration: 0.8 } } : {}}
-                className={`relative w-16 h-16 sm:w-28 sm:h-28 rounded-2xl sm:rounded-3xl border-4 sm:border-6 flex items-center justify-center cursor-grab active:cursor-grabbing transition-all duration-200 shadow-2xl ${
+                className={`relative w-12 h-12 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl md:rounded-3xl border-3 sm:border-4 md:border-6 flex items-center justify-center cursor-grab active:cursor-grabbing transition-all duration-200 shadow-xl ${
                   isMatched
                     ? 'bg-emerald-600 border-yellow-300 ring-4 ring-emerald-300/80 shadow-emerald-950/70'
                     : isSelected
@@ -539,14 +539,14 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
                     : 'bg-red-600 border-yellow-400 shadow-red-950/80 hover:bg-red-500'
                 }`}
                 style={{
-                  boxShadow: 'inset 0 4px 8px rgba(255,255,255,0.5), 0 8px 16px rgba(0,0,0,0.4)',
+                  boxShadow: 'inset 0 3px 6px rgba(255,255,255,0.5), 0 6px 14px rgba(0,0,0,0.4)',
                 }}
               >
                 {/* BIG BOLD YELLOW LETTER TEXT */}
                 <span
-                  className="font-black text-4xl sm:text-7xl text-yellow-300 pointer-events-none"
+                  className="font-black text-2xl sm:text-5xl md:text-6xl text-yellow-300 pointer-events-none leading-none"
                   style={{
-                    textShadow: '3px 3px 0px #991b1b, -2px -2px 0px #991b1b, 2px -2px 0px #991b1b, -2px 2px 0px #991b1b',
+                    textShadow: '2px 2px 0px #991b1b, -1px -1px 0px #991b1b, 1px -1px 0px #991b1b, -1px 1px 0px #991b1b',
                   }}
                 >
                   {item.letter}
@@ -554,8 +554,8 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
 
                 {/* Checkmark when matched */}
                 {isMatched && (
-                  <div className="absolute -top-2 -right-2 bg-yellow-300 text-emerald-900 rounded-full p-1 border-2 border-white shadow-lg pointer-events-none">
-                    <Check className="w-5 h-5 stroke-[3]" />
+                  <div className="absolute -top-1.5 -right-1.5 bg-yellow-300 text-emerald-900 rounded-full p-0.5 sm:p-1 border-2 border-white shadow-lg pointer-events-none">
+                    <Check className="w-3.5 h-3.5 sm:w-5 sm:h-5 stroke-[3]" />
                   </div>
                 )}
               </motion.div>
@@ -563,8 +563,15 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
           })}
         </div>
 
-        {/* BOTTOM ROW: OBJECT CARDS (Pushed far down for wide drawing area) */}
-        <div id="match-objects-row" className="w-full max-w-6xl mx-auto px-2 sm:px-4 flex items-center justify-around sm:justify-center sm:gap-8">
+        {/* MIDDLE LINE-DRAWING CLEARANCE ZONE */}
+        <div className="w-full flex-1 min-h-[30px] sm:min-h-[60px] pointer-events-none flex items-center justify-center opacity-30">
+          <span className="text-[10px] sm:text-xs font-bold text-white tracking-widest uppercase">
+            ⬇ Drag line to match ⬇
+          </span>
+        </div>
+
+        {/* BOTTOM ROW: OBJECT CARDS (Anchored at the bottom) */}
+        <div id="match-objects-row" className="w-full max-w-5xl mx-auto px-2 flex items-center justify-around sm:justify-center sm:gap-8 pb-1">
           {objectItems.map((item) => {
             const isMatched = matchedIds.has(item.id);
             const isError = errorId === item.id;
@@ -576,32 +583,32 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
                 ref={(el) => { objectRefs.current[item.id] = el; }}
                 whileHover={!isMatched ? { scale: 1.06 } : {}}
                 whileTap={!isMatched ? { scale: 0.94 } : {}}
-                animate={isError ? { x: [-12, 12, -12, 12, 0] } : {}}
+                animate={isError ? { x: [-10, 10, -10, 10, 0] } : {}}
                 onClick={() => handleObjectClick(item)}
-                className={`relative w-20 h-24 sm:w-36 sm:h-44 rounded-2xl sm:rounded-[32px] border-4 sm:border-[6px] flex flex-col items-center justify-center cursor-pointer transition-all duration-200 shadow-2xl p-1 sm:p-1.5 ${
+                className={`relative w-16 h-20 sm:w-24 sm:h-30 md:w-30 md:h-36 rounded-xl sm:rounded-2xl md:rounded-[28px] border-3 sm:border-4 md:border-[5px] flex flex-col items-center justify-center cursor-pointer transition-all duration-200 shadow-xl p-1 ${
                   isMatched
                     ? 'bg-emerald-50 border-emerald-500 ring-4 ring-emerald-300/80'
                     : 'bg-[#fffcf7] border-[#00a2ff] hover:border-sky-300 shadow-sky-950/40'
                 }`}
                 style={{
-                  boxShadow: 'inset 0 4px 8px rgba(255,255,255,0.9), 0 8px 20px rgba(0,0,0,0.3)',
+                  boxShadow: 'inset 0 3px 6px rgba(255,255,255,0.9), 0 6px 16px rgba(0,0,0,0.3)',
                 }}
               >
                 {/* Illustration SVG or High Quality 3D Image */}
-                <div className="w-full h-full flex items-center justify-center overflow-hidden rounded-xl sm:rounded-[24px]">
+                <div className="w-full h-full flex items-center justify-center overflow-hidden rounded-lg sm:rounded-xl md:rounded-[20px]">
                   <MatchSvgIllustration type={item.svgType} />
                 </div>
 
                 {/* Item Label text when matched */}
                 {isMatched && (
-                  <span className="font-black text-[10px] sm:text-xs text-emerald-800 uppercase tracking-wider pointer-events-none mt-1">
+                  <span className="font-black text-[9px] sm:text-xs text-emerald-800 uppercase tracking-wider pointer-events-none mt-0.5">
                     {item.wordName}
                   </span>
                 )}
 
                 {/* Sparkles on matched card */}
                 {isMatched && (
-                  <Sparkles className="absolute -top-2 -right-2 w-6 h-6 text-yellow-400 animate-spin pointer-events-none" />
+                  <Sparkles className="absolute -top-1.5 -right-1.5 w-4 h-4 sm:w-6 sm:h-6 text-yellow-400 animate-spin pointer-events-none" />
                 )}
               </motion.div>
             );
@@ -610,13 +617,13 @@ export const MatchWordStage: React.FC<MatchWordStageProps> = ({
       </div>
 
       {/* FOOTER SCORE BAR */}
-      <div id="match-footer" className="relative z-30 w-full px-6 py-2 bg-black/30 backdrop-blur-md flex items-center justify-between">
-        <div className="text-yellow-300 font-bold text-xs sm:text-sm">
+      <div id="match-footer" className="relative z-30 w-full px-4 sm:px-6 py-1 bg-black/40 backdrop-blur-xs flex items-center justify-between shrink-0">
+        <div className="text-yellow-300 font-bold text-[10px] sm:text-xs">
           {currentSet.title} • अक्षर से रेखा खींचकर चित्र पर मिलाएं!
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-yellow-300 font-black text-sm sm:text-lg">SCORE:</span>
-          <span className="text-white font-black text-lg sm:text-2xl">{score}</span>
+        <div className="flex items-center gap-1.5">
+          <span className="text-yellow-300 font-black text-xs sm:text-sm">SCORE:</span>
+          <span className="text-white font-black text-sm sm:text-lg">{score}</span>
         </div>
       </div>
     </div>
