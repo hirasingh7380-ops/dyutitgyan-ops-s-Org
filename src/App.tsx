@@ -6,6 +6,7 @@ import { LeftPrefixRows } from './components/LeftPrefixRows';
 import { DropBox } from './components/DropBox';
 import { RightSuffixColumn } from './components/RightSuffixColumn';
 import { VictoryModal } from './components/VictoryModal';
+import { WordDestroyModal } from './components/WordDestroyModal';
 import { HomeScreen } from './components/HomeScreen';
 import { FillInTheBlankStage } from './components/FillInTheBlankStage';
 import { BalloonPopStage } from './components/BalloonPopStage';
@@ -184,6 +185,12 @@ export default function App() {
               onSelectSuffix={handleSelectSuffix}
             />
           </main>
+
+          {/* Word Destroy Explosion Modal - Rendered at top level with z-[99999] so it shows in front of all words */}
+          <WordDestroyModal
+            isDestroying={isDestroying}
+            destroyingWord={destroyingWord}
+          />
 
           {/* Victory Celebration Modal when all 16 words are destroyed */}
           {isGameWon && (

@@ -166,14 +166,14 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
   return (
     <div
       id="fill-blank-game-stage"
-      className="relative flex-1 flex flex-col justify-between w-full h-full max-h-full overflow-hidden select-none px-2 sm:px-4 py-1 sm:py-2 touch-none"
+      className="relative flex-1 flex flex-col justify-between w-full h-full max-h-[100dvh] overflow-hidden select-none px-2 sm:px-6 pt-0.5 sm:pt-1 pb-[max(0.5rem,env(safe-area-inset-bottom,0px))] touch-none box-border"
     >
       {/* Top Banner Title: "fill in the blank" */}
-      <div id="fill-blank-title-container" className="flex flex-col items-center justify-center pt-0.5 sm:pt-1 z-10 shrink-0">
+      <div id="fill-blank-title-container" className="flex flex-col items-center justify-center pt-0.5 z-10 shrink-0">
         <motion.h1
           initial={{ y: -10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="text-xl sm:text-3xl md:text-4xl font-black text-red-600 uppercase tracking-wide drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)] stroke-white"
+          className="text-base sm:text-2xl md:text-3xl font-black text-red-600 uppercase tracking-wide drop-shadow-[0_2px_4px_rgba(255,255,255,0.9)] stroke-white"
           style={{ textShadow: '2px 2px 0px #fff, -2px -2px 0px #fff, 2px -2px 0px #fff, -2px 2px 0px #fff' }}
         >
           fill in the blank
@@ -183,7 +183,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
       {/* Main Playing Area: Left Options | 3 Center Rows | Right Options */}
       <div id="fill-blank-main-grid" className="flex-1 flex flex-row items-center justify-between w-full my-auto max-w-5xl mx-auto gap-1.5 sm:gap-3 md:gap-5 z-10 px-1 sm:px-3 overflow-visible">
         {/* LEFT COLUMN OPTIONS (Red cards with white border & yellow letters) */}
-        <div id="left-options-column" className="relative z-30 flex flex-col gap-1.5 sm:gap-3 items-center justify-center overflow-visible shrink-0">
+        <div id="left-options-column" className="relative z-30 flex flex-col gap-1 sm:gap-2.5 items-center justify-center overflow-visible shrink-0">
           {currentLevel.leftOptions.map((letter, idx) => {
             const optionId = `left-${idx}`;
             const isDestroyed = destroyedOptionIds.has(optionId);
@@ -191,7 +191,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
 
             if (isDestroyed) {
               return (
-                <div key={optionId} className="w-11 h-11 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 opacity-0 pointer-events-none" />
+                <div key={optionId} className="w-9 h-9 sm:w-13 sm:h-13 md:w-16 md:h-16 lg:w-20 lg:h-20 opacity-0 pointer-events-none" />
               );
             }
 
@@ -211,9 +211,9 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
                   sounds.playSnap(soundEnabled);
                   setSelectedOption(isSelected ? null : { id: optionId, letter });
                 }}
-                className={`w-11 h-11 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl md:rounded-3xl bg-red-600 border-2 sm:border-3 md:border-4 ${
+                className={`w-9 h-9 sm:w-13 sm:h-13 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-xl sm:rounded-2xl md:rounded-3xl bg-red-600 border-2 sm:border-3 md:border-4 ${
                   isSelected ? 'border-yellow-300 ring-4 ring-yellow-300 scale-105 shadow-yellow-400/50' : 'border-white'
-                } flex items-center justify-center text-yellow-300 font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl shadow-xl cursor-grab active:cursor-grabbing select-none touch-none`}
+                } flex items-center justify-center text-yellow-300 font-black text-xl sm:text-3xl md:text-4xl lg:text-5xl shadow-xl cursor-grab active:cursor-grabbing select-none touch-none`}
                 style={{
                   boxShadow: 'inset 0 3px 6px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.3)',
                   touchAction: 'none',
@@ -226,11 +226,11 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
         </div>
 
         {/* CENTER COLUMN: 3 Horizontal Sequence Rows */}
-        <div id="center-rows-container" className="relative z-10 flex-1 flex flex-col items-center justify-center gap-1.5 sm:gap-3 md:gap-4 px-1 sm:px-3 max-w-xl">
+        <div id="center-rows-container" className="relative z-10 flex-1 flex flex-col items-center justify-center gap-1 sm:gap-2.5 md:gap-3.5 px-1 sm:px-3 max-w-xl">
           {currentLevel.rows.map((row) => (
             <div
               key={row.id}
-              className="bg-white border-2 sm:border-3 md:border-4 border-blue-600 rounded-xl sm:rounded-2xl md:rounded-3xl p-1 sm:p-2 shadow-xl flex items-center justify-between gap-1 sm:gap-2 w-full"
+              className="bg-white border-2 sm:border-3 md:border-4 border-blue-600 rounded-xl sm:rounded-2xl md:rounded-3xl p-1 sm:p-1.5 shadow-xl flex items-center justify-between gap-1 sm:gap-2 w-full"
               style={{
                 boxShadow: '0 8px 18px rgba(0,0,0,0.22), inset 0 2px 4px rgba(255,255,255,0.8)',
               }}
@@ -244,7 +244,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
                     key={slot.id}
                     ref={(el) => { slotRefs.current[slot.id] = el; }}
                     onClick={() => handleSlotClick(slot.id, slot.targetLetter, row.slots, slotIdx)}
-                    className={`flex-1 h-11 sm:h-15 md:h-18 lg:h-22 rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center relative cursor-pointer border-r-2 sm:border-r-3 border-blue-600 last:border-r-0 ${
+                    className={`flex-1 h-9 sm:h-12 md:h-15 lg:h-18 rounded-lg sm:rounded-xl flex items-center justify-center relative cursor-pointer border-r-2 sm:border-r-3 border-blue-600 last:border-r-0 ${
                       isWrong ? 'animate-shake bg-red-200' : 'bg-white'
                     }`}
                   >
@@ -253,14 +253,14 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
                       <motion.div
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        className="w-9 h-9 sm:w-13 sm:h-13 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-lg sm:rounded-xl md:rounded-2xl bg-red-600 border-2 sm:border-3 border-white flex items-center justify-center text-yellow-300 font-black text-xl sm:text-3xl md:text-4xl shadow-md"
+                        className="w-8 h-8 sm:w-10 sm:h-10 md:w-13 md:h-13 lg:w-15 lg:h-15 rounded-lg sm:rounded-xl bg-red-600 border-2 sm:border-3 border-white flex items-center justify-center text-yellow-300 font-black text-lg sm:text-2xl md:text-3xl shadow-md"
                       >
                         {filledLetter}
                       </motion.div>
                     ) : (
                       /* Empty Blank Drop Area */
                       <div className="w-full h-full border-2 border-dashed border-blue-300 rounded-lg flex items-center justify-center hover:bg-blue-50/70 transition-colors">
-                        <span className="text-blue-400 font-black text-sm sm:text-xl">?</span>
+                        <span className="text-blue-400 font-black text-xs sm:text-lg">?</span>
                       </div>
                     )}
                   </div>
@@ -271,7 +271,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
         </div>
 
         {/* RIGHT COLUMN OPTIONS (Red cards with white border & yellow letters) */}
-        <div id="right-options-column" className="relative z-30 flex flex-col gap-1.5 sm:gap-3 items-center justify-center overflow-visible shrink-0">
+        <div id="right-options-column" className="relative z-30 flex flex-col gap-1 sm:gap-2.5 items-center justify-center overflow-visible shrink-0">
           {currentLevel.rightOptions.map((letter, idx) => {
             const optionId = `right-${idx}`;
             const isDestroyed = destroyedOptionIds.has(optionId);
@@ -279,7 +279,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
 
             if (isDestroyed) {
               return (
-                <div key={optionId} className="w-11 h-11 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 opacity-0 pointer-events-none" />
+                <div key={optionId} className="w-9 h-9 sm:w-13 sm:h-13 md:w-16 md:h-16 lg:w-20 lg:h-20 opacity-0 pointer-events-none" />
               );
             }
 
@@ -299,9 +299,9 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
                   sounds.playSnap(soundEnabled);
                   setSelectedOption(isSelected ? null : { id: optionId, letter });
                 }}
-                className={`w-11 h-11 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl md:rounded-3xl bg-red-600 border-2 sm:border-3 md:border-4 ${
+                className={`w-9 h-9 sm:w-13 sm:h-13 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-xl sm:rounded-2xl md:rounded-3xl bg-red-600 border-2 sm:border-3 md:border-4 ${
                   isSelected ? 'border-yellow-300 ring-4 ring-yellow-300 scale-105 shadow-yellow-400/50' : 'border-white'
-                } flex items-center justify-center text-yellow-300 font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl shadow-xl cursor-grab active:cursor-grabbing select-none touch-none`}
+                } flex items-center justify-center text-yellow-300 font-black text-xl sm:text-3xl md:text-4xl lg:text-5xl shadow-xl cursor-grab active:cursor-grabbing select-none touch-none`}
                 style={{
                   boxShadow: 'inset 0 3px 6px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.3)',
                   touchAction: 'none',
@@ -343,14 +343,14 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
       </AnimatePresence>
 
       {/* Bottom Bar: Home Button (Left) | Reset & Next Button (Right) */}
-      <div id="fill-blank-bottom-bar" className="w-full flex items-center justify-between z-10 px-1 sm:px-4 pb-1 sm:pb-2 shrink-0">
+      <div id="fill-blank-bottom-bar" className="w-full flex items-center justify-between z-10 px-2 sm:px-6 pb-1 sm:pb-2 pt-0.5 shrink-0">
         {/* Left: Home Button (Blue pill with yellow text) */}
         <motion.button
           id="btn-fill-home"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onHome}
-          className="bg-sky-400 border-2 sm:border-3 border-white text-yellow-300 font-black text-sm sm:text-2xl px-4 sm:px-8 py-1 sm:py-2 rounded-xl sm:rounded-2xl shadow-xl flex items-center gap-1.5 cursor-pointer"
+          className="bg-sky-400 border-2 sm:border-3 border-white text-yellow-300 font-black text-xs sm:text-xl px-4 sm:px-7 py-1 sm:py-1.5 rounded-xl shadow-xl flex items-center gap-1.5 cursor-pointer"
         >
           Home
         </motion.button>
@@ -359,10 +359,10 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
         <div className="flex items-center gap-1.5 sm:gap-3">
           <button
             onClick={handleResetLevel}
-            className="bg-red-700 border-2 border-white text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1 shadow-md hover:bg-red-600 cursor-pointer"
+            className="bg-red-700 border border-white text-white px-2.5 sm:px-3 py-1 rounded-lg text-[10px] sm:text-xs font-bold flex items-center gap-1 shadow-md hover:bg-red-600 cursor-pointer"
             title="Reset Level"
           >
-            <RotateCcw className="w-3.5 h-3.5 text-yellow-300" />
+            <RotateCcw className="w-3 h-3 text-yellow-300" />
             <span>Reset</span>
           </button>
 
@@ -372,7 +372,7 @@ export const FillInTheBlankStage: React.FC<FillInTheBlankStageProps> = ({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleNextLevel}
-            className={`border-2 sm:border-3 border-white font-black text-sm sm:text-2xl px-5 sm:px-8 py-1 sm:py-2 rounded-xl sm:rounded-2xl shadow-xl flex items-center gap-1 cursor-pointer ${
+            className={`border-2 sm:border-3 border-white font-black text-xs sm:text-xl px-4 sm:px-7 py-1 sm:py-1.5 rounded-xl shadow-xl flex items-center gap-1 cursor-pointer ${
               isLevelComplete
                 ? 'bg-yellow-400 text-red-900 animate-pulse border-white'
                 : 'bg-sky-400 text-yellow-300'

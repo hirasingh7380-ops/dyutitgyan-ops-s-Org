@@ -86,7 +86,7 @@ export const ClickLetterStage: React.FC<ClickLetterStageProps> = ({
   return (
     <div
       id="click-letter-stage"
-      className="relative w-full h-full max-h-full overflow-hidden select-none flex flex-col justify-between"
+      className="relative w-full h-full max-h-[100dvh] overflow-hidden select-none flex flex-col justify-between box-border pb-[max(0.25rem,env(safe-area-inset-bottom,0px))]"
       style={{
         backgroundImage: 'linear-gradient(to bottom, #7cdbf8 0%, #a2ebff 50%, #cbf2fe 70%, #8ac730 70%, #599711 75%, #a66a38 75%, #6a3e15 100%)',
       }}

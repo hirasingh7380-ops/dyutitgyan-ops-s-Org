@@ -53,12 +53,12 @@ export const LandscapeWrapper: React.FC<LandscapeWrapperProps> = ({ children }) 
   return (
     <div
       id="landscape-root-container"
-      className="relative w-screen h-screen overflow-hidden bg-slate-900 select-none touch-none"
+      className="relative w-screen h-screen h-[100dvh] max-h-[100dvh] overflow-hidden bg-slate-900 select-none touch-none"
     >
       {/* Main Game Container - 1:1 Clean Coordinates Without CSS 90deg Coordinate Inversion */}
       <div
         id="landscape-inner-stage"
-        className="relative w-full h-full overflow-hidden flex flex-col justify-between text-slate-900 bg-cover bg-center bg-no-repeat"
+        className="relative w-full h-full max-h-full overflow-hidden flex flex-col justify-between text-slate-900 bg-cover bg-center bg-no-repeat pb-[env(safe-area-inset-bottom,0px)]"
         style={{ backgroundImage: `url(${villageBg})` }}
       >
         {children}
@@ -74,11 +74,11 @@ export const LandscapeWrapper: React.FC<LandscapeWrapperProps> = ({ children }) 
           </div>
         )}
 
-        {/* Fullscreen Floating Toggle Button */}
+        {/* Fullscreen Floating Toggle Button - positioned in top right corner to prevent obscuring bottom controls */}
         <button
           id="btn-fullscreen-toggle"
           onClick={toggleFullscreen}
-          className="fixed bottom-2 right-2 z-50 p-2 rounded-xl bg-black/70 hover:bg-black/90 text-white border border-white/30 shadow-lg text-xs font-bold active:scale-95 cursor-pointer backdrop-blur-xs"
+          className="fixed top-1.5 right-1.5 sm:top-auto sm:bottom-2 sm:right-2 z-40 p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-black/60 hover:bg-black/90 text-white border border-white/30 shadow-lg text-xs font-bold active:scale-95 cursor-pointer backdrop-blur-xs opacity-75 hover:opacity-100 transition-opacity"
           title="Toggle Fullscreen"
         >
           {isFullscreen ? <Minimize2 className="w-3.5 h-3.5 text-yellow-300" /> : <Maximize2 className="w-3.5 h-3.5 text-white" />}
