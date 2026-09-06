@@ -17,13 +17,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 }) => {
   const handleSelectMode = (mode: GameMode) => {
     sounds.playVictory(soundEnabled);
-    if (mode === 'WORD_BUILDER') {
-      sounds.speakHindiWordMeaning('CAT', soundEnabled);
-    } else if (mode === 'FILL_BLANK') {
-      sounds.speakHindiLetterDrop('B', 'A', soundEnabled);
-    } else {
-      sounds.speakHindiTargetLetter('A', soundEnabled);
-    }
     onStartGame(mode);
   };
 
@@ -32,11 +25,18 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       id="home-screen-container"
       className="relative w-full h-full flex flex-col items-center justify-between p-2 sm:p-4 text-white select-none overflow-hidden"
     >
-      {/* Top Bar with Sound Toggle */}
+      {/* Top Bar with Sound Toggle & Voice Badge */}
       <div id="home-top-bar" className="w-full flex items-center justify-between z-20 max-w-5xl px-2">
-        <div className="flex items-center gap-1.5 bg-black/60 px-3 py-1 rounded-full border border-white/20">
-          <Trophy className="w-4 h-4 text-yellow-300" />
-          <span className="text-xs sm:text-sm font-bold text-yellow-300">5 Game Modes</span>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 bg-black/60 px-3 py-1 rounded-full border border-white/20">
+            <Trophy className="w-4 h-4 text-yellow-300" />
+            <span className="text-xs sm:text-sm font-bold text-yellow-300">5 Game Modes</span>
+          </div>
+
+          <div className="hidden sm:flex items-center gap-1.5 bg-emerald-950/70 px-2.5 py-1 rounded-full border border-emerald-400/50 text-emerald-200 text-xs font-medium">
+            <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+            <span>शिक्षिका आवाज Active</span>
+          </div>
         </div>
 
         <button

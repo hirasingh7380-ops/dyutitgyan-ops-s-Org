@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Volume2 } from 'lucide-react';
 
 const HINDI_WORD_MAP: Record<string, string> = {
   CAT: 'बिल्ली',
@@ -58,12 +58,18 @@ export const WordDestroyModal: React.FC<WordDestroyModalProps> = ({
               </div>
             )}
 
-            {/* Fast 2.2s Progress Bar */}
-            <div className="w-full bg-black/40 h-2.5 rounded-full mt-3 overflow-hidden border border-white/40">
+            {/* Young Hindi Teacher Voice Prompt */}
+            <div className="flex items-center gap-1.5 text-yellow-200 text-xs sm:text-sm font-bold bg-black/35 px-3 py-1 rounded-full mt-1 border border-white/20">
+              <Volume2 className="w-3.5 h-3.5 text-yellow-300 animate-pulse" />
+              <span>शिक्षिका आवाज: ध्यान से सुनें</span>
+            </div>
+
+            {/* 3.4s Progress Bar */}
+            <div className="w-full bg-black/40 h-2.5 rounded-full mt-2 overflow-hidden border border-white/40">
               <motion.div
                 initial={{ width: '100%' }}
                 animate={{ width: '0%' }}
-                transition={{ duration: 2.2, ease: 'linear' }}
+                transition={{ duration: 3.4, ease: 'linear' }}
                 className="bg-yellow-300 h-full rounded-full"
               />
             </div>

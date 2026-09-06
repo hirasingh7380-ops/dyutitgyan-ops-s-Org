@@ -1,7 +1,57 @@
-// Web Audio API Synthesizer for rich mobile game sound effects
+// Web Audio API Synthesizer and Android-Optimized Hindi Speech Synthesis for Kids
 
 class SoundManager {
   private ctx: AudioContext | null = null;
+  private voices: SpeechSynthesisVoice[] = [];
+  private activeUtterance: SpeechSynthesisUtterance | null = null;
+  private unlocked = false;
+
+  constructor() {
+    if (typeof window !== 'undefined') {
+      this.setupMobileUnlock();
+      this.refreshVoices();
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = () => {
+          this.refreshVoices();
+        };
+      }
+    }
+  }
+
+  // Mobile and Android Audio / Speech Primer on first user interaction
+  private setupMobileUnlock() {
+    if (typeof window === 'undefined') return;
+
+    const unlock = () => {
+      this.init();
+      if ('speechSynthesis' in window) {
+        try {
+          window.speechSynthesis.resume();
+          this.refreshVoices();
+
+          if (!this.unlocked) {
+            // Prime mobile speech synthesis queue with silent utterance
+            const primer = new SpeechSynthesisUtterance('');
+            primer.volume = 0;
+            primer.rate = 1.0;
+            primer.lang = 'hi-IN';
+            window.speechSynthesis.speak(primer);
+            this.unlocked = true;
+          }
+        } catch {
+          // Ignore
+        }
+      }
+
+      window.removeEventListener('touchstart', unlock);
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('click', unlock);
+    };
+
+    window.addEventListener('touchstart', unlock, { passive: true });
+    window.addEventListener('pointerdown', unlock, { passive: true });
+    window.addEventListener('click', unlock, { passive: true });
+  }
 
   private init() {
     if (!this.ctx && typeof window !== 'undefined') {
@@ -11,63 +61,189 @@ class SoundManager {
       }
     }
     if (this.ctx && this.ctx.state === 'suspended') {
-      this.ctx.resume();
+      this.ctx.resume().catch(() => {});
     }
   }
 
-  // Hindi Voice Speech Synthesis - Word Builder
-  speakHindiWordMeaning(word: string, soundEnabled = true) {
-    if (!soundEnabled || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+  private refreshVoices() {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    try {
+      const available = window.speechSynthesis.getVoices();
+      if (available && available.length > 0) {
+        this.voices = available;
+      }
+    } catch {
+      // Ignore
+    }
+  }
 
-    // Wake up audio context and play fanfare chime
+  // Select the sweetest, clearest young Hindi teacher voice
+  private getBestVoice(): SpeechSynthesisVoice | null {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return null;
+
+    if (this.voices.length === 0) {
+      this.refreshVoices();
+    }
+    const voices = this.voices.length > 0 ? this.voices : window.speechSynthesis.getVoices();
+    if (!voices || voices.length === 0) return null;
+
+    // 1. Google / Android native Hindi female / natural teacher voice
+    // Android Google TTS names: "Google हिन्दी", "hi-in-x-hie-local", "hi-in-x-hie-network", "hi-in-x-hid-local"
+    // Microsoft Swara: "Microsoft Swara Online (Natural) - Hindi (India)"
+    // Apple iOS: "Lekha", "Kavya"
+    const hindiTeacherVoice = voices.find((v) => {
+      const name = v.name.toLowerCase();
+      const lang = (v.lang || '').toLowerCase().replace('_', '-');
+      const isHindi = lang.startsWith('hi') || name.includes('hindi') || name.includes('हिन्दी');
+      const isTeacher =
+        name.includes('female') ||
+        name.includes('swara') ||
+        name.includes('lekha') ||
+        name.includes('kavya') ||
+        name.includes('google') ||
+        name.includes('natural') ||
+        name.includes('hie') ||
+        name.includes('hid');
+      return isHindi && isTeacher;
+    });
+    if (hindiTeacherVoice) return hindiTeacherVoice;
+
+    // 2. Any Hindi voice (hi-IN, hi)
+    const anyHindiVoice = voices.find((v) => {
+      const lang = (v.lang || '').toLowerCase().replace('_', '-');
+      const name = v.name.toLowerCase();
+      return lang.startsWith('hi') || name.includes('hindi') || name.includes('हिन्दी');
+    });
+    if (anyHindiVoice) return anyHindiVoice;
+
+    // 3. Indian English natural female voice (e.g. Google English India, Microsoft Neerja)
+    const indianEnglishVoice = voices.find((v) => {
+      const lang = (v.lang || '').toLowerCase().replace('_', '-');
+      const name = v.name.toLowerCase();
+      return (
+        (lang === 'en-in' || lang.startsWith('en-in')) &&
+        (name.includes('female') || name.includes('google') || name.includes('natural') || name.includes('neerja'))
+      );
+    });
+    if (indianEnglishVoice) return indianEnglishVoice;
+
+    // 4. Any Indian English voice
+    const anyIndianVoice = voices.find((v) => {
+      const lang = (v.lang || '').toLowerCase().replace('_', '-');
+      return lang === 'en-in' || lang.startsWith('en-in');
+    });
+    if (anyIndianVoice) return anyIndianVoice;
+
+    // 5. Any natural female voice
+    const naturalFemale = voices.find((v) => {
+      const name = v.name.toLowerCase();
+      return name.includes('female') || name.includes('natural');
+    });
+    if (naturalFemale) return naturalFemale;
+
+    return voices[0] || null;
+  }
+
+  // Core Speech Method with Android Chromium GC Fix, Pause/Resume Fix & Young Teacher Pacing
+  private speakWithTeacherVoice(text: string, rate = 0.85, pitch = 1.15) {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+
+    try {
+      // 1. Cancel previous utterance
+      window.speechSynthesis.cancel();
+
+      // 2. Resume if suspended on Android
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+
+      // 3. Ensure voices are refreshed
+      if (this.voices.length === 0) {
+        this.refreshVoices();
+      }
+
+      const utterance = new SpeechSynthesisUtterance(text);
+
+      // CRITICAL FOR ANDROID: Set hi-IN so Google TTS activates the Hindi engine
+      utterance.lang = 'hi-IN';
+
+      // Young teacher pacing: slow, calm, distinct syllables for kids
+      utterance.rate = rate; // 0.85 = gently slow & highly clear for children
+      utterance.pitch = pitch; // 1.15 = warm, cheerful young teacher tone
+      utterance.volume = 1.0;
+
+      const bestVoice = this.getBestVoice();
+      if (bestVoice) {
+        utterance.voice = bestVoice;
+      }
+
+      // Root in instance property to fix Android Chrome V8 garbage collection bug
+      this.activeUtterance = utterance;
+
+      utterance.onend = () => {
+        if (this.activeUtterance === utterance) {
+          this.activeUtterance = null;
+        }
+      };
+
+      utterance.onerror = (e) => {
+        console.warn('SpeechSynthesis error:', e);
+        if (this.activeUtterance === utterance) {
+          this.activeUtterance = null;
+        }
+      };
+
+      // Slight timeout to let Android audio hardware thread cycle
+      setTimeout(() => {
+        try {
+          window.speechSynthesis.resume();
+          window.speechSynthesis.speak(utterance);
+        } catch (err) {
+          console.warn('SpeechSynthesis speak failed:', err);
+        }
+      }, 50);
+    } catch (err) {
+      console.warn('Speech error:', err);
+    }
+  }
+
+  // 1. Word Builder: Word completion spoken slowly & clearly by teacher
+  speakHindiWordMeaning(word: string, soundEnabled = true) {
+    if (!soundEnabled) return;
+
     this.playWordDestroy(soundEnabled);
 
-    // Stop any ongoing speech
-    window.speechSynthesis.cancel();
-
     const HINDI_DATA: Record<string, { spell: string; word: string; hindi: string }> = {
-      CAT: { spell: 'सी ए टी', word: 'Cat', hindi: 'बिल्ली' },
-      BAT: { spell: 'बी ए टी', word: 'Bat', hindi: 'बल्ला' },
-      RAT: { spell: 'आर ए टी', word: 'Rat', hindi: 'चूहा' },
-      HAT: { spell: 'एच ए टी', word: 'Hat', hindi: 'टोपी' },
-      FAN: { spell: 'एफ ए एन', word: 'Fan', hindi: 'पंखा' },
-      MAN: { spell: 'एम ए एन', word: 'Man', hindi: 'आदमी' },
-      VAN: { spell: 'वी ए एन', word: 'Van', hindi: 'गाड़ी' },
-      CAN: { spell: 'सी ए एन', word: 'Can', hindi: 'डिब्बा' },
-      MAP: { spell: 'एम ए पी', word: 'Map', hindi: 'नक्शा' },
-      CAP: { spell: 'सी ए पी', word: 'Cap', hindi: 'टोपी' },
-      TAP: { spell: 'टी ए पी', word: 'Tap', hindi: 'नल' },
-      LAP: { spell: 'एल ए पी', word: 'Lap', hindi: 'गोद' },
-      BALL: { spell: 'बी ए एल एल', word: 'Ball', hindi: 'गेंद' },
-      HALL: { spell: 'एच ए एल एल', word: 'Hall', hindi: 'बड़ा कमरा' },
-      WALL: { spell: 'डब्ल्यू ए एल एल', word: 'Wall', hindi: 'दीवार' },
-      TALL: { spell: 'टी ए एल एल', word: 'Tall', hindi: 'लंबा' },
+      CAT: { spell: 'सी... ए... टी...', word: 'कैट', hindi: 'बिल्ली' },
+      BAT: { spell: 'बी... ए... टी...', word: 'बैट', hindi: 'बल्ला' },
+      RAT: { spell: 'आर... ए... टी...', word: 'रैट', hindi: 'चूहा' },
+      HAT: { spell: 'एच... ए... टी...', word: 'हैट', hindi: 'टोपी' },
+      FAN: { spell: 'एफ... ए... एन...', word: 'फैन', hindi: 'पंखा' },
+      MAN: { spell: 'एम... ए... एन...', word: 'मैन', hindi: 'आदमी' },
+      VAN: { spell: 'वी... ए... एन...', word: 'वैन', hindi: 'गाड़ी' },
+      CAN: { spell: 'सी... ए... एन...', word: 'कैन', hindi: 'डिब्बा' },
+      MAP: { spell: 'एम... ए... पी...', word: 'मैप', hindi: 'नक्शा' },
+      CAP: { spell: 'सी... ए... पी...', word: 'कैप', hindi: 'टोपी' },
+      TAP: { spell: 'टी... ए... पी...', word: 'टैप', hindi: 'नल' },
+      LAP: { spell: 'एल... ए... पी...', word: 'लैप', hindi: 'गोद' },
+      BALL: { spell: 'बी... ए... एल... एल...', word: 'बॉल', hindi: 'गेंद' },
+      HALL: { spell: 'एच... ए... एल... एल...', word: 'हॉल', hindi: 'बड़ा कमरा' },
+      WALL: { spell: 'डब्ल्यू... ए... एल... एल...', word: 'वॉल', hindi: 'दीवार' },
+      TALL: { spell: 'टी... ए... एल... एल...', word: 'टॉल', hindi: 'लंबा' },
     };
 
     const item = HINDI_DATA[word.toUpperCase()] || { spell: word, word: word, hindi: word };
-    // Cheerful, fast & clear Hindi kid phrase matching same voice
-    const speechText = `${item.spell}, ${item.word}! ${item.word} मतलब ${item.hindi}! शाबाश!`;
+    // Gentle teacher speech: spelling with pauses, clear word pronunciation, Hindi meaning, warm praise
+    const speechText = `${item.spell}! ... ${item.word}! ... ${item.word} मतलब ... ${item.hindi}! ... बहुत अच्छे बच्चों, शाबाश!`;
 
-    const utterance = new SpeechSynthesisUtterance(speechText);
-    utterance.rate = 1.15; // Snappy, clear speech rate
-    utterance.pitch = 1.35; // Cheerful voice pitch
-    utterance.volume = 1.0;
-
-    const voice = this.getBestVoice();
-    if (voice) {
-      utterance.voice = voice;
-    }
-
-    // Speak utterance
-    window.speechSynthesis.speak(utterance);
+    this.speakWithTeacherVoice(speechText, 0.85, 1.15);
   }
 
-  // Speak when letter is dropped in Fill in the Blank mode
+  // 2. Fill in the Blank: Letter dropped correctly
   speakHindiLetterDrop(letter: string, prevLetter?: string, soundEnabled = true) {
-    if (!soundEnabled || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    if (!soundEnabled) return;
 
     this.playWordDestroy(soundEnabled);
-    window.speechSynthesis.cancel();
 
     const HINDI_LETTERS: Record<string, string> = {
       A: 'ए', B: 'बी', C: 'सी', D: 'डी', E: 'ई', F: 'एफ', G: 'जी', H: 'एच',
@@ -79,62 +255,39 @@ class SoundManager {
     const lName = HINDI_LETTERS[letter.toUpperCase()] || letter;
     const pName = prevLetter ? (HINDI_LETTERS[prevLetter.toUpperCase()] || prevLetter) : null;
 
-    let speechText = `बिल्कुल सही! ${lName}! शाबाश!`;
+    let speechText = `बिल्कुल सही! ... अक्षर ... ${lName}! ... शाबाश बच्चों!`;
     if (pName) {
-      speechText = `बिल्कुल सही! ${pName} के बाद ${lName}! बहुत बढ़िया!`;
+      speechText = `बिल्कुल सही! ... ${pName} के बाद आता है ... ${lName}! ... बहुत बढ़िया!`;
     }
 
-    const utterance = new SpeechSynthesisUtterance(speechText);
-    utterance.rate = 1.15;
-    utterance.pitch = 1.35;
-    utterance.volume = 1.0;
-
-    const voice = this.getBestVoice();
-    if (voice) {
-      utterance.voice = voice;
-    }
-
-    window.speechSynthesis.speak(utterance);
+    this.speakWithTeacherVoice(speechText, 0.85, 1.15);
   }
 
-  // Speak wrong answer response
+  // 3. Fill in the Blank: Wrong letter selected
   speakHindiWrongAnswer(soundEnabled = true) {
-    if (!soundEnabled || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    if (!soundEnabled) return;
 
     this.playError(soundEnabled);
-    window.speechSynthesis.cancel();
 
     const wrongPhrases = [
-      'ओहो! गलत है! दूसरा अक्षर चुनो!',
-      'फिर से कोशिश करो!',
-      'अरे नहीं! सही अक्षर चुनो!',
+      'ओहो! ... यह गलत है, फिर से कोशिश करो बच्चों!',
+      'अरे नहीं! ... ध्यान से देखो और सही अक्षर चुनो!',
+      'कोई बात नहीं! ... एक बार फिर सोचो और सही अक्षर लगाओ!',
     ];
     const phrase = wrongPhrases[Math.floor(Math.random() * wrongPhrases.length)];
 
-    const utterance = new SpeechSynthesisUtterance(phrase);
-    utterance.rate = 1.15;
-    utterance.pitch = 1.35;
-    utterance.volume = 1.0;
-
-    const voice = this.getBestVoice();
-    if (voice) {
-      utterance.voice = voice;
-    }
-
-    window.speechSynthesis.speak(utterance);
+    this.speakWithTeacherVoice(phrase, 0.88, 1.12);
   }
 
-  // Speak response when popping a balloon
+  // 4. Balloon Pop: Popped balloon response
   speakHindiBalloonPop(letter: string, isCorrect: boolean, targetLetter: string, soundEnabled = true) {
-    if (!soundEnabled || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    if (!soundEnabled) return;
 
     if (isCorrect) {
       this.playWordDestroy(soundEnabled);
     } else {
       this.playError(soundEnabled);
     }
-
-    window.speechSynthesis.cancel();
 
     const HINDI_LETTERS: Record<string, string> = {
       A: 'ए', B: 'बी', C: 'सी', D: 'डी', E: 'ई', F: 'एफ', G: 'जी', H: 'एच',
@@ -148,30 +301,19 @@ class SoundManager {
 
     let speechText = '';
     if (isCorrect) {
-      speechText = `अरे वाह! ${lName} फोड़ दिया! बिल्कुल सही! शाबाश!`;
+      speechText = `अरे वाह! ... ${lName} वाला गुब्बारा फूट गया! ... बिल्कुल सही! शाबाश!`;
     } else {
-      speechText = `ओहो! यह ${lName} है! हमें ${targetName} फोड़ना था! फिर से कोशिश करो!`;
+      speechText = `ओहो! ... यह तो ${lName} है! ... हमें ${targetName} वाला गुब्बारा फोड़ना था! ... फिर से ढूंढो बच्चों!`;
     }
 
-    const utterance = new SpeechSynthesisUtterance(speechText);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.35;
-    utterance.volume = 1.0;
-
-    const voice = this.getBestVoice();
-    if (voice) {
-      utterance.voice = voice;
-    }
-
-    window.speechSynthesis.speak(utterance);
+    this.speakWithTeacherVoice(speechText, 0.88, 1.15);
   }
 
-  // Speak announcement when balloon pop target letter changes
+  // 5. Balloon Pop: Target letter announcement
   speakHindiTargetLetter(targetLetter: string, soundEnabled = true) {
-    if (!soundEnabled || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    if (!soundEnabled) return;
 
     this.playSnap(soundEnabled);
-    window.speechSynthesis.cancel();
 
     const HINDI_LETTERS: Record<string, string> = {
       A: 'ए', B: 'बी', C: 'सी', D: 'डी', E: 'ई', F: 'एफ', G: 'जी', H: 'एच',
@@ -181,73 +323,34 @@ class SoundManager {
     };
 
     const targetName = HINDI_LETTERS[targetLetter.toUpperCase()] || targetLetter;
-    const speechText = `अब ${targetName} वाले गुब्बारे फोड़ो! ${targetName}!`;
+    const speechText = `बच्चों ... अब ${targetName} वाले गुब्बारे ढूंढो और फोड़ो! ... ${targetName}!`;
 
-    const utterance = new SpeechSynthesisUtterance(speechText);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.35;
-    utterance.volume = 1.0;
-
-    const voice = this.getBestVoice();
-    if (voice) {
-      utterance.voice = voice;
-    }
-
-    window.speechSynthesis.speak(utterance);
+    this.speakWithTeacherVoice(speechText, 0.85, 1.15);
   }
 
-  // Speak letter name when clicked in Click Letter game mode
+  // 6. Click Letter: Spoken tile letter
   speakHindiLetterClick(letter: string, soundEnabled = true) {
     if (!soundEnabled) return;
     this.playVictory(soundEnabled);
 
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-
     const HINDI_LETTERS: Record<string, string> = {
       A: 'ए', B: 'बी', C: 'सी', D: 'डी', E: 'ई', F: 'एफ', G: 'जी', H: 'एच',
       I: 'आई', J: 'जे', K: 'के', L: 'एल', M: 'एम', N: 'एन', O: 'ओ', P: 'पी',
       Q: 'क्यू', R: 'आर', S: 'एस', T: 'टी', U: 'यू', V: 'वी', W: 'डब्ल्यू',
       X: 'एक्स', Y: 'वाई', Z: 'जेड',
     };
+
     const letterName = HINDI_LETTERS[letter.toUpperCase()] || letter;
+    const speechText = `${letterName}! ... बहुत अच्छे!`;
 
-    const utterance = new SpeechSynthesisUtterance(letterName);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.35;
-    utterance.volume = 1.0;
-
-    const voice = this.getBestVoice();
-    if (voice) {
-      utterance.voice = voice;
-    }
-
-    window.speechSynthesis.speak(utterance);
+    this.speakWithTeacherVoice(speechText, 0.82, 1.15);
   }
 
-  private getBestVoice(): SpeechSynthesisVoice | null {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return null;
-    const voices = window.speechSynthesis.getVoices();
-    if (!voices || voices.length === 0) return null;
-
-    // Prioritize Hindi / Indian English / Natural Female voices for natural energetic audio
-    return (
-      voices.find((v) => v.lang.toLowerCase().includes('hi') || v.name.toLowerCase().includes('hindi')) ||
-      voices.find((v) => v.lang.toLowerCase().includes('en-in') || v.lang.toLowerCase().includes('hi_in')) ||
-      voices.find((v) => v.name.toLowerCase().includes('google') && v.lang.toLowerCase().includes('en')) ||
-      voices.find((v) => v.name.toLowerCase().includes('natural') || v.name.toLowerCase().includes('female')) ||
-      voices[0]
-    );
-  }
-
-  // Speak e.g. "A for Apple" when correctly matched in Match The Word
+  // 7. Match The Word: Matching pair spoken
   speakMatchWord(letter: string, wordName: string, soundEnabled = true) {
     if (!soundEnabled) return;
     this.playVictory(soundEnabled);
 
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-
     const HINDI_LETTERS: Record<string, string> = {
       A: 'ए', B: 'बी', C: 'सी', D: 'डी', E: 'ई', F: 'एफ', G: 'जी', H: 'एच',
       I: 'आई', J: 'जे', K: 'के', L: 'एल', M: 'एम', N: 'एन', O: 'ओ', P: 'पी',
@@ -256,49 +359,27 @@ class SoundManager {
     };
 
     const letterName = HINDI_LETTERS[letter.toUpperCase()] || letter;
-    const textToSpeak = `${letterName} फॉर ${wordName}! शाबाश!`;
+    const textToSpeak = `${letterName} ... फॉर ... ${wordName}! ... बिल्कुल सही जोड़ी! बहुत बढ़िया!`;
 
-    const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    utterance.rate = 1.15; // Natural snappy speech rate
-    utterance.pitch = 1.35; // Cheerful enthusiastic tone
-    utterance.volume = 1.0;
-
-    const voice = this.getBestVoice();
-    if (voice) {
-      utterance.voice = voice;
-    }
-
-    window.speechSynthesis.speak(utterance);
+    this.speakWithTeacherVoice(textToSpeak, 0.85, 1.15);
   }
 
-  // Speak wrong match phrase in Match The Word
+  // 8. Match The Word: Wrong match pair
   speakMatchWrong(soundEnabled = true) {
     if (!soundEnabled) return;
     this.playError(soundEnabled);
 
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-
     const wrongPhrases = [
-      'ओहो! गलत जोड़ी है! सही चित्र से मिलाओ!',
-      'फिर से कोशिश करो!',
-      'अरे नहीं! सही अक्षर से मिलाओ!',
+      'ओहो! ... यह गलत जोड़ी है बच्चों! ... सही चित्र से मिलाओ!',
+      'फिर से कोशिश करो बच्चों! ... सही अक्षर ढूंढो!',
+      'अरे नहीं! ... ध्यान से देखो और सही तस्वीर मिलाओ!',
     ];
     const phrase = wrongPhrases[Math.floor(Math.random() * wrongPhrases.length)];
 
-    const utterance = new SpeechSynthesisUtterance(phrase);
-    utterance.rate = 1.15;
-    utterance.pitch = 1.35;
-    utterance.volume = 1.0;
-
-    const voice = this.getBestVoice();
-    if (voice) {
-      utterance.voice = voice;
-    }
-
-    window.speechSynthesis.speak(utterance);
+    this.speakWithTeacherVoice(phrase, 0.88, 1.12);
   }
 
+  // Web Audio Synthesizer Sounds
   playPop(soundEnabled = true) {
     if (!soundEnabled) return;
     this.init();
@@ -368,7 +449,6 @@ class SoundManager {
   playError(soundEnabled = true) {
     this.playFreezeError(soundEnabled);
   }
-
 
   playWordDestroy(soundEnabled = true) {
     if (!soundEnabled) return;
