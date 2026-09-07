@@ -60,7 +60,7 @@ export default function App() {
         setCurrentPrefix(null);
         setIsDestroying(false);
         setDestroyingWord(null);
-      }, 3400);
+      }, 2700);
     }
   }, [currentPrefix, activeSuffix, isDestroying, soundEnabled, gameMode]);
 
@@ -190,6 +190,7 @@ export default function App() {
           <WordDestroyModal
             isDestroying={isDestroying}
             destroyingWord={destroyingWord}
+            soundEnabled={soundEnabled}
           />
 
           {/* Victory Celebration Modal when all 16 words are destroyed */}

@@ -181,11 +181,15 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           </motion.button>
         </div>
 
-        {/* Hindi voice indicator */}
-        <div className="mt-3 flex items-center gap-1.5 text-yellow-300 font-medium text-[11px] sm:text-xs bg-black/60 px-3 py-1 rounded-full border border-white/20">
-          <Mic className="w-3.5 h-3.5 text-yellow-300" />
-          <span>Hindi Audio Voice Included</span>
-        </div>
+        {/* Interactive Teacher Voice Test & Primer Button */}
+        <button
+          onClick={() => sounds.speakTestGreeting(soundEnabled)}
+          className="mt-2.5 sm:mt-3 flex items-center gap-2 text-yellow-300 font-bold text-xs sm:text-sm bg-emerald-800 hover:bg-emerald-700 active:scale-95 px-4 py-1.5 rounded-full border-2 border-yellow-300 shadow-lg transition-transform cursor-pointer"
+          title="Click to test young teacher voice"
+        >
+          <Volume2 className="w-4 h-4 text-yellow-300 animate-pulse" />
+          <span>🔊 शिक्षिका आवाज (सुनें / Tap to Test Voice)</span>
+        </button>
       </div>
 
       {/* Footer info */}
