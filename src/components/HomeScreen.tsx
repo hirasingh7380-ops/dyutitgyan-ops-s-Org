@@ -15,9 +15,22 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   soundEnabled,
   onToggleSound,
 }) => {
+  const [isPlayingTest, setIsPlayingTest] = React.useState(false);
+
   const handleSelectMode = (mode: GameMode) => {
     sounds.playVictory(soundEnabled);
     onStartGame(mode);
+  };
+
+  const handleTestVoice = () => {
+    if (!soundEnabled) {
+      onToggleSound();
+    }
+    setIsPlayingTest(true);
+    sounds.speakTestGreeting(true);
+    setTimeout(() => {
+      setIsPlayingTest(false);
+    }, 3000);
   };
 
   return (
@@ -183,12 +196,20 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
         {/* Interactive Teacher Voice Test & Primer Button */}
         <button
-          onClick={() => sounds.speakTestGreeting(soundEnabled)}
-          className="mt-2.5 sm:mt-3 flex items-center gap-2 text-yellow-300 font-bold text-xs sm:text-sm bg-emerald-800 hover:bg-emerald-700 active:scale-95 px-4 py-1.5 rounded-full border-2 border-yellow-300 shadow-lg transition-transform cursor-pointer"
+          onClick={handleTestVoice}
+          className={`mt-2.5 sm:mt-3 flex items-center gap-2 text-xs sm:text-sm px-4 py-1.5 rounded-full border-2 shadow-lg transition-all cursor-pointer ${
+            isPlayingTest
+              ? 'bg-yellow-400 text-purple-950 border-white scale-105 font-black ring-4 ring-yellow-300/50'
+              : 'bg-emerald-800 hover:bg-emerald-700 text-yellow-300 font-bold border-yellow-300 active:scale-95'
+          }`}
           title="Click to test young teacher voice"
         >
-          <Volume2 className="w-4 h-4 text-yellow-300 animate-pulse" />
-          <span>🔊 शिक्षिका आवाज (सुनें / Tap to Test Voice)</span>
+          <Volume2 className={`w-4 h-4 ${isPlayingTest ? 'text-purple-950 animate-bounce' : 'text-yellow-300 animate-pulse'}`} />
+          <span>
+            {isPlayingTest
+              ? '🔊 बोल रही हैं: "नमस्ते बच्चों!"'
+              : '🔊 शिक्षिका आवाज (सुनें / Tap to Test Voice)'}
+          </span>
         </button>
       </div>
 
