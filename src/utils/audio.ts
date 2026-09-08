@@ -237,11 +237,36 @@ class SoundManager {
     this.playAudio(key, text);
   }
 
-  // 2. Fill in the Blank: Letter Dropped Correctly
-  speakLetterDrop(letter: string, _prevLetter?: string, soundEnabled = true) {
+  // 2. Fill in the Blank: Letter Dropped Correctly ("A ke baad B, bilkul sahi!")
+  speakLetterDrop(letter: string, prevLetter?: string, soundEnabled = true) {
     if (!soundEnabled) return;
     this.playSnap(soundEnabled);
-    this.playAudio(`letter_${letter.toLowerCase()}`, `${letter}! बहुत अच्छे!`);
+
+    const letterUpper = letter.toUpperCase();
+    const HINDI_LETTERS: Record<string, string> = {
+      A: 'ए', B: 'बी', C: 'सी', D: 'डी', E: 'ई', F: 'एफ़', G: 'जी', H: 'एच',
+      I: 'आई', J: 'जे', K: 'के', L: 'एल', M: 'एम', N: 'एन', O: 'ओ', P: 'पी',
+      Q: 'क्यू', R: 'आर', S: 'एस', T: 'टी', U: 'यू', V: 'वी', W: 'डब्ल्यू',
+      X: 'एक्स', Y: 'वाई', Z: 'ज़ेड',
+    };
+
+    let prev = prevLetter?.toUpperCase();
+    if (!prev && letterUpper > 'A' && letterUpper <= 'Z') {
+      prev = String.fromCharCode(letterUpper.charCodeAt(0) - 1);
+    }
+
+    if (prev && prev !== letterUpper) {
+      const key = `after_${prev.toLowerCase()}_${letterUpper.toLowerCase()}`;
+      const prevHi = HINDI_LETTERS[prev] || prev;
+      const currHi = HINDI_LETTERS[letterUpper] || letterUpper;
+      const phrase = `${prevHi} के बाद ${currHi}, बिल्कुल सही!`;
+      this.playAudio(key, phrase);
+    } else {
+      const key = `first_${letterUpper.toLowerCase()}`;
+      const currHi = HINDI_LETTERS[letterUpper] || letterUpper;
+      const phrase = `${currHi}! बिल्कुल सही!`;
+      this.playAudio(key, phrase);
+    }
   }
 
   speakHindiLetterDrop(letter: string, prevLetter?: string, soundEnabled = true) {
@@ -297,11 +322,44 @@ class SoundManager {
     this.speakClickLetter(letter, soundEnabled);
   }
 
-  // 7. Match The Word: Correct Pair Matched
+  // 7. Match The Word: Correct Pair Matched (e.g. "A for Apple", "B for Ball")
   speakMatchPair(letter: string, word: string, soundEnabled = true) {
     if (!soundEnabled) return;
     this.playVictory(soundEnabled);
-    this.playAudio('match_pair', 'बिल्कुल सही जोड़ी! बहुत बढ़िया!');
+
+    const letterUpper = letter.toUpperCase();
+    const MATCH_PHRASES: Record<string, string> = {
+      A: 'ए फॉर एप्पल! बहुत बढ़िया!',
+      B: 'बी फॉर बॉल! बहुत बढ़िया!',
+      C: 'सी फॉर कैट! बहुत बढ़िया!',
+      D: 'डी फॉर डॉग! बहुत बढ़िया!',
+      E: 'ई फॉर एलिफेंट! बहुत बढ़िया!',
+      F: 'एफ़ फॉर फिश! बहुत बढ़िया!',
+      G: 'जी फॉर ग्रेप्स! बहुत बढ़िया!',
+      H: 'एच फॉर हैट! बहुत बढ़िया!',
+      I: 'आई फॉर आइसक्रीम! बहुत बढ़िया!',
+      J: 'जे फॉर जग! बहुत बढ़िया!',
+      K: 'के फॉर काइट! बहुत बढ़िया!',
+      L: 'एल फॉर लायन! बहुत बढ़िया!',
+      M: 'एम फॉर मैंगो! बहुत बढ़िया!',
+      N: 'एन फॉर नेस्ट! बहुत बढ़िया!',
+      O: 'ओ फॉर ऑरेंज! बहुत बढ़िया!',
+      P: 'पी फॉर पैरट! बहुत बढ़िया!',
+      Q: 'क्यू फॉर क्वीन! बहुत बढ़िया!',
+      R: 'आर फॉर रोज़! बहुत बढ़िया!',
+      S: 'एस फॉर सन! बहुत बढ़िया!',
+      T: 'टी फॉर टाइगर! बहुत बढ़िया!',
+      U: 'यू फॉर अम्ब्रेला! बहुत बढ़िया!',
+      V: 'वी फॉर वैन! बहुत बढ़िया!',
+      W: 'डब्ल्यू फॉर वॉच! बहुत बढ़िया!',
+      X: 'एक्स फॉर ज़ायलोफ़ोन! बहुत बढ़िया!',
+      Y: 'वाई फॉर याक! बहुत बढ़िया!',
+      Z: 'ज़ेड फॉर ज़ेबरा! बहुत बढ़िया!',
+    };
+
+    const key = `match_for_${letterUpper.toLowerCase()}`;
+    const fallbackText = MATCH_PHRASES[letterUpper] || `${letter} for ${word}! बहुत बढ़िया!`;
+    this.playAudio(key, fallbackText);
   }
 
   speakMatchWord(letter: string, word: string, soundEnabled = true) {

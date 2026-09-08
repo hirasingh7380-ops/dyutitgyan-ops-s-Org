@@ -29,15 +29,60 @@ const AUDIO_MAP: Record<string, string> = {
 
 // Add individual letters A-Z
 const LETTERS: Record<string, string> = {
-  A: 'ए', B: 'बी', C: 'सी', D: 'डी', E: 'ई', F: 'एफ', G: 'जी', H: 'एच',
+  A: 'ए', B: 'बी', C: 'सी', D: 'डी', E: 'ई', F: 'एफ़', G: 'जी', H: 'एच',
   I: 'आई', J: 'जे', K: 'के', L: 'एल', M: 'एम', N: 'एन', O: 'ओ', P: 'पी',
   Q: 'क्यू', R: 'आर', S: 'एस', T: 'टी', U: 'यू', V: 'वी', W: 'डब्ल्यू',
-  X: 'एक्स', Y: 'वाई', Z: 'जेड'
+  X: 'एक्स', Y: 'वाई', Z: 'ज़ेड'
 };
 
 for (const [eng, hi] of Object.entries(LETTERS)) {
   AUDIO_MAP[`letter_${eng.toLowerCase()}`] = `${hi}! बहुत अच्छे!`;
   AUDIO_MAP[`find_${eng.toLowerCase()}`] = `बच्चों, अब ${hi} वाले गुब्बारे फोड़ो!`;
+  AUDIO_MAP[`first_${eng.toLowerCase()}`] = `${hi}! बिल्कुल सही!`;
+}
+
+// Fill in the Blank: "<prev> ke baad <curr>, bilkul sahi!"
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+for (let i = 1; i < ALPHABET.length; i++) {
+  const prev = ALPHABET[i - 1];
+  const curr = ALPHABET[i];
+  const prevHi = LETTERS[prev];
+  const currHi = LETTERS[curr];
+  AUDIO_MAP[`after_${prev.toLowerCase()}_${curr.toLowerCase()}`] = `${prevHi} के बाद ${currHi}, बिल्कुल सही!`;
+}
+
+// Match the Word category: "A for Apple", "B for Ball", etc.
+const MATCH_WORDS: Record<string, { word: string; hi: string }> = {
+  A: { word: 'Apple', hi: 'ए फॉर एप्पल! बहुत बढ़िया!' },
+  B: { word: 'Ball', hi: 'बी फॉर बॉल! बहुत बढ़िया!' },
+  C: { word: 'Cat', hi: 'सी फॉर कैट! बहुत बढ़िया!' },
+  D: { word: 'Dog', hi: 'डी फॉर डॉग! बहुत बढ़िया!' },
+  E: { word: 'Elephant', hi: 'ई फॉर एलिफेंट! बहुत बढ़िया!' },
+  F: { word: 'Fish', hi: 'एफ़ फॉर फिश! बहुत बढ़िया!' },
+  G: { word: 'Grapes', hi: 'जी फॉर ग्रेप्स! बहुत बढ़िया!' },
+  H: { word: 'Hat', hi: 'एच फॉर हैट! बहुत बढ़िया!' },
+  I: { word: 'Ice cream', hi: 'आई फॉर आइसक्रीम! बहुत बढ़िया!' },
+  J: { word: 'Jug', hi: 'जे फॉर जग! बहुत बढ़िया!' },
+  K: { word: 'Kite', hi: 'के फॉर काइट! बहुत बढ़िया!' },
+  L: { word: 'Lion', hi: 'एल फॉर लायन! बहुत बढ़िया!' },
+  M: { word: 'Mango', hi: 'एम फॉर मैंगो! बहुत बढ़िया!' },
+  N: { word: 'Nest', hi: 'एन फॉर नेस्ट! बहुत बढ़िया!' },
+  O: { word: 'Orange', hi: 'ओ फॉर ऑरेंज! बहुत बढ़िया!' },
+  P: { word: 'Parrot', hi: 'पी फॉर पैरट! बहुत बढ़िया!' },
+  Q: { word: 'Queen', hi: 'क्यू फॉर क्वीन! बहुत बढ़िया!' },
+  R: { word: 'Rose', hi: 'आर फॉर रोज़! बहुत बढ़िया!' },
+  S: { word: 'Sun', hi: 'एस फॉर सन! बहुत बढ़िया!' },
+  T: { word: 'Tiger', hi: 'टी फॉर टाइगर! बहुत बढ़िया!' },
+  U: { word: 'Umbrella', hi: 'यू फॉर अम्ब्रेला! बहुत बढ़िया!' },
+  V: { word: 'Van', hi: 'वी फॉर वैन! बहुत बढ़िया!' },
+  W: { word: 'Watch', hi: 'डब्ल्यू फॉर वॉच! बहुत बढ़िया!' },
+  X: { word: 'Xylophone', hi: 'एक्स फॉर ज़ायलोफ़ोन! बहुत बढ़िया!' },
+  Y: { word: 'Yak', hi: 'वाई फॉर याक! बहुत बढ़िया!' },
+  Z: { word: 'Zebra', hi: 'ज़ेड फॉर ज़ेबरा! बहुत बढ़िया!' },
+};
+
+for (const [letter, item] of Object.entries(MATCH_WORDS)) {
+  AUDIO_MAP[`match_for_${letter.toLowerCase()}`] = item.hi;
 }
 
 async function fetchTTS(text: string): Promise<Buffer> {
