@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LetterTile, GameMode } from './types';
+import { LetterTile, GameMode, AppScreen } from './types';
 import { SUFFIX_GROUPS } from './data/wordData';
 import { HeaderBar } from './components/HeaderBar';
 import { LeftPrefixRows } from './components/LeftPrefixRows';
@@ -7,6 +7,8 @@ import { DropBox } from './components/DropBox';
 import { RightSuffixColumn } from './components/RightSuffixColumn';
 import { VictoryModal } from './components/VictoryModal';
 import { WordDestroyModal } from './components/WordDestroyModal';
+import { StartScreen } from './components/StartScreen';
+import { SubjectSelectScreen } from './components/SubjectSelectScreen';
 import { HomeScreen } from './components/HomeScreen';
 import { FillInTheBlankStage } from './components/FillInTheBlankStage';
 import { BalloonPopStage } from './components/BalloonPopStage';
@@ -16,7 +18,7 @@ import { LandscapeWrapper } from './components/LandscapeWrapper';
 import { sounds } from './utils/audio';
 
 export default function App() {
-  const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [currentScreen, setCurrentScreen] = useState<AppScreen>('START');
   const [gameMode, setGameMode] = useState<GameMode>('WORD_BUILDER');
   const [activeSuffix, setActiveSuffix] = useState<string | null>(null);
   const [currentPrefix, setCurrentPrefix] = useState<LetterTile | null>(null);
@@ -31,7 +33,7 @@ export default function App() {
 
   const handleStartGame = (mode: GameMode) => {
     setGameMode(mode);
-    setGameStarted(true);
+    setCurrentScreen('GAME_PLAY');
   };
 
   // Evaluate word when prefix is placed or changed
@@ -110,34 +112,52 @@ export default function App() {
 
   return (
     <LandscapeWrapper>
-      {!gameStarted ? (
+      {currentScreen === 'START' ? (
+        <StartScreen
+          onOptionClick={() => setCurrentScreen('SUBJECT_SELECT')}
+          soundEnabled={soundEnabled}
+          onToggleSound={() => setSoundEnabled((prev) => !prev)}
+        />
+      ) : currentScreen === 'SUBJECT_SELECT' ? (
+        <SubjectSelectScreen
+          onSelectSubject={(subject) => {
+            if (subject === 'ENGLISH') {
+              setCurrentScreen('ENGLISH_MENU');
+            }
+          }}
+          onBack={() => setCurrentScreen('START')}
+          soundEnabled={soundEnabled}
+          onToggleSound={() => setSoundEnabled((prev) => !prev)}
+        />
+      ) : currentScreen === 'ENGLISH_MENU' ? (
         <HomeScreen
           onStartGame={handleStartGame}
+          onBack={() => setCurrentScreen('SUBJECT_SELECT')}
           soundEnabled={soundEnabled}
           onToggleSound={() => setSoundEnabled((prev) => !prev)}
         />
       ) : gameMode === 'FILL_BLANK' ? (
         <FillInTheBlankStage
           soundEnabled={soundEnabled}
-          onHome={() => setGameStarted(false)}
+          onHome={() => setCurrentScreen('ENGLISH_MENU')}
           onToggleSound={() => setSoundEnabled((prev) => !prev)}
         />
       ) : gameMode === 'BALLOON_POP' ? (
         <BalloonPopStage
           soundEnabled={soundEnabled}
-          onHome={() => setGameStarted(false)}
+          onHome={() => setCurrentScreen('ENGLISH_MENU')}
           onToggleSound={() => setSoundEnabled((prev) => !prev)}
         />
       ) : gameMode === 'CLICK_LETTER' ? (
         <ClickLetterStage
           soundEnabled={soundEnabled}
-          onHome={() => setGameStarted(false)}
+          onHome={() => setCurrentScreen('ENGLISH_MENU')}
           onToggleSound={() => setSoundEnabled((prev) => !prev)}
         />
       ) : gameMode === 'MATCH_WORD' ? (
         <MatchWordStage
           soundEnabled={soundEnabled}
-          onHome={() => setGameStarted(false)}
+          onHome={() => setCurrentScreen('ENGLISH_MENU')}
           onToggleSound={() => setSoundEnabled((prev) => !prev)}
         />
       ) : (
@@ -151,7 +171,7 @@ export default function App() {
             activeSuffix={activeSuffix}
             onToggleSound={() => setSoundEnabled((prev) => !prev)}
             onReset={handleReset}
-            onHome={() => setGameStarted(false)}
+            onHome={() => setCurrentScreen('ENGLISH_MENU')}
           />
 
           {/* Main Game Stage - Landscape Layout */}

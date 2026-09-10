@@ -1,4 +1,6 @@
 export type GameMode = 'WORD_BUILDER' | 'FILL_BLANK' | 'BALLOON_POP' | 'CLICK_LETTER' | 'MATCH_WORD';
+export type AppScreen = 'START' | 'SUBJECT_SELECT' | 'ENGLISH_MENU' | 'GAME_PLAY';
+export type SubjectId = 'HINDI' | 'ENGLISH' | 'MATH' | 'ARTS';
 
 export interface SuffixGroup {
   id: string; // 'AT' | 'AN' | 'AP' | 'ALL'

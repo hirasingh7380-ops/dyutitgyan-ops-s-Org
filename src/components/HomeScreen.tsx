@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Volume2, VolumeX, BookOpen, Mic, Trophy, Edit3, Sparkles } from 'lucide-react';
+import { Play, Volume2, VolumeX, BookOpen, Mic, Trophy, Edit3, Sparkles, ArrowLeft } from 'lucide-react';
 import { motion } from 'motion/react';
 import { sounds } from '../utils/audio';
 import { GameMode } from '../types';
@@ -8,12 +8,14 @@ interface HomeScreenProps {
   onStartGame: (mode: GameMode) => void;
   soundEnabled: boolean;
   onToggleSound: () => void;
+  onBack?: () => void;
 }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({
   onStartGame,
   soundEnabled,
   onToggleSound,
+  onBack,
 }) => {
   const [isPlayingTest, setIsPlayingTest] = React.useState(false);
 
@@ -41,9 +43,23 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       {/* Top Bar with Sound Toggle & Voice Badge */}
       <div id="home-top-bar" className="w-full flex items-center justify-between z-20 max-w-5xl px-2">
         <div className="flex items-center gap-2">
+          {onBack && (
+            <button
+              onClick={() => {
+                sounds.playPop(soundEnabled);
+                onBack();
+              }}
+              className="px-3 py-1 rounded-full bg-black/60 hover:bg-black/80 border border-white/30 text-yellow-300 flex items-center gap-1.5 text-xs sm:text-sm font-black active:scale-95 transition-all shadow-md cursor-pointer"
+              title="Back to Subjects"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>विषय (Subjects)</span>
+            </button>
+          )}
+
           <div className="flex items-center gap-1.5 bg-black/60 px-3 py-1 rounded-full border border-white/20">
             <Trophy className="w-4 h-4 text-yellow-300" />
-            <span className="text-xs sm:text-sm font-bold text-yellow-300">5 Game Modes</span>
+            <span className="text-xs sm:text-sm font-bold text-yellow-300">English: 5 Games</span>
           </div>
 
           <div className="hidden sm:flex items-center gap-1.5 bg-emerald-950/70 px-2.5 py-1 rounded-full border border-emerald-400/50 text-emerald-200 text-xs font-medium">
