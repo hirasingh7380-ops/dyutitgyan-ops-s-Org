@@ -57,6 +57,7 @@ const CircularScoreSlider: React.FC<{ score: number; targetLetter: string }> = (
           stroke="#ef4444"
           strokeWidth="7"
           strokeDasharray={circumference}
+          initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
           strokeLinecap="round"
