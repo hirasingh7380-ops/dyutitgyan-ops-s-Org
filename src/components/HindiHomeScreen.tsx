@@ -54,7 +54,7 @@ export const HindiHomeScreen: React.FC<HindiHomeScreenProps> = ({
 
           <div className="flex items-center gap-1.5 bg-black/60 px-3 py-1 rounded-full border border-white/20">
             <Trophy className="w-4 h-4 text-yellow-300" />
-            <span className="text-xs sm:text-sm font-bold text-yellow-300">हिंदी: 3 खेल (अ से ज्ञ)</span>
+            <span className="text-xs sm:text-sm font-bold text-yellow-300">हिंदी: 4 खेल (अ से ज्ञ)</span>
           </div>
 
           <div className="hidden sm:flex items-center gap-1.5 bg-emerald-950/70 px-2.5 py-1 rounded-full border border-emerald-400/50 text-emerald-200 text-xs font-medium">
@@ -107,73 +107,101 @@ export const HindiHomeScreen: React.FC<HindiHomeScreenProps> = ({
           स्वर व व्यंजन सीखें - शुद्ध हिंदी आवाज़ के साथ!
         </p>
 
-        {/* 3 Hindi Game Cards: Clickable, Balloon Pop, Match Word */}
-        <div className="grid grid-cols-3 gap-2.5 sm:gap-4 w-full max-w-2xl mt-3 sm:mt-5">
+        {/* 4 Hindi Game Cards: Clickable, Fill in Blank, Balloon Pop, Match Word */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3.5 w-full max-w-4xl mt-2 sm:mt-4">
           {/* 1. Click The Letter (अक्षर पहचान) */}
           <motion.button
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleSelectMode('HINDI_CLICK_LETTER')}
-            className="bg-gradient-to-b from-purple-600 to-indigo-700 active:from-purple-700 active:to-indigo-800 border-3 border-white rounded-2xl p-2.5 sm:p-3 text-center flex flex-col items-center justify-between gap-1.5 shadow-xl cursor-pointer h-32 sm:h-40 group"
+            className="bg-gradient-to-b from-purple-600 to-indigo-700 active:from-purple-700 active:to-indigo-800 border-3 border-white rounded-2xl p-2 sm:p-3 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-32 sm:h-40 group"
           >
-            <div className="flex items-center gap-1 text-yellow-300 font-black text-xs sm:text-sm">
-              <MousePointerClick className="w-4 h-4 text-yellow-300" />
+            <div className="flex items-center gap-1 text-yellow-300 font-black text-[11px] sm:text-xs">
+              <MousePointerClick className="w-3.5 h-3.5 text-yellow-300" />
               <span>अक्षर पहचान</span>
             </div>
 
-            <div className="flex items-center gap-1 text-base sm:text-xl font-black text-white">
+            <div className="flex items-center gap-1 text-sm sm:text-lg font-black text-white">
               <span className="bg-white/20 px-1.5 py-0.5 rounded text-yellow-200">अ</span>
               <span className="text-white/60">→</span>
               <span className="bg-white/20 px-1.5 py-0.5 rounded text-yellow-200">ज्ञ</span>
             </div>
 
-            <p className="text-[10px] sm:text-xs font-medium text-white/95 leading-tight">
+            <p className="text-[9px] sm:text-[11px] font-medium text-white/95 leading-tight">
               अक्षर छूकर आवाज़ सुनें
             </p>
 
-            <div className="w-full bg-yellow-400 group-hover:bg-yellow-300 text-purple-950 border border-white py-1 rounded-lg font-black text-[11px] sm:text-xs flex items-center justify-center gap-1 shadow">
+            <div className="w-full bg-yellow-400 group-hover:bg-yellow-300 text-purple-950 border border-white py-1 rounded-lg font-black text-[10px] sm:text-xs flex items-center justify-center gap-1 shadow">
               <Play className="w-3 h-3 fill-purple-950" />
               <span>खेलें (PLAY)</span>
             </div>
           </motion.button>
 
-          {/* 2. Balloon Pop (गुब्बारा फोड़ो) */}
+          {/* 2. Fill in the Blank (खाली स्थान भरो) */}
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => handleSelectMode('HINDI_FILL_BLANK')}
+            className="bg-gradient-to-b from-blue-600 to-cyan-700 active:from-blue-700 active:to-cyan-800 border-3 border-white rounded-2xl p-2 sm:p-3 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-32 sm:h-40 group"
+          >
+            <div className="flex items-center gap-1 text-yellow-300 font-black text-[11px] sm:text-xs">
+              <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+              <span>खाली स्थान</span>
+            </div>
+
+            <div className="flex items-center gap-1 text-sm sm:text-lg font-black text-white">
+              <span className="bg-white/20 px-1 py-0.5 rounded text-yellow-200">अ</span>
+              <span className="bg-yellow-400/80 px-1 py-0.5 rounded text-red-900 animate-pulse">_</span>
+              <span className="bg-white/20 px-1 py-0.5 rounded text-yellow-200">इ</span>
+            </div>
+
+            <p className="text-[9px] sm:text-[11px] font-medium text-white/95 leading-tight">
+              सही अक्षर चुनकर भरो
+            </p>
+
+            <div className="w-full bg-yellow-400 group-hover:bg-yellow-300 text-blue-950 border border-white py-1 rounded-lg font-black text-[10px] sm:text-xs flex items-center justify-center gap-1 shadow">
+              <Play className="w-3 h-3 fill-blue-950" />
+              <span>खेलें (PLAY)</span>
+            </div>
+          </motion.button>
+
+          {/* 3. Balloon Pop (गुब्बारा फोड़ो) */}
           <motion.button
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleSelectMode('HINDI_BALLOON_POP')}
-            className="bg-gradient-to-b from-emerald-600 to-teal-700 active:from-emerald-700 active:to-teal-800 border-3 border-white rounded-2xl p-2.5 sm:p-3 text-center flex flex-col items-center justify-between gap-1.5 shadow-xl cursor-pointer h-32 sm:h-40 group"
+            className="bg-gradient-to-b from-emerald-600 to-teal-700 active:from-emerald-700 active:to-teal-800 border-3 border-white rounded-2xl p-2 sm:p-3 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-32 sm:h-40 group"
           >
-            <div className="flex items-center gap-1 text-yellow-300 font-black text-xs sm:text-sm">
-              <Sparkles className="w-4 h-4 text-yellow-300" />
+            <div className="flex items-center gap-1 text-yellow-300 font-black text-[11px] sm:text-xs">
+              <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
               <span>गुब्बारा फोड़ो</span>
             </div>
 
-            <div className="flex items-center gap-1 text-base sm:text-xl font-black text-white">
-              <span className="bg-white/20 px-1.5 py-0.5 rounded text-yellow-200">🎈 क</span>
+            <div className="flex items-center gap-1 text-sm sm:text-base font-black text-white">
+              <span className="bg-white/20 px-1 py-0.5 rounded text-yellow-200">🎈 क</span>
               <span className="text-white/60">→</span>
-              <span className="bg-white/20 px-1.5 py-0.5 rounded text-yellow-200">🎈 ज्ञ</span>
+              <span className="bg-white/20 px-1 py-0.5 rounded text-yellow-200">🎈 ज्ञ</span>
             </div>
 
-            <p className="text-[10px] sm:text-xs font-medium text-white/95 leading-tight">
+            <p className="text-[9px] sm:text-[11px] font-medium text-white/95 leading-tight">
               सही अक्षर गुब्बारा फोड़ो
             </p>
 
-            <div className="w-full bg-yellow-400 group-hover:bg-yellow-300 text-emerald-950 border border-white py-1 rounded-lg font-black text-[11px] sm:text-xs flex items-center justify-center gap-1 shadow">
+            <div className="w-full bg-yellow-400 group-hover:bg-yellow-300 text-emerald-950 border border-white py-1 rounded-lg font-black text-[10px] sm:text-xs flex items-center justify-center gap-1 shadow">
               <Play className="w-3 h-3 fill-emerald-950" />
               <span>खेलें (PLAY)</span>
             </div>
           </motion.button>
 
-          {/* 3. Match The Word (सही जोड़ी मिलाओ) */}
+          {/* 4. Match The Word (सही जोड़ी मिलाओ) */}
           <motion.button
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleSelectMode('HINDI_MATCH_WORD')}
-            className="bg-gradient-to-b from-amber-600 to-orange-700 active:from-amber-700 active:to-orange-800 border-3 border-white rounded-2xl p-2.5 sm:p-3 text-center flex flex-col items-center justify-between gap-1.5 shadow-xl cursor-pointer h-32 sm:h-40 group"
+            className="bg-gradient-to-b from-amber-600 to-orange-700 active:from-amber-700 active:to-orange-800 border-3 border-white rounded-2xl p-2 sm:p-3 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-32 sm:h-40 group"
           >
-            <div className="flex items-center gap-1 text-yellow-300 font-black text-xs sm:text-sm">
-              <Trophy className="w-4 h-4 text-yellow-300" />
+            <div className="flex items-center gap-1 text-yellow-300 font-black text-[11px] sm:text-xs">
+              <Trophy className="w-3.5 h-3.5 text-yellow-300" />
               <span>जोड़ी मिलाओ</span>
             </div>
 
@@ -183,11 +211,11 @@ export const HindiHomeScreen: React.FC<HindiHomeScreenProps> = ({
               <span className="bg-white/20 px-1 py-0.5 rounded text-yellow-200">कबूतर</span>
             </div>
 
-            <p className="text-[10px] sm:text-xs font-medium text-white/95 leading-tight">
+            <p className="text-[9px] sm:text-[11px] font-medium text-white/95 leading-tight">
               अक्षर से चित्र मिलाओ
             </p>
 
-            <div className="w-full bg-yellow-400 group-hover:bg-yellow-300 text-amber-950 border border-white py-1 rounded-lg font-black text-[11px] sm:text-xs flex items-center justify-center gap-1 shadow">
+            <div className="w-full bg-yellow-400 group-hover:bg-yellow-300 text-amber-950 border border-white py-1 rounded-lg font-black text-[10px] sm:text-xs flex items-center justify-center gap-1 shadow">
               <Play className="w-3 h-3 fill-amber-950" />
               <span>खेलें (PLAY)</span>
             </div>

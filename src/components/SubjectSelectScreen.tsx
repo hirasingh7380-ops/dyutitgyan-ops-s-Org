@@ -119,7 +119,7 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
             {/* Active Badge */}
             <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 bg-yellow-400 text-red-900 px-3 sm:px-5 py-0.5 rounded-full text-[10px] sm:text-xs font-black shadow-md border-2 border-red-600 flex items-center gap-1 animate-pulse">
               <Play className="w-3 h-3 fill-red-900" />
-              <span>Hindi (3 खेल / Games)</span>
+              <span>Hindi (4 खेल / Games)</span>
             </div>
           </motion.button>
 

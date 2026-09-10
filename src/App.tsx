@@ -17,6 +17,7 @@ import { ClickLetterStage } from './components/ClickLetterStage';
 import { MatchWordStage } from './components/MatchWordStage';
 import { HindiBalloonPopStage } from './components/HindiBalloonPopStage';
 import { HindiMatchWordStage } from './components/HindiMatchWordStage';
+import { HindiFillInTheBlankStage } from './components/HindiFillInTheBlankStage';
 import { LandscapeWrapper } from './components/LandscapeWrapper';
 import { sounds } from './utils/audio';
 
@@ -163,6 +164,12 @@ export default function App() {
           />
         ) : hindiGameMode === 'HINDI_MATCH_WORD' ? (
           <HindiMatchWordStage
+            soundEnabled={soundEnabled}
+            onHome={() => setCurrentScreen('HINDI_MENU')}
+            onToggleSound={() => setSoundEnabled((prev) => !prev)}
+          />
+        ) : hindiGameMode === 'HINDI_FILL_BLANK' ? (
+          <HindiFillInTheBlankStage
             soundEnabled={soundEnabled}
             onHome={() => setCurrentScreen('HINDI_MENU')}
             onToggleSound={() => setSoundEnabled((prev) => !prev)}

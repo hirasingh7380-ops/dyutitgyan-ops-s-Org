@@ -14,24 +14,78 @@ import elephantImg from '../assets/images/cute_baby_elephant_1785687685978.jpg';
 import watchImg from '../assets/images/wrist_watch_3d_1785735498414.jpg';
 import orangeImg from '../assets/images/fresh_orange_3d_1785735432711.jpg';
 
+import pomegranateImg from '../assets/images/realistic_pomegranate_1789054374654.jpg';
+import tamarindImg from '../assets/images/realistic_tamarind_1789054397397.jpg';
+import sugarcaneImg from '../assets/images/realistic_sugarcane_1789054411266.jpg';
+import owlImg from '../assets/images/realistic_owl_1789054429817.jpg';
+import pigeonImg from '../assets/images/realistic_pigeon_1789054446463.jpg';
+import rabbitImg from '../assets/images/realistic_rabbit_1789054461510.jpg';
+import tomatoImg from '../assets/images/realistic_tomato_1789054476656.jpg';
+
+import rishiMuniImg from '../assets/images/rishi_muni_real_1789055215136.jpg';
+import okhliImg from '../assets/images/okhli_real_1789055232844.jpg';
+import ediImg from '../assets/images/edi_heel_real_1789055248369.jpg';
+import auratMaaImg from '../assets/images/aurat_maa_real_1789055263893.jpg';
+import shatkonImg from '../assets/images/shatkon_hexagon_1789055297870.jpg';
+
 interface HindiMatchWordStageProps {
   soundEnabled: boolean;
   onHome: () => void;
   onToggleSound: () => void;
 }
 
-// Vector & realistic image illustrations for Hindi objects
+// 100% Realistic image illustrations for all Hindi objects
 const HindiIllustration: React.FC<{ type: string; wordName: string }> = ({ type, wordName }) => {
   const photoMap: Record<string, string> = {
+    // स्वर (Swar) - Realistic Photos
+    anar: pomegranateImg,
     aam: mangoImg,
+    imli: tamarindImg,
+    eekh: sugarcaneImg,
+    ullu: owlImg,
+    oon: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=400&auto=format&fit=crop&q=80',
+    rishi: rishiMuniImg,
+    edi: ediImg,
+    aidi: ediImg,
+    ainak: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&auto=format&fit=crop&q=80',
+    okhli: okhliImg,
+    aurat: auratMaaImg,
     angoor: grapesImg,
-    chhatri: umbrellaImg,
-    patang: kiteImg,
-    machhli: fishImg,
-    haathi: elephantImg,
+
+    // व्यंजन (Vyanjan) - Realistic Photos
+    kabootar: pigeonImg,
+    khargosh: rabbitImg,
+    gamla: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&auto=format&fit=crop&q=80',
     ghadi: watchImg,
-    seb: appleImg,
+    chammach: 'https://images.unsplash.com/photo-1619472348577-4b7ebec8ee5a?w=400&auto=format&fit=crop&q=80',
+    chhatri: umbrellaImg,
+    jahaz: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?w=400&auto=format&fit=crop&q=80',
+    jhanda: 'https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=400&auto=format&fit=crop&q=80',
+    tamatar: tomatoImg,
+    thatthera: 'https://images.unsplash.com/photo-1584905066893-7d5c142ba4e1?w=400&auto=format&fit=crop&q=80',
+    damru: 'https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?w=400&auto=format&fit=crop&q=80',
+    dhakkan: 'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=400&auto=format&fit=crop&q=80',
+    tarbooj: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&auto=format&fit=crop&q=80',
+    thermas: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&auto=format&fit=crop&q=80',
+    dawat: 'https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=400&auto=format&fit=crop&q=80',
+    dhanush: 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400&auto=format&fit=crop&q=80',
+    nal: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&auto=format&fit=crop&q=80',
+    patang: kiteImg,
     phal: orangeImg,
+    battakh: 'https://images.unsplash.com/photo-1555857385-802f1b0a0f73?w=400&auto=format&fit=crop&q=80',
+    bhalu: 'https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?w=400&auto=format&fit=crop&q=80',
+    machhli: fishImg,
+    yagya: 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=400&auto=format&fit=crop&q=80',
+    rath: 'https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?w=400&auto=format&fit=crop&q=80',
+    lattoo: 'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=400&auto=format&fit=crop&q=80',
+    vak: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=400&auto=format&fit=crop&q=80',
+    seb: appleImg,
+    shatkon: shatkonImg,
+    haathi: elephantImg,
+    shaljam: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400&auto=format&fit=crop&q=80',
+    kshatriya: 'https://images.unsplash.com/photo-1563089145-599997674d42?w=400&auto=format&fit=crop&q=80',
+    trishul: 'https://images.unsplash.com/photo-1567095761054-7a02e69e5c43?w=400&auto=format&fit=crop&q=80',
+    gyani: 'https://images.unsplash.com/photo-1532012164546-f432f2e3edd4?w=400&auto=format&fit=crop&q=80',
   };
 
   if (photoMap[type]) {
