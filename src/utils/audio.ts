@@ -290,10 +290,6 @@ class SoundManager {
     this.playAudio(`find_${letter.toLowerCase()}`, `बच्चों, अब ${letter} वाले गुब्बारे फोड़ो!`);
   }
 
-  speakHindiTargetLetter(letter: string, soundEnabled = true) {
-    this.speakTargetLetter(letter, soundEnabled);
-  }
-
   // 5. Balloon Pop: Pop feedback
   speakBalloonPop(_letter: string, isCorrect: boolean, _targetLetter?: string, soundEnabled = true) {
     if (!soundEnabled) return;
@@ -308,7 +304,14 @@ class SoundManager {
   }
 
   speakHindiBalloonPop(letter: string, isCorrect: boolean, targetLetter?: string, soundEnabled = true) {
-    this.speakBalloonPop(letter, isCorrect, targetLetter, soundEnabled);
+    if (!soundEnabled) return;
+    if (isCorrect) {
+      this.playPop(soundEnabled);
+      this.playAudio(`hindi_pop_${encodeURIComponent(letter)}`, `शाबाश! ${letter} वाला गुब्बारा फूट गया!`);
+    } else {
+      this.playFreezeError(soundEnabled);
+      this.playAudio(`hindi_wrong_pop`, `ओहो! यह गलत गुब्बारा है, ${targetLetter ? targetLetter + ' वाला' : 'सही'} गुब्बारा फोड़ो!`);
+    }
   }
 
   // 6. Click The Letter
@@ -319,7 +322,30 @@ class SoundManager {
   }
 
   speakHindiLetterClick(letter: string, soundEnabled = true) {
-    this.speakClickLetter(letter, soundEnabled);
+    if (!soundEnabled) return;
+    this.playSnap(soundEnabled);
+    this.playAudio(`hindi_letter_${encodeURIComponent(letter)}`, `${letter}! बहुत अच्छे! शाबाश!`);
+  }
+
+  // Hindi Target Letter Prompt
+  speakHindiTargetLetter(letter: string, soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playAudio(`hindi_target_${encodeURIComponent(letter)}`, `बच्चों, अब ${letter} वाले गुब्बारे फोड़ो!`);
+  }
+
+  // Hindi Match Pair
+  speakHindiMatchPair(letter: string, wordName: string, soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playVictory(soundEnabled);
+    const phrase = `${letter} से ${wordName}! बहुत बढ़िया! शाबाश!`;
+    this.playAudio(`hindi_match_${encodeURIComponent(letter)}`, phrase);
+  }
+
+  // Hindi Greeting for Hindi Menu
+  speakHindiGreeting(soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playVictory(soundEnabled);
+    this.playAudio('hindi_greeting', 'नमस्ते बच्चों! चलो मिलकर हिंदी वर्णमाला सीखते हैं!');
   }
 
   // 7. Match The Word: Correct Pair Matched (e.g. "A for Apple", "B for Ball")

@@ -7,6 +7,8 @@ interface ClickLetterStageProps {
   soundEnabled: boolean;
   onHome: () => void;
   onToggleSound: () => void;
+  initialPageIndex?: number;
+  defaultLanguage?: 'HINDI' | 'ENGLISH';
 }
 
 // Letter pages - Swar, Vyanjan, English
@@ -46,8 +48,10 @@ const LETTER_PAGES = [
 export const ClickLetterStage: React.FC<ClickLetterStageProps> = ({
   soundEnabled,
   onHome,
+  initialPageIndex = 0,
+  defaultLanguage = 'ENGLISH',
 }) => {
-  const [pageIndex, setPageIndex] = useState(0); // 0 = Swar, 1 = Vyanjan, 2 = English
+  const [pageIndex, setPageIndex] = useState(initialPageIndex); // 0 = Swar, 1 = Vyanjan, 2 = English
   const currentPage = LETTER_PAGES[pageIndex];
 
   const [clickedLetters, setClickedLetters] = useState<Set<string>>(new Set());

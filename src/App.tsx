@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LetterTile, GameMode, AppScreen } from './types';
+import { LetterTile, GameMode, AppScreen, HindiGameMode } from './types';
 import { SUFFIX_GROUPS } from './data/wordData';
 import { HeaderBar } from './components/HeaderBar';
 import { LeftPrefixRows } from './components/LeftPrefixRows';
@@ -10,16 +10,20 @@ import { WordDestroyModal } from './components/WordDestroyModal';
 import { StartScreen } from './components/StartScreen';
 import { SubjectSelectScreen } from './components/SubjectSelectScreen';
 import { HomeScreen } from './components/HomeScreen';
+import { HindiHomeScreen } from './components/HindiHomeScreen';
 import { FillInTheBlankStage } from './components/FillInTheBlankStage';
 import { BalloonPopStage } from './components/BalloonPopStage';
 import { ClickLetterStage } from './components/ClickLetterStage';
 import { MatchWordStage } from './components/MatchWordStage';
+import { HindiBalloonPopStage } from './components/HindiBalloonPopStage';
+import { HindiMatchWordStage } from './components/HindiMatchWordStage';
 import { LandscapeWrapper } from './components/LandscapeWrapper';
 import { sounds } from './utils/audio';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<AppScreen>('START');
   const [gameMode, setGameMode] = useState<GameMode>('WORD_BUILDER');
+  const [hindiGameMode, setHindiGameMode] = useState<HindiGameMode>('HINDI_CLICK_LETTER');
   const [activeSuffix, setActiveSuffix] = useState<string | null>(null);
   const [currentPrefix, setCurrentPrefix] = useState<LetterTile | null>(null);
   const [destroyedTiles, setDestroyedTiles] = useState<Set<string>>(new Set());
@@ -34,6 +38,11 @@ export default function App() {
   const handleStartGame = (mode: GameMode) => {
     setGameMode(mode);
     setCurrentScreen('GAME_PLAY');
+  };
+
+  const handleStartHindiGame = (mode: HindiGameMode) => {
+    setHindiGameMode(mode);
+    setCurrentScreen('HINDI_GAME_PLAY');
   };
 
   // Evaluate word when prefix is placed or changed
@@ -123,6 +132,8 @@ export default function App() {
           onSelectSubject={(subject) => {
             if (subject === 'ENGLISH') {
               setCurrentScreen('ENGLISH_MENU');
+            } else if (subject === 'HINDI') {
+              setCurrentScreen('HINDI_MENU');
             }
           }}
           onBack={() => setCurrentScreen('START')}
@@ -136,6 +147,35 @@ export default function App() {
           soundEnabled={soundEnabled}
           onToggleSound={() => setSoundEnabled((prev) => !prev)}
         />
+      ) : currentScreen === 'HINDI_MENU' ? (
+        <HindiHomeScreen
+          onStartGame={handleStartHindiGame}
+          onBack={() => setCurrentScreen('SUBJECT_SELECT')}
+          soundEnabled={soundEnabled}
+          onToggleSound={() => setSoundEnabled((prev) => !prev)}
+        />
+      ) : currentScreen === 'HINDI_GAME_PLAY' ? (
+        hindiGameMode === 'HINDI_BALLOON_POP' ? (
+          <HindiBalloonPopStage
+            soundEnabled={soundEnabled}
+            onHome={() => setCurrentScreen('HINDI_MENU')}
+            onToggleSound={() => setSoundEnabled((prev) => !prev)}
+          />
+        ) : hindiGameMode === 'HINDI_MATCH_WORD' ? (
+          <HindiMatchWordStage
+            soundEnabled={soundEnabled}
+            onHome={() => setCurrentScreen('HINDI_MENU')}
+            onToggleSound={() => setSoundEnabled((prev) => !prev)}
+          />
+        ) : (
+          <ClickLetterStage
+            soundEnabled={soundEnabled}
+            onHome={() => setCurrentScreen('HINDI_MENU')}
+            onToggleSound={() => setSoundEnabled((prev) => !prev)}
+            initialPageIndex={0}
+            defaultLanguage="HINDI"
+          />
+        )
       ) : gameMode === 'FILL_BLANK' ? (
         <FillInTheBlankStage
           soundEnabled={soundEnabled}

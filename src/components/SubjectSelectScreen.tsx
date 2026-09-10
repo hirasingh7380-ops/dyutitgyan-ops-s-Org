@@ -34,11 +34,8 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
       sounds.playVictory(soundEnabled);
       onSelectSubject('ENGLISH');
     } else if (subject === 'HINDI') {
-      setComingSoonSubject({
-        name: 'Hindi',
-        hindiName: 'हिंदी',
-        color: 'from-amber-600 to-red-600',
-      });
+      sounds.playVictory(soundEnabled);
+      onSelectSubject('HINDI');
     } else if (subject === 'MATH') {
       setComingSoonSubject({
         name: 'Math',
@@ -106,22 +103,23 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
         className="w-full max-w-4xl flex-1 flex items-center justify-center z-20 px-2"
       >
         <div className="grid grid-cols-2 gap-3 sm:gap-5 w-full max-h-[calc(100vh-90px)]">
-          {/* 1. HINDI (Top-Left) */}
+          {/* 1. HINDI (Top-Left) - Active with 3 Games (अ से ज्ञ) */}
           <motion.button
             id="btn-subject-hindi"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.96 }}
             onClick={() => handleSubjectClick('HINDI')}
-            className="group relative cursor-pointer outline-none rounded-[22px] sm:rounded-[32px] overflow-hidden border-[4px] sm:border-[6px] border-red-600 bg-[#fedac2] shadow-xl h-32 sm:h-44 md:h-48 flex items-center justify-center"
+            className="group relative cursor-pointer outline-none rounded-[22px] sm:rounded-[32px] overflow-hidden border-[4px] sm:border-[6px] border-red-600 bg-[#fedac2] shadow-xl h-32 sm:h-44 md:h-48 flex items-center justify-center ring-4 ring-yellow-400/50"
           >
             <img
               src={subjectHindiImg}
               alt="Hindi Subject"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
-            {/* Subtle bottom badge indicator */}
-            <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 bg-red-600 text-white px-2.5 sm:px-4 py-0.5 rounded-full text-[10px] sm:text-xs font-black shadow-md border border-white/60">
-              Hindi (हिंदी)
+            {/* Active Badge */}
+            <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 bg-yellow-400 text-red-900 px-3 sm:px-5 py-0.5 rounded-full text-[10px] sm:text-xs font-black shadow-md border-2 border-red-600 flex items-center gap-1 animate-pulse">
+              <Play className="w-3 h-3 fill-red-900" />
+              <span>Hindi (3 खेल / Games)</span>
             </div>
           </motion.button>
 
