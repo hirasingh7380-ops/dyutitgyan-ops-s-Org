@@ -743,7 +743,7 @@ export const HindiMatchWordStage: React.FC<HindiMatchWordStageProps> = ({
       ref={containerRef}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
-      className="relative w-full h-screen overflow-hidden select-none flex flex-col justify-between"
+      className="relative w-full h-full max-h-full overflow-hidden select-none flex flex-col justify-between min-h-0"
       style={{
         backgroundImage: 'radial-gradient(circle at 50% 20%, #60a5fa 0%, #3b82f6 45%, #1d4ed8 100%)',
       }}

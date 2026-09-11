@@ -38,6 +38,8 @@ export const LandscapeWrapper: React.FC<LandscapeWrapperProps> = ({ children }) 
     };
   }, []);
 
+  const [showPortraitBanner, setShowPortraitBanner] = useState(true);
+
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(() => {});
@@ -53,7 +55,7 @@ export const LandscapeWrapper: React.FC<LandscapeWrapperProps> = ({ children }) 
   return (
     <div
       id="landscape-root-container"
-      className="relative w-screen h-screen h-[100dvh] max-h-[100dvh] overflow-hidden bg-slate-900 select-none touch-none"
+      className="relative w-screen h-screen h-[100dvh] max-h-[100dvh] overflow-hidden bg-slate-900 select-none"
     >
       {/* Main Game Container - 1:1 Clean Coordinates Without CSS 90deg Coordinate Inversion */}
       <div
@@ -63,14 +65,21 @@ export const LandscapeWrapper: React.FC<LandscapeWrapperProps> = ({ children }) 
       >
         {children}
 
-        {/* Mobile Portrait Guidance Banner */}
-        {isPortrait && (
+        {/* Mobile Portrait Guidance Banner (Dismissible) */}
+        {isPortrait && showPortraitBanner && (
           <div
             id="mobile-portrait-banner"
-            className="fixed top-2 left-1/2 -translate-x-1/2 z-50 bg-black/85 text-yellow-300 border-2 border-yellow-400 px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 shadow-2xl animate-pulse pointer-events-none"
+            className="fixed top-2 left-1/2 -translate-x-1/2 z-50 bg-black/90 text-yellow-300 border-2 border-yellow-400 px-3.5 py-1 rounded-full text-xs font-bold flex items-center gap-2 shadow-2xl animate-pulse"
           >
-            <Smartphone className="w-4 h-4 rotate-90 text-yellow-300" />
-            <span>Rotate phone to Landscape for full view</span>
+            <Smartphone className="w-3.5 h-3.5 rotate-90 text-yellow-300 shrink-0" />
+            <span>फोन घुमाकर Landscape में खेलें (Rotate for best view)</span>
+            <button
+              onClick={() => setShowPortraitBanner(false)}
+              className="ml-1 px-1.5 py-0.5 rounded-full bg-yellow-400 text-black text-[10px] font-black cursor-pointer hover:bg-yellow-300"
+              title="Dismiss"
+            >
+              ✕
+            </button>
           </div>
         )}
 

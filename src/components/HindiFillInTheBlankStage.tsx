@@ -147,7 +147,7 @@ export const HindiFillInTheBlankStage: React.FC<HindiFillInTheBlankStageProps> =
   return (
     <div
       id="hindi-fill-blank-stage"
-      className="relative flex-1 flex flex-col justify-between w-full h-full max-h-[100dvh] overflow-hidden select-none px-2 sm:px-6 pt-1 pb-2 touch-none box-border"
+      className="relative flex-1 flex flex-col justify-between w-full h-full max-h-full overflow-y-auto select-none px-1 sm:px-6 pt-1 pb-2 box-border min-h-0"
       style={{
         backgroundImage: 'radial-gradient(circle at 50% 30%, #38bdf8 0%, #0284c7 50%, #0369a1 100%)',
       }}

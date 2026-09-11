@@ -38,18 +38,18 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   return (
     <div
       id="home-screen-container"
-      className="relative w-full h-full flex flex-col items-center justify-between p-2 sm:p-4 text-white select-none overflow-hidden"
+      className="relative w-full h-full flex flex-col items-center justify-between p-2 sm:p-4 text-white select-none overflow-y-auto overflow-x-hidden min-h-0"
     >
       {/* Top Bar with Sound Toggle & Voice Badge */}
-      <div id="home-top-bar" className="w-full flex items-center justify-between z-20 max-w-5xl px-2">
-        <div className="flex items-center gap-2">
+      <div id="home-top-bar" className="w-full flex items-center justify-between z-20 max-w-5xl px-1 sm:px-2 shrink-0 mb-1">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {onBack && (
             <button
               onClick={() => {
                 sounds.playPop(soundEnabled);
                 onBack();
               }}
-              className="px-3 py-1 rounded-full bg-black/60 hover:bg-black/80 border border-white/30 text-yellow-300 flex items-center gap-1.5 text-xs sm:text-sm font-black active:scale-95 transition-all shadow-md cursor-pointer"
+              className="px-2.5 sm:px-3 py-1 rounded-full bg-black/60 hover:bg-black/80 border border-white/30 text-yellow-300 flex items-center gap-1 text-xs sm:text-sm font-black active:scale-95 transition-all shadow-md cursor-pointer"
               title="Back to Subjects"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -57,9 +57,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             </button>
           )}
 
-          <div className="flex items-center gap-1.5 bg-black/60 px-3 py-1 rounded-full border border-white/20">
-            <Trophy className="w-4 h-4 text-yellow-300" />
-            <span className="text-xs sm:text-sm font-bold text-yellow-300">English: 5 Games</span>
+          <div className="flex items-center gap-1 bg-black/60 px-2.5 sm:px-3 py-1 rounded-full border border-white/20">
+            <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-300" />
+            <span className="text-[11px] sm:text-sm font-bold text-yellow-300">English: 5 Games</span>
           </div>
 
           <div className="hidden sm:flex items-center gap-1.5 bg-emerald-950/70 px-2.5 py-1 rounded-full border border-emerald-400/50 text-emerald-200 text-xs font-medium">
@@ -70,16 +70,16 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
         <button
           onClick={onToggleSound}
-          className="px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/80 border border-white/30 text-white flex items-center gap-1.5 text-xs font-semibold active:scale-95 transition-transform"
+          className="px-2.5 sm:px-3 py-1 rounded-full bg-black/60 hover:bg-black/80 border border-white/30 text-white flex items-center gap-1 text-xs font-semibold active:scale-95 transition-transform"
         >
           {soundEnabled ? (
             <>
-              <Volume2 className="w-4 h-4 text-yellow-300" />
+              <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-300" />
               <span>Sound: ON</span>
             </>
           ) : (
             <>
-              <VolumeX className="w-4 h-4 text-red-400" />
+              <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-400" />
               <span>Sound: OFF</span>
             </>
           )}
@@ -87,33 +87,33 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       </div>
 
       {/* Main Home Screen Hero Content */}
-      <div id="home-hero-content" className="my-auto flex flex-col items-center text-center z-20 max-w-4xl w-full px-2">
+      <div id="home-hero-content" className="my-auto flex flex-col items-center text-center z-20 max-w-5xl w-full px-1 sm:px-2 py-1">
         {/* Main Logo Blocks */}
-        <div className="flex items-center gap-1.5 sm:gap-2 mb-1">
-          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-red-600 border-2 border-white flex items-center justify-center font-black text-yellow-300 text-xl sm:text-2xl shadow-md">
+        <div className="flex items-center gap-1 sm:gap-2 mb-0.5 sm:mb-1">
+          <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl bg-red-600 border-2 border-white flex items-center justify-center font-black text-yellow-300 text-base sm:text-2xl shadow-md">
             W
           </div>
-          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-amber-500 border-2 border-white flex items-center justify-center font-black text-white text-xl sm:text-2xl shadow-md">
+          <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl bg-amber-500 border-2 border-white flex items-center justify-center font-black text-white text-base sm:text-2xl shadow-md">
             O
           </div>
-          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-red-600 border-2 border-white flex items-center justify-center font-black text-yellow-300 text-xl sm:text-2xl shadow-md">
+          <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl bg-red-600 border-2 border-white flex items-center justify-center font-black text-yellow-300 text-base sm:text-2xl shadow-md">
             R
           </div>
-          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-blue-600 border-2 border-white flex items-center justify-center font-black text-white text-xl sm:text-2xl shadow-md">
+          <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl bg-blue-600 border-2 border-white flex items-center justify-center font-black text-white text-base sm:text-2xl shadow-md">
             D
           </div>
         </div>
 
-        <h1 className="text-xl sm:text-3xl font-black text-yellow-300 tracking-normal uppercase">
+        <h1 className="text-lg sm:text-2xl md:text-3xl font-black text-yellow-300 tracking-normal uppercase">
           WORD & ALPHABET GAME
         </h1>
 
-        <p className="text-[11px] sm:text-xs font-semibold text-white/90 bg-black/60 border border-white/20 px-3 py-0.5 rounded-full mt-1">
+        <p className="text-[10px] sm:text-xs font-semibold text-white/90 bg-black/60 border border-white/20 px-2.5 py-0.5 rounded-full mt-0.5 sm:mt-1">
           Kids Learning Game with Audio
         </p>
 
         {/* Game Mode Selection Cards */}
-        <div className="grid grid-cols-5 gap-2 w-full mt-3 sm:mt-4">
+        <div className="grid grid-cols-2 landscape:grid-cols-5 sm:grid-cols-5 gap-2 w-full max-w-5xl mt-2 sm:mt-3">
           {/* Mode 1: Word Builder */}
           <motion.button
             whileTap={{ scale: 0.95 }}

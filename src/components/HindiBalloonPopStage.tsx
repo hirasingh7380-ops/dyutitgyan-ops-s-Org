@@ -205,7 +205,7 @@ export const HindiBalloonPopStage: React.FC<HindiBalloonPopStageProps> = ({
   return (
     <div
       id="hindi-balloon-pop-stage"
-      className="relative w-full h-screen overflow-hidden select-none flex flex-col justify-between"
+      className="relative w-full h-full max-h-full overflow-hidden select-none flex flex-col justify-between min-h-0"
       style={{
         backgroundImage: 'radial-gradient(circle at 50% 30%, #70c5eb 0%, #a8e063 50%, #469622 100%)',
       }}

@@ -31,6 +31,18 @@ export const StartScreen: React.FC<StartScreenProps> = ({
     sounds.playPop(soundEnabled);
     setHasQuit(true);
     setShowQuitModal(false);
+
+    // Attempt browser/app exit APIs
+    try {
+      if (typeof window !== 'undefined') {
+        window.close();
+      }
+      if ((window as any)?.navigator?.app?.exitApp) {
+        (window as any).navigator.app.exitApp();
+      }
+    } catch {
+      // Browser sandboxing may prevent direct window.close
+    }
   };
 
   return (
@@ -106,20 +118,23 @@ export const StartScreen: React.FC<StartScreenProps> = ({
           </motion.button>
         </div>
       ) : (
-        /* Quit State Farewell Screen */
+        /* Quit State Exit Screen */
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="z-30 bg-black/80 backdrop-blur-md border-4 border-yellow-400 p-6 sm:p-8 rounded-3xl text-center max-w-sm flex flex-col items-center shadow-2xl"
+          className="z-30 bg-black/90 backdrop-blur-md border-4 border-yellow-400 p-6 sm:p-8 rounded-3xl text-center max-w-md flex flex-col items-center shadow-2xl mx-4"
         >
-          <LogOut className="w-12 h-12 text-yellow-300 mb-2" />
-          <h2 className="text-2xl font-black text-yellow-300 mb-1">अलविदा बच्चों! 👋</h2>
-          <p className="text-sm text-white/90 mb-4">फिर मिलेंगे नए खेल और पढ़ाई के साथ!</p>
+          <div className="w-16 h-16 rounded-full bg-red-600/30 border-2 border-red-500 flex items-center justify-center mb-3">
+            <LogOut className="w-9 h-9 text-red-400" />
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-black text-yellow-300 mb-1">खेल बंद हो गया (Game Exited)</h2>
+          <p className="text-sm sm:text-base text-white/95 font-medium mb-1">अलविदा बच्चों! खेल समाप्त हो चुका है।</p>
+          <p className="text-xs text-white/75 mb-5">आप अब इस ब्राउज़र टैब को बंद कर सकते हैं। (You can safely close this window/tab now.)</p>
           <button
             onClick={() => setHasQuit(false)}
-            className="px-6 py-2 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-red-950 font-black text-sm border-2 border-white shadow-md active:scale-95 transition-transform cursor-pointer"
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-red-950 font-black text-sm border-2 border-white shadow-xl active:scale-95 transition-transform cursor-pointer flex items-center gap-2"
           >
-            दोबारा खेलें (Play Again)
+            <span>🔄 फिर से खेलें (Restart Game)</span>
           </button>
         </motion.div>
       )}
