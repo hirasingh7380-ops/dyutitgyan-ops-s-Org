@@ -109,11 +109,7 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.96 }}
             onClick={() => handleSubjectClick('HINDI')}
-            onTouchEnd={(e) => {
-              // Ensure immediate response on Android mobile touch
-              e.currentTarget.click();
-            }}
-            className="group relative cursor-pointer outline-none rounded-[18px] sm:rounded-[28px] overflow-hidden border-[3px] sm:border-[5px] border-red-600 bg-[#fedac2] shadow-xl h-28 sm:h-38 md:h-44 landscape:h-26 landscape:sm:h-36 flex items-center justify-center ring-3 sm:ring-4 ring-yellow-400/80 active:scale-95 transition-transform"
+            className="group relative cursor-pointer outline-none rounded-[18px] sm:rounded-[28px] overflow-hidden border-[3px] sm:border-[5px] border-red-600 bg-[#fedac2] shadow-xl h-28 sm:h-38 md:h-44 landscape:h-26 landscape:sm:h-36 flex items-center justify-center ring-3 sm:ring-4 ring-yellow-400/60"
           >
             <img
               src={subjectHindiImg}
@@ -121,9 +117,9 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
             {/* Active Badge */}
-            <div className="absolute bottom-1 sm:bottom-1.5 left-1/2 -translate-x-1/2 bg-yellow-400 text-red-950 px-2 sm:px-3.5 py-0.5 rounded-full text-[10px] sm:text-xs font-black shadow-md border-2 border-red-600 flex items-center gap-1 whitespace-nowrap animate-bounce">
-              <Play className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-red-950" />
-              <span>👉 हिंदी (4 खेल)</span>
+            <div className="absolute bottom-1 sm:bottom-1.5 left-1/2 -translate-x-1/2 bg-yellow-400 text-red-900 px-2 sm:px-3.5 py-0.5 rounded-full text-[9px] sm:text-xs font-black shadow-md border-2 border-red-600 flex items-center gap-1 whitespace-nowrap">
+              <Play className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-red-900" />
+              <span>Hindi</span>
             </div>
           </motion.button>
 
@@ -133,10 +129,7 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.96 }}
             onClick={() => handleSubjectClick('ENGLISH')}
-            onTouchEnd={(e) => {
-              e.currentTarget.click();
-            }}
-            className="group relative cursor-pointer outline-none rounded-[18px] sm:rounded-[28px] overflow-hidden border-[3px] sm:border-[5px] border-red-600 bg-[#fedac2] shadow-xl h-28 sm:h-38 md:h-44 landscape:h-26 landscape:sm:h-36 flex items-center justify-center ring-3 sm:ring-4 ring-yellow-400/80 active:scale-95 transition-transform"
+            className="group relative cursor-pointer outline-none rounded-[18px] sm:rounded-[28px] overflow-hidden border-[3px] sm:border-[5px] border-red-600 bg-[#fedac2] shadow-xl h-28 sm:h-38 md:h-44 landscape:h-26 landscape:sm:h-36 flex items-center justify-center ring-3 sm:ring-4 ring-yellow-400/60"
           >
             <img
               src={subjectEnglishImg}
@@ -144,9 +137,9 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
             {/* Active Highlight Badge */}
-            <div className="absolute bottom-1 sm:bottom-1.5 left-1/2 -translate-x-1/2 bg-yellow-400 text-red-950 px-2 sm:px-3.5 py-0.5 rounded-full text-[10px] sm:text-xs font-black shadow-md border-2 border-red-600 flex items-center gap-1 whitespace-nowrap">
-              <Play className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-red-950" />
-              <span>English (5 Games)</span>
+            <div className="absolute bottom-1 sm:bottom-1.5 left-1/2 -translate-x-1/2 bg-yellow-400 text-red-900 px-2 sm:px-3.5 py-0.5 rounded-full text-[9px] sm:text-xs font-black shadow-md border-2 border-red-600 flex items-center gap-1 whitespace-nowrap">
+              <Play className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-red-900" />
+              <span>English</span>
             </div>
           </motion.button>
 
@@ -188,23 +181,9 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
         </div>
       </div>
 
-      {/* Bottom helper prompt and quick direct play buttons */}
-      <div className="z-20 flex flex-wrap items-center justify-center gap-2 mt-1 shrink-0 px-2">
-        <button
-          onClick={() => handleSubjectClick('HINDI')}
-          className="px-3 sm:px-4 py-1.5 rounded-full bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-yellow-300 font-black text-xs sm:text-sm border-2 border-yellow-300 shadow-lg active:scale-95 transition-transform flex items-center gap-1.5 cursor-pointer"
-        >
-          <Play className="w-3.5 h-3.5 fill-yellow-300" />
-          <span>🇮🇳 हिंदी खेलें (4 Games)</span>
-        </button>
-
-        <button
-          onClick={() => handleSubjectClick('ENGLISH')}
-          className="px-3 sm:px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 text-yellow-300 font-black text-xs sm:text-sm border-2 border-white shadow-lg active:scale-95 transition-transform flex items-center gap-1.5 cursor-pointer"
-        >
-          <Play className="w-3.5 h-3.5 fill-yellow-300" />
-          <span>🇬🇧 English (5 Games)</span>
-        </button>
+      {/* Bottom helper prompt */}
+      <div className="z-20 text-[10px] sm:text-xs text-yellow-300 font-bold bg-black/60 px-4 py-1 rounded-full border border-white/20 mt-1 shrink-0 shadow">
+        विषय चुनें (Hindi और English खेलने के लिए तैयार हैं!)
       </div>
 
       {/* Coming Soon Modal for Math, Arts */}
@@ -230,17 +209,17 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
               </div>
 
               <p className="text-xs sm:text-sm text-white/90 mb-5 leading-relaxed">
-                {comingSoonSubject.name} विषय के नए और मजेदार खेल तैयार हो रहे हैं।
+                {comingSoonSubject.name} विषय के नए और मजेदार खेल अभी बनाए जा रहे हैं।
                 <br />
-                अभी आप <strong className="text-yellow-300 font-bold">Hindi (4 खेल)</strong> और <strong className="text-yellow-300 font-bold">English (5 खेल)</strong> खेल सकते हैं!
+                अभी आप <strong className="text-yellow-300 font-bold">English</strong> और <strong className="text-yellow-300 font-bold">Hindi</strong> विषय के गेम्स खेल सकते हैं!
               </p>
 
-              <div className="flex flex-wrap items-center justify-center gap-2.5 w-full">
+              <div className="flex items-center justify-center gap-3 w-full">
                 <button
                   onClick={() => setComingSoonSubject(null)}
-                  className="py-2 px-3 rounded-xl bg-slate-700 hover:bg-slate-600 border border-white/40 text-white font-bold text-xs sm:text-sm shadow-md active:scale-95 transition-transform cursor-pointer"
+                  className="flex-1 py-2 px-3 rounded-xl bg-slate-700 hover:bg-slate-600 border border-white/40 text-white font-bold text-xs sm:text-sm shadow-md active:scale-95 transition-transform cursor-pointer"
                 >
-                  बंद करें (Close)
+                  ठीक है (Close)
                 </button>
 
                 <button
@@ -248,10 +227,10 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
                     setComingSoonSubject(null);
                     onSelectSubject('HINDI');
                   }}
-                  className="py-2 px-3 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-yellow-200 font-black text-xs sm:text-sm shadow-md active:scale-95 transition-transform border-2 border-yellow-300 flex items-center justify-center gap-1 cursor-pointer"
+                  className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-yellow-200 font-black text-xs sm:text-sm shadow-md active:scale-95 transition-transform border-2 border-yellow-300 flex items-center justify-center gap-1 cursor-pointer"
                 >
                   <Play className="w-3.5 h-3.5 fill-yellow-200" />
-                  <span>🇮🇳 Hindi खेलें</span>
+                  <span>Hindi खेलें</span>
                 </button>
 
                 <button
@@ -259,10 +238,10 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
                     setComingSoonSubject(null);
                     onSelectSubject('ENGLISH');
                   }}
-                  className="py-2 px-3 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-red-950 font-black text-xs sm:text-sm shadow-md active:scale-95 transition-transform border-2 border-white flex items-center justify-center gap-1 cursor-pointer"
+                  className="flex-1 py-2 px-3 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-red-950 font-black text-xs sm:text-sm shadow-md active:scale-95 transition-transform border-2 border-white flex items-center justify-center gap-1 cursor-pointer"
                 >
                   <Play className="w-3.5 h-3.5 fill-red-950" />
-                  <span>🇬🇧 English खेलें</span>
+                  <span>English खेलें</span>
                 </button>
               </div>
             </motion.div>
