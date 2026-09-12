@@ -136,15 +136,15 @@ export const ClickLetterStage: React.FC<ClickLetterStageProps> = ({
           ))}
         </div>
 
-        {/* Center Title: "click the letter" */}
+        {/* Center Title: Dynamic according to language */}
         <div className="flex flex-col items-center justify-center">
           <h1
-            className="text-xl sm:text-3xl md:text-4xl font-black text-yellow-300 tracking-wider uppercase drop-shadow-md"
+            className="text-lg sm:text-2xl md:text-3xl font-black text-yellow-300 tracking-wider drop-shadow-md"
             style={{
               textShadow: '2px 2px 0px #0284c7, -2px -2px 0px #0284c7, 2px -2px 0px #0284c7, -2px 2px 0px #0284c7, 0 3px 6px rgba(0,0,0,0.3)',
             }}
           >
-            click the letter
+            {defaultLanguage === 'HINDI' ? 'अक्षर पहचान (Click Letter)' : 'Click The Letter'}
           </h1>
         </div>
 

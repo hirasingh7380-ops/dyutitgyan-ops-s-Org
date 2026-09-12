@@ -125,6 +125,11 @@ export default function App() {
       {currentScreen === 'START' ? (
         <StartScreen
           onOptionClick={() => setCurrentScreen('SUBJECT_SELECT')}
+          onPlayHindi={() => setCurrentScreen('HINDI_MENU')}
+          onPlayHindiMode={(mode) => {
+            setHindiGameMode(mode);
+            setCurrentScreen('HINDI_GAME_PLAY');
+          }}
           soundEnabled={soundEnabled}
           onToggleSound={() => setSoundEnabled((prev) => !prev)}
         />
