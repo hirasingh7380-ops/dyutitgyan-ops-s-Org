@@ -114,7 +114,7 @@ export const HindiHomeScreen: React.FC<HindiHomeScreenProps> = ({
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleSelectMode('HINDI_CLICK_LETTER')}
-            className="bg-gradient-to-b from-purple-600 to-indigo-700 active:from-purple-700 active:to-indigo-800 border-2 sm:border-3 border-white rounded-xl sm:rounded-2xl p-1.5 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-26 sm:h-36 md:h-40 landscape:h-25 landscape:sm:h-36 group"
+            className="bg-gradient-to-b from-purple-600 to-indigo-700 active:from-purple-700 active:to-indigo-800 border-2 sm:border-3 border-white rounded-xl sm:rounded-2xl p-1.5 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-28 sm:h-36 md:h-40 landscape:h-28 landscape:sm:h-36 min-h-[110px] touch-manipulation select-none group"
           >
             <div className="flex items-center gap-1 text-yellow-300 font-black text-[10px] sm:text-xs">
               <MousePointerClick className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-300" />
@@ -142,7 +142,7 @@ export const HindiHomeScreen: React.FC<HindiHomeScreenProps> = ({
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleSelectMode('HINDI_FILL_BLANK')}
-            className="bg-gradient-to-b from-blue-600 to-cyan-700 active:from-blue-700 active:to-cyan-800 border-2 sm:border-3 border-white rounded-xl sm:rounded-2xl p-1.5 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-26 sm:h-36 md:h-40 landscape:h-25 landscape:sm:h-36 group"
+            className="bg-gradient-to-b from-blue-600 to-cyan-700 active:from-blue-700 active:to-cyan-800 border-2 sm:border-3 border-white rounded-xl sm:rounded-2xl p-1.5 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-28 sm:h-36 md:h-40 landscape:h-28 landscape:sm:h-36 min-h-[110px] touch-manipulation select-none group"
           >
             <div className="flex items-center gap-1 text-yellow-300 font-black text-[10px] sm:text-xs">
               <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-300" />
@@ -170,7 +170,7 @@ export const HindiHomeScreen: React.FC<HindiHomeScreenProps> = ({
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleSelectMode('HINDI_BALLOON_POP')}
-            className="bg-gradient-to-b from-emerald-600 to-teal-700 active:from-emerald-700 active:to-teal-800 border-2 sm:border-3 border-white rounded-xl sm:rounded-2xl p-1.5 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-26 sm:h-36 md:h-40 landscape:h-25 landscape:sm:h-36 group"
+            className="bg-gradient-to-b from-emerald-600 to-teal-700 active:from-emerald-700 active:to-teal-800 border-2 sm:border-3 border-white rounded-xl sm:rounded-2xl p-1.5 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-28 sm:h-36 md:h-40 landscape:h-28 landscape:sm:h-36 min-h-[110px] touch-manipulation select-none group"
           >
             <div className="flex items-center gap-1 text-yellow-300 font-black text-[10px] sm:text-xs">
               <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-300" />
@@ -198,7 +198,7 @@ export const HindiHomeScreen: React.FC<HindiHomeScreenProps> = ({
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleSelectMode('HINDI_MATCH_WORD')}
-            className="bg-gradient-to-b from-amber-600 to-orange-700 active:from-amber-700 active:to-orange-800 border-2 sm:border-3 border-white rounded-xl sm:rounded-2xl p-1.5 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-26 sm:h-36 md:h-40 landscape:h-25 landscape:sm:h-36 group"
+            className="bg-gradient-to-b from-amber-600 to-orange-700 active:from-amber-700 active:to-orange-800 border-2 sm:border-3 border-white rounded-xl sm:rounded-2xl p-1.5 sm:p-2.5 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-28 sm:h-36 md:h-40 landscape:h-28 landscape:sm:h-36 min-h-[110px] touch-manipulation select-none group"
           >
             <div className="flex items-center gap-1 text-yellow-300 font-black text-[10px] sm:text-xs">
               <Trophy className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-300" />

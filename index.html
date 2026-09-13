@@ -8,6 +8,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>Word Builder Mobile Game</title>
+    <script>
+      // Prevent benign WebSocket/HMR reconnection errors from stopping execution on mobile
+      window.addEventListener('unhandledrejection', function(event) {
+        if (event.reason && (String(event.reason.message || event.reason).toLowerCase().includes('websocket'))) {
+          event.preventDefault();
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -86,14 +86,17 @@ export const StartScreen: React.FC<StartScreenProps> = ({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleOption}
-            className="group relative cursor-pointer outline-none focus:outline-none"
+            className="group relative cursor-pointer outline-none focus:outline-none touch-manipulation select-none"
           >
             {/* Outer Cyan Accent Ring */}
             <div className="rounded-[22px] sm:rounded-[26px] p-[3px] bg-cyan-400 shadow-2xl">
               {/* Inner Blue Heavy Border with Yellow Center */}
-              <div className="rounded-[19px] sm:rounded-[23px] border-[5px] sm:border-[6px] border-blue-700 bg-yellow-400 px-8 sm:px-14 py-2 sm:py-3.5 flex items-center justify-center min-w-[220px] sm:min-w-[280px]">
-                <span className="text-3xl sm:text-5xl font-black tracking-wider text-red-600 uppercase drop-shadow-[0_2px_1px_rgba(0,0,0,0.15)] font-sans">
+              <div className="rounded-[19px] sm:rounded-[23px] border-[5px] sm:border-[6px] border-blue-700 bg-yellow-400 px-6 sm:px-14 py-2 sm:py-3.5 flex flex-col items-center justify-center min-w-[230px] sm:min-w-[280px]">
+                <span className="text-3xl sm:text-5xl font-black tracking-wider text-red-600 uppercase drop-shadow-[0_2px_1px_rgba(0,0,0,0.15)] font-sans leading-tight">
                   OPTION
+                </span>
+                <span className="text-[11px] sm:text-xs font-black text-blue-900 bg-white/70 px-2.5 py-0.5 rounded-full mt-0.5 shadow-xs whitespace-nowrap">
+                  🇮🇳 हिंदी / English गेम्स
                 </span>
               </div>
             </div>
@@ -107,10 +110,10 @@ export const StartScreen: React.FC<StartScreenProps> = ({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleQuitPrompt}
-            className="group relative cursor-pointer outline-none focus:outline-none"
+            className="group relative cursor-pointer outline-none focus:outline-none touch-manipulation select-none"
           >
             {/* White Border Frame */}
-            <div className="rounded-[20px] sm:rounded-[24px] border-[5px] sm:border-[6px] border-white bg-red-600 px-8 sm:px-14 py-2 sm:py-3.5 flex items-center justify-center min-w-[220px] sm:min-w-[280px] shadow-2xl">
+            <div className="rounded-[20px] sm:rounded-[24px] border-[5px] sm:border-[6px] border-white bg-red-600 px-8 sm:px-14 py-2 sm:py-3.5 flex items-center justify-center min-w-[230px] sm:min-w-[280px] shadow-2xl">
               <span className="text-3xl sm:text-5xl font-black tracking-wider text-yellow-300 uppercase drop-shadow-[0_2px_1px_rgba(0,0,0,0.2)] font-sans">
                 QUIT
               </span>
