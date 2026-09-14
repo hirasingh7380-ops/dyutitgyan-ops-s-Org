@@ -37,11 +37,8 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
       sounds.playVictory(soundEnabled);
       onSelectSubject('HINDI');
     } else if (subject === 'MATH') {
-      setComingSoonSubject({
-        name: 'Math',
-        hindiName: 'गणित',
-        color: 'from-blue-600 to-cyan-700',
-      });
+      sounds.playVictory(soundEnabled);
+      onSelectSubject('MATH');
     } else if (subject === 'ARTS') {
       setComingSoonSubject({
         name: 'Arts',
@@ -143,21 +140,22 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
             </div>
           </motion.button>
 
-          {/* 3. MATH (Bottom-Left / Col 3) */}
+          {/* 3. MATH (Bottom-Left / Col 3) - 3 Active Games (1 से 50) */}
           <motion.button
             id="btn-subject-math"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.96 }}
             onClick={() => handleSubjectClick('MATH')}
-            className="group relative cursor-pointer outline-none rounded-[18px] sm:rounded-[28px] overflow-hidden border-[3px] sm:border-[5px] border-blue-600 bg-[#aed8f2] shadow-xl h-28 sm:h-38 md:h-44 landscape:h-26 landscape:sm:h-36 flex items-center justify-center"
+            className="group relative cursor-pointer outline-none rounded-[18px] sm:rounded-[28px] overflow-hidden border-[3px] sm:border-[5px] border-blue-600 bg-[#aed8f2] shadow-xl h-32 sm:h-38 md:h-44 landscape:h-28 landscape:sm:h-36 flex items-center justify-center ring-3 sm:ring-4 ring-yellow-400/60 touch-manipulation select-none"
           >
             <img
               src={subjectMathImg}
               alt="Math Subject"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
-            <div className="absolute bottom-1 sm:bottom-1.5 left-1/2 -translate-x-1/2 bg-blue-700 text-white px-2 sm:px-3 py-0.5 rounded-full text-[9px] sm:text-xs font-black shadow-md border border-white/60 whitespace-nowrap">
-              MATH (गणित)
+            <div className="absolute bottom-1.5 sm:bottom-2 left-1/2 -translate-x-1/2 bg-yellow-400 text-blue-950 px-2.5 sm:px-4 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-black shadow-lg border-2 border-blue-600 flex items-center gap-1 whitespace-nowrap">
+              <Play className="w-3 h-3 fill-blue-950" />
+              <span>🔢 गणित (3 Games 1–50)</span>
             </div>
           </motion.button>
 

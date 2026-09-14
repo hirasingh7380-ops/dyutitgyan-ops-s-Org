@@ -54,6 +54,12 @@ export const ClickLetterStage: React.FC<ClickLetterStageProps> = ({
   const [pageIndex, setPageIndex] = useState(initialPageIndex); // 0 = Swar, 1 = Vyanjan, 2 = English
   const currentPage = LETTER_PAGES[pageIndex];
 
+  // Sync with initialPageIndex if prop changes
+  React.useEffect(() => {
+    setPageIndex(initialPageIndex);
+    setClickedLetters(new Set());
+  }, [initialPageIndex]);
+
   const [clickedLetters, setClickedLetters] = useState<Set<string>>(new Set());
   const [score, setScore] = useState(0);
   const [popAnim, setPopAnim] = useState<string | null>(null);
@@ -61,7 +67,11 @@ export const ClickLetterStage: React.FC<ClickLetterStageProps> = ({
   // Handle clicking a letter tile
   const handleTileClick = (letter: string) => {
     // Play correct chime sound & speak letter name
-    sounds.speakHindiLetterClick(letter, soundEnabled);
+    if (currentPage.id === 'ENGLISH') {
+      sounds.speakClickLetter(letter, soundEnabled);
+    } else {
+      sounds.speakHindiLetterClick(letter, soundEnabled);
+    }
 
     // If not already clicked, add +10 score
     if (!clickedLetters.has(letter)) {

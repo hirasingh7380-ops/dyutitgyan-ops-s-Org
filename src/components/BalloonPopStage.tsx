@@ -90,7 +90,7 @@ export const BalloonPopStage: React.FC<BalloonPopStageProps> = ({
   >([]);
 
   useEffect(() => {
-    sounds.speakHindiTargetLetter(targetLetter, soundEnabled);
+    sounds.speakTargetLetter(targetLetter, soundEnabled);
   }, [targetLetterIndex, soundEnabled]);
 
   useEffect(() => {
@@ -152,7 +152,7 @@ export const BalloonPopStage: React.FC<BalloonPopStageProps> = ({
     e.stopPropagation();
 
     const isCorrect = balloon.letter.toUpperCase() === targetLetter.toUpperCase();
-    sounds.speakHindiBalloonPop(balloon.letter, isCorrect, targetLetter, soundEnabled);
+    sounds.speakBalloonPop(balloon.letter, isCorrect, targetLetter, soundEnabled);
 
     const currentX = balloon.xBase + Math.sin(balloon.y * 0.08 + balloon.phase) * 3.5;
 

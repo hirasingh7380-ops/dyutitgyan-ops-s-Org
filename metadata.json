@@ -1,6 +1,6 @@
 {
   "name": "Word Builder Mobile Game",
-  "description": "A landscape drag-and-drop word building mobile game with conditional row unlocking and word destruction mechanics.",
+  "description": "A landscape multilingual Hindi, English & Math learning mobile game for kids featuring numbers 1–50, balloon pop, fill in the blanks, clickable number grid, letter phonics, and teacher voice audio.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

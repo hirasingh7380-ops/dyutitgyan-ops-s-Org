@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LetterTile, GameMode, AppScreen, HindiGameMode } from './types';
+import { LetterTile, GameMode, AppScreen, HindiGameMode, MathGameMode } from './types';
 import { SUFFIX_GROUPS } from './data/wordData';
 import { HeaderBar } from './components/HeaderBar';
 import { LeftPrefixRows } from './components/LeftPrefixRows';
@@ -11,6 +11,10 @@ import { StartScreen } from './components/StartScreen';
 import { SubjectSelectScreen } from './components/SubjectSelectScreen';
 import { HomeScreen } from './components/HomeScreen';
 import { HindiHomeScreen } from './components/HindiHomeScreen';
+import { MathHomeScreen } from './components/MathHomeScreen';
+import { MathClickNumberStage } from './components/MathClickNumberStage';
+import { MathFillInBlankStage } from './components/MathFillInBlankStage';
+import { MathBalloonPopStage } from './components/MathBalloonPopStage';
 import { FillInTheBlankStage } from './components/FillInTheBlankStage';
 import { BalloonPopStage } from './components/BalloonPopStage';
 import { ClickLetterStage } from './components/ClickLetterStage';
@@ -25,6 +29,7 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState<AppScreen>('START');
   const [gameMode, setGameMode] = useState<GameMode>('WORD_BUILDER');
   const [hindiGameMode, setHindiGameMode] = useState<HindiGameMode>('HINDI_CLICK_LETTER');
+  const [mathGameMode, setMathGameMode] = useState<MathGameMode>('MATH_CLICK_NUMBER');
   const [activeSuffix, setActiveSuffix] = useState<string | null>(null);
   const [currentPrefix, setCurrentPrefix] = useState<LetterTile | null>(null);
   const [destroyedTiles, setDestroyedTiles] = useState<Set<string>>(new Set());
@@ -44,6 +49,11 @@ export default function App() {
   const handleStartHindiGame = (mode: HindiGameMode) => {
     setHindiGameMode(mode);
     setCurrentScreen('HINDI_GAME_PLAY');
+  };
+
+  const handleStartMathGame = (mode: MathGameMode) => {
+    setMathGameMode(mode);
+    setCurrentScreen('MATH_GAME_PLAY');
   };
 
   // Evaluate word when prefix is placed or changed
@@ -135,6 +145,8 @@ export default function App() {
               setCurrentScreen('ENGLISH_MENU');
             } else if (subject === 'HINDI') {
               setCurrentScreen('HINDI_MENU');
+            } else if (subject === 'MATH') {
+              setCurrentScreen('MATH_MENU');
             }
           }}
           onBack={() => setCurrentScreen('START')}
@@ -155,6 +167,33 @@ export default function App() {
           soundEnabled={soundEnabled}
           onToggleSound={() => setSoundEnabled((prev) => !prev)}
         />
+      ) : currentScreen === 'MATH_MENU' ? (
+        <MathHomeScreen
+          onStartGame={handleStartMathGame}
+          onBack={() => setCurrentScreen('SUBJECT_SELECT')}
+          soundEnabled={soundEnabled}
+          onToggleSound={() => setSoundEnabled((prev) => !prev)}
+        />
+      ) : currentScreen === 'MATH_GAME_PLAY' ? (
+        mathGameMode === 'MATH_BALLOON_POP' ? (
+          <MathBalloonPopStage
+            soundEnabled={soundEnabled}
+            onToggleSound={() => setSoundEnabled((prev) => !prev)}
+            onBack={() => setCurrentScreen('MATH_MENU')}
+          />
+        ) : mathGameMode === 'MATH_FILL_BLANK' ? (
+          <MathFillInBlankStage
+            soundEnabled={soundEnabled}
+            onToggleSound={() => setSoundEnabled((prev) => !prev)}
+            onBack={() => setCurrentScreen('MATH_MENU')}
+          />
+        ) : (
+          <MathClickNumberStage
+            soundEnabled={soundEnabled}
+            onToggleSound={() => setSoundEnabled((prev) => !prev)}
+            onBack={() => setCurrentScreen('MATH_MENU')}
+          />
+        )
       ) : currentScreen === 'HINDI_GAME_PLAY' ? (
         hindiGameMode === 'HINDI_BALLOON_POP' ? (
           <HindiBalloonPopStage
@@ -200,6 +239,8 @@ export default function App() {
           soundEnabled={soundEnabled}
           onHome={() => setCurrentScreen('ENGLISH_MENU')}
           onToggleSound={() => setSoundEnabled((prev) => !prev)}
+          initialPageIndex={2}
+          defaultLanguage="ENGLISH"
         />
       ) : gameMode === 'MATCH_WORD' ? (
         <MatchWordStage

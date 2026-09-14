@@ -92,7 +92,7 @@ class SoundManager {
       this.currentAudio = null;
     }
 
-    // Try primary MP3 / WAV from static audio or API proxy
+    // Try primary MP3 from public/audio
     const audioUrl = `/audio/${key}.mp3`;
     const audio = new Audio(audioUrl);
     this.currentAudio = audio;
@@ -100,20 +100,10 @@ class SoundManager {
     const playPromise = audio.play();
     if (playPromise !== undefined) {
       playPromise.catch((_err) => {
-        // Fallback 1: Try .wav format
-        const wavAudio = new Audio(`/audio/${key}.wav`);
-        this.currentAudio = wavAudio;
-        wavAudio.play().catch(() => {
-          // Fallback 2: Try /api/tts endpoint
-          const apiAudio = new Audio(`/api/tts?key=${encodeURIComponent(key)}&text=${encodeURIComponent(fallbackHindiText || '')}`);
-          this.currentAudio = apiAudio;
-          apiAudio.play().catch(() => {
-            // Fallback 3: Web Speech API synthesis
-            if (fallbackHindiText) {
-              this.speakWithTeacherVoice(fallbackHindiText);
-            }
-          });
-        });
+        // Fallback: If audio file is blocked or unavailable on mobile, use Web Speech synthesis immediately
+        if (fallbackHindiText) {
+          this.speakWithTeacherVoice(fallbackHindiText);
+        }
       });
     }
   }
@@ -164,7 +154,7 @@ class SoundManager {
     return { voice: voices[0] || null, hasHindi: false, lang: voices[0]?.lang || 'en-US' };
   }
 
-  // Web Speech Fallback Method
+  // Web Speech Fallback Method - Optimized for Android phones
   private speakWithTeacherVoice(hindiText: string, rate = 0.88, pitch = 1.15) {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
 
@@ -182,9 +172,13 @@ class SoundManager {
       utterance.pitch = pitch;
       utterance.volume = 1.0;
 
-      this.activeUtterances.add(utterance);
+      // Hold reference on window to prevent Android Chrome V8 garbage collection mid-speech
+      const win = window as unknown as { __activeUtterances?: Set<SpeechSynthesisUtterance> };
+      win.__activeUtterances = win.__activeUtterances || new Set();
+      win.__activeUtterances.add(utterance);
+
       const cleanup = () => {
-        this.activeUtterances.delete(utterance);
+        win.__activeUtterances?.delete(utterance);
       };
       utterance.onend = cleanup;
       utterance.onerror = cleanup;
@@ -193,9 +187,6 @@ class SoundManager {
         window.speechSynthesis.resume();
       }
 
-      if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
-        window.speechSynthesis.cancel();
-      }
       window.speechSynthesis.speak(utterance);
     } catch {
       // Ignore
@@ -346,6 +337,66 @@ class SoundManager {
     if (!soundEnabled) return;
     this.playVictory(soundEnabled);
     this.playAudio('hindi_greeting', 'नमस्ते बच्चों! चलो मिलकर हिंदी वर्णमाला सीखते हैं!');
+  }
+
+  // Math Greeting for Math Menu
+  speakMathGreeting(soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playVictory(soundEnabled);
+    this.playAudio('math_greeting', 'नमस्ते बच्चों! चलो मिलकर 1 से 50 तक गणित और गिनती सीखते हैं!');
+  }
+
+  // Math Number Click: speaks e.g. "1, एक! बहुत अच्छे!"
+  speakMathNumberClick(n: number, soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playSnap(soundEnabled);
+    const HINDI_NUMBERS = [
+      '', 'एक', 'दो', 'तीन', 'चार', 'पाँच', 'छह', 'सात', 'आठ', 'नौ', 'दस',
+      'ग्यारह', 'बारह', 'तेरह', 'चौदह', 'पंद्रह', 'सोलह', 'सत्रह', 'अठारह', 'उन्नीस', 'बीस',
+      'इक्कीस', 'बाईस', 'तेईस', 'चौबीस', 'पच्चीस', 'छब्बीस', 'सत्ताईस', 'अट्ठाइस', 'उनतीस', 'तीस',
+      'इकतीस', 'बत्तीस', 'तैंतीस', 'चौंतीस', 'पैंतीस', 'छत्तीस', 'सैंतीस', 'अड़तीस', 'उनतालीस', 'चालीस',
+      'इकतालीस', 'बयालीस', 'तैंतालीस', 'चवालीस', 'पैंतालीस', 'छियालीस', 'सैंतालीस', 'अड़तालीस', 'उनचास', 'पचास'
+    ];
+    const hName = HINDI_NUMBERS[n] || String(n);
+    this.playAudio(`math_num_${n}`, `${n}, ${hName}! बहुत अच्छे!`);
+  }
+
+  // Math Target Number Prompt for Balloon Pop
+  speakMathTargetNumber(n: number, soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playAudio(`math_target_${n}`, `बच्चों, अब नंबर ${n} वाला गुब्बारा फोड़ो!`);
+  }
+
+  // Math Balloon Pop Feedback
+  speakMathBalloonPop(n: number, isCorrect: boolean, targetN?: number, soundEnabled = true) {
+    if (!soundEnabled) return;
+    if (isCorrect) {
+      this.playPop(soundEnabled);
+      this.playAudio(`math_pop_${n}`, `शाबाश! नंबर ${n} वाला गुब्बारा फूट गया!`);
+    } else {
+      this.playFreezeError(soundEnabled);
+      this.playAudio('math_wrong', `ओहो! यह गलत गुब्बारा है, नंबर ${targetN || 'सही'} वाला गुब्बारा फोड़ो!`);
+    }
+  }
+
+  // Math Fill in the Blank Drop / Click
+  speakMathNumberDrop(curr: number, prev?: number, soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playSnap(soundEnabled);
+    if (prev !== undefined && prev !== curr) {
+      this.playAudio(`math_after_${prev}_${curr}`, `${prev} के बाद ${curr}, बिल्कुल सही!`);
+    } else if (curr > 1) {
+      this.playAudio(`math_after_${curr - 1}_${curr}`, `${curr - 1} के बाद ${curr}, बिल्कुल सही!`);
+    } else {
+      this.playAudio('math_first_1', '1, एक! बिल्कुल सही!');
+    }
+  }
+
+  // Math Wrong Answer
+  speakMathWrongAnswer(soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playFreezeError(soundEnabled);
+    this.playAudio('math_wrong', 'ओहो! यह गलत संख्या है, फिर से कोशिश करो बच्चों!');
   }
 
   // 7. Match The Word: Correct Pair Matched (e.g. "A for Apple", "B for Ball")
