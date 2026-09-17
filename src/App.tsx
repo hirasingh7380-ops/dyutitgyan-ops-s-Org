@@ -15,6 +15,7 @@ import { MathHomeScreen } from './components/MathHomeScreen';
 import { MathClickNumberStage } from './components/MathClickNumberStage';
 import { MathFillInBlankStage } from './components/MathFillInBlankStage';
 import { MathBalloonPopStage } from './components/MathBalloonPopStage';
+import { MathMatchWordStage } from './components/MathMatchWordStage';
 import { FillInTheBlankStage } from './components/FillInTheBlankStage';
 import { BalloonPopStage } from './components/BalloonPopStage';
 import { ClickLetterStage } from './components/ClickLetterStage';
@@ -186,6 +187,12 @@ export default function App() {
             soundEnabled={soundEnabled}
             onToggleSound={() => setSoundEnabled((prev) => !prev)}
             onBack={() => setCurrentScreen('MATH_MENU')}
+          />
+        ) : mathGameMode === 'MATH_MATCH_WORD' ? (
+          <MathMatchWordStage
+            soundEnabled={soundEnabled}
+            onToggleSound={() => setSoundEnabled((prev) => !prev)}
+            onHome={() => setCurrentScreen('MATH_MENU')}
           />
         ) : (
           <MathClickNumberStage

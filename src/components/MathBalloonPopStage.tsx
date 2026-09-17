@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, Trophy, ArrowLeft, Volume2, VolumeX, ArrowRight } from 'lucide-react';
+import { Trophy, ArrowLeft, Volume2, VolumeX, ArrowRight, Mic } from 'lucide-react';
 import { sounds } from '../utils/audio';
 
 interface MathBalloonPopStageProps {
@@ -12,31 +12,65 @@ interface MathBalloonPopStageProps {
 interface BalloonItem {
   id: string;
   num: number;
-  xBase: number; // percentage horizontally (5 - 85)
+  xBase: number; // percentage horizontally (6 - 84)
   y: number; // percentage from bottom (-20 to 110)
   speed: number;
   phase: number;
-  colorBg: string;
-  colorBorder: string;
+  paletteIndex: number;
   size: number;
 }
 
-const HINDI_NUMBER_NAMES: Record<number, string> = {
-  1: 'एक', 2: 'दो', 3: 'तीन', 4: 'चार', 5: 'पाँच', 6: 'छह', 7: 'सात', 8: 'आठ', 9: 'नौ', 10: 'दस',
-  11: 'ग्यारह', 12: 'बारह', 13: 'तेरह', 14: 'चौदह', 15: 'पंद्रह', 16: 'सोलह', 17: 'सत्रह', 18: 'अठारह', 19: 'उन्नीस', 20: 'बीस',
-  21: 'इक्कीस', 22: 'बाईस', 23: 'तेईस', 24: 'चौबीस', 25: 'पच्चीस', 26: 'छब्बीस', 27: 'सत्ताईस', 28: 'अट्ठाइस', 29: 'उनतीस', 30: 'तीस',
-  31: 'इकतीस', 32: 'बत्तीस', 33: 'तैंतीस', 34: 'चौंतीस', 35: 'पैंतीस', 36: 'छत्तीस', 37: 'सैंतीस', 38: 'अड़तीस', 39: 'उनतालीस', 40: 'चालीस',
-  41: 'इकतालीस', 42: 'बयालीस', 43: 'तैंतालीस', 44: 'चवालीस', 45: 'पैंतालीस', 46: 'छियालीस', 47: 'सैंतालीस', 48: 'अड़तालीस', 49: 'उनचास', 50: 'पचास'
-};
-
-const BALLOON_PALETTES = [
-  { bg: 'from-red-500 to-rose-600', border: 'border-red-300' },
-  { bg: 'from-amber-500 to-orange-600', border: 'border-amber-300' },
-  { bg: 'from-emerald-500 to-green-600', border: 'border-emerald-300' },
-  { bg: 'from-cyan-500 to-blue-600', border: 'border-cyan-300' },
-  { bg: 'from-blue-600 to-indigo-700', border: 'border-blue-300' },
-  { bg: 'from-purple-500 to-violet-700', border: 'border-purple-300' },
-  { bg: 'from-pink-500 to-rose-600', border: 'border-pink-300' },
+// Realistic 3D Latex Balloon Themes
+const REALISTIC_BALLOON_THEMES = [
+  {
+    name: 'Ruby Red',
+    bodyGradient: 'radial-gradient(circle at 35% 28%, #ff6b81 0%, #ee1d36 45%, #9b0014 90%)',
+    knotColor: '#9b0014',
+    shadowColor: 'rgba(155, 0, 20, 0.45)',
+    highlightColor: 'rgba(255, 255, 255, 0.75)',
+  },
+  {
+    name: 'Ocean Blue',
+    bodyGradient: 'radial-gradient(circle at 35% 28%, #68d8d6 0%, #079992 45%, #004d40 90%)',
+    knotColor: '#004d40',
+    shadowColor: 'rgba(0, 77, 64, 0.45)',
+    highlightColor: 'rgba(255, 255, 255, 0.75)',
+  },
+  {
+    name: 'Royal Purple',
+    bodyGradient: 'radial-gradient(circle at 35% 28%, #c56cf0 0%, #8854d0 45%, #3c1361 90%)',
+    knotColor: '#3c1361',
+    shadowColor: 'rgba(60, 19, 97, 0.45)',
+    highlightColor: 'rgba(255, 255, 255, 0.75)',
+  },
+  {
+    name: 'Bright Gold',
+    bodyGradient: 'radial-gradient(circle at 35% 28%, #ffeaa7 0%, #fdcb6e 45%, #d35400 90%)',
+    knotColor: '#d35400',
+    shadowColor: 'rgba(211, 84, 0, 0.45)',
+    highlightColor: 'rgba(255, 255, 255, 0.85)',
+  },
+  {
+    name: 'Emerald Green',
+    bodyGradient: 'radial-gradient(circle at 35% 28%, #7bed9f 0%, #2ed573 45%, #0e6230 90%)',
+    knotColor: '#0e6230',
+    shadowColor: 'rgba(14, 98, 48, 0.45)',
+    highlightColor: 'rgba(255, 255, 255, 0.75)',
+  },
+  {
+    name: 'Hot Pink',
+    bodyGradient: 'radial-gradient(circle at 35% 28%, #ff9ff3 0%, #f368e0 45%, #830065 90%)',
+    knotColor: '#830065',
+    shadowColor: 'rgba(131, 0, 101, 0.45)',
+    highlightColor: 'rgba(255, 255, 255, 0.75)',
+  },
+  {
+    name: 'Vibrant Orange',
+    bodyGradient: 'radial-gradient(circle at 35% 28%, #ffb142 0%, #ff5252 45%, #a81c1c 90%)',
+    knotColor: '#a81c1c',
+    shadowColor: 'rgba(168, 28, 28, 0.45)',
+    highlightColor: 'rgba(255, 255, 255, 0.75)',
+  },
 ];
 
 export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
@@ -46,11 +80,12 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
 }) => {
   const [rangeMode, setRangeMode] = useState<'PART1' | 'PART2' | 'ALL'>('PART1');
 
-  const activeNumbers = rangeMode === 'PART1'
-    ? Array.from({ length: 25 }, (_, i) => i + 1)
-    : rangeMode === 'PART2'
-    ? Array.from({ length: 25 }, (_, i) => i + 26)
-    : Array.from({ length: 50 }, (_, i) => i + 1);
+  const activeNumbers =
+    rangeMode === 'PART1'
+      ? Array.from({ length: 25 }, (_, i) => i + 1)
+      : rangeMode === 'PART2'
+      ? Array.from({ length: 25 }, (_, i) => i + 26)
+      : Array.from({ length: 50 }, (_, i) => i + 1);
 
   const [targetNumber, setTargetNumber] = useState<number>(() => {
     return activeNumbers[Math.floor(Math.random() * activeNumbers.length)];
@@ -62,9 +97,20 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
     { id: string; x: number; y: number; text: string; isCorrect: boolean }[]
   >([]);
 
-  // Speak target number whenever target changes
+  // CRITICAL REQUIREMENT:
+  // 1. NO written sentence on top like "number 25 wala gubbara fodo"
+  // 2. Only the teacher speaks it!
+  // 3. If user has not popped the balloon, teacher repeats after every 10 seconds!
   useEffect(() => {
+    // Speak immediately when target changes
     sounds.speakMathTargetNumber(targetNumber, soundEnabled);
+
+    // Repeat voice prompt every 10 seconds if user hasn't popped it
+    const timer = setInterval(() => {
+      sounds.speakMathTargetNumber(targetNumber, soundEnabled);
+    }, 10000);
+
+    return () => clearInterval(timer);
   }, [targetNumber, soundEnabled]);
 
   // Initial balloon setup
@@ -86,7 +132,7 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
           y: b.y + b.speed,
         }));
 
-        const remaining = updated.filter((b) => b.y < 112);
+        const remaining = updated.filter((b) => b.y < 115);
 
         while (remaining.length < 7) {
           remaining.push(
@@ -110,8 +156,8 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
       chosenNum = otherNumbers[Math.floor(Math.random() * otherNumbers.length)] || currentTarget;
     }
 
-    const palette = BALLOON_PALETTES[Math.floor(Math.random() * BALLOON_PALETTES.length)];
-    const randomXBase = 8 + Math.floor(Math.random() * 76);
+    const paletteIdx = Math.floor(Math.random() * REALISTIC_BALLOON_THEMES.length);
+    const randomXBase = 7 + Math.floor(Math.random() * 78);
 
     return {
       id: `m-balloon-${seedKey}-${Math.random()}`,
@@ -120,9 +166,8 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
       y: startY,
       speed: 0.38 + Math.random() * 0.3,
       phase: Math.random() * Math.PI * 2,
-      colorBg: palette.bg,
-      colorBorder: palette.border,
-      size: 78 + Math.floor(Math.random() * 24),
+      paletteIndex: paletteIdx,
+      size: 84 + Math.floor(Math.random() * 22),
     };
   }
 
@@ -136,16 +181,15 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
 
     if (isCorrect) {
       setScore((prev) => prev + 10);
-      // Switch to next target number after successful pop
       setTimeout(() => {
-        const remaining = activeNumbers.filter((n) => n !== targetNumber);
-        const nextTarget = remaining[Math.floor(Math.random() * remaining.length)] || activeNumbers[0];
+        // Pick next random target from current active range
+        const nextCandidates = activeNumbers.filter((n) => n !== targetNumber);
+        const nextTarget = nextCandidates[Math.floor(Math.random() * nextCandidates.length)] || activeNumbers[0];
         setTargetNumber(nextTarget);
-      }, 700);
-    } else {
-      setScore((prev) => Math.max(0, prev - 10));
+      }, 900);
     }
 
+    // Trigger visual pop effect
     const effectId = `pop-${Date.now()}-${Math.random()}`;
     setPopEffects((prev) => [
       ...prev,
@@ -153,68 +197,72 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
         id: effectId,
         x: currentX,
         y: balloon.y,
-        text: isCorrect ? '+10' : '-10',
+        text: isCorrect ? '+10' : '✕',
         isCorrect,
       },
     ]);
 
     setTimeout(() => {
-      setPopEffects((prev) => prev.filter((p) => p.id !== effectId));
+      setPopEffects((prev) => prev.filter((item) => item.id !== effectId));
     }, 800);
 
-    setBalloons((prev) => {
-      const filtered = prev.filter((b) => b.id !== balloon.id);
-      filtered.push(createRandomBalloon(Date.now(), targetNumber, -25 - Math.random() * 15));
-      return filtered;
-    });
-  };
-
-  const handleNextTarget = () => {
-    sounds.playVictory(soundEnabled);
-    const remaining = activeNumbers.filter((n) => n !== targetNumber);
-    const nextTarget = remaining[Math.floor(Math.random() * remaining.length)] || activeNumbers[0];
-    setTargetNumber(nextTarget);
+    // Remove popped balloon
+    setBalloons((prev) => prev.filter((b) => b.id !== balloon.id));
   };
 
   const handleRangeChange = (mode: 'PART1' | 'PART2' | 'ALL') => {
     sounds.playSnap(soundEnabled);
     setRangeMode(mode);
-    const newNumbers = mode === 'PART1'
-      ? Array.from({ length: 25 }, (_, i) => i + 1)
-      : mode === 'PART2'
-      ? Array.from({ length: 25 }, (_, i) => i + 26)
-      : Array.from({ length: 50 }, (_, i) => i + 1);
+    const newNumbers =
+      mode === 'PART1'
+        ? Array.from({ length: 25 }, (_, i) => i + 1)
+        : mode === 'PART2'
+        ? Array.from({ length: 25 }, (_, i) => i + 26)
+        : Array.from({ length: 50 }, (_, i) => i + 1);
 
     setTargetNumber(newNumbers[Math.floor(Math.random() * newNumbers.length)]);
+  };
+
+  // Re-play voice on demand
+  const handleRepeatVoice = () => {
+    sounds.speakMathTargetNumber(targetNumber, soundEnabled);
   };
 
   return (
     <div
       id="math-balloon-stage-container"
-      className="relative w-full h-full flex flex-col items-center justify-between p-1.5 sm:p-3 text-white select-none overflow-hidden min-h-0 bg-gradient-to-b from-sky-900/60 via-indigo-950/70 to-slate-950"
+      className="relative w-full h-full flex flex-col items-center justify-between p-1.5 sm:p-3 text-white select-none overflow-hidden min-h-0 bg-gradient-to-b from-[#0c2461] via-[#1e3799] to-[#0a1532]"
     >
-      {/* Top Header Bar */}
+      {/* Cartoon Sky Cloud Backdrops */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-30">
+        <div className="absolute top-8 left-10 w-40 h-16 bg-white rounded-full blur-sm" />
+        <div className="absolute top-16 right-16 w-52 h-20 bg-white rounded-full blur-sm" />
+        <div className="absolute top-44 left-1/3 w-64 h-24 bg-white/60 rounded-full blur-md" />
+      </div>
+
+      {/* TOP HEADER BAR (Clean, no long text sentences, ONLY teacher voice prompt & game controls) */}
       <div
         id="math-balloon-header"
-        className="w-full flex items-center justify-between z-30 max-w-5xl px-1 sm:px-2 shrink-0 gap-1 sm:gap-2 mb-1"
+        className="w-full flex items-center justify-between z-30 max-w-5xl px-1 sm:px-3 shrink-0 gap-2 mb-1"
       >
+        {/* Left: Back button */}
         <button
           onClick={() => {
             sounds.playPop(soundEnabled);
             onBack();
           }}
-          className="px-2.5 sm:px-3 py-1 rounded-full bg-black/60 hover:bg-black/80 border border-white/30 text-yellow-300 flex items-center gap-1 text-xs sm:text-sm font-black active:scale-95 transition-all shadow-md cursor-pointer shrink-0"
+          className="px-3 py-1 rounded-full bg-black/60 hover:bg-black/80 border border-white/30 text-yellow-300 flex items-center gap-1 text-xs sm:text-sm font-black active:scale-95 transition-all shadow-md cursor-pointer shrink-0"
           title="Back to Math Menu"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>वापस (Back)</span>
+          <span>वापस</span>
         </button>
 
-        {/* Range Tabs */}
+        {/* Center: Range Tabs (1–25, 26–50, 1–50) */}
         <div className="flex items-center bg-black/70 p-0.5 rounded-full border border-white/30 shrink-0">
           <button
             onClick={() => handleRangeChange('PART1')}
-            className={`px-2.5 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-black transition-all cursor-pointer ${
+            className={`px-3 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-black transition-all cursor-pointer ${
               rangeMode === 'PART1'
                 ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-yellow-300 shadow-md ring-2 ring-yellow-400'
                 : 'text-white/80 hover:text-white'
@@ -224,7 +272,7 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
           </button>
           <button
             onClick={() => handleRangeChange('PART2')}
-            className={`px-2.5 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-black transition-all cursor-pointer ${
+            className={`px-3 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-black transition-all cursor-pointer ${
               rangeMode === 'PART2'
                 ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-yellow-300 shadow-md ring-2 ring-yellow-400'
                 : 'text-white/80 hover:text-white'
@@ -234,7 +282,7 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
           </button>
           <button
             onClick={() => handleRangeChange('ALL')}
-            className={`px-2.5 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-black transition-all cursor-pointer ${
+            className={`px-3 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-black transition-all cursor-pointer ${
               rangeMode === 'ALL'
                 ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-yellow-300 shadow-md ring-2 ring-yellow-400'
                 : 'text-white/80 hover:text-white'
@@ -244,9 +292,21 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
           </button>
         </div>
 
-        {/* Score & Sound */}
+        {/* Right: Repeat Teacher Voice button + Score + Sound Toggle */}
         <div className="flex items-center gap-1.5 shrink-0">
-          <div className="flex items-center gap-1 bg-amber-500/90 text-slate-950 font-black px-2.5 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm shadow-md border border-yellow-200">
+          {/* Pulsing Teacher Voice Speaker button to hear instruction anytime */}
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
+            onClick={handleRepeatVoice}
+            className="flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-amber-500 text-blue-950 font-black px-3 py-1 rounded-full text-xs sm:text-sm shadow-lg border-2 border-white ring-2 ring-yellow-300 cursor-pointer animate-pulse"
+            title="शिक्षिका की आवाज दोबारा सुनें"
+          >
+            <Mic className="w-3.5 h-3.5 fill-blue-950" />
+            <span className="hidden sm:inline">आवाज सुनें</span>
+          </motion.button>
+
+          <div className="flex items-center gap-1 bg-amber-500 text-slate-950 font-black px-2.5 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm shadow-md border border-yellow-200">
             <Trophy className="w-3.5 h-3.5 fill-slate-950 text-slate-950" />
             <span>{score}</span>
           </div>
@@ -256,46 +316,9 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
             className="p-1 sm:p-1.5 rounded-full bg-black/60 hover:bg-black/80 border border-white/30 text-white active:scale-95 transition-transform cursor-pointer"
             title="Toggle Sound"
           >
-            {soundEnabled ? (
-              <Volume2 className="w-4 h-4 text-yellow-300" />
-            ) : (
-              <VolumeX className="w-4 h-4 text-red-400" />
-            )}
+            {soundEnabled ? <Volume2 className="w-4 h-4 text-yellow-300" /> : <VolumeX className="w-4 h-4 text-red-400" />}
           </button>
         </div>
-      </div>
-
-      {/* Prominent Target Number Banner in Header */}
-      <div className="w-full max-w-5xl flex items-center justify-between px-2 py-0.5 z-30 shrink-0">
-        <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-500 text-blue-950 px-3.5 sm:px-5 py-1 sm:py-1.5 rounded-full font-black text-sm sm:text-base shadow-xl border-2 border-white ring-2 ring-yellow-300">
-          <Sparkles className="w-4 h-4 fill-blue-950 animate-spin" />
-          <span>लक्ष्य:</span>
-          <span className="text-xl sm:text-2xl font-black underline decoration-blue-950">
-            नंबर {targetNumber}
-          </span>
-          <span className="text-xs sm:text-sm font-extrabold opacity-90">
-            ({HINDI_NUMBER_NAMES[targetNumber]})
-          </span>
-          <span>वाला गुब्बारा फोड़ो!</span>
-
-          {/* Audio Replay Button */}
-          <button
-            onClick={() => sounds.speakMathTargetNumber(targetNumber, soundEnabled)}
-            className="ml-1 p-1 bg-blue-950/20 hover:bg-blue-950/40 rounded-full transition-all cursor-pointer"
-            title="Repeat Voice"
-          >
-            <Volume2 className="w-3.5 h-3.5 text-blue-950" />
-          </button>
-        </div>
-
-        {/* Skip to Next Target */}
-        <button
-          onClick={handleNextTarget}
-          className="px-3 py-1 rounded-full bg-black/60 hover:bg-black/80 border border-white/30 text-yellow-300 text-xs font-black flex items-center gap-1 shadow-md active:scale-95 transition-all cursor-pointer"
-        >
-          <span>अगला अंक</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
       </div>
 
       {/* Balloons Sky Playfield */}
@@ -305,7 +328,9 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
       >
         {balloons.map((balloon) => {
           const x = balloon.xBase + Math.sin(balloon.y * 0.08 + balloon.phase) * 3.5;
-          const isTarget = balloon.num === targetNumber;
+          const theme = REALISTIC_BALLOON_THEMES[balloon.paletteIndex % REALISTIC_BALLOON_THEMES.length];
+          const balloonWidth = balloon.size;
+          const balloonHeight = balloon.size * 1.25;
 
           return (
             <div
@@ -315,40 +340,75 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
               style={{
                 left: `${x}%`,
                 bottom: `${balloon.y}%`,
-                width: `${balloon.size}px`,
-                height: `${balloon.size * 1.22}px`,
-                transform: `translateX(-50%) rotate(${Math.sin(balloon.phase + balloon.y * 0.05) * 6}deg)`,
+                width: `${balloonWidth}px`,
+                height: `${balloonHeight + 36}px`, // room for knot + string
+                transform: `translateX(-50%) rotate(${Math.sin(balloon.phase + balloon.y * 0.05) * 5}deg)`,
               }}
-              className="absolute cursor-pointer select-none touch-manipulation transition-transform active:scale-90 flex flex-col items-center justify-center z-10"
+              className="absolute cursor-pointer select-none touch-manipulation transition-transform active:scale-90 flex flex-col items-center justify-start z-10"
             >
-              {/* Balloon Body */}
+              {/* REALISTIC 3D LATEX BALLOON BODY */}
               <div
-                className={`relative w-full h-full rounded-[50%_50%_50%_50%/40%_40%_60%_60%] bg-gradient-to-br ${balloon.colorBg} border-2 ${balloon.colorBorder} shadow-2xl flex flex-col items-center justify-center ${
-                  isTarget ? 'ring-2 ring-yellow-300' : ''
-                }`}
+                style={{
+                  width: `${balloonWidth}px`,
+                  height: `${balloonHeight}px`,
+                  background: theme.bodyGradient,
+                  boxShadow: `inset -8px -10px 18px rgba(0,0,0,0.5), inset 6px 8px 16px rgba(255,255,255,0.45), 0 12px 24px ${theme.shadowColor}`,
+                }}
+                className="relative rounded-[50%_50%_50%_50%/40%_40%_60%_60%] flex flex-col items-center justify-center"
               >
-                {/* Shiny Highlight */}
-                <div className="absolute top-2 left-3 w-3 h-5 bg-white/40 rounded-full rotate-[-25deg]" />
+                {/* 1. Curved Primary Gloss Reflection (Top-Left 3D specular highlight) */}
+                <div
+                  style={{
+                    background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 75%)',
+                  }}
+                  className="absolute top-2.5 left-3 w-5 h-8 rounded-full rotate-[-30deg] pointer-events-none"
+                />
 
-                {/* Number Display */}
-                <span className="text-2xl sm:text-3xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] leading-none">
+                {/* 2. Secondary Diffuse Rim Reflection (Bottom-Right glow) */}
+                <div
+                  style={{
+                    background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%)',
+                  }}
+                  className="absolute bottom-3 right-3 w-4 h-6 rounded-full rotate-[40deg] pointer-events-none"
+                />
+
+                {/* 3. Number Display - Big, bold, clear white with strong depth */}
+                <span
+                  className="text-3xl sm:text-4xl font-black text-white pointer-events-none leading-none tracking-tight"
+                  style={{
+                    textShadow: '0 2px 5px rgba(0,0,0,0.7), 0 1px 2px rgba(0,0,0,0.9)',
+                  }}
+                >
                   {balloon.num}
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-extrabold text-yellow-200 drop-shadow mt-0.5 leading-none">
-                  {HINDI_NUMBER_NAMES[balloon.num]}
-                </span>
 
-                {/* Balloon Tie Knot */}
-                <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-2.5 h-2 bg-inherit border-b border-black/30 rotate-45" />
+                {/* 4. Realistic Balloon Tie Knot at bottom tip */}
+                <div
+                  style={{
+                    backgroundColor: theme.knotColor,
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.4)',
+                  }}
+                  className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3.5 h-3 rounded-b-sm border-t border-black/20"
+                />
               </div>
 
-              {/* Balloon String */}
-              <div className="w-[1.5px] h-8 sm:h-10 bg-white/40 origin-top animate-pulse" />
+              {/* 5. Realistic Wavy Dangling Balloon String (SVG curve) */}
+              <div className="relative -mt-0.5 w-6 h-10 overflow-visible pointer-events-none">
+                <svg className="w-full h-full overflow-visible" viewBox="0 0 24 40">
+                  <path
+                    d="M 12,0 Q 7,8 15,16 Q 8,24 13,32 Q 16,36 12,40"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.7)"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
             </div>
           );
         })}
 
-        {/* Pop Effects (+10 or -10) */}
+        {/* Floating Pop Effects */}
         <AnimatePresence>
           {popEffects.map((effect) => (
             <motion.div
@@ -360,7 +420,7 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
                 left: `${effect.x}%`,
                 bottom: `${effect.y}%`,
               }}
-              className={`absolute -translate-x-1/2 pointer-events-none z-40 font-black text-xl sm:text-2xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] ${
+              className={`absolute -translate-x-1/2 pointer-events-none z-40 font-black text-2xl sm:text-3xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] ${
                 effect.isCorrect ? 'text-yellow-300' : 'text-red-400'
               }`}
             >
@@ -370,9 +430,10 @@ export const MathBalloonPopStage: React.FC<MathBalloonPopStageProps> = ({
         </AnimatePresence>
       </div>
 
-      {/* Footer Info Prompt */}
-      <div className="w-full text-center text-[10px] sm:text-xs text-blue-200/80 z-20 py-0.5 shrink-0">
-        लक्ष्य संख्या वाला गुब्बारा छूकर फोड़ें! +10 अंक पाएं!
+      {/* Subtle bottom footer info */}
+      <div className="w-full max-w-5xl flex items-center justify-between px-2 py-0.5 z-20 text-[10px] sm:text-xs text-white/70">
+        <span>शिक्षिका की आवाज सुनकर सही गुब्बारा फोड़ें!</span>
+        <span>10 सेकंड में आवाज दोहराई जाएगी</span>
       </div>
     </div>
   );

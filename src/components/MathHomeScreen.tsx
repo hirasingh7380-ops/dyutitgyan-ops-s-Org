@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Volume2, VolumeX, Sparkles, ArrowLeft, Trophy, MousePointerClick, Hash } from 'lucide-react';
+import { Play, Volume2, VolumeX, Sparkles, ArrowLeft, Trophy, MousePointerClick, Hash, GitCommit } from 'lucide-react';
 import { motion } from 'motion/react';
 import { sounds } from '../utils/audio';
 import { MathGameMode } from '../types';
@@ -36,7 +36,7 @@ export const MathHomeScreen: React.FC<MathHomeScreenProps> = ({
       className="relative w-full h-full flex flex-col items-center justify-between p-2 sm:p-4 text-white select-none overflow-y-auto overflow-x-hidden min-h-0"
     >
       {/* Top Bar with Sound Toggle & Subjects Back */}
-      <div id="math-top-bar" className="w-full flex items-center justify-between z-20 max-w-5xl px-1 sm:px-2 shrink-0 mb-1">
+      <div id="math-top-bar" className="w-full flex items-center justify-between z-20 max-w-6xl px-1 sm:px-2 shrink-0 mb-1">
         <div className="flex items-center gap-1.5 sm:gap-2">
           {onBack && (
             <button
@@ -54,7 +54,7 @@ export const MathHomeScreen: React.FC<MathHomeScreenProps> = ({
 
           <div className="flex items-center gap-1 bg-black/60 px-2.5 sm:px-3 py-1 rounded-full border border-white/20">
             <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-300" />
-            <span className="text-[11px] sm:text-sm font-bold text-yellow-300">गणित: 3 खेल (1 से 50)</span>
+            <span className="text-[11px] sm:text-sm font-bold text-yellow-300">गणित: 4 खेल (1 से 50)</span>
           </div>
 
           <div className="hidden sm:flex items-center gap-1.5 bg-blue-950/70 px-2.5 py-1 rounded-full border border-blue-400/50 text-blue-200 text-xs font-medium">
@@ -82,20 +82,20 @@ export const MathHomeScreen: React.FC<MathHomeScreenProps> = ({
       </div>
 
       {/* Main Home Screen Hero Content */}
-      <div id="math-hero-content" className="my-auto flex flex-col items-center text-center z-20 max-w-5xl w-full px-1 sm:px-2 py-1">
+      <div id="math-hero-content" className="my-auto flex flex-col items-center text-center z-20 max-w-6xl w-full px-1 sm:px-2 py-0.5">
         {/* Main Logo Blocks: 1, 2, 3, 50 */}
         <div className="flex items-center gap-1 sm:gap-2 mb-0.5 sm:mb-1">
-          <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-blue-600 border-2 border-white flex items-center justify-center font-black text-yellow-300 text-base sm:text-2xl shadow-md">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-600 border-2 border-white flex items-center justify-center font-black text-yellow-300 text-base sm:text-xl shadow-md">
             1
           </div>
-          <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-emerald-600 border-2 border-white flex items-center justify-center font-black text-white text-base sm:text-2xl shadow-md">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-600 border-2 border-white flex items-center justify-center font-black text-white text-base sm:text-xl shadow-md">
             2
           </div>
-          <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-amber-500 border-2 border-white flex items-center justify-center font-black text-white text-base sm:text-2xl shadow-md">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500 border-2 border-white flex items-center justify-center font-black text-white text-base sm:text-xl shadow-md">
             3
           </div>
           <span className="text-yellow-300 text-base sm:text-xl font-black mx-0.5">...</span>
-          <div className="w-10 h-8 sm:w-13 sm:h-11 rounded-xl sm:rounded-2xl bg-purple-600 border-2 border-white flex items-center justify-center font-black text-yellow-300 text-sm sm:text-xl shadow-md">
+          <div className="w-10 h-8 sm:w-12 sm:h-10 rounded-xl bg-purple-600 border-2 border-white flex items-center justify-center font-black text-yellow-300 text-sm sm:text-lg shadow-md">
             50
           </div>
         </div>
@@ -104,39 +104,39 @@ export const MathHomeScreen: React.FC<MathHomeScreenProps> = ({
           गणित खेल (Math 1–50)
         </h1>
         <p className="text-xs sm:text-sm font-semibold text-blue-100 drop-shadow mt-0.5 max-w-xl">
-          1 से 50 तक संख्याएं सीखें, खाली स्थान भरें और रंग-बिरंगे गुब्बारे फोड़ें!
+          1 से 50 तक संख्याएं सीखें, खाली स्थान भरें, शब्द मिलाएं और गुब्बारे फोड़ें!
         </p>
 
-        {/* 3 Game Modes Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4 w-full max-w-4xl mt-3 sm:mt-5">
+        {/* 4 Game Modes Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3.5 w-full max-w-5xl mt-2.5 sm:mt-4">
           {/* Card 1: अंक पहचान (1 - 50 Click Number Game) */}
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => handleSelectMode('MATH_CLICK_NUMBER')}
-            className="group relative cursor-pointer bg-gradient-to-br from-blue-700/90 to-indigo-900/90 backdrop-blur-md border-2 sm:border-3 border-blue-400/80 hover:border-yellow-300 rounded-2xl p-3 sm:p-4 text-left shadow-xl transition-all flex flex-col justify-between"
+            className="group relative cursor-pointer bg-gradient-to-br from-blue-700/90 to-indigo-900/90 backdrop-blur-md border-2 sm:border-3 border-blue-400/80 hover:border-yellow-300 rounded-2xl p-2.5 sm:p-3.5 text-left shadow-xl transition-all flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="bg-yellow-400 text-blue-950 text-[10px] sm:text-xs font-black px-2 py-0.5 rounded-full shadow-sm">
-                1–25 और 26–50
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="bg-yellow-400 text-blue-950 text-[9px] sm:text-[11px] font-black px-2 py-0.5 rounded-full shadow-sm">
+                1–25 व 26–50
               </span>
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-500/40 border border-blue-300/50 flex items-center justify-center text-yellow-300">
-                <MousePointerClick className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-blue-500/40 border border-blue-300/50 flex items-center justify-center text-yellow-300">
+                <MousePointerClick className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
 
             <div>
-              <h2 className="text-base sm:text-lg font-black text-white group-hover:text-yellow-300 transition-colors flex items-center gap-1.5">
-                <span>अंक पहचान (1–50)</span>
+              <h2 className="text-sm sm:text-base font-black text-white group-hover:text-yellow-300 transition-colors">
+                अंक पहचान
               </h2>
-              <p className="text-[11px] sm:text-xs text-blue-200 mt-1 line-clamp-2">
-                पेज 1 पर 1 से 25 और पेज 2 पर 26 से 50 तक हर संख्या को दबाकर बोलें और सीखें।
+              <p className="text-[10px] sm:text-[11px] text-blue-200 mt-0.5 line-clamp-2">
+                1 से 50 तक हर अंक को दबाकर बोलें और पहचानें।
               </p>
             </div>
 
-            <div className="mt-3 pt-2 border-t border-blue-400/30 flex items-center justify-between text-xs font-bold text-yellow-300">
-              <span>शुरू करें (Play)</span>
-              <Play className="w-3.5 h-3.5 fill-yellow-300 group-hover:translate-x-1 transition-transform" />
+            <div className="mt-2 pt-1.5 border-t border-blue-400/30 flex items-center justify-between text-xs font-bold text-yellow-300">
+              <span>Play</span>
+              <Play className="w-3 h-3 fill-yellow-300 group-hover:translate-x-1 transition-transform" />
             </div>
           </motion.div>
 
@@ -145,70 +145,101 @@ export const MathHomeScreen: React.FC<MathHomeScreenProps> = ({
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => handleSelectMode('MATH_FILL_BLANK')}
-            className="group relative cursor-pointer bg-gradient-to-br from-emerald-700/90 to-teal-950/90 backdrop-blur-md border-2 sm:border-3 border-emerald-400/80 hover:border-yellow-300 rounded-2xl p-3 sm:p-4 text-left shadow-xl transition-all flex flex-col justify-between"
+            className="group relative cursor-pointer bg-gradient-to-br from-emerald-700/90 to-teal-950/90 backdrop-blur-md border-2 sm:border-3 border-emerald-400/80 hover:border-yellow-300 rounded-2xl p-2.5 sm:p-3.5 text-left shadow-xl transition-all flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="bg-yellow-400 text-emerald-950 text-[10px] sm:text-xs font-black px-2 py-0.5 rounded-full shadow-sm">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="bg-yellow-400 text-emerald-950 text-[9px] sm:text-[11px] font-black px-2 py-0.5 rounded-full shadow-sm">
                 5 स्तर (Levels)
               </span>
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-500/40 border border-emerald-300/50 flex items-center justify-center text-yellow-300">
-                <Hash className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-emerald-500/40 border border-emerald-300/50 flex items-center justify-center text-yellow-300">
+                <Hash className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
 
             <div>
-              <h2 className="text-base sm:text-lg font-black text-white group-hover:text-yellow-300 transition-colors flex items-center gap-1.5">
-                <span>खाली स्थान भरो (1–50)</span>
+              <h2 className="text-sm sm:text-base font-black text-white group-hover:text-yellow-300 transition-colors">
+                खाली स्थान भरो
               </h2>
-              <p className="text-[11px] sm:text-xs text-emerald-200 mt-1 line-clamp-2">
-                क्रम से 1 से 50 तक छूटी हुई संख्याएं पहचानकर सही जगह पर लगाएं!
+              <p className="text-[10px] sm:text-[11px] text-emerald-200 mt-0.5 line-clamp-2">
+                क्रम से 1 से 50 तक छूटी हुई संख्याएं भरें!
               </p>
             </div>
 
-            <div className="mt-3 pt-2 border-t border-emerald-400/30 flex items-center justify-between text-xs font-bold text-yellow-300">
-              <span>शुरू करें (Play)</span>
-              <Play className="w-3.5 h-3.5 fill-yellow-300 group-hover:translate-x-1 transition-transform" />
+            <div className="mt-2 pt-1.5 border-t border-emerald-400/30 flex items-center justify-between text-xs font-bold text-yellow-300">
+              <span>Play</span>
+              <Play className="w-3 h-3 fill-yellow-300 group-hover:translate-x-1 transition-transform" />
             </div>
           </motion.div>
 
-          {/* Card 3: गुब्बारा फोड़ो (1 - 50 Balloon Pop) */}
+          {/* Card 3: शब्द और अंक मिलाओ (Match The Word: 1 - 20) */}
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => handleSelectMode('MATH_MATCH_WORD')}
+            className="group relative cursor-pointer bg-gradient-to-br from-purple-700/90 to-indigo-950/90 backdrop-blur-md border-2 sm:border-3 border-purple-400/80 hover:border-yellow-300 rounded-2xl p-2.5 sm:p-3.5 text-left shadow-xl transition-all flex flex-col justify-between"
+          >
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="bg-yellow-400 text-purple-950 text-[9px] sm:text-[11px] font-black px-2 py-0.5 rounded-full shadow-sm">
+                1 से 20 (Words)
+              </span>
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-purple-500/40 border border-purple-300/50 flex items-center justify-center text-yellow-300">
+                <GitCommit className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-sm sm:text-base font-black text-white group-hover:text-yellow-300 transition-colors">
+                Match The Word
+              </h2>
+              <p className="text-[10px] sm:text-[11px] text-purple-200 mt-0.5 line-clamp-2">
+                ऊपर 5 शब्द (ONE, TWO...) और नीचे सही अंक मिलाएं।
+              </p>
+            </div>
+
+            <div className="mt-2 pt-1.5 border-t border-purple-400/30 flex items-center justify-between text-xs font-bold text-yellow-300">
+              <span>Play</span>
+              <Play className="w-3 h-3 fill-yellow-300 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </motion.div>
+
+          {/* Card 4: गुब्बारा फोड़ो (1 - 50 Balloon Pop) */}
           <motion.div
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => handleSelectMode('MATH_BALLOON_POP')}
-            className="group relative cursor-pointer bg-gradient-to-br from-amber-600/90 to-red-900/90 backdrop-blur-md border-2 sm:border-3 border-amber-400/80 hover:border-yellow-300 rounded-2xl p-3 sm:p-4 text-left shadow-xl transition-all flex flex-col justify-between"
+            className="group relative cursor-pointer bg-gradient-to-br from-amber-600/90 to-red-900/90 backdrop-blur-md border-2 sm:border-3 border-amber-400/80 hover:border-yellow-300 rounded-2xl p-2.5 sm:p-3.5 text-left shadow-xl transition-all flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="bg-yellow-400 text-red-950 text-[10px] sm:text-xs font-black px-2 py-0.5 rounded-full shadow-sm">
-                1–50 गुब्बारे
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="bg-yellow-400 text-red-950 text-[9px] sm:text-[11px] font-black px-2 py-0.5 rounded-full shadow-sm">
+                3D Real गुब्बारे
               </span>
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-500/40 border border-amber-300/50 flex items-center justify-center text-yellow-300">
-                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-amber-500/40 border border-amber-300/50 flex items-center justify-center text-yellow-300">
+                <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
 
             <div>
-              <h2 className="text-base sm:text-lg font-black text-white group-hover:text-yellow-300 transition-colors flex items-center gap-1.5">
-                <span>गुब्बारा फोड़ो (1–50)</span>
+              <h2 className="text-sm sm:text-base font-black text-white group-hover:text-yellow-300 transition-colors">
+                गुब्बारा फोड़ो
               </h2>
-              <p className="text-[11px] sm:text-xs text-amber-200 mt-1 line-clamp-2">
-                शिक्षिका की आवाज सुनकर सही संख्या वाला उड़ता हुआ गुब्बारा फोड़ें!
+              <p className="text-[10px] sm:text-[11px] text-amber-200 mt-0.5 line-clamp-2">
+                शिक्षिका की आवाज सुनकर सही गुब्बारा फोड़ें!
               </p>
             </div>
 
-            <div className="mt-3 pt-2 border-t border-amber-400/30 flex items-center justify-between text-xs font-bold text-yellow-300">
-              <span>शुरू करें (Play)</span>
-              <Play className="w-3.5 h-3.5 fill-yellow-300 group-hover:translate-x-1 transition-transform" />
+            <div className="mt-2 pt-1.5 border-t border-amber-400/30 flex items-center justify-between text-xs font-bold text-yellow-300">
+              <span>Play</span>
+              <Play className="w-3 h-3 fill-yellow-300 group-hover:translate-x-1 transition-transform" />
             </div>
           </motion.div>
         </div>
 
         {/* Teacher Voice Test Trigger */}
-        <div className="mt-3 sm:mt-4 flex items-center gap-2">
+        <div className="mt-2.5 sm:mt-3.5 flex items-center gap-2">
           <button
             onClick={handleTestVoice}
             disabled={isPlayingTest}
-            className={`px-3 py-1.5 rounded-full text-xs font-black flex items-center gap-1.5 transition-all shadow-md cursor-pointer ${
+            className={`px-3 py-1 rounded-full text-xs font-black flex items-center gap-1.5 transition-all shadow-md cursor-pointer ${
               isPlayingTest
                 ? 'bg-yellow-400 text-blue-950 scale-105 ring-2 ring-yellow-200'
                 : 'bg-black/60 hover:bg-black/80 border border-white/30 text-white active:scale-95'
@@ -222,7 +253,7 @@ export const MathHomeScreen: React.FC<MathHomeScreenProps> = ({
 
       {/* Footer Info */}
       <div id="math-footer-bar" className="w-full text-center text-[10px] sm:text-xs text-blue-200/80 z-20 py-0.5 shrink-0">
-        गणित शिक्षा: 1 से 50 तक संख्याएं, हिंदी व अंग्रेजी में उच्चारण सहित
+        गणित शिक्षा: 1 से 50 तक संख्याएं व 1 से 20 तक शब्द पहचान
       </div>
     </div>
   );

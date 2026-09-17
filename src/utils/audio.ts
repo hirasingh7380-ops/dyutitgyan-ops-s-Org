@@ -450,6 +450,20 @@ class SoundManager {
     this.playAudio('wrong', 'ओहो! यह गलत है, फिर से कोशिश करो बच्चों!');
   }
 
+  // 9. Math Match The Word: Match number word with digit (1 to 20)
+  speakMathMatchPair(num: number, word: string, soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playVictory(soundEnabled);
+    const HINDI_NUMBERS = [
+      '', 'एक', 'दो', 'तीन', 'चार', 'पाँच', 'छह', 'सात', 'आठ', 'नौ', 'दस',
+      'ग्यारह', 'बारह', 'तेरह', 'चौदह', 'पंद्रह', 'सोलह', 'सत्रह', 'अठारह', 'उन्नीस', 'बीस'
+    ];
+    const hName = HINDI_NUMBERS[num] || String(num);
+    const key = `math_match_${num}`;
+    const fallback = `${word}! नंबर ${num}, ${hName}! बिल्कुल सही!`;
+    this.playAudio(key, fallback);
+  }
+
   // Web Audio Synthesizer Sounds
   playPop(soundEnabled = true) {
     if (!soundEnabled) return;

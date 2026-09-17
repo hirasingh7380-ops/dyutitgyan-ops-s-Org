@@ -1,6 +1,6 @@
 export type GameMode = 'WORD_BUILDER' | 'FILL_BLANK' | 'BALLOON_POP' | 'CLICK_LETTER' | 'MATCH_WORD';
 export type HindiGameMode = 'HINDI_CLICK_LETTER' | 'HINDI_BALLOON_POP' | 'HINDI_MATCH_WORD' | 'HINDI_FILL_BLANK';
-export type MathGameMode = 'MATH_CLICK_NUMBER' | 'MATH_FILL_BLANK' | 'MATH_BALLOON_POP';
+export type MathGameMode = 'MATH_CLICK_NUMBER' | 'MATH_FILL_BLANK' | 'MATH_BALLOON_POP' | 'MATH_MATCH_WORD';
 export type AppScreen = 'START' | 'SUBJECT_SELECT' | 'ENGLISH_MENU' | 'HINDI_MENU' | 'MATH_MENU' | 'GAME_PLAY' | 'HINDI_GAME_PLAY' | 'MATH_GAME_PLAY';
 export type SubjectId = 'HINDI' | 'ENGLISH' | 'MATH' | 'ARTS';
 
