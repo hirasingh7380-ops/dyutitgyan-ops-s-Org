@@ -40,11 +40,8 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
       sounds.playVictory(soundEnabled);
       onSelectSubject('MATH');
     } else if (subject === 'ARTS') {
-      setComingSoonSubject({
-        name: 'Arts',
-        hindiName: 'आर्ट्स / चित्रकला',
-        color: 'from-pink-600 to-purple-700',
-      });
+      sounds.playVictory(soundEnabled);
+      onSelectSubject('ARTS');
     }
   };
 
@@ -165,15 +162,16 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.96 }}
             onClick={() => handleSubjectClick('ARTS')}
-            className="group relative cursor-pointer outline-none rounded-[18px] sm:rounded-[28px] overflow-hidden border-[3px] sm:border-[5px] border-purple-600 bg-[#aed8f2] shadow-xl h-28 sm:h-38 md:h-44 landscape:h-26 landscape:sm:h-36 flex items-center justify-center"
+            className="group relative cursor-pointer outline-none rounded-[18px] sm:rounded-[28px] overflow-hidden border-[3px] sm:border-[5px] border-red-600 bg-[#fedac2] shadow-xl h-32 sm:h-38 md:h-44 landscape:h-28 landscape:sm:h-36 flex items-center justify-center ring-3 sm:ring-4 ring-yellow-400/60 touch-manipulation select-none"
           >
             <img
               src={subjectArtsImg}
               alt="Arts Subject"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
-            <div className="absolute bottom-1 sm:bottom-1.5 left-1/2 -translate-x-1/2 bg-purple-700 text-white px-2 sm:px-3 py-0.5 rounded-full text-[9px] sm:text-xs font-black shadow-md border border-white/60 whitespace-nowrap">
-              Arts (चित्रकला)
+            <div className="absolute bottom-1.5 sm:bottom-2 left-1/2 -translate-x-1/2 bg-yellow-400 text-red-900 px-2.5 sm:px-4 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-black shadow-lg border-2 border-red-600 flex items-center gap-1 whitespace-nowrap">
+              <Play className="w-3 h-3 fill-red-900" />
+              <span>🎨 चित्रकला (Drawing)</span>
             </div>
           </motion.button>
         </div>
@@ -181,7 +179,7 @@ export const SubjectSelectScreen: React.FC<SubjectSelectScreenProps> = ({
 
       {/* Bottom helper prompt */}
       <div className="z-20 text-[10px] sm:text-xs text-yellow-300 font-bold bg-black/60 px-4 py-1 rounded-full border border-white/20 mt-1 shrink-0 shadow">
-        विषय चुनें (Hindi और English खेलने के लिए तैयार हैं!)
+        विषय चुनें (Hindi, English, Math और Drawing)
       </div>
 
       {/* Coming Soon Modal for Math, Arts */}

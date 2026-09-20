@@ -23,6 +23,7 @@ import { MatchWordStage } from './components/MatchWordStage';
 import { HindiBalloonPopStage } from './components/HindiBalloonPopStage';
 import { HindiMatchWordStage } from './components/HindiMatchWordStage';
 import { HindiFillInTheBlankStage } from './components/HindiFillInTheBlankStage';
+import { DrawingStage } from './components/DrawingStage';
 import { LandscapeWrapper } from './components/LandscapeWrapper';
 import { sounds } from './utils/audio';
 
@@ -148,11 +149,18 @@ export default function App() {
               setCurrentScreen('HINDI_MENU');
             } else if (subject === 'MATH') {
               setCurrentScreen('MATH_MENU');
+            } else if (subject === 'ARTS') {
+              setCurrentScreen('ARTS_GAME_PLAY');
             }
           }}
           onBack={() => setCurrentScreen('START')}
           soundEnabled={soundEnabled}
           onToggleSound={() => setSoundEnabled((prev) => !prev)}
+        />
+      ) : currentScreen === 'ARTS_GAME_PLAY' ? (
+        <DrawingStage
+          onHome={() => setCurrentScreen('SUBJECT_SELECT')}
+          soundEnabled={soundEnabled}
         />
       ) : currentScreen === 'ENGLISH_MENU' ? (
         <HomeScreen
