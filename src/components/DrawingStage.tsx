@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, PanInfo } from 'motion/react';
 import confetti from 'canvas-confetti';
 import { sounds } from '../utils/audio';
@@ -101,26 +101,35 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   const [isLeafPlaced, setIsLeafPlaced] = useState<boolean>(false);
 
   // Success celebration state
-  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [, setIsCompleted] = useState<boolean>(false);
 
   // References to the outline drop target areas
   const containerRef = useRef<HTMLDivElement>(null);
   const outlineAreaRef = useRef<HTMLDivElement>(null);
 
-  // Select a color from bottom buttons
+  // Shikshika (Teacher) Voice intro when game loads
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      sounds.speakDrawingIntro(soundEnabled);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [soundEnabled]);
+
+  // Select a color from bottom buttons: Shikshika speaks the color in Hindi
   const handleSelectColor = (color: ColorOption) => {
-    sounds.playPop(soundEnabled);
     setSelectedColor(color);
+    sounds.speakDrawingColorSelected(color.id, soundEnabled);
   };
 
   // Color a cutting piece with the active selected color
   const handleColorPiece = (piece: 'body' | 'leaf') => {
-    sounds.playSnap(soundEnabled);
     if (piece === 'body') {
       setBodyColor(selectedColor.hex);
     } else {
       setLeafColor(selectedColor.hex);
     }
+    // Teacher voice feedback
+    sounds.speakDrawingPieceColored(piece, soundEnabled);
   };
 
   // Handle Drag End for Cutting Images
@@ -129,7 +138,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     event: MouseEvent | TouchEvent | PointerEvent,
     info: PanInfo
   ) => {
-    // If movement is very small, treat as a click to color the piece
+    // If movement is very small, treat as a tap/click to color the piece
     const distance = Math.hypot(info.offset.x, info.offset.y);
     if (distance < 12) {
       handleColorPiece(piece);
@@ -148,43 +157,45 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     const relX = (dropX - outlineRect.left) / outlineRect.width;
     const relY = (dropY - outlineRect.top) / outlineRect.height;
 
-    // Check specific target zones:
-    // Leaf target is the upper-right section: relX ~ 0.3 to 1.1, relY ~ -0.2 to 0.45
-    // Apple body target is the central and lower body section: relX ~ -0.15 to 1.15, relY ~ 0.15 to 1.15
+    // Check target zones adapted for all Android screens:
+    // Leaf target is the upper-right section: relX ~ 0.25 to 1.15, relY ~ -0.25 to 0.48
+    // Apple body target is the central and lower body section: relX ~ -0.2 to 1.2, relY ~ 0.10 to 1.25
     let isCorrectTarget = false;
     if (piece === 'leaf') {
-      isCorrectTarget = relX >= 0.28 && relX <= 1.12 && relY >= -0.25 && relY <= 0.48;
+      isCorrectTarget = relX >= 0.25 && relX <= 1.15 && relY >= -0.25 && relY <= 0.48;
     } else if (piece === 'body') {
-      isCorrectTarget = relX >= -0.2 && relX <= 1.2 && relY >= 0.12 && relY <= 1.2;
+      isCorrectTarget = relX >= -0.2 && relX <= 1.2 && relY >= 0.10 && relY <= 1.25;
     }
 
     if (isCorrectTarget) {
       // Successfully dropped on outline!
-      sounds.playSnap(soundEnabled);
-
       if (piece === 'body') {
         setIsBodyPlaced(true);
         if (isLeafPlaced) {
           triggerVictory();
+        } else {
+          sounds.speakDrawingPiecePlaced('body', soundEnabled);
         }
       } else if (piece === 'leaf') {
         setIsLeafPlaced(true);
         if (isBodyPlaced) {
           triggerVictory();
+        } else {
+          sounds.speakDrawingPiecePlaced('leaf', soundEnabled);
         }
       }
     } else {
       // Dropped on wrong place!
       // "aur galat jagah per drop karne per cutting image drop na ho"
-      // It does NOT drop; it snaps back to the right tray automatically.
-      sounds.playPop(soundEnabled);
+      // Shikshika speaks: "ओहो! यह गलत जगह है, आउटलाइन में सही जगह लगाओ!"
+      sounds.speakDrawingWrongDrop(soundEnabled);
     }
   };
 
   // Trigger celebration when both pieces are assembled into the outline
   const triggerVictory = () => {
     setIsCompleted(true);
-    sounds.playVictory(soundEnabled);
+    sounds.speakDrawingComplete(soundEnabled);
     try {
       confetti({
         particleCount: 70,
@@ -198,7 +209,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
 
   // Reset or Next round
   const handleNext = () => {
-    sounds.playPop(soundEnabled);
+    sounds.speakDrawingNext(soundEnabled);
     setIsBodyPlaced(false);
     setIsLeafPlaced(false);
     setIsCompleted(false);
@@ -226,12 +237,12 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         backgroundPosition: 'center bottom',
       }}
     >
-      {/* 1. TOP HEADER BAR: HOME (Left) and NEXT (Right) */}
+      {/* 1. TOP HEADER BAR: HOME (Left) and NEXT (Right) - Scaled specifically for Android landscape */}
       <div
         id="drawing-top-bar"
-        className="w-full flex items-center justify-between px-3 sm:px-6 pt-3 sm:pt-4 z-30 shrink-0"
+        className="w-full flex items-center justify-between px-3 sm:px-6 pt-1.5 sm:pt-2 h-9 sm:h-11 z-30 shrink-0"
       >
-        {/* HOME Button: Red border, yellow bg, bold magenta/purple text */}
+        {/* HOME Button: Red border, yellow bg, bold magenta text - sized for mobile */}
         <motion.button
           id="btn-drawing-home"
           whileHover={{ scale: 1.05 }}
@@ -240,10 +251,10 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
             sounds.playPop(soundEnabled);
             onHome();
           }}
-          className="cursor-pointer px-4 sm:px-7 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl bg-[#ffff00] border-[3px] sm:border-[4px] border-[#ff0000] shadow-[0_4px_0_#990000] active:translate-y-1 active:shadow-none transition-transform"
+          className="cursor-pointer px-2.5 sm:px-4 py-0.5 sm:py-1 rounded-lg sm:rounded-xl bg-[#ffff00] border-2 sm:border-[3px] border-[#ff0000] shadow-[0_2px_0_#990000] active:translate-y-0.5 active:shadow-none transition-transform"
         >
           <span
-            className="text-lg sm:text-2xl md:text-3xl font-black uppercase tracking-wider block"
+            className="text-xs sm:text-sm md:text-base font-black uppercase tracking-wider block"
             style={{
               color: '#d6006c',
               textShadow: '1px 1px 0px #ffff00',
@@ -254,16 +265,16 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
           </span>
         </motion.button>
 
-        {/* NEXT Button: Red border, yellow bg, bold red text */}
+        {/* NEXT Button: Red border, yellow bg, bold red text - sized for mobile */}
         <motion.button
           id="btn-drawing-next"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleNext}
-          className="cursor-pointer px-4 sm:px-7 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl bg-[#ffff00] border-[3px] sm:border-[4px] border-[#ff0000] shadow-[0_4px_0_#990000] active:translate-y-1 active:shadow-none transition-transform"
+          className="cursor-pointer px-2.5 sm:px-4 py-0.5 sm:py-1 rounded-lg sm:rounded-xl bg-[#ffff00] border-2 sm:border-[3px] border-[#ff0000] shadow-[0_2px_0_#990000] active:translate-y-0.5 active:shadow-none transition-transform"
         >
           <span
-            className="text-lg sm:text-2xl md:text-3xl font-black uppercase tracking-wider block"
+            className="text-xs sm:text-sm md:text-base font-black uppercase tracking-wider block"
             style={{
               color: '#ff0000',
               textShadow: '1px 1px 0px #ffff00',
@@ -275,16 +286,16 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         </motion.button>
       </div>
 
-      {/* 2. MAIN SCENE: Outline Image on the Left & Cutting Images on the Right */}
+      {/* 2. MAIN SCENE: Outline Image on Left & Cutting Images on Right - Scaled for Android mobile */}
       <div
         id="drawing-main-scene"
-        className="w-full flex-1 flex flex-row items-center justify-center px-2 sm:px-8 py-1 max-w-6xl mx-auto min-h-0 z-20 gap-2 sm:gap-8"
+        className="w-full flex-1 flex flex-row items-center justify-center px-3 sm:px-8 py-0.5 max-w-4xl mx-auto min-h-0 z-20 gap-4 sm:gap-10"
       >
-        {/* LEFT: Outline Image Container */}
+        {/* LEFT: Outline Image Container - Sized proportionally for mobile landscape (max-h ~200px) */}
         <div
           ref={outlineAreaRef}
           id="outline-image-container"
-          className="relative flex-1 max-w-[280px] sm:max-w-[380px] md:max-w-[440px] aspect-square flex items-center justify-center"
+          className="relative flex-1 max-h-[175px] xs:max-h-[195px] sm:max-h-[230px] md:max-h-[260px] aspect-square flex items-center justify-center"
         >
           <svg
             viewBox="0 0 400 400"
@@ -313,7 +324,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
             {/* Stem: Solid Black as in z16.PNG */}
             <path d={APPLE_STEM_PATH} fill="#000000" />
 
-            {/* Outline: Leaf (Thick black outline 13px) */}
+            {/* Outline: Leaf (Thick black outline) */}
             <path
               d={APPLE_LEAF_PATH}
               fill="transparent"
@@ -324,7 +335,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
               className="pointer-events-none"
             />
 
-            {/* Outline: Apple Body (Thick black outline 13px) */}
+            {/* Outline: Apple Body (Thick black outline) */}
             <path
               d={APPLE_BODY_PATH}
               fill="transparent"
@@ -337,13 +348,13 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
           </svg>
         </div>
 
-        {/* RIGHT: Cutting Images Area (Leaf cutout at top, Apple Body cutout at center) */}
+        {/* RIGHT: Cutting Images Area - Sized proportionally to fit beside outline without overflowing */}
         <div
           id="cutting-images-container"
-          className="relative flex-1 max-w-[280px] sm:max-w-[380px] md:max-w-[440px] aspect-square flex flex-col items-center justify-around"
+          className="relative flex-1 max-h-[175px] xs:max-h-[195px] sm:max-h-[230px] md:max-h-[260px] aspect-square flex flex-col items-center justify-between py-1"
         >
           {/* Cutting Image 1: LEAF */}
-          <div className="w-full h-[35%] flex items-center justify-center relative">
+          <div className="w-full h-[36%] flex items-center justify-center relative">
             {!isLeafPlaced ? (
               <motion.div
                 id="cutting-piece-leaf"
@@ -352,33 +363,33 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                 dragElastic={0.15}
                 onDragEnd={(e, info) => handleDragEnd('leaf', e, info)}
                 whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ scale: 0.96 }}
                 onClick={() => handleColorPiece('leaf')}
                 className="cursor-grab active:cursor-grabbing touch-none select-none z-30"
-                style={{ width: '130px', height: '80px' }}
+                style={{ width: '85px', height: '48px' }}
                 title="Click to color, or drag into outline!"
               >
                 <svg
                   viewBox="195 20 150 110"
-                  className="w-full h-full drop-shadow-lg filter overflow-visible"
+                  className="w-full h-full drop-shadow-md filter overflow-visible"
                 >
                   <path
                     d={APPLE_LEAF_PATH}
                     fill={leafColor}
-                    stroke="#e2e8f0"
+                    stroke="#cbd5e1"
                     strokeWidth="1.5"
                   />
                 </svg>
               </motion.div>
             ) : (
-              <div className="text-white/80 text-xs sm:text-sm font-bold bg-black/40 px-3 py-1 rounded-full border border-white/20">
+              <div className="text-white/80 text-[10px] sm:text-xs font-bold bg-black/40 px-2 py-0.5 rounded-full border border-white/20">
                 ✓ Leaf Placed
               </div>
             )}
           </div>
 
           {/* Cutting Image 2: APPLE BODY */}
-          <div className="w-full h-[65%] flex items-center justify-center relative">
+          <div className="w-full h-[62%] flex items-center justify-center relative">
             {!isBodyPlaced ? (
               <motion.div
                 id="cutting-piece-body"
@@ -387,26 +398,26 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                 dragElastic={0.15}
                 onDragEnd={(e, info) => handleDragEnd('body', e, info)}
                 whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ scale: 0.96 }}
                 onClick={() => handleColorPiece('body')}
                 className="cursor-grab active:cursor-grabbing touch-none select-none z-30"
-                style={{ width: '190px', height: '190px' }}
+                style={{ width: '115px', height: '115px' }}
                 title="Click to color, or drag into outline!"
               >
                 <svg
                   viewBox="35 70 330 330"
-                  className="w-full h-full drop-shadow-lg filter overflow-visible"
+                  className="w-full h-full drop-shadow-md filter overflow-visible"
                 >
                   <path
                     d={APPLE_BODY_PATH}
                     fill={bodyColor}
-                    stroke="#e2e8f0"
+                    stroke="#cbd5e1"
                     strokeWidth="1.5"
                   />
                 </svg>
               </motion.div>
             ) : (
-              <div className="text-white/80 text-xs sm:text-sm font-bold bg-black/40 px-3 py-1 rounded-full border border-white/20">
+              <div className="text-white/80 text-[10px] sm:text-xs font-bold bg-black/40 px-2 py-0.5 rounded-full border border-white/20">
                 ✓ Apple Placed
               </div>
             )}
@@ -414,10 +425,10 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         </div>
       </div>
 
-      {/* 3. BOTTOM ROW: Exactly 6 Color Buttons (RED, GREEN, BLUE, YELLOW, PINK, BLACK) */}
+      {/* 3. BOTTOM ROW: Exactly 6 Color Buttons (RED, GREEN, BLUE, YELLOW, PINK, BLACK) - Scaled for mobile */}
       <div
         id="drawing-color-buttons-bar"
-        className="w-full flex items-center justify-center gap-1.5 sm:gap-3 md:gap-4 px-2 sm:px-6 pb-3 sm:pb-5 z-30 shrink-0 max-w-5xl mx-auto"
+        className="w-full flex items-center justify-center gap-1 xs:gap-1.5 sm:gap-2.5 px-2 sm:px-4 pb-1.5 sm:pb-2.5 h-9 sm:h-11 z-30 shrink-0 max-w-2xl mx-auto"
       >
         {COLOR_OPTIONS.map((color) => {
           const isSelected = selectedColor.id === color.id;
@@ -425,12 +436,12 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
             <motion.button
               key={color.id}
               id={`btn-color-${color.id.toLowerCase()}`}
-              whileHover={{ scale: 1.06 }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.94 }}
               onClick={() => handleSelectColor(color)}
-              className={`cursor-pointer flex-1 max-w-[120px] py-1 sm:py-2 md:py-2.5 rounded-xl sm:rounded-2xl bg-[#ffff00] border-[3px] sm:border-[4px] shadow-[0_4px_0_#b38f00] active:translate-y-1 active:shadow-none transition-all flex items-center justify-center ${
+              className={`cursor-pointer flex-1 max-w-[90px] py-0.5 sm:py-1 rounded-lg sm:rounded-xl bg-[#ffff00] border-2 sm:border-[3px] shadow-[0_2px_0_#b38f00] active:translate-y-0.5 active:shadow-none transition-all flex items-center justify-center ${
                 isSelected
-                  ? 'ring-4 ring-white shadow-[0_0_12px_rgba(255,255,255,0.9)] scale-105'
+                  ? 'ring-2 ring-white shadow-[0_0_8px_rgba(255,255,255,0.9)] scale-105'
                   : 'opacity-95 hover:opacity-100'
               }`}
               style={{
@@ -438,7 +449,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
               }}
             >
               <span
-                className="text-xs sm:text-lg md:text-2xl font-black uppercase tracking-wide block whitespace-nowrap"
+                className="text-[10px] xs:text-xs sm:text-sm font-black uppercase tracking-wide block whitespace-nowrap"
                 style={{
                   color: color.textColor,
                   fontFamily: 'system-ui, -apple-system, sans-serif',

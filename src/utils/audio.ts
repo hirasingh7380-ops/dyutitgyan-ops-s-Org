@@ -612,6 +612,59 @@ class SoundManager {
       // Ignore
     }
   }
+
+  // 10. Drawing Stage: Shikshika (Teacher) Voice for Android Mobile & PC
+  speakDrawingIntro(soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playAudio('drawing_intro', 'बच्चों, रंग चुनो और कटिंग इमेज को सही जगह पर लगाओ!');
+  }
+
+  speakDrawingColorSelected(colorId: string, soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playPop(soundEnabled);
+    const HINDI_COLOR_MAP: Record<string, string> = {
+      RED: 'लाल रंग! अब कटिंग इमेज को छुओ!',
+      GREEN: 'हरा रंग! बहुत अच्छे!',
+      BLUE: 'नीला रंग! बहुत बढ़िया!',
+      YELLOW: 'पीला रंग! शाबाश!',
+      PINK: 'गुलाबी रंग! बहुत सुंदर!',
+      BLACK: 'काला रंग!',
+    };
+    const speech = HINDI_COLOR_MAP[colorId] || `${colorId} रंग!`;
+    this.playAudio(`drawing_col_${colorId.toLowerCase()}`, speech);
+  }
+
+  speakDrawingPieceColored(piece: 'leaf' | 'body', soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playSnap(soundEnabled);
+    const text = piece === 'leaf' ? 'पत्ती में रंग भर दिया, बहुत सुंदर!' : 'सेब में रंग भर दिया, शाबाश!';
+    this.playAudio(`drawing_colored_${piece}`, text);
+  }
+
+  speakDrawingWrongDrop(soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playFreezeError(soundEnabled);
+    this.playAudio('drawing_wrong_drop', 'ओहो! यह गलत जगह है, आउटलाइन में सही जगह लगाओ!');
+  }
+
+  speakDrawingPiecePlaced(piece: 'leaf' | 'body', soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playSnap(soundEnabled);
+    const text = piece === 'leaf' ? 'शाबाश! पत्ती सही जगह लग गई!' : 'शाबाश! सेब सही जगह लग गया!';
+    this.playAudio(`drawing_placed_${piece}`, text);
+  }
+
+  speakDrawingComplete(soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playVictory(soundEnabled);
+    this.playAudio('drawing_complete', 'अरे वाह बच्चों! आपने बहुत ही सुंदर सेब बनाया! शाबाश!');
+  }
+
+  speakDrawingNext(soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playPop(soundEnabled);
+    this.playAudio('drawing_next', 'चलो फिर से नया रंग भरते हैं!');
+  }
 }
 
 export const sounds = new SoundManager();
