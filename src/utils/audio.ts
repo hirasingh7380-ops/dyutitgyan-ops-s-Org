@@ -614,9 +614,13 @@ class SoundManager {
   }
 
   // 10. Drawing Stage: Shikshika (Teacher) Voice for Android Mobile & PC
-  speakDrawingIntro(soundEnabled = true) {
+  speakDrawingIntro(soundEnabled = true, fruit: 'apple' | 'mango' = 'apple') {
     if (!soundEnabled) return;
-    this.playAudio('drawing_intro', 'बच्चों, रंग चुनो और कटिंग इमेज को सही जगह पर लगाओ!');
+    const text =
+      fruit === 'mango'
+        ? 'बच्चों, रंग चुनो और कटिंग आम को सही जगह पर लगाओ!'
+        : 'बच्चों, रंग चुनो और कटिंग इमेज को सही जगह पर लगाओ!';
+    this.playAudio(`drawing_intro_${fruit}`, text);
   }
 
   speakDrawingColorSelected(colorId: string, soundEnabled = true) {
@@ -634,10 +638,14 @@ class SoundManager {
     this.playAudio(`drawing_col_${colorId.toLowerCase()}`, speech);
   }
 
-  speakDrawingPieceColored(piece: 'leaf' | 'body', soundEnabled = true) {
+  speakDrawingPieceColored(piece: 'leaf' | 'body' | 'mango' | 'splash', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playSnap(soundEnabled);
-    const text = piece === 'leaf' ? 'पत्ती में रंग भर दिया, बहुत सुंदर!' : 'सेब में रंग भर दिया, शाबाश!';
+    let text = 'रंग भर दिया, शाबाश!';
+    if (piece === 'leaf') text = 'पत्ती में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'body') text = 'सेब में रंग भर दिया, शाबाश!';
+    else if (piece === 'mango') text = 'आम में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'splash') text = 'वाह! बहुत सुंदर रंग भरा!';
     this.playAudio(`drawing_colored_${piece}`, text);
   }
 
@@ -647,23 +655,35 @@ class SoundManager {
     this.playAudio('drawing_wrong_drop', 'ओहो! यह गलत जगह है, आउटलाइन में सही जगह लगाओ!');
   }
 
-  speakDrawingPiecePlaced(piece: 'leaf' | 'body', soundEnabled = true) {
+  speakDrawingPiecePlaced(piece: 'leaf' | 'body' | 'mango' | 'splash', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playSnap(soundEnabled);
-    const text = piece === 'leaf' ? 'शाबाश! पत्ती सही जगह लग गई!' : 'शाबाश! सेब सही जगह लग गया!';
+    let text = 'शाबाश! सही जगह लग गई!';
+    if (piece === 'leaf') text = 'शाबाश! पत्ती सही जगह लग गई!';
+    else if (piece === 'body') text = 'शाबाश! सेब सही जगह लग गया!';
+    else if (piece === 'mango') text = 'शाबाश! आम सही जगह लग गया!';
+    else if (piece === 'splash') text = 'शाबाश! बहुत सुंदर कटिंग लगाई!';
     this.playAudio(`drawing_placed_${piece}`, text);
   }
 
-  speakDrawingComplete(soundEnabled = true) {
+  speakDrawingComplete(fruit: 'apple' | 'mango' = 'apple', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playVictory(soundEnabled);
-    this.playAudio('drawing_complete', 'अरे वाह बच्चों! आपने बहुत ही सुंदर सेब बनाया! शाबाश!');
+    const text =
+      fruit === 'mango'
+        ? 'अरे वाह बच्चों! आपने बहुत ही सुंदर आम बनाया! शाबाश!'
+        : 'अरे वाह बच्चों! आपने बहुत ही सुंदर सेब बनाया! शाबाश!';
+    this.playAudio(`drawing_complete_${fruit}`, text);
   }
 
-  speakDrawingNext(soundEnabled = true) {
+  speakDrawingNext(fruit: 'apple' | 'mango' = 'mango', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playPop(soundEnabled);
-    this.playAudio('drawing_next', 'चलो फिर से नया रंग भरते हैं!');
+    const text =
+      fruit === 'mango'
+        ? 'चलो अब आम का चित्र बनाते हैं!'
+        : 'चलो फिर से नया चित्र बनाते हैं!';
+    this.playAudio(`drawing_next_${fruit}`, text);
   }
 }
 
