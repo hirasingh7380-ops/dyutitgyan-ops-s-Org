@@ -10,7 +10,7 @@ interface DrawingStageProps {
   soundEnabled: boolean;
 }
 
-// Exactly 6 Color Options as requested (RED, GREEN, BLUE, YELLOW, PINK, BLACK)
+// Exactly 6 Color Options as specified in reference screenshots (zq15.PNG / zq9.PNG)
 interface ColorOption {
   id: string;
   name: string;
@@ -46,7 +46,7 @@ const COLOR_OPTIONS: ColorOption[] = [
     name: 'YELLOW',
     hex: '#ffd600',
     textColor: '#ffd600',
-    borderColor: '#00c8ff', // Distinctive cyan border as in zq9
+    borderColor: '#00c8ff', // Distinctive cyan border as shown in screenshot
   },
   {
     id: 'PINK',
@@ -65,162 +65,248 @@ const COLOR_OPTIONS: ColorOption[] = [
 ];
 
 // ============================================================================
-// EXACT MANGO GEOMETRY FROM USER'S IMAGE (zq8.png & zq9.PNG)
-// ViewBox: 0 0 420 580
-// Features from zq8.png:
-// 1. Stem: Curves up-left, capped top
-// 2. Stem Base Rim: Small horizontal oval where stem joins fruit top
-// 3. Leaf: Attached to right side of stem, arching up-right and pointed tip
-// 4. Mango Body: Full bulbous fruit curving left, hook at bottom left, rounded base
+// KITE GEOMETRY (Exact from screenshot zq15.PNG) - Coordinate space (0 0 500 650)
+// Diamond vertices:
+// Top: (250, 60)
+// Left: (50, 240)
+// Right: (450, 240)
+// Bottom Diamond: (250, 420)
+// Horizontal curved cross-spar: starts at (50, 240), curves smoothly through
+// (250, 210) to (450, 240) with Casteljau control points (150, 210) and (350, 210).
+// Central vertical spine: (250, 60) to (250, 420).
+// Tail bow (triangle): (250, 420) to (195, 475) to (305, 475).
+// Tail string (wavy): curves from (250, 475) down to (250, 640).
 // ============================================================================
 
-// Mango Fruit Body Path (from zq8.png)
+// 1. Kite Outline Lines (Thick black strokes as in zq15.PNG)
+const KITE_PERIMETER_PATH =
+  'M 250 60 L 450 240 L 250 420 L 50 240 Z';
+
+const KITE_VERTICAL_SPINE_PATH =
+  'M 250 60 L 250 420';
+
+const KITE_CURVED_SPAR_PATH =
+  'M 50 240 Q 150 210 250 210 Q 350 210 450 240';
+
+const KITE_TAIL_BOW_PATH =
+  'M 250 420 L 195 475 Q 250 485 305 475 Z';
+
+const KITE_TAIL_STRING_PATH =
+  'M 250 480 C 230 520, 215 540, 235 570 C 255 600, 245 615, 235 640';
+
+// ----------------------------------------------------------------------------
+// The 4 Body Quadrants and 1 Tail Triangle formed by the Kite.
+// EXACT SAME PATHS used for both the cutting images and outline filled slots!
+// ----------------------------------------------------------------------------
+// 1. Top-Left Quad (upper left triangular piece with curved bottom)
+const KITE_QUAD_TOP_LEFT_PATH =
+  'M 250 60 L 50 240 Q 150 210 250 210 Z';
+
+// 2. Top-Right Quad (upper right triangular piece with curved bottom)
+const KITE_QUAD_TOP_RIGHT_PATH =
+  'M 250 60 L 450 240 Q 350 210 250 210 Z';
+
+// 3. Bottom-Left Quad (lower left triangular piece with curved top)
+const KITE_QUAD_BOTTOM_LEFT_PATH =
+  'M 50 240 L 250 420 L 250 210 Q 150 210 50 240 Z';
+
+// 4. Bottom-Right Quad (lower right triangular piece with curved top)
+const KITE_QUAD_BOTTOM_RIGHT_PATH =
+  'M 450 240 L 250 420 L 250 210 Q 350 210 450 240 Z';
+
+// 5. Small Center Tail Triangle
+const KITE_TAIL_TRIANGLE_PATH =
+  'M 250 420 L 195 475 Q 250 485 305 475 Z';
+
+// ============================================================================
+// MANGO GEOMETRY (Stage 2 - zq8.png & zq9.PNG)
+// ============================================================================
 const MANGO_BODY_PATH =
-  'M 166 172 ' +
-  'C 120 180, 62 232, 48 300 ' +
-  'C 32 368, 56 438, 104 496 ' +
-  'C 118 514, 134 540, 156 555 ' +
-  'C 178 570, 214 570, 244 550 ' +
-  'C 305 508, 382 414, 390 310 ' +
-  'C 398 214, 305 172, 218 172 ' +
-  'Z';
-
-// Mango Stem Outline (from zq8.png)
+  'M 166 172 C 120 180, 62 232, 48 300 C 32 368, 56 438, 104 496 C 118 514, 134 540, 156 555 C 178 570, 214 570, 244 550 C 305 508, 382 414, 390 310 C 398 214, 305 172, 218 172 Z';
 const MANGO_STEM_PATH =
-  'M 158 170 ' +
-  'C 148 136, 128 106, 112 86 ' +
-  'C 118 78, 130 76, 138 80 ' +
-  'C 158 102, 176 134, 184 168 ' +
-  'Z';
-
-// Mango Stem Base Rim Oval (exact detail from zq8.png where stem meets fruit top)
+  'M 158 170 C 148 136, 128 106, 112 86 C 118 78, 130 76, 138 80 C 158 102, 176 134, 184 168 Z';
 const MANGO_STEM_BASE_PATH =
-  'M 148 170 ' +
-  'C 148 164, 194 164, 194 170 ' +
-  'C 194 176, 148 176, 148 170 ' +
-  'Z';
-
-// Mango Leaf Outline (from zq8.png)
+  'M 148 170 C 148 164, 194 164, 194 170 C 194 176, 148 176, 148 170 Z';
 const MANGO_LEAF_PATH =
-  'M 180 125 ' +
-  'C 220 62, 300 48, 392 146 ' +
-  'C 315 106, 238 116, 184 148 ' +
-  'Z';
-
-// ----------------------------------------------------------------------------
-// CUTTING IMAGES FROM SCREENSHOT (zq9.PNG):
-// Exactly 4 Cutting Images:
-// 1. Top Splash Arc
-// 2. Middle Splash Swoosh
-// 3. Bottom Splash Swoosh
-// 4. Mango Fruit Silhouette (zq8 shape) with top notch cutout
-// ----------------------------------------------------------------------------
-
-// Mango Fruit Cutting Silhouette with top stem cutout
+  'M 180 125 C 220 62, 300 48, 392 146 C 315 106, 238 116, 184 148 Z';
 const MANGO_CUTTING_BODY_PATH =
-  'M 166 172 ' +
-  'C 120 180, 62 232, 48 300 ' +
-  'C 32 368, 56 438, 104 496 ' +
-  'C 118 514, 134 540, 156 555 ' +
-  'C 178 570, 214 570, 244 550 ' +
-  'C 305 508, 382 414, 390 310 ' +
-  'C 398 214, 305 172, 218 172 ' +
-  'C 208 172, 204 180, 198 183 ' +
-  'C 192 180, 188 172, 180 172 ' +
-  'C 172 172, 168 172, 166 172 ' +
-  'Z';
+  'M 166 172 C 120 180, 62 232, 48 300 C 32 368, 56 438, 104 496 C 118 514, 134 540, 156 555 C 178 570, 214 570, 244 550 C 305 508, 382 414, 390 310 C 398 214, 305 172, 218 172 C 208 172, 204 180, 198 183 C 192 180, 188 172, 180 172 C 172 172, 168 172, 166 172 Z';
+const MANGO_SPLASH_1_PATH = 'M 45 10 C 62 34, 70 62, 66 88 C 58 80, 52 56, 40 30 Z';
+const MANGO_SPLASH_2_PATH = 'M 12 55 C 50 36, 96 66, 134 140 C 88 106, 48 88, 12 55 Z';
+const MANGO_SPLASH_3_PATH = 'M 30 20 C 68 18, 106 50, 144 115 C 100 85, 65 64, 30 20 Z';
 
-// Splash 1: Top Arc Splash
-const MANGO_SPLASH_1_PATH =
-  'M 45 10 C 62 34, 70 62, 66 88 C 58 80, 52 56, 40 30 Z';
-
-// Splash 2: Middle Splash Swoosh
-const MANGO_SPLASH_2_PATH =
-  'M 12 55 C 50 36, 96 66, 134 140 C 88 106, 48 88, 12 55 Z';
-
-// Splash 3: Bottom Splash Swoosh
-const MANGO_SPLASH_3_PATH =
-  'M 30 20 C 68 18, 106 50, 144 115 C 100 85, 65 64, 30 20 Z';
-
-// ============================================================================
-// APPLE GEOMETRY (Optional stage on Next)
-// ============================================================================
-const APPLE_BODY_PATH =
-  'M 200 115 C 150 72, 60 92, 45 172 C 35 235, 52 315, 112 365 C 152 398, 185 378, 200 362 C 215 378, 248 398, 288 365 C 348 315, 365 235, 355 172 C 340 92, 250 72, 200 115 Z';
-const APPLE_STEM_PATH =
-  'M 194 118 C 190 70, 172 38, 142 22 C 150 20, 160 22, 164 26 C 190 48, 204 78, 206 118 Z';
-const APPLE_LEAF_PATH =
-  'M 205 110 C 220 52, 280 25, 335 38 C 305 85, 250 120, 205 110 Z';
+type GameStage = 'KITE' | 'MANGO';
 
 export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled }) => {
-  // Starts directly on MANGO as requested
-  const [currentFruit, setCurrentFruit] = useState<'MANGO' | 'APPLE'>('MANGO');
+  // Current game stage: starts on KITE as requested
+  const [currentStage, setCurrentStage] = useState<GameStage>('KITE');
 
-  // Currently active selected color
+  // Currently active selected color from bottom 6 buttons
   const [selectedColor, setSelectedColor] = useState<ColorOption>(COLOR_OPTIONS[0]); // Default RED
 
   // ---------------------------------------------------------
-  // Mango Cutting Images States (3-4 Cutting Images from zq9)
+  // KITE STAGE STATES (zq15.PNG)
+  // Exactly 5 Cutting Pieces:
+  // 1. Top-Left Quad
+  // 2. Top-Right Quad
+  // 3. Bottom-Left Quad
+  // 4. Bottom-Right Quad
+  // 5. Small Center Tail Triangle
+  // ---------------------------------------------------------
+  const [kiteTLColor, setKiteTLColor] = useState<string>('#ffffff');
+  const [isKiteTLPlaced, setIsKiteTLPlaced] = useState<boolean>(false);
+
+  const [kiteTRColor, setKiteTRColor] = useState<string>('#ffffff');
+  const [isKiteTRPlaced, setIsKiteTRPlaced] = useState<boolean>(false);
+
+  const [kiteBLColor, setKiteBLColor] = useState<string>('#ffffff');
+  const [isKiteBLPlaced, setIsKiteBLPlaced] = useState<boolean>(false);
+
+  const [kiteBRColor, setKiteBRColor] = useState<string>('#ffffff');
+  const [isKiteBRPlaced, setIsKiteBRPlaced] = useState<boolean>(false);
+
+  const [kiteTailColor, setKiteTailColor] = useState<string>('#ffffff');
+  const [isKiteTailPlaced, setIsKiteTailPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // MANGO STAGE STATES (zq8.png & zq9.PNG)
   // ---------------------------------------------------------
   const [splash1Color, setSplash1Color] = useState<string>('#ffffff');
   const [isSplash1Placed, setIsSplash1Placed] = useState<boolean>(false);
-
   const [splash2Color, setSplash2Color] = useState<string>('#ffffff');
   const [isSplash2Placed, setIsSplash2Placed] = useState<boolean>(false);
-
   const [splash3Color, setSplash3Color] = useState<string>('#ffffff');
   const [isSplash3Placed, setIsSplash3Placed] = useState<boolean>(false);
-
   const [mangoBodyColor, setMangoBodyColor] = useState<string>('#ffffff');
   const [isMangoBodyPlaced, setIsMangoBodyPlaced] = useState<boolean>(false);
-
-  // Apple States
-  const [appleBodyColor, setAppleBodyColor] = useState<string>('#ffffff');
-  const [appleLeafColor, setAppleLeafColor] = useState<string>('#ffffff');
-  const [isAppleBodyPlaced, setIsAppleBodyPlaced] = useState<boolean>(false);
-  const [isAppleLeafPlaced, setIsAppleLeafPlaced] = useState<boolean>(false);
 
   const outlineAreaRef = useRef<HTMLDivElement>(null);
 
   // Shikshika (Teacher) Voice intro
   useEffect(() => {
     const timer = setTimeout(() => {
-      sounds.speakDrawingIntro(soundEnabled, currentFruit === 'MANGO' ? 'mango' : 'apple');
+      sounds.speakDrawingIntro(soundEnabled, currentStage === 'KITE' ? 'kite' : 'mango');
     }, 400);
     return () => clearTimeout(timer);
-  }, [soundEnabled, currentFruit]);
+  }, [soundEnabled, currentStage]);
 
-  // Color selection
+  // Color selection from bottom buttons
   const handleSelectColor = (color: ColorOption) => {
     setSelectedColor(color);
     sounds.speakDrawingColorSelected(color.id, soundEnabled);
-
-    if (currentFruit === 'MANGO' && !isMangoBodyPlaced) {
-      setMangoBodyColor(color.hex);
-    }
   };
 
-  // Drop detection
+  // Drop detection: Checks if dropped anywhere in the left outline area
   const checkDroppedInOutline = (dropX: number, dropY: number) => {
     if (!outlineAreaRef.current) return false;
     const rect = outlineAreaRef.current.getBoundingClientRect();
     const relX = (dropX - rect.left) / rect.width;
     const relY = (dropY - rect.top) / rect.height;
-    return relX >= -0.3 && relX <= 1.3 && relY >= -0.3 && relY <= 1.3;
+    return relX >= -0.2 && relX <= 1.2 && relY >= -0.2 && relY <= 1.2;
   };
 
-  // Drag Handlers
-  const handleMangoBodyDragEnd = (
-    _e: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
+  // Check if entire Kite is assembled
+  const checkKiteVictory = (
+    nextTL: boolean,
+    nextTR: boolean,
+    nextBL: boolean,
+    nextBR: boolean,
+    nextTail: boolean
   ) => {
+    if (nextTL && nextTR && nextBL && nextBR && nextTail) {
+      triggerVictory('kite');
+    }
+  };
+
+  // Drag handlers for the 5 Kite Pieces (zq15.PNG)
+  const handleKiteTLDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setKiteTLColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('kite_quad', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsKiteTLPlaced(true);
+      sounds.speakDrawingPiecePlaced('kite_quad', soundEnabled);
+      checkKiteVictory(true, isKiteTRPlaced, isKiteBLPlaced, isKiteBRPlaced, isKiteTailPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleKiteTRDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setKiteTRColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('kite_quad', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsKiteTRPlaced(true);
+      sounds.speakDrawingPiecePlaced('kite_quad', soundEnabled);
+      checkKiteVictory(isKiteTLPlaced, true, isKiteBLPlaced, isKiteBRPlaced, isKiteTailPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleKiteBLDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setKiteBLColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('kite_quad', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsKiteBLPlaced(true);
+      sounds.speakDrawingPiecePlaced('kite_quad', soundEnabled);
+      checkKiteVictory(isKiteTLPlaced, isKiteTRPlaced, true, isKiteBRPlaced, isKiteTailPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleKiteBRDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setKiteBRColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('kite_quad', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsKiteBRPlaced(true);
+      sounds.speakDrawingPiecePlaced('kite_quad', soundEnabled);
+      checkKiteVictory(isKiteTLPlaced, isKiteTRPlaced, isKiteBLPlaced, true, isKiteTailPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleKiteTailDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setKiteTailColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('kite_tail', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsKiteTailPlaced(true);
+      sounds.speakDrawingPiecePlaced('kite_tail', soundEnabled);
+      checkKiteVictory(isKiteTLPlaced, isKiteTRPlaced, isKiteBLPlaced, isKiteBRPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Mango drag handlers
+  const handleMangoBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const distance = Math.hypot(info.offset.x, info.offset.y);
     if (distance < 12) {
       setMangoBodyColor(selectedColor.hex);
       sounds.speakDrawingPieceColored('mango', soundEnabled);
       return;
     }
-
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsMangoBodyPlaced(true);
       triggerVictory('mango');
@@ -274,39 +360,12 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
   };
 
-  const handleAppleDragEnd = (
-    piece: 'body' | 'leaf',
-    _e: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
-  ) => {
-    const distance = Math.hypot(info.offset.x, info.offset.y);
-    if (distance < 12) {
-      if (piece === 'body') setAppleBodyColor(selectedColor.hex);
-      else setAppleLeafColor(selectedColor.hex);
-      sounds.speakDrawingPieceColored(piece, soundEnabled);
-      return;
-    }
-
-    if (checkDroppedInOutline(info.point.x, info.point.y)) {
-      if (piece === 'body') {
-        setIsAppleBodyPlaced(true);
-        if (isAppleLeafPlaced) triggerVictory('apple');
-        else sounds.speakDrawingPiecePlaced('body', soundEnabled);
-      } else {
-        setIsAppleLeafPlaced(true);
-        if (isAppleBodyPlaced) triggerVictory('apple');
-        else sounds.speakDrawingPiecePlaced('leaf', soundEnabled);
-      }
-    } else {
-      sounds.speakDrawingWrongDrop(soundEnabled);
-    }
-  };
-
-  const triggerVictory = (fruit: 'apple' | 'mango') => {
-    sounds.speakDrawingComplete(fruit, soundEnabled);
+  // Celebration
+  const triggerVictory = (stage: 'kite' | 'mango') => {
+    sounds.speakDrawingComplete(stage, soundEnabled);
     try {
       confetti({
-        particleCount: 80,
+        particleCount: 85,
         spread: 90,
         origin: { y: 0.5 },
       });
@@ -315,17 +374,34 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
   };
 
+  // NEXT Button Handler
   const handleNext = () => {
     sounds.playPop(soundEnabled);
-    if (currentFruit === 'MANGO') {
-      setCurrentFruit('APPLE');
-      sounds.speakDrawingNext('apple', soundEnabled);
-    } else {
-      setCurrentFruit('MANGO');
+    if (currentStage === 'KITE') {
+      setCurrentStage('MANGO');
       sounds.speakDrawingNext('mango', soundEnabled);
+    } else {
+      setCurrentStage('KITE');
+      sounds.speakDrawingNext('kite', soundEnabled);
     }
   };
 
+  // Reset Kite Pieces
+  const handleResetKite = () => {
+    setIsKiteTLPlaced(false);
+    setIsKiteTRPlaced(false);
+    setIsKiteBLPlaced(false);
+    setIsKiteBRPlaced(false);
+    setIsKiteTailPlaced(false);
+    setKiteTLColor('#ffffff');
+    setKiteTRColor('#ffffff');
+    setKiteBLColor('#ffffff');
+    setKiteBRColor('#ffffff');
+    setKiteTailColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  // Reset Mango Pieces
   const handleResetMango = () => {
     setIsMangoBodyPlaced(false);
     setIsSplash1Placed(false);
@@ -337,6 +413,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     setSplash3Color('#ffffff');
     sounds.playPop(soundEnabled);
   };
+
+  const isKiteAllPlaced =
+    isKiteTLPlaced && isKiteTRPlaced && isKiteBLPlaced && isKiteBRPlaced && isKiteTailPlaced;
 
   return (
     <div
@@ -355,7 +434,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         id="drawing-top-bar"
         className="w-full flex items-center justify-between px-3 sm:px-6 pt-2 sm:pt-3 h-12 sm:h-14 z-30 shrink-0"
       >
-        {/* HOME Button with enlarged text */}
+        {/* HOME Button */}
         <motion.button
           id="btn-drawing-home"
           whileHover={{ scale: 1.06 }}
@@ -378,7 +457,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
           </span>
         </motion.button>
 
-        {/* NEXT Button with enlarged text */}
+        {/* NEXT Button */}
         <motion.button
           id="btn-drawing-next"
           whileHover={{ scale: 1.06 }}
@@ -401,19 +480,354 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
 
       {/* ================================================================== */}
       {/* 2. MAIN GAME AREA:                                                 */}
-      {/* Left: Outline Image (zq8.png - stem, base rim, leaf, fruit)       */}
-      {/* Right: 3-4 Cutting Images (zq9.PNG - 3 splashes + mango body)      */}
+      {/* Left: Outline Image (zq15.PNG)                                     */}
+      {/* Right: Cutting Image (zq15.PNG) - SAME TO SAME                     */}
+      {/* Both use identical aspect ratio and viewBox (0 0 500 650)          */}
       {/* ================================================================== */}
       <main
         id="drawing-main-stage"
         className="w-full flex-1 flex flex-row items-center justify-between px-2 sm:px-6 md:px-10 py-1 max-w-6xl mx-auto min-h-0 z-20 gap-2 sm:gap-6"
       >
-        {currentFruit === 'MANGO' ? (
+        {currentStage === 'KITE' ? (
+          // ================================================================
+          // KITE GAME SCREEN (zq15.PNG) - EXACT OUTLINE & CUTTING IMAGE
+          // ================================================================
           <>
             {/* ------------------------------------------------------------ */}
-            {/* LEFT SIDE: EXACT MANGO OUTLINE IMAGE FROM zq8.png           */}
-            {/* Made larger as requested ("thoda sa outline image ko badda kare")*/}
+            {/* LEFT SIDE: KITE OUTLINE IMAGE                                */}
             {/* ------------------------------------------------------------ */}
+            <div
+              ref={outlineAreaRef}
+              id="kite-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[500/650] flex items-center justify-center"
+            >
+              <svg
+                viewBox="0 0 500 650"
+                className="w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* Placed Pieces: perfectly fill the exact slot with no overflow or size distortion */}
+                {isKiteTLPlaced && (
+                  <path
+                    d={KITE_QUAD_TOP_LEFT_PATH}
+                    fill={kiteTLColor}
+                    onClick={() => {
+                      setKiteTLColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('kite_quad', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors"
+                  />
+                )}
+                {isKiteTRPlaced && (
+                  <path
+                    d={KITE_QUAD_TOP_RIGHT_PATH}
+                    fill={kiteTRColor}
+                    onClick={() => {
+                      setKiteTRColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('kite_quad', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors"
+                  />
+                )}
+                {isKiteBLPlaced && (
+                  <path
+                    d={KITE_QUAD_BOTTOM_LEFT_PATH}
+                    fill={kiteBLColor}
+                    onClick={() => {
+                      setKiteBLColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('kite_quad', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors"
+                  />
+                )}
+                {isKiteBRPlaced && (
+                  <path
+                    d={KITE_QUAD_BOTTOM_RIGHT_PATH}
+                    fill={kiteBRColor}
+                    onClick={() => {
+                      setKiteBRColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('kite_quad', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors"
+                  />
+                )}
+                {isKiteTailPlaced && (
+                  <path
+                    d={KITE_TAIL_BOW_PATH}
+                    fill={kiteTailColor}
+                    onClick={() => {
+                      setKiteTailColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('kite_tail', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors"
+                  />
+                )}
+
+                {/* 1. Outer Diamond Perimeter Outline (Thick Black) */}
+                <path
+                  d={KITE_PERIMETER_PATH}
+                  fill="transparent"
+                  stroke="#111111"
+                  strokeWidth="14"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="pointer-events-none"
+                />
+
+                {/* 2. Curved Horizontal Cross Spar */}
+                <path
+                  d={KITE_CURVED_SPAR_PATH}
+                  fill="transparent"
+                  stroke="#111111"
+                  strokeWidth="14"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="pointer-events-none"
+                />
+
+                {/* 3. Central Vertical Spine (Straight line) */}
+                <path
+                  d={KITE_VERTICAL_SPINE_PATH}
+                  fill="transparent"
+                  stroke="#111111"
+                  strokeWidth="14"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="pointer-events-none"
+                />
+
+                {/* 4. Tail Triangle Bow (attached under bottom tip) */}
+                <path
+                  d={KITE_TAIL_BOW_PATH}
+                  fill="transparent"
+                  stroke="#111111"
+                  strokeWidth="14"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="pointer-events-none"
+                />
+
+                {/* 5. Wavy Tail String (trailing downward) */}
+                <path
+                  d={KITE_TAIL_STRING_PATH}
+                  fill="transparent"
+                  stroke="#111111"
+                  strokeWidth="12"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="pointer-events-none"
+                />
+              </svg>
+            </div>
+
+            {/* ------------------------------------------------------------ */}
+            {/* RIGHT SIDE: KITE CUTTING IMAGES (zq15.PNG)                   */}
+            {/* Rendered at 1:1 Scale with identical coordinates!            */}
+            {/* ------------------------------------------------------------ */}
+            <div
+              id="kite-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[500/650] flex items-center justify-center"
+            >
+              {isKiteAllPlaced && (
+                <div className="absolute top-0 right-2 z-40">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleResetKite}
+                    className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                  >
+                    ↺ फिर से बनाएँ
+                  </motion.button>
+                </div>
+              )}
+
+              {/* Exact relative positioning: Each cutting piece shares the exact viewBox (0 0 500 650) */}
+              <div className="relative w-full h-full">
+                {/* 1. Top-Left Quad Cutting Piece (Offset up-left matching zq15.PNG) */}
+                {!isKiteTLPlaced && (
+                  <motion.div
+                    id="cutting-kite-tl"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleKiteTLDragEnd}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setKiteTLColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('kite_quad', soundEnabled);
+                    }}
+                    className="absolute inset-0 cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox="0 0 500 650"
+                      className="w-full h-full overflow-visible drop-shadow-[0_4px_8px_rgba(0,0,0,0.28)]"
+                    >
+                      <g transform="translate(-40, -28)">
+                        <path
+                          d={KITE_QUAD_TOP_LEFT_PATH}
+                          fill={kiteTLColor}
+                          stroke="#e2e8f0"
+                          strokeWidth="1.2"
+                        />
+                      </g>
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Top-Right Quad Cutting Piece (Offset up-right matching zq15.PNG) */}
+                {!isKiteTRPlaced && (
+                  <motion.div
+                    id="cutting-kite-tr"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleKiteTRDragEnd}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setKiteTRColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('kite_quad', soundEnabled);
+                    }}
+                    className="absolute inset-0 cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox="0 0 500 650"
+                      className="w-full h-full overflow-visible drop-shadow-[0_4px_8px_rgba(0,0,0,0.28)]"
+                    >
+                      <g transform="translate(40, -28)">
+                        <path
+                          d={KITE_QUAD_TOP_RIGHT_PATH}
+                          fill={kiteTRColor}
+                          stroke="#e2e8f0"
+                          strokeWidth="1.2"
+                        />
+                      </g>
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Small Center Tail Triangle Cutting Piece (In center gap matching zq15.PNG) */}
+                {!isKiteTailPlaced && (
+                  <motion.div
+                    id="cutting-kite-tail"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleKiteTailDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      setKiteTailColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('kite_tail', soundEnabled);
+                    }}
+                    className="absolute inset-0 cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox="0 0 500 650"
+                      className="w-full h-full overflow-visible drop-shadow-[0_4px_8px_rgba(0,0,0,0.28)]"
+                    >
+                      <g transform="translate(0, -165)">
+                        <path
+                          d={KITE_TAIL_TRIANGLE_PATH}
+                          fill={kiteTailColor}
+                          stroke="#e2e8f0"
+                          strokeWidth="1.2"
+                        />
+                      </g>
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Bottom-Left Quad Cutting Piece (Offset down-left matching zq15.PNG) */}
+                {!isKiteBLPlaced && (
+                  <motion.div
+                    id="cutting-kite-bl"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleKiteBLDragEnd}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setKiteBLColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('kite_quad', soundEnabled);
+                    }}
+                    className="absolute inset-0 cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox="0 0 500 650"
+                      className="w-full h-full overflow-visible drop-shadow-[0_4px_8px_rgba(0,0,0,0.28)]"
+                    >
+                      <g transform="translate(-40, 40)">
+                        <path
+                          d={KITE_QUAD_BOTTOM_LEFT_PATH}
+                          fill={kiteBLColor}
+                          stroke="#e2e8f0"
+                          strokeWidth="1.2"
+                        />
+                      </g>
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Bottom-Right Quad Cutting Piece (Offset down-right matching zq15.PNG) */}
+                {!isKiteBRPlaced && (
+                  <motion.div
+                    id="cutting-kite-br"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleKiteBRDragEnd}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setKiteBRColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('kite_quad', soundEnabled);
+                    }}
+                    className="absolute inset-0 cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox="0 0 500 650"
+                      className="w-full h-full overflow-visible drop-shadow-[0_4px_8px_rgba(0,0,0,0.28)]"
+                    >
+                      <g transform="translate(40, 40)">
+                        <path
+                          d={KITE_QUAD_BOTTOM_RIGHT_PATH}
+                          fill={kiteBRColor}
+                          stroke="#e2e8f0"
+                          strokeWidth="1.2"
+                        />
+                      </g>
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Victory Banner when completely assembled */}
+                {isKiteAllPlaced && (
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="w-full h-full flex flex-col items-center justify-center gap-3"
+                  >
+                    <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                      ⭐ पतंग सही जगह लग गई! शाबाश! ⭐
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          // ================================================================
+          // MANGO GAME SCREEN (zq8.png & zq9.PNG)
+          // ================================================================
+          <>
+            {/* LEFT: Mango Outline */}
             <div
               ref={outlineAreaRef}
               id="mango-outline-container"
@@ -423,7 +837,6 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                 viewBox="0 0 420 580"
                 className="w-full h-full drop-shadow-md overflow-visible"
               >
-                {/* Placed Mango Body Fill */}
                 {isMangoBodyPlaced && (
                   <path
                     d={MANGO_BODY_PATH}
@@ -435,29 +848,21 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                     className="cursor-pointer hover:opacity-95 transition-colors duration-150"
                   />
                 )}
-
-                {/* Placed Splash 1 around outline */}
                 {isSplash1Placed && (
                   <g transform="translate(340, 60) scale(1.1)">
                     <path d={MANGO_SPLASH_1_PATH} fill={splash1Color} />
                   </g>
                 )}
-
-                {/* Placed Splash 2 around outline */}
                 {isSplash2Placed && (
                   <g transform="translate(330, 200) scale(1.0)">
                     <path d={MANGO_SPLASH_2_PATH} fill={splash2Color} />
                   </g>
                 )}
-
-                {/* Placed Splash 3 around outline */}
                 {isSplash3Placed && (
                   <g transform="translate(350, 360) scale(1.0)">
                     <path d={MANGO_SPLASH_3_PATH} fill={splash3Color} />
                   </g>
                 )}
-
-                {/* Stem Outline: Exact shape from zq8.png */}
                 <path
                   d={MANGO_STEM_PATH}
                   fill="transparent"
@@ -465,10 +870,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                   strokeWidth="14"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="pointer-events-none"
                 />
-
-                {/* Stem Base Oval Rim: Exact feature from zq8.png */}
                 <path
                   d={MANGO_STEM_BASE_PATH}
                   fill="transparent"
@@ -476,10 +878,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                   strokeWidth="12"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="pointer-events-none"
                 />
-
-                {/* Leaf Outline: Exact shape from zq8.png */}
                 <path
                   d={MANGO_LEAF_PATH}
                   fill="transparent"
@@ -487,10 +886,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                   strokeWidth="14"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="pointer-events-none"
                 />
-
-                {/* Mango Fruit Body Outline: Exact shape from zq8.png */}
                 <path
                   d={MANGO_BODY_PATH}
                   fill="transparent"
@@ -498,18 +894,11 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                   strokeWidth="14"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="pointer-events-none"
                 />
               </svg>
             </div>
 
-            {/* ------------------------------------------------------------ */}
-            {/* RIGHT SIDE: 3-4 CUTTING IMAGES AS SHOWN IN zq9.PNG          */}
-            {/* 1. Top Splash Arc                                            */}
-            {/* 2. Middle Splash Swoosh                                      */}
-            {/* 3. Bottom Splash Swoosh                                      */}
-            {/* 4. White Mango Body Silhouette (from zq8.png with notch)     */}
-            {/* ------------------------------------------------------------ */}
+            {/* RIGHT: Mango Cutting */}
             <div
               id="mango-cutting-container"
               className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[420/580] flex items-center justify-center"
@@ -526,12 +915,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                   </motion.button>
                 </div>
               )}
-
               <div className="relative w-full h-full">
-                {/* 1. Cutting Image 1: Top Splash Arc */}
                 {!isSplash1Placed && (
                   <motion.div
-                    id="cutting-splash-1"
                     drag
                     dragSnapToOrigin={true}
                     dragElastic={0.15}
@@ -543,32 +929,15 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                       sounds.speakDrawingPieceColored('splash', soundEnabled);
                     }}
                     className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
-                    style={{
-                      left: '18%',
-                      top: '16%',
-                      width: '18%',
-                      height: '24%',
-                    }}
-                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                    style={{ left: '18%', top: '16%', width: '18%', height: '24%' }}
                   >
-                    <svg
-                      viewBox="0 0 90 110"
-                      className="w-full h-full drop-shadow-[0_2px_4px_rgba(0,0,0,0.25)] overflow-visible"
-                    >
-                      <path
-                        d={MANGO_SPLASH_1_PATH}
-                        fill={splash1Color}
-                        stroke="#e2e8f0"
-                        strokeWidth="1"
-                      />
+                    <svg viewBox="0 0 90 110" className="w-full h-full drop-shadow-md">
+                      <path d={MANGO_SPLASH_1_PATH} fill={splash1Color} stroke="#e2e8f0" strokeWidth="1" />
                     </svg>
                   </motion.div>
                 )}
-
-                {/* 2. Cutting Image 2: Middle Splash Swoosh */}
                 {!isSplash2Placed && (
                   <motion.div
-                    id="cutting-splash-2"
                     drag
                     dragSnapToOrigin={true}
                     dragElastic={0.15}
@@ -580,32 +949,15 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                       sounds.speakDrawingPieceColored('splash', soundEnabled);
                     }}
                     className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
-                    style={{
-                      left: '6%',
-                      top: '40%',
-                      width: '32%',
-                      height: '30%',
-                    }}
-                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                    style={{ left: '6%', top: '40%', width: '32%', height: '30%' }}
                   >
-                    <svg
-                      viewBox="0 0 150 160"
-                      className="w-full h-full drop-shadow-[0_2px_4px_rgba(0,0,0,0.25)] overflow-visible"
-                    >
-                      <path
-                        d={MANGO_SPLASH_2_PATH}
-                        fill={splash2Color}
-                        stroke="#e2e8f0"
-                        strokeWidth="1"
-                      />
+                    <svg viewBox="0 0 150 160" className="w-full h-full drop-shadow-md">
+                      <path d={MANGO_SPLASH_2_PATH} fill={splash2Color} stroke="#e2e8f0" strokeWidth="1" />
                     </svg>
                   </motion.div>
                 )}
-
-                {/* 3. Cutting Image 3: Bottom Splash Swoosh */}
                 {!isSplash3Placed && (
                   <motion.div
-                    id="cutting-splash-3"
                     drag
                     dragSnapToOrigin={true}
                     dragElastic={0.15}
@@ -617,32 +969,15 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                       sounds.speakDrawingPieceColored('splash', soundEnabled);
                     }}
                     className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
-                    style={{
-                      left: '18%',
-                      top: '63%',
-                      width: '32%',
-                      height: '24%',
-                    }}
-                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                    style={{ left: '18%', top: '63%', width: '32%', height: '24%' }}
                   >
-                    <svg
-                      viewBox="0 0 160 130"
-                      className="w-full h-full drop-shadow-[0_2px_4px_rgba(0,0,0,0.25)] overflow-visible"
-                    >
-                      <path
-                        d={MANGO_SPLASH_3_PATH}
-                        fill={splash3Color}
-                        stroke="#e2e8f0"
-                        strokeWidth="1"
-                      />
+                    <svg viewBox="0 0 160 130" className="w-full h-full drop-shadow-md">
+                      <path d={MANGO_SPLASH_3_PATH} fill={splash3Color} stroke="#e2e8f0" strokeWidth="1" />
                     </svg>
                   </motion.div>
                 )}
-
-                {/* 4. Cutting Image 4: Mango Fruit Silhouette (zq8 body shape with notch) */}
                 {!isMangoBodyPlaced ? (
                   <motion.div
-                    id="cutting-mango-body"
                     drag
                     dragSnapToOrigin={true}
                     dragElastic={0.15}
@@ -654,24 +989,10 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                       sounds.speakDrawingPieceColored('mango', soundEnabled);
                     }}
                     className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
-                    style={{
-                      right: '0%',
-                      top: '12%',
-                      width: '74%',
-                      height: '82%',
-                    }}
-                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                    style={{ right: '0%', top: '12%', width: '74%', height: '82%' }}
                   >
-                    <svg
-                      viewBox="30 160 380 430"
-                      className="w-full h-full drop-shadow-[0_3px_6px_rgba(0,0,0,0.3)] overflow-visible"
-                    >
-                      <path
-                        d={MANGO_CUTTING_BODY_PATH}
-                        fill={mangoBodyColor}
-                        stroke="#e2e8f0"
-                        strokeWidth="1.2"
-                      />
+                    <svg viewBox="30 160 380 430" className="w-full h-full drop-shadow-md">
+                      <path d={MANGO_CUTTING_BODY_PATH} fill={mangoBodyColor} stroke="#e2e8f0" strokeWidth="1.2" />
                     </svg>
                   </motion.div>
                 ) : (
@@ -688,139 +1009,11 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
               </div>
             </div>
           </>
-        ) : (
-          // ================================================================
-          // APPLE GAME SCREEN (Optional Stage 2)
-          // ================================================================
-          <>
-            {/* LEFT: Apple Outline */}
-            <div
-              ref={outlineAreaRef}
-              id="apple-outline-container"
-              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-square flex items-center justify-center"
-            >
-              <svg
-                viewBox="0 0 400 400"
-                className="w-full h-full drop-shadow-md overflow-visible"
-              >
-                {isAppleBodyPlaced && (
-                  <path
-                    d={APPLE_BODY_PATH}
-                    fill={appleBodyColor}
-                    onClick={() => {
-                      setAppleBodyColor(selectedColor.hex);
-                      sounds.speakDrawingPieceColored('body', soundEnabled);
-                    }}
-                    className="cursor-pointer hover:opacity-95 transition-colors"
-                  />
-                )}
-                {isAppleLeafPlaced && (
-                  <path
-                    d={APPLE_LEAF_PATH}
-                    fill={appleLeafColor}
-                    onClick={() => {
-                      setAppleLeafColor(selectedColor.hex);
-                      sounds.speakDrawingPieceColored('leaf', soundEnabled);
-                    }}
-                    className="cursor-pointer hover:opacity-95 transition-colors"
-                  />
-                )}
-                <path d={APPLE_STEM_PATH} fill="#000000" />
-                <path
-                  d={APPLE_LEAF_PATH}
-                  fill="transparent"
-                  stroke="#000000"
-                  strokeWidth="14"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d={APPLE_BODY_PATH}
-                  fill="transparent"
-                  stroke="#000000"
-                  strokeWidth="14"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-
-            {/* RIGHT: Apple Cutting Images */}
-            <div
-              id="apple-cutting-container"
-              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-square flex flex-col items-center justify-between py-2"
-            >
-              <div className="w-full h-[36%] flex items-center justify-center relative">
-                {!isAppleLeafPlaced ? (
-                  <motion.div
-                    drag
-                    dragSnapToOrigin={true}
-                    dragElastic={0.15}
-                    onDragEnd={(e, info) => handleAppleDragEnd('leaf', e, info)}
-                    whileHover={{ scale: 1.08 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      setAppleLeafColor(selectedColor.hex);
-                      sounds.speakDrawingPieceColored('leaf', soundEnabled);
-                    }}
-                    className="cursor-grab active:cursor-grabbing touch-none select-none z-30"
-                    style={{ width: '110px', height: '65px' }}
-                  >
-                    <svg viewBox="195 20 150 110" className="w-full h-full drop-shadow-md">
-                      <path
-                        d={APPLE_LEAF_PATH}
-                        fill={appleLeafColor}
-                        stroke="#cbd5e1"
-                        strokeWidth="1.5"
-                      />
-                    </svg>
-                  </motion.div>
-                ) : (
-                  <div className="text-white text-xs font-bold bg-black/40 px-3 py-1 rounded-full">
-                    ✓ पत्ती लग गई
-                  </div>
-                )}
-              </div>
-
-              <div className="w-full h-[62%] flex items-center justify-center relative">
-                {!isAppleBodyPlaced ? (
-                  <motion.div
-                    drag
-                    dragSnapToOrigin={true}
-                    dragElastic={0.15}
-                    onDragEnd={(e, info) => handleAppleDragEnd('body', e, info)}
-                    whileHover={{ scale: 1.06 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      setAppleBodyColor(selectedColor.hex);
-                      sounds.speakDrawingPieceColored('body', soundEnabled);
-                    }}
-                    className="cursor-grab active:cursor-grabbing touch-none select-none z-30"
-                    style={{ width: '160px', height: '160px' }}
-                  >
-                    <svg viewBox="35 70 330 330" className="w-full h-full drop-shadow-md">
-                      <path
-                        d={APPLE_BODY_PATH}
-                        fill={appleBodyColor}
-                        stroke="#cbd5e1"
-                        strokeWidth="1.5"
-                      />
-                    </svg>
-                  </motion.div>
-                ) : (
-                  <div className="text-white text-xs font-bold bg-black/40 px-3 py-1 rounded-full">
-                    ✓ सेब लग गया
-                  </div>
-                )}
-              </div>
-            </div>
-          </>
         )}
       </main>
 
       {/* ================================================================== */}
       {/* 3. BOTTOM ROW: Exactly 6 Color Buttons                              */}
-      {/* All button text made larger as requested                           */}
       {/* ================================================================== */}
       <footer
         id="drawing-color-buttons-bar"

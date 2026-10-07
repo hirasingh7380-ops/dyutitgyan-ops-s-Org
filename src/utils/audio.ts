@@ -614,13 +614,15 @@ class SoundManager {
   }
 
   // 10. Drawing Stage: Shikshika (Teacher) Voice for Android Mobile & PC
-  speakDrawingIntro(soundEnabled = true, fruit: 'apple' | 'mango' = 'apple') {
+  speakDrawingIntro(soundEnabled = true, stage: 'apple' | 'mango' | 'kite' = 'kite') {
     if (!soundEnabled) return;
-    const text =
-      fruit === 'mango'
-        ? 'बच्चों, रंग चुनो और कटिंग आम को सही जगह पर लगाओ!'
-        : 'बच्चों, रंग चुनो और कटिंग इमेज को सही जगह पर लगाओ!';
-    this.playAudio(`drawing_intro_${fruit}`, text);
+    let text = 'बच्चों, रंग चुनो और कटिंग इमेज को सही जगह पर लगाओ!';
+    if (stage === 'kite') {
+      text = 'बच्चों, रंग चुनो और कटिंग पतंग को सही जगह पर लगाओ!';
+    } else if (stage === 'mango') {
+      text = 'बच्चों, रंग चुनो और कटिंग आम को सही जगह पर लगाओ!';
+    }
+    this.playAudio(`drawing_intro_${stage}`, text);
   }
 
   speakDrawingColorSelected(colorId: string, soundEnabled = true) {
@@ -638,7 +640,10 @@ class SoundManager {
     this.playAudio(`drawing_col_${colorId.toLowerCase()}`, speech);
   }
 
-  speakDrawingPieceColored(piece: 'leaf' | 'body' | 'mango' | 'splash', soundEnabled = true) {
+  speakDrawingPieceColored(
+    piece: 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail',
+    soundEnabled = true
+  ) {
     if (!soundEnabled) return;
     this.playSnap(soundEnabled);
     let text = 'रंग भर दिया, शाबाश!';
@@ -646,6 +651,8 @@ class SoundManager {
     else if (piece === 'body') text = 'सेब में रंग भर दिया, शाबाश!';
     else if (piece === 'mango') text = 'आम में रंग भर दिया, बहुत सुंदर!';
     else if (piece === 'splash') text = 'वाह! बहुत सुंदर रंग भरा!';
+    else if (piece === 'kite_quad') text = 'पतंग के हिस्से में रंग भर दिया, बहुत खूब!';
+    else if (piece === 'kite_tail') text = 'पतंग की पूंछ में रंग भर दिया, शाबाश!';
     this.playAudio(`drawing_colored_${piece}`, text);
   }
 
@@ -655,7 +662,10 @@ class SoundManager {
     this.playAudio('drawing_wrong_drop', 'ओहो! यह गलत जगह है, आउटलाइन में सही जगह लगाओ!');
   }
 
-  speakDrawingPiecePlaced(piece: 'leaf' | 'body' | 'mango' | 'splash', soundEnabled = true) {
+  speakDrawingPiecePlaced(
+    piece: 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail',
+    soundEnabled = true
+  ) {
     if (!soundEnabled) return;
     this.playSnap(soundEnabled);
     let text = 'शाबाश! सही जगह लग गई!';
@@ -663,27 +673,35 @@ class SoundManager {
     else if (piece === 'body') text = 'शाबाश! सेब सही जगह लग गया!';
     else if (piece === 'mango') text = 'शाबाश! आम सही जगह लग गया!';
     else if (piece === 'splash') text = 'शाबाश! बहुत सुंदर कटिंग लगाई!';
+    else if (piece === 'kite_quad') text = 'शाबाश! पतंग का हिस्सा सही जगह लग गया!';
+    else if (piece === 'kite_tail') text = 'शाबाश! पतंग की पूंछ सही जगह लग गई!';
     this.playAudio(`drawing_placed_${piece}`, text);
   }
 
-  speakDrawingComplete(fruit: 'apple' | 'mango' = 'apple', soundEnabled = true) {
+  speakDrawingComplete(stage: 'apple' | 'mango' | 'kite' = 'kite', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playVictory(soundEnabled);
-    const text =
-      fruit === 'mango'
-        ? 'अरे वाह बच्चों! आपने बहुत ही सुंदर आम बनाया! शाबाश!'
-        : 'अरे वाह बच्चों! आपने बहुत ही सुंदर सेब बनाया! शाबाश!';
-    this.playAudio(`drawing_complete_${fruit}`, text);
+    let text = 'अरे वाह बच्चों! बहुत सुंदर चित्र बनाया! शाबाश!';
+    if (stage === 'kite') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर पतंग बनाई! शाबाश!';
+    } else if (stage === 'mango') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर आम बनाया! शाबाश!';
+    } else if (stage === 'apple') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर सेब बनाया! शाबाश!';
+    }
+    this.playAudio(`drawing_complete_${stage}`, text);
   }
 
-  speakDrawingNext(fruit: 'apple' | 'mango' = 'mango', soundEnabled = true) {
+  speakDrawingNext(stage: 'apple' | 'mango' | 'kite' = 'kite', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playPop(soundEnabled);
-    const text =
-      fruit === 'mango'
-        ? 'चलो अब आम का चित्र बनाते हैं!'
-        : 'चलो फिर से नया चित्र बनाते हैं!';
-    this.playAudio(`drawing_next_${fruit}`, text);
+    let text = 'चलो फिर से नया चित्र बनाते हैं!';
+    if (stage === 'kite') {
+      text = 'चलो अब पतंग का चित्र बनाते हैं!';
+    } else if (stage === 'mango') {
+      text = 'चलो अब आम का चित्र बनाते हैं!';
+    }
+    this.playAudio(`drawing_next_${stage}`, text);
   }
 }
 
