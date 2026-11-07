@@ -614,13 +614,19 @@ class SoundManager {
   }
 
   // 10. Drawing Stage: Shikshika (Teacher) Voice for Android Mobile & PC
-  speakDrawingIntro(soundEnabled = true, stage: 'apple' | 'mango' | 'kite' = 'kite') {
+  speakDrawingIntro(soundEnabled = true, stage: 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'capsicum') {
     if (!soundEnabled) return;
     let text = 'बच्चों, रंग चुनो और कटिंग इमेज को सही जगह पर लगाओ!';
-    if (stage === 'kite') {
+    if (stage === 'capsicum') {
+      text = 'बच्चों, रंग चुनो और कटिंग शिमला मिर्च को सही जगह पर लगाओ!';
+    } else if (stage === 'brinjal') {
+      text = 'बच्चों, रंग चुनो और कटिंग बैंगन को सही जगह पर लगाओ!';
+    } else if (stage === 'kite') {
       text = 'बच्चों, रंग चुनो और कटिंग पतंग को सही जगह पर लगाओ!';
     } else if (stage === 'mango') {
       text = 'बच्चों, रंग चुनो और कटिंग आम को सही जगह पर लगाओ!';
+    } else if (stage === 'apple') {
+      text = 'बच्चों, रंग चुनो और कटिंग सेब को सही जगह पर लगाओ!';
     }
     this.playAudio(`drawing_intro_${stage}`, text);
   }
@@ -641,7 +647,7 @@ class SoundManager {
   }
 
   speakDrawingPieceColored(
-    piece: 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail',
+    piece: 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe',
     soundEnabled = true
   ) {
     if (!soundEnabled) return;
@@ -653,6 +659,11 @@ class SoundManager {
     else if (piece === 'splash') text = 'वाह! बहुत सुंदर रंग भरा!';
     else if (piece === 'kite_quad') text = 'पतंग के हिस्से में रंग भर दिया, बहुत खूब!';
     else if (piece === 'kite_tail') text = 'पतंग की पूंछ में रंग भर दिया, शाबाश!';
+    else if (piece === 'brinjal_calyx') text = 'ताज में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'brinjal_body') text = 'बैंगन में रंग भर दिया, शाबाश!';
+    else if (piece === 'capsicum_body') text = 'शिमला मिर्च में रंग भर दिया, शाबाश!';
+    else if (piece === 'capsicum_stem') text = 'डंठल में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'capsicum_lobe') text = 'हिस्से में रंग भर दिया, शाबाश!';
     this.playAudio(`drawing_colored_${piece}`, text);
   }
 
@@ -663,7 +674,7 @@ class SoundManager {
   }
 
   speakDrawingPiecePlaced(
-    piece: 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail',
+    piece: 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe',
     soundEnabled = true
   ) {
     if (!soundEnabled) return;
@@ -675,14 +686,23 @@ class SoundManager {
     else if (piece === 'splash') text = 'शाबाश! बहुत सुंदर कटिंग लगाई!';
     else if (piece === 'kite_quad') text = 'शाबाश! पतंग का हिस्सा सही जगह लग गया!';
     else if (piece === 'kite_tail') text = 'शाबाश! पतंग की पूंछ सही जगह लग गई!';
+    else if (piece === 'brinjal_calyx') text = 'शाबाश! ताज सही जगह लग गया!';
+    else if (piece === 'brinjal_body') text = 'शाबाश! बैंगन सही जगह लग गया!';
+    else if (piece === 'capsicum_body') text = 'शाबाश! शिमला मिर्च सही जगह लग गई!';
+    else if (piece === 'capsicum_stem') text = 'शाबाश! डंठल सही जगह लग गया!';
+    else if (piece === 'capsicum_lobe') text = 'शाबाश! सही जगह लग गया!';
     this.playAudio(`drawing_placed_${piece}`, text);
   }
 
-  speakDrawingComplete(stage: 'apple' | 'mango' | 'kite' = 'kite', soundEnabled = true) {
+  speakDrawingComplete(stage: 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'capsicum', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playVictory(soundEnabled);
     let text = 'अरे वाह बच्चों! बहुत सुंदर चित्र बनाया! शाबाश!';
-    if (stage === 'kite') {
+    if (stage === 'capsicum') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर शिमला मिर्च बनाई! शाबाश!';
+    } else if (stage === 'brinjal') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर बैंगन बनाया! शाबाश!';
+    } else if (stage === 'kite') {
       text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर पतंग बनाई! शाबाश!';
     } else if (stage === 'mango') {
       text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर आम बनाया! शाबाश!';
@@ -692,14 +712,20 @@ class SoundManager {
     this.playAudio(`drawing_complete_${stage}`, text);
   }
 
-  speakDrawingNext(stage: 'apple' | 'mango' | 'kite' = 'kite', soundEnabled = true) {
+  speakDrawingNext(stage: 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'capsicum', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playPop(soundEnabled);
     let text = 'चलो फिर से नया चित्र बनाते हैं!';
-    if (stage === 'kite') {
+    if (stage === 'capsicum') {
+      text = 'चलो अब शिमला मिर्च का चित्र बनाते हैं!';
+    } else if (stage === 'brinjal') {
+      text = 'चलो अब बैंगन का चित्र बनाते हैं!';
+    } else if (stage === 'kite') {
       text = 'चलो अब पतंग का चित्र बनाते हैं!';
     } else if (stage === 'mango') {
       text = 'चलो अब आम का चित्र बनाते हैं!';
+    } else if (stage === 'apple') {
+      text = 'चलो अब सेब का चित्र बनाते हैं!';
     }
     this.playAudio(`drawing_next_${stage}`, text);
   }
