@@ -614,10 +614,14 @@ class SoundManager {
   }
 
   // 10. Drawing Stage: Shikshika (Teacher) Voice for Android Mobile & PC
-  speakDrawingIntro(soundEnabled = true, stage: 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'capsicum') {
+  speakDrawingIntro(soundEnabled = true, stage: 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'butterfly') {
     if (!soundEnabled) return;
     let text = 'बच्चों, रंग चुनो और कटिंग इमेज को सही जगह पर लगाओ!';
-    if (stage === 'capsicum') {
+    if (stage === 'butterfly') {
+      text = 'बच्चों, रंग चुनो और कटिंग तितली को सही जगह पर लगाओ!';
+    } else if (stage === 'jug') {
+      text = 'बच्चों, रंग चुनो और कटिंग जग को सही जगह पर लगाओ!';
+    } else if (stage === 'capsicum') {
       text = 'बच्चों, रंग चुनो और कटिंग शिमला मिर्च को सही जगह पर लगाओ!';
     } else if (stage === 'brinjal') {
       text = 'बच्चों, रंग चुनो और कटिंग बैंगन को सही जगह पर लगाओ!';
@@ -647,7 +651,7 @@ class SoundManager {
   }
 
   speakDrawingPieceColored(
-    piece: 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe',
+    piece: 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br',
     soundEnabled = true
   ) {
     if (!soundEnabled) return;
@@ -664,6 +668,15 @@ class SoundManager {
     else if (piece === 'capsicum_body') text = 'शिमला मिर्च में रंग भर दिया, शाबाश!';
     else if (piece === 'capsicum_stem') text = 'डंठल में रंग भर दिया, बहुत सुंदर!';
     else if (piece === 'capsicum_lobe') text = 'हिस्से में रंग भर दिया, शाबाश!';
+    else if (piece === 'jug_body') text = 'जग में रंग भर दिया, शाबाश!';
+    else if (piece === 'jug_handle') text = 'हत्थे में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'jug_rim') text = 'किनारे में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'jug_base') text = 'पेंदे में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'butterfly_body') text = 'तितली के शरीर में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'butterfly_wing_tl') text = 'बाएँ ऊपरी पंख में रंग भर दिया, शाबाश!';
+    else if (piece === 'butterfly_wing_bl') text = 'बाएँ निचले पंख में रंग भर दिया, शाबाश!';
+    else if (piece === 'butterfly_wing_tr') text = 'दाएँ ऊपरी पंख में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'butterfly_wing_br') text = 'दाएँ निचले पंख में रंग भर दिया, बहुत सुंदर!';
     this.playAudio(`drawing_colored_${piece}`, text);
   }
 
@@ -674,7 +687,7 @@ class SoundManager {
   }
 
   speakDrawingPiecePlaced(
-    piece: 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe',
+    piece: 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br',
     soundEnabled = true
   ) {
     if (!soundEnabled) return;
@@ -691,14 +704,27 @@ class SoundManager {
     else if (piece === 'capsicum_body') text = 'शाबाश! शिमला मिर्च सही जगह लग गई!';
     else if (piece === 'capsicum_stem') text = 'शाबाश! डंठल सही जगह लग गया!';
     else if (piece === 'capsicum_lobe') text = 'शाबाश! सही जगह लग गया!';
+    else if (piece === 'jug_body') text = 'शाबाश! जग सही जगह लग गया!';
+    else if (piece === 'jug_handle') text = 'शाबाश! हत्था सही जगह लग गया!';
+    else if (piece === 'jug_rim') text = 'शाबाश! किनारा सही जगह लग गया!';
+    else if (piece === 'jug_base') text = 'शाबाश! पेंदा सही जगह लग गया!';
+    else if (piece === 'butterfly_body') text = 'शाबाश! तितली का शरीर सही जगह लग गया!';
+    else if (piece === 'butterfly_wing_tl') text = 'शाबाश! बायाँ ऊपरी पंख सही जगह लग गया!';
+    else if (piece === 'butterfly_wing_bl') text = 'शाबाश! बायाँ निचला पंख सही जगह लग गया!';
+    else if (piece === 'butterfly_wing_tr') text = 'शाबाश! दायाँ ऊपरी पंख सही जगह लग गया!';
+    else if (piece === 'butterfly_wing_br') text = 'शाबाश! दायाँ निचला पंख सही जगह लग गया!';
     this.playAudio(`drawing_placed_${piece}`, text);
   }
 
-  speakDrawingComplete(stage: 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'capsicum', soundEnabled = true) {
+  speakDrawingComplete(stage: 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'butterfly', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playVictory(soundEnabled);
     let text = 'अरे वाह बच्चों! बहुत सुंदर चित्र बनाया! शाबाश!';
-    if (stage === 'capsicum') {
+    if (stage === 'butterfly') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर तितली बनाई! शाबाश!';
+    } else if (stage === 'jug') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर जग बनाया! शाबाश!';
+    } else if (stage === 'capsicum') {
       text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर शिमला मिर्च बनाई! शाबाश!';
     } else if (stage === 'brinjal') {
       text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर बैंगन बनाया! शाबाश!';
@@ -712,11 +738,15 @@ class SoundManager {
     this.playAudio(`drawing_complete_${stage}`, text);
   }
 
-  speakDrawingNext(stage: 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'capsicum', soundEnabled = true) {
+  speakDrawingNext(stage: 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'butterfly', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playPop(soundEnabled);
     let text = 'चलो फिर से नया चित्र बनाते हैं!';
-    if (stage === 'capsicum') {
+    if (stage === 'butterfly') {
+      text = 'चलो अब तितली का चित्र बनाते हैं!';
+    } else if (stage === 'jug') {
+      text = 'चलो अब जग का चित्र बनाते हैं!';
+    } else if (stage === 'capsicum') {
       text = 'चलो अब शिमला मिर्च का चित्र बनाते हैं!';
     } else if (stage === 'brinjal') {
       text = 'चलो अब बैंगन का चित्र बनाते हैं!';

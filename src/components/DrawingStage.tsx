@@ -5,6 +5,34 @@ import { sounds } from '../utils/audio';
 
 import drawingBgLandscape from '../assets/images/drawing_bg_landscape_1789921391908.jpg';
 import brinjalOutlineImg from '../assets/images/brinjal_outline.png';
+import jugOutlineImg from '../assets/images/jug_outline.png';
+import butterflyOutlineImg from '../assets/images/butterfly_outline.png';
+import {
+  JUG_RIM_VIEWBOX,
+  JUG_RIM_PATH,
+  JUG_BASE_VIEWBOX,
+  JUG_BASE_PATH,
+  JUG_HANDLE_VIEWBOX,
+  JUG_HANDLE_PATH,
+  JUG_BODY_VIEWBOX,
+  JUG_BODY_PATH,
+  JUG_PLACED_RIM_PATH,
+  JUG_PLACED_HANDLE_PATH,
+  JUG_PLACED_BODY_PATH,
+  JUG_PLACED_BASE_PATH,
+} from './jug_constants';
+import {
+  BUTTERFLY_BODY_VIEWBOX,
+  BUTTERFLY_BODY_PATH,
+  BUTTERFLY_WING_TL_VIEWBOX,
+  BUTTERFLY_WING_TL_PATH,
+  BUTTERFLY_WING_BL_VIEWBOX,
+  BUTTERFLY_WING_BL_PATH,
+  BUTTERFLY_WING_TR_VIEWBOX,
+  BUTTERFLY_WING_TR_PATH,
+  BUTTERFLY_WING_BR_VIEWBOX,
+  BUTTERFLY_WING_BR_PATH,
+} from './butterfly_constants';
 
 interface DrawingStageProps {
   onHome: () => void;
@@ -175,14 +203,47 @@ const APPLE_STEM_PATH =
 const APPLE_LEAF_PATH =
   'M 205 110 C 220 52, 280 25, 335 38 C 305 85, 250 120, 205 110 Z';
 
-type GameStage = 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
+type GameStage = 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
 
 export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled }) => {
-  // Current game stage: starts on CAPSICUM (from user's request & screenshot z33.PNG)
-  const [currentStage, setCurrentStage] = useState<GameStage>('CAPSICUM');
+  // Current game stage: starts on BUTTERFLY (from user's request & screenshot zaq4_dc7377b4.PNG)
+  const [currentStage, setCurrentStage] = useState<GameStage>('JUG');
 
   // Currently active selected color from bottom 6 buttons
   const [selectedColor, setSelectedColor] = useState<ColorOption>(COLOR_OPTIONS[0]); // Default RED
+
+  // ---------------------------------------------------------
+  // BUTTERFLY STAGE STATES (zaq4_dc7377b4.PNG)
+  // ---------------------------------------------------------
+  const [butterflyBodyColor, setButterflyBodyColor] = useState<string>('#ffffff');
+  const [isButterflyBodyPlaced, setIsButterflyBodyPlaced] = useState<boolean>(false);
+
+  const [butterflyWingTLColor, setButterflyWingTLColor] = useState<string>('#ffffff');
+  const [isButterflyWingTLPlaced, setIsButterflyWingTLPlaced] = useState<boolean>(false);
+
+  const [butterflyWingBLColor, setButterflyWingBLColor] = useState<string>('#ffffff');
+  const [isButterflyWingBLPlaced, setIsButterflyWingBLPlaced] = useState<boolean>(false);
+
+  const [butterflyWingTRColor, setButterflyWingTRColor] = useState<string>('#ffffff');
+  const [isButterflyWingTRPlaced, setIsButterflyWingTRPlaced] = useState<boolean>(false);
+
+  const [butterflyWingBRColor, setButterflyWingBRColor] = useState<string>('#ffffff');
+  const [isButterflyWingBRPlaced, setIsButterflyWingBRPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // JUG STAGE STATES (z22.PNG / z22_e5a5244c.PNG)
+  // ---------------------------------------------------------
+  const [jugRimColor, setJugRimColor] = useState<string>('#ffffff');
+  const [isJugRimPlaced, setIsJugRimPlaced] = useState<boolean>(false);
+
+  const [jugHandleColor, setJugHandleColor] = useState<string>('#ffffff');
+  const [isJugHandlePlaced, setIsJugHandlePlaced] = useState<boolean>(false);
+
+  const [jugBodyColor, setJugBodyColor] = useState<string>('#ffffff');
+  const [isJugBodyPlaced, setIsJugBodyPlaced] = useState<boolean>(false);
+
+  const [jugBaseColor, setJugBaseColor] = useState<string>('#ffffff');
+  const [isJugBasePlaced, setIsJugBasePlaced] = useState<boolean>(false);
 
   // ---------------------------------------------------------
   // CAPSICUM STAGE STATES (z33.PNG)
@@ -255,8 +316,10 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   // Shikshika (Teacher) Voice intro
   useEffect(() => {
     const timer = setTimeout(() => {
-      let voiceKey: 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'capsicum';
-      if (currentStage === 'BRINJAL') voiceKey = 'brinjal';
+      let voiceKey: 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'butterfly';
+      if (currentStage === 'JUG') voiceKey = 'jug';
+      else if (currentStage === 'CAPSICUM') voiceKey = 'capsicum';
+      else if (currentStage === 'BRINJAL') voiceKey = 'brinjal';
       else if (currentStage === 'KITE') voiceKey = 'kite';
       else if (currentStage === 'MANGO') voiceKey = 'mango';
       else if (currentStage === 'APPLE') voiceKey = 'apple';
@@ -281,7 +344,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   };
 
   // Celebration
-  const triggerVictory = (stage: 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple') => {
+  const triggerVictory = (stage: 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple') => {
     sounds.speakDrawingComplete(stage, soundEnabled);
     try {
       confetti({
@@ -291,6 +354,177 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       });
     } catch {
       // Ignore
+    }
+  };
+
+  // Check if entire Butterfly is assembled
+  const checkButterflyVictory = (
+    nextBody: boolean,
+    nextTL: boolean,
+    nextBL: boolean,
+    nextTR: boolean,
+    nextBR: boolean
+  ) => {
+    if (nextBody && nextTL && nextBL && nextTR && nextBR) {
+      triggerVictory('butterfly');
+    }
+  };
+
+  // Drag handlers for Butterfly (zaq4_dc7377b4.PNG)
+  const handleButterflyBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setButterflyBodyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('butterfly_body', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsButterflyBodyPlaced(true);
+      sounds.speakDrawingPiecePlaced('butterfly_body', soundEnabled);
+      checkButterflyVictory(true, isButterflyWingTLPlaced, isButterflyWingBLPlaced, isButterflyWingTRPlaced, isButterflyWingBRPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleButterflyWingTLDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setButterflyWingTLColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('butterfly_wing_tl', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsButterflyWingTLPlaced(true);
+      sounds.speakDrawingPiecePlaced('butterfly_wing_tl', soundEnabled);
+      checkButterflyVictory(isButterflyBodyPlaced, true, isButterflyWingBLPlaced, isButterflyWingTRPlaced, isButterflyWingBRPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleButterflyWingBLDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setButterflyWingBLColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('butterfly_wing_bl', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsButterflyWingBLPlaced(true);
+      sounds.speakDrawingPiecePlaced('butterfly_wing_bl', soundEnabled);
+      checkButterflyVictory(isButterflyBodyPlaced, isButterflyWingTLPlaced, true, isButterflyWingTRPlaced, isButterflyWingBRPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleButterflyWingTRDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setButterflyWingTRColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('butterfly_wing_tr', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsButterflyWingTRPlaced(true);
+      sounds.speakDrawingPiecePlaced('butterfly_wing_tr', soundEnabled);
+      checkButterflyVictory(isButterflyBodyPlaced, isButterflyWingTLPlaced, isButterflyWingBLPlaced, true, isButterflyWingBRPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleButterflyWingBRDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setButterflyWingBRColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('butterfly_wing_br', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsButterflyWingBRPlaced(true);
+      sounds.speakDrawingPiecePlaced('butterfly_wing_br', soundEnabled);
+      checkButterflyVictory(isButterflyBodyPlaced, isButterflyWingTLPlaced, isButterflyWingBLPlaced, isButterflyWingTRPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Jug is assembled
+  const checkJugVictory = (
+    nextRim: boolean,
+    nextHandle: boolean,
+    nextBody: boolean,
+    nextBase: boolean
+  ) => {
+    if (nextRim && nextHandle && nextBody && nextBase) {
+      triggerVictory('jug');
+    }
+  };
+
+  // Drag handlers for Jug (z22.PNG / z22_e5a5244c.PNG)
+  const handleJugRimDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setJugRimColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('jug_rim', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsJugRimPlaced(true);
+      sounds.speakDrawingPiecePlaced('jug_rim', soundEnabled);
+      checkJugVictory(true, isJugHandlePlaced, isJugBodyPlaced, isJugBasePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleJugHandleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setJugHandleColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('jug_handle', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsJugHandlePlaced(true);
+      sounds.speakDrawingPiecePlaced('jug_handle', soundEnabled);
+      checkJugVictory(isJugRimPlaced, true, isJugBodyPlaced, isJugBasePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleJugBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setJugBodyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('jug_body', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsJugBodyPlaced(true);
+      sounds.speakDrawingPiecePlaced('jug_body', soundEnabled);
+      checkJugVictory(isJugRimPlaced, isJugHandlePlaced, true, isJugBasePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleJugBaseDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setJugBaseColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('jug_base', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsJugBasePlaced(true);
+      sounds.speakDrawingPiecePlaced('jug_base', soundEnabled);
+      checkJugVictory(isJugRimPlaced, isJugHandlePlaced, isJugBodyPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
     }
   };
 
@@ -674,10 +908,16 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
   };
 
-  // NEXT Button Handler: cycles CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> CAPSICUM
+  // NEXT Button Handler: cycles BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> BUTTERFLY
   const handleNext = () => {
     sounds.playPop(soundEnabled);
-    if (currentStage === 'CAPSICUM') {
+    if (currentStage === 'BUTTERFLY') {
+      setCurrentStage('JUG');
+      sounds.speakDrawingNext('jug', soundEnabled);
+    } else if (currentStage === 'JUG') {
+      setCurrentStage('CAPSICUM');
+      sounds.speakDrawingNext('capsicum', soundEnabled);
+    } else if (currentStage === 'CAPSICUM') {
       setCurrentStage('BRINJAL');
       sounds.speakDrawingNext('brinjal', soundEnabled);
     } else if (currentStage === 'BRINJAL') {
@@ -690,12 +930,36 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       setCurrentStage('APPLE');
       sounds.speakDrawingNext('apple', soundEnabled);
     } else {
-      setCurrentStage('CAPSICUM');
-      sounds.speakDrawingNext('capsicum', soundEnabled);
+      setCurrentStage('BUTTERFLY');
+      sounds.speakDrawingNext('butterfly', soundEnabled);
     }
   };
 
   // Reset Handlers
+  const handleResetButterfly = () => {
+    setIsButterflyBodyPlaced(false);
+    setIsButterflyWingTLPlaced(false);
+    setIsButterflyWingBLPlaced(false);
+    setIsButterflyWingTRPlaced(false);
+    setIsButterflyWingBRPlaced(false);
+    setButterflyBodyColor('#ffffff');
+    setButterflyWingTLColor('#ffffff');
+    setButterflyWingBLColor('#ffffff');
+    setButterflyWingTRColor('#ffffff');
+    setButterflyWingBRColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+  const handleResetJug = () => {
+    setIsJugRimPlaced(false);
+    setIsJugHandlePlaced(false);
+    setIsJugBodyPlaced(false);
+    setIsJugBasePlaced(false);
+    setJugRimColor('#ffffff');
+    setJugHandleColor('#ffffff');
+    setJugBodyColor('#ffffff');
+    setJugBaseColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
   const handleResetCapsicum = () => {
     setIsCapsicumBodyPlaced(false);
     setIsCapsicumLeftLobePlaced(false);
@@ -825,7 +1089,577 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         id="drawing-main-stage"
         className="w-full flex-1 flex flex-row items-center justify-between px-2 sm:px-6 md:px-10 py-1 max-w-6xl mx-auto min-h-0 z-20 gap-2 sm:gap-6"
       >
-        {currentStage === 'CAPSICUM' ? (
+        {currentStage === 'BUTTERFLY' ? (
+          // ================================================================
+          // BUTTERFLY (तितली) GAME SCREEN (zaq4_dc7377b4.PNG)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: BUTTERFLY OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="butterfly-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[535/606] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 535 606"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Wings Fills */}
+                {isButterflyWingTLPlaced && (
+                  <path
+                    d={BUTTERFLY_WING_TL_PATH}
+                    fill={butterflyWingTLColor}
+                    onClick={() => {
+                      setButterflyWingTLColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('butterfly_wing_tl', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {isButterflyWingBLPlaced && (
+                  <path
+                    d={BUTTERFLY_WING_BL_PATH}
+                    fill={butterflyWingBLColor}
+                    onClick={() => {
+                      setButterflyWingBLColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('butterfly_wing_bl', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {isButterflyWingTRPlaced && (
+                  <path
+                    d={BUTTERFLY_WING_TR_PATH}
+                    fill={butterflyWingTRColor}
+                    onClick={() => {
+                      setButterflyWingTRColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('butterfly_wing_tr', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {isButterflyWingBRPlaced && (
+                  <path
+                    d={BUTTERFLY_WING_BR_PATH}
+                    fill={butterflyWingBRColor}
+                    onClick={() => {
+                      setButterflyWingBRColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('butterfly_wing_br', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+
+                {/* 2. Placed Body Fill */}
+                {isButterflyBodyPlaced && (
+                  <path
+                    d={BUTTERFLY_BODY_PATH}
+                    fill={butterflyBodyColor}
+                    onClick={() => {
+                      setButterflyBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('butterfly_body', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Exact black outline image from zaq4_dc7377b4.PNG (thickened bold strokes) */}
+              <img
+                src={butterflyOutlineImg}
+                alt="Butterfly Outline"
+                className="absolute inset-0 w-full h-full pointer-events-none select-none object-contain drop-shadow-sm"
+              />
+            </div>
+
+            {/* RIGHT SIDE: BUTTERFLY CUTTING IMAGES (zaq4_dc7377b4.PNG) */}
+            <div
+              id="butterfly-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[535/606] flex items-center justify-center"
+            >
+              {isButterflyBodyPlaced &&
+                isButterflyWingTLPlaced &&
+                isButterflyWingBLPlaced &&
+                isButterflyWingTRPlaced &&
+                isButterflyWingBRPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetButterfly}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Top-Left Wing */}
+                {!isButterflyWingTLPlaced && (
+                  <motion.div
+                    id="cutting-butterfly-wing-tl"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleButterflyWingTLDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setButterflyWingTLColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('butterfly_wing_tl', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '8%',
+                      top: '18%',
+                      width: `${(196 / 535) * 100}%`,
+                      height: `${(194 / 606) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BUTTERFLY_WING_TL_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BUTTERFLY_WING_TL_PATH}
+                        fill={butterflyWingTLColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Bottom-Left Wing */}
+                {!isButterflyWingBLPlaced && (
+                  <motion.div
+                    id="cutting-butterfly-wing-bl"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleButterflyWingBLDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setButterflyWingBLColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('butterfly_wing_bl', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '12%',
+                      top: '52%',
+                      width: `${(141 / 535) * 100}%`,
+                      height: `${(154 / 606) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BUTTERFLY_WING_BL_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BUTTERFLY_WING_BL_PATH}
+                        fill={butterflyWingBLColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Center Body */}
+                {!isButterflyBodyPlaced && (
+                  <motion.div
+                    id="cutting-butterfly-body"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleButterflyBodyDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setButterflyBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('butterfly_body', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '46%',
+                      top: '28%',
+                      width: `${(43 / 535) * 100}%`,
+                      height: `${(216 / 606) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BUTTERFLY_BODY_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BUTTERFLY_BODY_PATH}
+                        fill={butterflyBodyColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Top-Right Wing */}
+                {!isButterflyWingTRPlaced && (
+                  <motion.div
+                    id="cutting-butterfly-wing-tr"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleButterflyWingTRDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setButterflyWingTRColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('butterfly_wing_tr', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '56%',
+                      top: '18%',
+                      width: `${(196 / 535) * 100}%`,
+                      height: `${(195 / 606) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BUTTERFLY_WING_TR_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BUTTERFLY_WING_TR_PATH}
+                        fill={butterflyWingTRColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Bottom-Right Wing */}
+                {!isButterflyWingBRPlaced && (
+                  <motion.div
+                    id="cutting-butterfly-wing-br"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleButterflyWingBRDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setButterflyWingBRColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('butterfly_wing_br', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '60%',
+                      top: '52%',
+                      width: `${(141 / 535) * 100}%`,
+                      height: `${(154 / 606) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BUTTERFLY_WING_BR_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BUTTERFLY_WING_BR_PATH}
+                        fill={butterflyWingBRColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Victory Banner when completely assembled */}
+                {isButterflyBodyPlaced &&
+                  isButterflyWingTLPlaced &&
+                  isButterflyWingBLPlaced &&
+                  isButterflyWingTRPlaced &&
+                  isButterflyWingBRPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ तितली सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'JUG' ? (
+          // ================================================================
+          // JUG / SURAHI GAME SCREEN (z22.PNG / z22_e5a5244c.PNG)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: JUG OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="jug-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[534/601] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 534 601"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Body Fill */}
+                {isJugBodyPlaced && (
+                  <path
+                    d={JUG_PLACED_BODY_PATH}
+                    fill={jugBodyColor}
+                    onClick={() => {
+                      setJugBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('jug_body', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+
+                {/* 2. Placed Base Fill */}
+                {isJugBasePlaced && (
+                  <path
+                    d={JUG_PLACED_BASE_PATH}
+                    fill={jugBaseColor}
+                    onClick={() => {
+                      setJugBaseColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('jug_base', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+
+                {/* 3. Placed Rim / Lip Fill */}
+                {isJugRimPlaced && (
+                  <path
+                    d={JUG_PLACED_RIM_PATH}
+                    fill={jugRimColor}
+                    onClick={() => {
+                      setJugRimColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('jug_rim', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+
+                {/* 4. Placed Handle Fill */}
+                {isJugHandlePlaced && (
+                  <path
+                    d={JUG_PLACED_HANDLE_PATH}
+                    fill={jugHandleColor}
+                    onClick={() => {
+                      setJugHandleColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('jug_handle', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Exact black outline image from z22.PNG */}
+              <img
+                src={jugOutlineImg}
+                alt="Jug Outline"
+                className="absolute inset-0 w-full h-full pointer-events-none select-none object-contain drop-shadow-sm"
+              />
+            </div>
+
+            {/* RIGHT SIDE: JUG CUTTING IMAGES (z22.PNG) */}
+            <div
+              id="jug-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[534/601] flex items-center justify-center"
+            >
+              {isJugRimPlaced && isJugHandlePlaced && isJugBodyPlaced && isJugBasePlaced && (
+                <div className="absolute top-0 right-2 z-40">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleResetJug}
+                    className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                  >
+                    ↺ फिर से बनाएँ
+                  </motion.button>
+                </div>
+              )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Top Rim / Lip (Top Center) */}
+                {!isJugRimPlaced && (
+                  <motion.div
+                    id="cutting-jug-rim"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleJugRimDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setJugRimColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('jug_rim', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '27.3%',
+                      top: '11.8%',
+                      width: `${(201 / 534) * 100}%`,
+                      height: `${(49 / 601) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={JUG_RIM_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={JUG_RIM_PATH}
+                        fill={jugRimColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Handle (Middle-Left) */}
+                {!isJugHandlePlaced && (
+                  <motion.div
+                    id="cutting-jug-handle"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleJugHandleDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setJugHandleColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('jug_handle', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '29.1%',
+                      top: '25.5%',
+                      width: `${(79 / 534) * 100}%`,
+                      height: `${(115 / 601) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={JUG_HANDLE_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={JUG_HANDLE_PATH}
+                        fill={jugHandleColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Jug Body (Right Side) */}
+                {!isJugBodyPlaced && (
+                  <motion.div
+                    id="cutting-jug-body"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleJugBodyDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setJugBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('jug_body', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '50.5%',
+                      top: '22.0%',
+                      width: `${(254 / 534) * 100}%`,
+                      height: `${(305 / 601) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={JUG_BODY_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={JUG_BODY_PATH}
+                        fill={jugBodyColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Bottom Base (Bottom Left-Center) */}
+                {!isJugBasePlaced && (
+                  <motion.div
+                    id="cutting-jug-base"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleJugBaseDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setJugBaseColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('jug_base', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '27.3%',
+                      top: '72.9%',
+                      width: `${(150 / 534) * 100}%`,
+                      height: `${(31 / 601) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={JUG_BASE_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={JUG_BASE_PATH}
+                        fill={jugBaseColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Victory Banner when completely assembled */}
+                {isJugRimPlaced && isJugHandlePlaced && isJugBodyPlaced && isJugBasePlaced && (
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="w-full h-full flex flex-col items-center justify-center gap-3"
+                  >
+                    <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                      ⭐ जग सही जगह लग गया! शाबाश! ⭐
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'CAPSICUM' ? (
           // ================================================================
           // CAPSICUM (SHIMLA MIRCH) GAME SCREEN (z33.PNG)
           // ================================================================
