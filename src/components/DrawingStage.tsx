@@ -7,6 +7,50 @@ import drawingBgLandscape from '../assets/images/drawing_bg_landscape_1789921391
 import brinjalOutlineImg from '../assets/images/brinjal_outline.png';
 import jugOutlineImg from '../assets/images/jug_outline.png';
 import butterflyOutlineImg from '../assets/images/butterfly_outline.png';
+import ballOutlineImg from '../assets/images/ball_outline.png';
+import hatOutlineImg from '../assets/images/hat_outline.png';
+import umbrellaOutlineImg from '../assets/images/umbrella_outline.png';
+import {
+  UMBRELLA_CANOPY_LEFT_VIEWBOX,
+  UMBRELLA_CANOPY_LEFT_PATH,
+  UMBRELLA_CANOPY_MID_VIEWBOX,
+  UMBRELLA_CANOPY_MID_PATH,
+  UMBRELLA_CANOPY_RIGHT_VIEWBOX,
+  UMBRELLA_CANOPY_RIGHT_PATH,
+  UMBRELLA_HANDLE_VIEWBOX,
+  UMBRELLA_HANDLE_PATH,
+  UMBRELLA_PLACED_CANOPY_LEFT_PATH,
+  UMBRELLA_PLACED_CANOPY_MID_PATH,
+  UMBRELLA_PLACED_CANOPY_RIGHT_PATH,
+  UMBRELLA_PLACED_HANDLE_PATH,
+} from './umbrella_constants';
+import {
+  HAT_CROWN_VIEWBOX,
+  HAT_CROWN_PATH,
+  HAT_BAND_VIEWBOX,
+  HAT_BAND_PATH,
+  HAT_BRIM_VIEWBOX,
+  HAT_BRIM_PATH,
+  HAT_PLACED_CROWN_PATH,
+  HAT_PLACED_BAND_PATH,
+  HAT_PLACED_BRIM_PATH,
+} from './hat_constants';
+import {
+  BALL_CAP_VIEWBOX,
+  BALL_CAP_PATH,
+  BALL_TOP_MID_VIEWBOX,
+  BALL_TOP_MID_PATH,
+  BALL_TOP_RIGHT_VIEWBOX,
+  BALL_TOP_RIGHT_PATH,
+  BALL_TOP_LEFT_VIEWBOX,
+  BALL_TOP_LEFT_PATH,
+  BALL_BOTTOM_LEFT_VIEWBOX,
+  BALL_BOTTOM_LEFT_PATH,
+  BALL_BOTTOM_CENTER_VIEWBOX,
+  BALL_BOTTOM_CENTER_PATH,
+  BALL_BOTTOM_RIGHT_VIEWBOX,
+  BALL_BOTTOM_RIGHT_PATH,
+} from './ball_constants';
 import {
   JUG_RIM_VIEWBOX,
   JUG_RIM_PATH,
@@ -203,14 +247,65 @@ const APPLE_STEM_PATH =
 const APPLE_LEAF_PATH =
   'M 205 110 C 220 52, 280 25, 335 38 C 305 85, 250 120, 205 110 Z';
 
-type GameStage = 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
+type GameStage = 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
 
 export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled }) => {
-  // Current game stage: starts on BUTTERFLY (from user's request & screenshot zaq4_dc7377b4.PNG)
-  const [currentStage, setCurrentStage] = useState<GameStage>('JUG');
+  // Current game stage: starts on UMBRELLA (from user's request & screenshot z67_a60b946b.PNG)
+  const [currentStage, setCurrentStage] = useState<GameStage>('UMBRELLA');
 
   // Currently active selected color from bottom 6 buttons
   const [selectedColor, setSelectedColor] = useState<ColorOption>(COLOR_OPTIONS[0]); // Default RED
+
+  // ---------------------------------------------------------
+  // UMBRELLA STAGE STATES (z67_a60b946b.PNG)
+  // ---------------------------------------------------------
+  const [umbrellaCanopyLeftColor, setUmbrellaCanopyLeftColor] = useState<string>('#ffffff');
+  const [isUmbrellaCanopyLeftPlaced, setIsUmbrellaCanopyLeftPlaced] = useState<boolean>(false);
+
+  const [umbrellaCanopyMidColor, setUmbrellaCanopyMidColor] = useState<string>('#ffffff');
+  const [isUmbrellaCanopyMidPlaced, setIsUmbrellaCanopyMidPlaced] = useState<boolean>(false);
+
+  const [umbrellaCanopyRightColor, setUmbrellaCanopyRightColor] = useState<string>('#ffffff');
+  const [isUmbrellaCanopyRightPlaced, setIsUmbrellaCanopyRightPlaced] = useState<boolean>(false);
+
+  const [umbrellaHandleColor, setUmbrellaHandleColor] = useState<string>('#ffffff');
+  const [isUmbrellaHandlePlaced, setIsUmbrellaHandlePlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // HAT STAGE STATES (z66_690aba2c.PNG)
+  // ---------------------------------------------------------
+  const [hatCrownColor, setHatCrownColor] = useState<string>('#ffffff');
+  const [isHatCrownPlaced, setIsHatCrownPlaced] = useState<boolean>(false);
+
+  const [hatBandColor, setHatBandColor] = useState<string>('#ffffff');
+  const [isHatBandPlaced, setIsHatBandPlaced] = useState<boolean>(false);
+
+  const [hatBrimColor, setHatBrimColor] = useState<string>('#ffffff');
+  const [isHatBrimPlaced, setIsHatBrimPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // BALL STAGE STATES (z65_209ca702.PNG)
+  // ---------------------------------------------------------
+  const [ballCapColor, setBallCapColor] = useState<string>('#ffffff');
+  const [isBallCapPlaced, setIsBallCapPlaced] = useState<boolean>(false);
+
+  const [ballTopMidColor, setBallTopMidColor] = useState<string>('#ffffff');
+  const [isBallTopMidPlaced, setIsBallTopMidPlaced] = useState<boolean>(false);
+
+  const [ballTopRightColor, setBallTopRightColor] = useState<string>('#ffffff');
+  const [isBallTopRightPlaced, setIsBallTopRightPlaced] = useState<boolean>(false);
+
+  const [ballTopLeftColor, setBallTopLeftColor] = useState<string>('#ffffff');
+  const [isBallTopLeftPlaced, setIsBallTopLeftPlaced] = useState<boolean>(false);
+
+  const [ballBottomLeftColor, setBallBottomLeftColor] = useState<string>('#ffffff');
+  const [isBallBottomLeftPlaced, setIsBallBottomLeftPlaced] = useState<boolean>(false);
+
+  const [ballBottomCenterColor, setBallBottomCenterColor] = useState<string>('#ffffff');
+  const [isBallBottomCenterPlaced, setIsBallBottomCenterPlaced] = useState<boolean>(false);
+
+  const [ballBottomRightColor, setBallBottomRightColor] = useState<string>('#ffffff');
+  const [isBallBottomRightPlaced, setIsBallBottomRightPlaced] = useState<boolean>(false);
 
   // ---------------------------------------------------------
   // BUTTERFLY STAGE STATES (zaq4_dc7377b4.PNG)
@@ -344,7 +439,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   };
 
   // Celebration
-  const triggerVictory = (stage: 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple') => {
+  const triggerVictory = (stage: 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
     sounds.speakDrawingComplete(stage, soundEnabled);
     try {
       confetti({
@@ -354,6 +449,335 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       });
     } catch {
       // Ignore
+    }
+  };
+
+  // Check if entire Umbrella is assembled (z67_a60b946b.PNG)
+  const checkUmbrellaVictory = (
+    nextLeft: boolean,
+    nextMid: boolean,
+    nextRight: boolean,
+    nextHandle: boolean
+  ) => {
+    if (nextLeft && nextMid && nextRight && nextHandle) {
+      triggerVictory('umbrella');
+    }
+  };
+
+  // Drag handlers for Umbrella (z67_a60b946b.PNG)
+  const handleUmbrellaCanopyLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setUmbrellaCanopyLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('umbrella_canopy_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsUmbrellaCanopyLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('umbrella_canopy_left', soundEnabled);
+      checkUmbrellaVictory(true, isUmbrellaCanopyMidPlaced, isUmbrellaCanopyRightPlaced, isUmbrellaHandlePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleUmbrellaCanopyMidDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setUmbrellaCanopyMidColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('umbrella_canopy_mid', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsUmbrellaCanopyMidPlaced(true);
+      sounds.speakDrawingPiecePlaced('umbrella_canopy_mid', soundEnabled);
+      checkUmbrellaVictory(isUmbrellaCanopyLeftPlaced, true, isUmbrellaCanopyRightPlaced, isUmbrellaHandlePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleUmbrellaCanopyRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setUmbrellaCanopyRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('umbrella_canopy_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsUmbrellaCanopyRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('umbrella_canopy_right', soundEnabled);
+      checkUmbrellaVictory(isUmbrellaCanopyLeftPlaced, isUmbrellaCanopyMidPlaced, true, isUmbrellaHandlePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleUmbrellaHandleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setUmbrellaHandleColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('umbrella_handle', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsUmbrellaHandlePlaced(true);
+      sounds.speakDrawingPiecePlaced('umbrella_handle', soundEnabled);
+      checkUmbrellaVictory(isUmbrellaCanopyLeftPlaced, isUmbrellaCanopyMidPlaced, isUmbrellaCanopyRightPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Hat is assembled (z66_690aba2c.PNG)
+  const checkHatVictory = (
+    nextCrown: boolean,
+    nextBand: boolean,
+    nextBrim: boolean
+  ) => {
+    if (nextCrown && nextBand && nextBrim) {
+      triggerVictory('hat');
+    }
+  };
+
+  // Drag handlers for Hat (z66_690aba2c.PNG)
+  const handleHatCrownDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHatCrownColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('hat_crown', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHatCrownPlaced(true);
+      sounds.speakDrawingPiecePlaced('hat_crown', soundEnabled);
+      checkHatVictory(true, isHatBandPlaced, isHatBrimPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHatBandDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHatBandColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('hat_band', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHatBandPlaced(true);
+      sounds.speakDrawingPiecePlaced('hat_band', soundEnabled);
+      checkHatVictory(isHatCrownPlaced, true, isHatBrimPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHatBrimDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHatBrimColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('hat_brim', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHatBrimPlaced(true);
+      sounds.speakDrawingPiecePlaced('hat_brim', soundEnabled);
+      checkHatVictory(isHatCrownPlaced, isHatBandPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Ball is assembled (z65_209ca702.PNG)
+  const checkBallVictory = (
+    nextCap: boolean,
+    nextTopMid: boolean,
+    nextTopRight: boolean,
+    nextTopLeft: boolean,
+    nextBottomLeft: boolean,
+    nextBottomCenter: boolean,
+    nextBottomRight: boolean
+  ) => {
+    if (
+      nextCap &&
+      nextTopMid &&
+      nextTopRight &&
+      nextTopLeft &&
+      nextBottomLeft &&
+      nextBottomCenter &&
+      nextBottomRight
+    ) {
+      triggerVictory('ball');
+    }
+  };
+
+  // Drag handlers for Ball (z65_209ca702.PNG)
+  const handleBallCapDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBallCapColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('ball_cap', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBallCapPlaced(true);
+      sounds.speakDrawingPiecePlaced('ball_cap', soundEnabled);
+      checkBallVictory(
+        true,
+        isBallTopMidPlaced,
+        isBallTopRightPlaced,
+        isBallTopLeftPlaced,
+        isBallBottomLeftPlaced,
+        isBallBottomCenterPlaced,
+        isBallBottomRightPlaced
+      );
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBallTopMidDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBallTopMidColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('ball_top_mid', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBallTopMidPlaced(true);
+      sounds.speakDrawingPiecePlaced('ball_top_mid', soundEnabled);
+      checkBallVictory(
+        isBallCapPlaced,
+        true,
+        isBallTopRightPlaced,
+        isBallTopLeftPlaced,
+        isBallBottomLeftPlaced,
+        isBallBottomCenterPlaced,
+        isBallBottomRightPlaced
+      );
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBallTopRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBallTopRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('ball_top_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBallTopRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('ball_top_right', soundEnabled);
+      checkBallVictory(
+        isBallCapPlaced,
+        isBallTopMidPlaced,
+        true,
+        isBallTopLeftPlaced,
+        isBallBottomLeftPlaced,
+        isBallBottomCenterPlaced,
+        isBallBottomRightPlaced
+      );
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBallTopLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBallTopLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('ball_top_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBallTopLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('ball_top_left', soundEnabled);
+      checkBallVictory(
+        isBallCapPlaced,
+        isBallTopMidPlaced,
+        isBallTopRightPlaced,
+        true,
+        isBallBottomLeftPlaced,
+        isBallBottomCenterPlaced,
+        isBallBottomRightPlaced
+      );
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBallBottomLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBallBottomLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('ball_bottom_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBallBottomLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('ball_bottom_left', soundEnabled);
+      checkBallVictory(
+        isBallCapPlaced,
+        isBallTopMidPlaced,
+        isBallTopRightPlaced,
+        isBallTopLeftPlaced,
+        true,
+        isBallBottomCenterPlaced,
+        isBallBottomRightPlaced
+      );
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBallBottomCenterDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBallBottomCenterColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('ball_bottom_center', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBallBottomCenterPlaced(true);
+      sounds.speakDrawingPiecePlaced('ball_bottom_center', soundEnabled);
+      checkBallVictory(
+        isBallCapPlaced,
+        isBallTopMidPlaced,
+        isBallTopRightPlaced,
+        isBallTopLeftPlaced,
+        isBallBottomLeftPlaced,
+        true,
+        isBallBottomRightPlaced
+      );
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBallBottomRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBallBottomRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('ball_bottom_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBallBottomRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('ball_bottom_right', soundEnabled);
+      checkBallVictory(
+        isBallCapPlaced,
+        isBallTopMidPlaced,
+        isBallTopRightPlaced,
+        isBallTopLeftPlaced,
+        isBallBottomLeftPlaced,
+        isBallBottomCenterPlaced,
+        true
+      );
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
     }
   };
 
@@ -908,10 +1332,19 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
   };
 
-  // NEXT Button Handler: cycles BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> BUTTERFLY
+  // NEXT Button Handler: cycles UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> UMBRELLA
   const handleNext = () => {
     sounds.playPop(soundEnabled);
-    if (currentStage === 'BUTTERFLY') {
+    if (currentStage === 'UMBRELLA') {
+      setCurrentStage('HAT');
+      sounds.speakDrawingNext('hat', soundEnabled);
+    } else if (currentStage === 'HAT') {
+      setCurrentStage('BALL');
+      sounds.speakDrawingNext('ball', soundEnabled);
+    } else if (currentStage === 'BALL') {
+      setCurrentStage('BUTTERFLY');
+      sounds.speakDrawingNext('butterfly', soundEnabled);
+    } else if (currentStage === 'BUTTERFLY') {
       setCurrentStage('JUG');
       sounds.speakDrawingNext('jug', soundEnabled);
     } else if (currentStage === 'JUG') {
@@ -930,12 +1363,51 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       setCurrentStage('APPLE');
       sounds.speakDrawingNext('apple', soundEnabled);
     } else {
-      setCurrentStage('BUTTERFLY');
-      sounds.speakDrawingNext('butterfly', soundEnabled);
+      setCurrentStage('UMBRELLA');
+      sounds.speakDrawingNext('umbrella', soundEnabled);
     }
   };
 
   // Reset Handlers
+  const handleResetUmbrella = () => {
+    setIsUmbrellaCanopyLeftPlaced(false);
+    setIsUmbrellaCanopyMidPlaced(false);
+    setIsUmbrellaCanopyRightPlaced(false);
+    setIsUmbrellaHandlePlaced(false);
+    setUmbrellaCanopyLeftColor('#ffffff');
+    setUmbrellaCanopyMidColor('#ffffff');
+    setUmbrellaCanopyRightColor('#ffffff');
+    setUmbrellaHandleColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetHat = () => {
+    setIsHatCrownPlaced(false);
+    setIsHatBandPlaced(false);
+    setIsHatBrimPlaced(false);
+    setHatCrownColor('#ffffff');
+    setHatBandColor('#ffffff');
+    setHatBrimColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetBall = () => {
+    setIsBallCapPlaced(false);
+    setIsBallTopMidPlaced(false);
+    setIsBallTopRightPlaced(false);
+    setIsBallTopLeftPlaced(false);
+    setIsBallBottomLeftPlaced(false);
+    setIsBallBottomCenterPlaced(false);
+    setIsBallBottomRightPlaced(false);
+    setBallCapColor('#ffffff');
+    setBallTopMidColor('#ffffff');
+    setBallTopRightColor('#ffffff');
+    setBallTopLeftColor('#ffffff');
+    setBallBottomLeftColor('#ffffff');
+    setBallBottomCenterColor('#ffffff');
+    setBallBottomRightColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
   const handleResetButterfly = () => {
     setIsButterflyBodyPlaced(false);
     setIsButterflyWingTLPlaced(false);
@@ -1089,7 +1561,895 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         id="drawing-main-stage"
         className="w-full flex-1 flex flex-row items-center justify-between px-2 sm:px-6 md:px-10 py-1 max-w-6xl mx-auto min-h-0 z-20 gap-2 sm:gap-6"
       >
-        {currentStage === 'BUTTERFLY' ? (
+        {currentStage === 'UMBRELLA' ? (
+          // ================================================================
+          // UMBRELLA (छाता / छतरी) GAME SCREEN (z67_a60b946b.PNG)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: UMBRELLA OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="umbrella-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[536/600] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 536 600"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Canopy Left */}
+                {isUmbrellaCanopyLeftPlaced && (
+                  <path
+                    d={UMBRELLA_PLACED_CANOPY_LEFT_PATH}
+                    fill={umbrellaCanopyLeftColor}
+                    onClick={() => {
+                      setUmbrellaCanopyLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('umbrella_canopy_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Canopy Mid */}
+                {isUmbrellaCanopyMidPlaced && (
+                  <path
+                    d={UMBRELLA_PLACED_CANOPY_MID_PATH}
+                    fill={umbrellaCanopyMidColor}
+                    onClick={() => {
+                      setUmbrellaCanopyMidColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('umbrella_canopy_mid', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Canopy Right */}
+                {isUmbrellaCanopyRightPlaced && (
+                  <path
+                    d={UMBRELLA_PLACED_CANOPY_RIGHT_PATH}
+                    fill={umbrellaCanopyRightColor}
+                    onClick={() => {
+                      setUmbrellaCanopyRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('umbrella_canopy_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Handle */}
+                {isUmbrellaHandlePlaced && (
+                  <path
+                    d={UMBRELLA_PLACED_HANDLE_PATH}
+                    fill={umbrellaHandleColor}
+                    onClick={() => {
+                      setUmbrellaHandleColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('umbrella_handle', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Black Outline on top */}
+              <img
+                src={umbrellaOutlineImg}
+                alt="Umbrella Outline"
+                className="absolute inset-0 w-full h-full pointer-events-none select-none object-contain drop-shadow-sm"
+              />
+            </div>
+
+            {/* RIGHT SIDE: UMBRELLA CUTTING IMAGES (z67_a60b946b.PNG) */}
+            <div
+              id="umbrella-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[536/600] flex items-center justify-center"
+            >
+              {isUmbrellaCanopyLeftPlaced &&
+                isUmbrellaCanopyMidPlaced &&
+                isUmbrellaCanopyRightPlaced &&
+                isUmbrellaHandlePlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetUmbrella}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Canopy Left (top left of cutting area) */}
+                {!isUmbrellaCanopyLeftPlaced && (
+                  <motion.div
+                    id="cutting-umbrella-canopy-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleUmbrellaCanopyLeftDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setUmbrellaCanopyLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('umbrella_canopy_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '0.0%',
+                      top: '10.7%',
+                      width: `${(138 / 536) * 100}%`,
+                      height: `${(198 / 600) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={UMBRELLA_CANOPY_LEFT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={UMBRELLA_CANOPY_LEFT_PATH}
+                        fill={umbrellaCanopyLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Canopy Right (top center of cutting area in z67_a60b946b.PNG) */}
+                {!isUmbrellaCanopyRightPlaced && (
+                  <motion.div
+                    id="cutting-umbrella-canopy-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleUmbrellaCanopyRightDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setUmbrellaCanopyRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('umbrella_canopy_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '32.3%',
+                      top: '13.8%',
+                      width: `${(194 / 536) * 100}%`,
+                      height: `${(165 / 600) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={UMBRELLA_CANOPY_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={UMBRELLA_CANOPY_RIGHT_PATH}
+                        fill={umbrellaCanopyRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Canopy Mid (top right of cutting area in z67_a60b946b.PNG) */}
+                {!isUmbrellaCanopyMidPlaced && (
+                  <motion.div
+                    id="cutting-umbrella-canopy-mid"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleUmbrellaCanopyMidDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setUmbrellaCanopyMidColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('umbrella_canopy_mid', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '71.3%',
+                      top: '15.3%',
+                      width: `${(154 / 536) * 100}%`,
+                      height: `${(185 / 600) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={UMBRELLA_CANOPY_MID_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={UMBRELLA_CANOPY_MID_PATH}
+                        fill={umbrellaCanopyMidColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Handle (lower middle of cutting area in z67_a60b946b.PNG) */}
+                {!isUmbrellaHandlePlaced && (
+                  <motion.div
+                    id="cutting-umbrella-handle"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleUmbrellaHandleDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setUmbrellaHandleColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('umbrella_handle', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '33.8%',
+                      top: '45.3%',
+                      width: `${(122 / 536) * 100}%`,
+                      height: `${(199 / 600) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={UMBRELLA_HANDLE_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={UMBRELLA_HANDLE_PATH}
+                        fill={umbrellaHandleColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 4 pieces are placed */}
+                {isUmbrellaCanopyLeftPlaced &&
+                  isUmbrellaCanopyMidPlaced &&
+                  isUmbrellaCanopyRightPlaced &&
+                  isUmbrellaHandlePlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ छतरी सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'HAT' ? (
+          // ================================================================
+          // HAT (टोपी / Fedora) GAME SCREEN (z66_690aba2c.PNG)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: HAT OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="hat-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[534/603] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 534 603"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Crown Fill */}
+                {isHatCrownPlaced && (
+                  <path
+                    d={HAT_PLACED_CROWN_PATH}
+                    fill={hatCrownColor}
+                    onClick={() => {
+                      setHatCrownColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hat_crown', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Band Fill */}
+                {isHatBandPlaced && (
+                  <path
+                    d={HAT_PLACED_BAND_PATH}
+                    fill={hatBandColor}
+                    onClick={() => {
+                      setHatBandColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hat_band', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Brim Fill */}
+                {isHatBrimPlaced && (
+                  <path
+                    d={HAT_PLACED_BRIM_PATH}
+                    fill={hatBrimColor}
+                    onClick={() => {
+                      setHatBrimColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hat_brim', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Black Outline on top */}
+              <img
+                src={hatOutlineImg}
+                alt="Hat Outline"
+                className="absolute inset-0 w-full h-full pointer-events-none select-none object-contain drop-shadow-sm"
+              />
+            </div>
+
+            {/* RIGHT SIDE: HAT CUTTING IMAGES (z66_690aba2c.PNG) */}
+            <div
+              id="hat-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[534/603] flex items-center justify-center"
+            >
+              {isHatCrownPlaced &&
+                isHatBandPlaced &&
+                isHatBrimPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetHat}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Band (horizontal ribbon near top) */}
+                {!isHatBandPlaced && (
+                  <motion.div
+                    id="cutting-hat-band"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHatBandDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHatBandColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hat_band', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '22.8%',
+                      top: '20.0%',
+                      width: `${(291 / 534) * 100}%`,
+                      height: `${(69 / 603) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HAT_BAND_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={HAT_BAND_PATH}
+                        fill={hatBandColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Crown (upper dome in middle) */}
+                {!isHatCrownPlaced && (
+                  <motion.div
+                    id="cutting-hat-crown"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHatCrownDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHatCrownColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hat_crown', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '38.6%',
+                      top: '42.9%',
+                      width: `${(168 / 534) * 100}%`,
+                      height: `${(88 / 603) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HAT_CROWN_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={HAT_CROWN_PATH}
+                        fill={hatCrownColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Brim (wide bottom brim) */}
+                {!isHatBrimPlaced && (
+                  <motion.div
+                    id="cutting-hat-brim"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHatBrimDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHatBrimColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hat_brim', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '6.9%',
+                      top: '64.8%',
+                      width: `${(487 / 534) * 100}%`,
+                      height: `${(103 / 603) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HAT_BRIM_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={HAT_BRIM_PATH}
+                        fill={hatBrimColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 3 pieces are placed */}
+                {isHatCrownPlaced &&
+                  isHatBandPlaced &&
+                  isHatBrimPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ टोपी सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'BALL' ? (
+          // ================================================================
+          // BALL (गेंद / Beach Ball) GAME SCREEN (z65_209ca702.PNG)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: BALL OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="ball-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[530/605] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 530 605"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Cap Fill */}
+                {isBallCapPlaced && (
+                  <path
+                    d={BALL_CAP_PATH}
+                    fill={ballCapColor}
+                    onClick={() => {
+                      setBallCapColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_cap', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Top Mid Fill */}
+                {isBallTopMidPlaced && (
+                  <path
+                    d={BALL_TOP_MID_PATH}
+                    fill={ballTopMidColor}
+                    onClick={() => {
+                      setBallTopMidColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_top_mid', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Top Right Fill */}
+                {isBallTopRightPlaced && (
+                  <path
+                    d={BALL_TOP_RIGHT_PATH}
+                    fill={ballTopRightColor}
+                    onClick={() => {
+                      setBallTopRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_top_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Top Left Fill */}
+                {isBallTopLeftPlaced && (
+                  <path
+                    d={BALL_TOP_LEFT_PATH}
+                    fill={ballTopLeftColor}
+                    onClick={() => {
+                      setBallTopLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_top_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Bottom Left Fill */}
+                {isBallBottomLeftPlaced && (
+                  <path
+                    d={BALL_BOTTOM_LEFT_PATH}
+                    fill={ballBottomLeftColor}
+                    onClick={() => {
+                      setBallBottomLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_bottom_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Bottom Center Fill */}
+                {isBallBottomCenterPlaced && (
+                  <path
+                    d={BALL_BOTTOM_CENTER_PATH}
+                    fill={ballBottomCenterColor}
+                    onClick={() => {
+                      setBallBottomCenterColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_bottom_center', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 7. Placed Bottom Right Fill */}
+                {isBallBottomRightPlaced && (
+                  <path
+                    d={BALL_BOTTOM_RIGHT_PATH}
+                    fill={ballBottomRightColor}
+                    onClick={() => {
+                      setBallBottomRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_bottom_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Exact thick bold black outline image from z65_209ca702.PNG (dilated & clean) */}
+              <img
+                src={ballOutlineImg}
+                alt="Ball Outline"
+                className="absolute inset-0 w-full h-full pointer-events-none select-none object-contain drop-shadow-sm"
+              />
+            </div>
+
+            {/* RIGHT SIDE: BALL CUTTING IMAGES (z65_209ca702.PNG) */}
+            <div
+              id="ball-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[530/605] flex items-center justify-center"
+            >
+              {isBallCapPlaced &&
+                isBallTopMidPlaced &&
+                isBallTopRightPlaced &&
+                isBallTopLeftPlaced &&
+                isBallBottomLeftPlaced &&
+                isBallBottomCenterPlaced &&
+                isBallBottomRightPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetBall}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Top-Mid Panel (top center) */}
+                {!isBallTopMidPlaced && (
+                  <motion.div
+                    id="cutting-ball-top-mid"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBallTopMidDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBallTopMidColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_top_mid', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '43.0%',
+                      top: '12.7%',
+                      width: `${(91 / 530) * 100}%`,
+                      height: `${(35 / 605) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BALL_TOP_MID_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BALL_TOP_MID_PATH}
+                        fill={ballTopMidColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Top-Left Panel */}
+                {!isBallTopLeftPlaced && (
+                  <motion.div
+                    id="cutting-ball-top-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBallTopLeftDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBallTopLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_top_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '7.7%',
+                      top: '20.5%',
+                      width: `${(89 / 530) * 100}%`,
+                      height: `${(97 / 605) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BALL_TOP_LEFT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BALL_TOP_LEFT_PATH}
+                        fill={ballTopLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Top-Right Panel */}
+                {!isBallTopRightPlaced && (
+                  <motion.div
+                    id="cutting-ball-top-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBallTopRightDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBallTopRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_top_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '77.5%',
+                      top: '20.0%',
+                      width: `${(160 / 530) * 100}%`,
+                      height: `${(98 / 605) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BALL_TOP_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BALL_TOP_RIGHT_PATH}
+                        fill={ballTopRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Center Cap / Hub */}
+                {!isBallCapPlaced && (
+                  <motion.div
+                    id="cutting-ball-cap"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBallCapDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBallCapColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_cap', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '57.4%',
+                      top: '27.8%',
+                      width: `${(92 / 530) * 100}%`,
+                      height: `${(74 / 605) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BALL_CAP_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BALL_CAP_PATH}
+                        fill={ballCapColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Bottom-Left Panel */}
+                {!isBallBottomLeftPlaced && (
+                  <motion.div
+                    id="cutting-ball-bottom-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBallBottomLeftDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBallBottomLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_bottom_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '0.0%',
+                      top: '43.0%',
+                      width: `${(105 / 530) * 100}%`,
+                      height: `${(237 / 605) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BALL_BOTTOM_LEFT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BALL_BOTTOM_LEFT_PATH}
+                        fill={ballBottomLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Bottom-Center Big Panel */}
+                {!isBallBottomCenterPlaced && (
+                  <motion.div
+                    id="cutting-ball-bottom-center"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBallBottomCenterDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBallBottomCenterColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_bottom_center', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '34.5%',
+                      top: '42.0%',
+                      width: `${(184 / 530) * 100}%`,
+                      height: `${(241 / 605) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BALL_BOTTOM_CENTER_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BALL_BOTTOM_CENTER_PATH}
+                        fill={ballBottomCenterColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 7. Bottom-Right Panel */}
+                {!isBallBottomRightPlaced && (
+                  <motion.div
+                    id="cutting-ball-bottom-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBallBottomRightDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBallBottomRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('ball_bottom_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '73.6%',
+                      top: '44.8%',
+                      width: `${(182 / 530) * 100}%`,
+                      height: `${(237 / 605) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BALL_BOTTOM_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BALL_BOTTOM_RIGHT_PATH}
+                        fill={ballBottomRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Victory Banner when completely assembled */}
+                {isBallCapPlaced &&
+                  isBallTopMidPlaced &&
+                  isBallTopRightPlaced &&
+                  isBallTopLeftPlaced &&
+                  isBallBottomLeftPlaced &&
+                  isBallBottomCenterPlaced &&
+                  isBallBottomRightPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ गेंद सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'BUTTERFLY' ? (
           // ================================================================
           // BUTTERFLY (तितली) GAME SCREEN (zaq4_dc7377b4.PNG)
           // ================================================================
@@ -1549,10 +2909,10 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                     }}
                     className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
                     style={{
-                      left: '29.1%',
+                      left: '29.2%',
                       top: '25.5%',
-                      width: `${(79 / 534) * 100}%`,
-                      height: `${(115 / 601) * 100}%`,
+                      width: `${(103 / 534) * 100}%`,
+                      height: `${(196 / 601) * 100}%`,
                     }}
                     title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
                   >
