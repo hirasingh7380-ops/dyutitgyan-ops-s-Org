@@ -10,6 +10,48 @@ import butterflyOutlineImg from '../assets/images/butterfly_outline.png';
 import ballOutlineImg from '../assets/images/ball_outline.png';
 import hatOutlineImg from '../assets/images/hat_outline.png';
 import umbrellaOutlineImg from '../assets/images/umbrella_outline.png';
+import flowerOutlineImg from '../assets/images/flower_outline.png';
+import duckOutlineImg from '../assets/images/duck_outline.png';
+import {
+  DUCK_BEAK_VIEWBOX,
+  DUCK_BEAK_PATH,
+  DUCK_WING_VIEWBOX,
+  DUCK_WING_PATH,
+  DUCK_LEFT_FOOT_VIEWBOX,
+  DUCK_LEFT_FOOT_PATH,
+  DUCK_RIGHT_FOOT_VIEWBOX,
+  DUCK_RIGHT_FOOT_PATH,
+  DUCK_BODY_VIEWBOX,
+  DUCK_BODY_PATH,
+  DUCK_PLACED_BEAK_PATH,
+  DUCK_PLACED_WING_PATH,
+  DUCK_PLACED_LEFT_FOOT_PATH,
+  DUCK_PLACED_RIGHT_FOOT_PATH,
+  DUCK_PLACED_BODY_PATH,
+} from './duck_constants';
+import {
+  FLOWER_CENTER_VIEWBOX,
+  FLOWER_CENTER_PATH,
+  FLOWER_PETAL_TOP_VIEWBOX,
+  FLOWER_PETAL_TOP_PATH,
+  FLOWER_PETAL_TOP_RIGHT_VIEWBOX,
+  FLOWER_PETAL_TOP_RIGHT_PATH,
+  FLOWER_PETAL_BOTTOM_RIGHT_VIEWBOX,
+  FLOWER_PETAL_BOTTOM_RIGHT_PATH,
+  FLOWER_PETAL_BOTTOM_VIEWBOX,
+  FLOWER_PETAL_BOTTOM_PATH,
+  FLOWER_PETAL_BOTTOM_LEFT_VIEWBOX,
+  FLOWER_PETAL_BOTTOM_LEFT_PATH,
+  FLOWER_PETAL_TOP_LEFT_VIEWBOX,
+  FLOWER_PETAL_TOP_LEFT_PATH,
+  FLOWER_PLACED_CENTER_PATH,
+  FLOWER_PLACED_PETAL_TOP_PATH,
+  FLOWER_PLACED_PETAL_TOP_RIGHT_PATH,
+  FLOWER_PLACED_PETAL_BOTTOM_RIGHT_PATH,
+  FLOWER_PLACED_PETAL_BOTTOM_PATH,
+  FLOWER_PLACED_PETAL_BOTTOM_LEFT_PATH,
+  FLOWER_PLACED_PETAL_TOP_LEFT_PATH,
+} from './flower_constants';
 import {
   UMBRELLA_CANOPY_LEFT_VIEWBOX,
   UMBRELLA_CANOPY_LEFT_PATH,
@@ -247,14 +289,56 @@ const APPLE_STEM_PATH =
 const APPLE_LEAF_PATH =
   'M 205 110 C 220 52, 280 25, 335 38 C 305 85, 250 120, 205 110 Z';
 
-type GameStage = 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
+type GameStage = 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
 
 export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled }) => {
-  // Current game stage: starts on UMBRELLA (from user's request & screenshot z67_a60b946b.PNG)
-  const [currentStage, setCurrentStage] = useState<GameStage>('UMBRELLA');
+  // Current game stage: starts on DUCK (user attachment 32_Free_Toddler_Coloring_Pages___Print_and_Color-removebg-preview_09847147.png)
+  const [currentStage, setCurrentStage] = useState<GameStage>('DUCK');
 
   // Currently active selected color from bottom 6 buttons
   const [selectedColor, setSelectedColor] = useState<ColorOption>(COLOR_OPTIONS[0]); // Default RED
+
+  // ---------------------------------------------------------
+  // DUCK STAGE STATES (32_Free_Toddler_Coloring_Pages___Print_and_Color-removebg-preview_09847147.png)
+  // ---------------------------------------------------------
+  const [duckBodyColor, setDuckBodyColor] = useState<string>('#ffffff');
+  const [isDuckBodyPlaced, setIsDuckBodyPlaced] = useState<boolean>(false);
+
+  const [duckWingColor, setDuckWingColor] = useState<string>('#ffffff');
+  const [isDuckWingPlaced, setIsDuckWingPlaced] = useState<boolean>(false);
+
+  const [duckBeakColor, setDuckBeakColor] = useState<string>('#ffffff');
+  const [isDuckBeakPlaced, setIsDuckBeakPlaced] = useState<boolean>(false);
+
+  const [duckFootLeftColor, setDuckFootLeftColor] = useState<string>('#ffffff');
+  const [isDuckFootLeftPlaced, setIsDuckFootLeftPlaced] = useState<boolean>(false);
+
+  const [duckFootRightColor, setDuckFootRightColor] = useState<string>('#ffffff');
+  const [isDuckFootRightPlaced, setIsDuckFootRightPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // FLOWER STAGE STATES (Inkeddownload__16__LI_82357b29.jpg)
+  // ---------------------------------------------------------
+  const [flowerCenterColor, setFlowerCenterColor] = useState<string>('#ffffff');
+  const [isFlowerCenterPlaced, setIsFlowerCenterPlaced] = useState<boolean>(false);
+
+  const [flowerPetalTopColor, setFlowerPetalTopColor] = useState<string>('#ffffff');
+  const [isFlowerPetalTopPlaced, setIsFlowerPetalTopPlaced] = useState<boolean>(false);
+
+  const [flowerPetalTopRightColor, setFlowerPetalTopRightColor] = useState<string>('#ffffff');
+  const [isFlowerPetalTopRightPlaced, setIsFlowerPetalTopRightPlaced] = useState<boolean>(false);
+
+  const [flowerPetalBottomRightColor, setFlowerPetalBottomRightColor] = useState<string>('#ffffff');
+  const [isFlowerPetalBottomRightPlaced, setIsFlowerPetalBottomRightPlaced] = useState<boolean>(false);
+
+  const [flowerPetalBottomColor, setFlowerPetalBottomColor] = useState<string>('#ffffff');
+  const [isFlowerPetalBottomPlaced, setIsFlowerPetalBottomPlaced] = useState<boolean>(false);
+
+  const [flowerPetalBottomLeftColor, setFlowerPetalBottomLeftColor] = useState<string>('#ffffff');
+  const [isFlowerPetalBottomLeftPlaced, setIsFlowerPetalBottomLeftPlaced] = useState<boolean>(false);
+
+  const [flowerPetalTopLeftColor, setFlowerPetalTopLeftColor] = useState<string>('#ffffff');
+  const [isFlowerPetalTopLeftPlaced, setIsFlowerPetalTopLeftPlaced] = useState<boolean>(false);
 
   // ---------------------------------------------------------
   // UMBRELLA STAGE STATES (z67_a60b946b.PNG)
@@ -411,8 +495,14 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   // Shikshika (Teacher) Voice intro
   useEffect(() => {
     const timer = setTimeout(() => {
-      let voiceKey: 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'butterfly';
-      if (currentStage === 'JUG') voiceKey = 'jug';
+      let voiceKey: 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'duck';
+      if (currentStage === 'DUCK') voiceKey = 'duck';
+      else if (currentStage === 'FLOWER') voiceKey = 'flower';
+      else if (currentStage === 'UMBRELLA') voiceKey = 'umbrella';
+      else if (currentStage === 'HAT') voiceKey = 'hat';
+      else if (currentStage === 'BALL') voiceKey = 'ball';
+      else if (currentStage === 'BUTTERFLY') voiceKey = 'butterfly';
+      else if (currentStage === 'JUG') voiceKey = 'jug';
       else if (currentStage === 'CAPSICUM') voiceKey = 'capsicum';
       else if (currentStage === 'BRINJAL') voiceKey = 'brinjal';
       else if (currentStage === 'KITE') voiceKey = 'kite';
@@ -439,7 +529,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   };
 
   // Celebration
-  const triggerVictory = (stage: 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
+  const triggerVictory = (stage: 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
     sounds.speakDrawingComplete(stage, soundEnabled);
     try {
       confetti({
@@ -449,6 +539,228 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       });
     } catch {
       // Ignore
+    }
+  };
+
+  // Check if entire Duck is assembled (32_Free_Toddler_Coloring_Pages___Print_and_Color-removebg-preview_09847147.png)
+  const checkDuckVictory = (
+    body: boolean,
+    wing: boolean,
+    beak: boolean,
+    footLeft: boolean,
+    footRight: boolean
+  ) => {
+    if (body && wing && beak && footLeft && footRight) {
+      triggerVictory('duck');
+    }
+  };
+
+  // Drag handlers for Duck (5 pieces: Body, Wing, Beak, Left Foot, Right Foot)
+  const handleDuckBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setDuckBodyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('duck_body', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsDuckBodyPlaced(true);
+      sounds.speakDrawingPiecePlaced('duck_body', soundEnabled);
+      checkDuckVictory(true, isDuckWingPlaced, isDuckBeakPlaced, isDuckFootLeftPlaced, isDuckFootRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleDuckWingDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setDuckWingColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('duck_wing', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsDuckWingPlaced(true);
+      sounds.speakDrawingPiecePlaced('duck_wing', soundEnabled);
+      checkDuckVictory(isDuckBodyPlaced, true, isDuckBeakPlaced, isDuckFootLeftPlaced, isDuckFootRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleDuckBeakDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setDuckBeakColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('duck_beak', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsDuckBeakPlaced(true);
+      sounds.speakDrawingPiecePlaced('duck_beak', soundEnabled);
+      checkDuckVictory(isDuckBodyPlaced, isDuckWingPlaced, true, isDuckFootLeftPlaced, isDuckFootRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleDuckFootLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setDuckFootLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('duck_foot_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsDuckFootLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('duck_foot_left', soundEnabled);
+      checkDuckVictory(isDuckBodyPlaced, isDuckWingPlaced, isDuckBeakPlaced, true, isDuckFootRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleDuckFootRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setDuckFootRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('duck_foot_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsDuckFootRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('duck_foot_right', soundEnabled);
+      checkDuckVictory(isDuckBodyPlaced, isDuckWingPlaced, isDuckBeakPlaced, isDuckFootLeftPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Flower is assembled (Inkeddownload__16__LI_82357b29.jpg)
+  const checkFlowerVictory = (
+    c: boolean,
+    pt: boolean,
+    ptr: boolean,
+    pbr: boolean,
+    pb: boolean,
+    pbl: boolean,
+    ptl: boolean
+  ) => {
+    if (c && pt && ptr && pbr && pb && pbl && ptl) {
+      triggerVictory('flower');
+    }
+  };
+
+  // Drag handlers for Flower (7 pieces: 1 center + 6 petals)
+  const handleFlowerCenterDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setFlowerCenterColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('flower_center', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsFlowerCenterPlaced(true);
+      sounds.speakDrawingPiecePlaced('flower_center', soundEnabled);
+      checkFlowerVictory(true, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleFlowerPetalTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setFlowerPetalTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('flower_petal_top', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsFlowerPetalTopPlaced(true);
+      sounds.speakDrawingPiecePlaced('flower_petal_top', soundEnabled);
+      checkFlowerVictory(isFlowerCenterPlaced, true, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleFlowerPetalTopRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setFlowerPetalTopRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('flower_petal_top_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsFlowerPetalTopRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('flower_petal_top_right', soundEnabled);
+      checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, true, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleFlowerPetalBottomRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setFlowerPetalBottomRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('flower_petal_bottom_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsFlowerPetalBottomRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('flower_petal_bottom_right', soundEnabled);
+      checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, true, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleFlowerPetalBottomDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setFlowerPetalBottomColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('flower_petal_bottom', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsFlowerPetalBottomPlaced(true);
+      sounds.speakDrawingPiecePlaced('flower_petal_bottom', soundEnabled);
+      checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, true, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleFlowerPetalBottomLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setFlowerPetalBottomLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('flower_petal_bottom_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsFlowerPetalBottomLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('flower_petal_bottom_left', soundEnabled);
+      checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, true, isFlowerPetalTopLeftPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleFlowerPetalTopLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setFlowerPetalTopLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('flower_petal_top_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsFlowerPetalTopLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('flower_petal_top_left', soundEnabled);
+      checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
     }
   };
 
@@ -1332,10 +1644,16 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
   };
 
-  // NEXT Button Handler: cycles UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> UMBRELLA
+  // NEXT Button Handler: cycles DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> DUCK
   const handleNext = () => {
     sounds.playPop(soundEnabled);
-    if (currentStage === 'UMBRELLA') {
+    if (currentStage === 'DUCK') {
+      setCurrentStage('FLOWER');
+      sounds.speakDrawingNext('flower', soundEnabled);
+    } else if (currentStage === 'FLOWER') {
+      setCurrentStage('UMBRELLA');
+      sounds.speakDrawingNext('umbrella', soundEnabled);
+    } else if (currentStage === 'UMBRELLA') {
       setCurrentStage('HAT');
       sounds.speakDrawingNext('hat', soundEnabled);
     } else if (currentStage === 'HAT') {
@@ -1363,9 +1681,43 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       setCurrentStage('APPLE');
       sounds.speakDrawingNext('apple', soundEnabled);
     } else {
-      setCurrentStage('UMBRELLA');
-      sounds.speakDrawingNext('umbrella', soundEnabled);
+      setCurrentStage('DUCK');
+      sounds.speakDrawingNext('duck', soundEnabled);
     }
+  };
+
+  // Reset Handlers
+  const handleResetDuck = () => {
+    setIsDuckBodyPlaced(false);
+    setIsDuckWingPlaced(false);
+    setIsDuckBeakPlaced(false);
+    setIsDuckFootLeftPlaced(false);
+    setIsDuckFootRightPlaced(false);
+    setDuckBodyColor('#ffffff');
+    setDuckWingColor('#ffffff');
+    setDuckBeakColor('#ffffff');
+    setDuckFootLeftColor('#ffffff');
+    setDuckFootRightColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  // Reset Handlers
+  const handleResetFlower = () => {
+    setIsFlowerCenterPlaced(false);
+    setIsFlowerPetalTopPlaced(false);
+    setIsFlowerPetalTopRightPlaced(false);
+    setIsFlowerPetalBottomRightPlaced(false);
+    setIsFlowerPetalBottomPlaced(false);
+    setIsFlowerPetalBottomLeftPlaced(false);
+    setIsFlowerPetalTopLeftPlaced(false);
+    setFlowerCenterColor('#ffffff');
+    setFlowerPetalTopColor('#ffffff');
+    setFlowerPetalTopRightColor('#ffffff');
+    setFlowerPetalBottomRightColor('#ffffff');
+    setFlowerPetalBottomColor('#ffffff');
+    setFlowerPetalBottomLeftColor('#ffffff');
+    setFlowerPetalTopLeftColor('#ffffff');
+    sounds.playPop(soundEnabled);
   };
 
   // Reset Handlers
@@ -1561,7 +1913,735 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         id="drawing-main-stage"
         className="w-full flex-1 flex flex-row items-center justify-between px-2 sm:px-6 md:px-10 py-1 max-w-6xl mx-auto min-h-0 z-20 gap-2 sm:gap-6"
       >
-        {currentStage === 'UMBRELLA' ? (
+        {currentStage === 'DUCK' ? (
+          // ================================================================
+          // DUCK (बतख) GAME SCREEN (32_Free_Toddler_Coloring_Pages___Print_and_Color-removebg-preview_09847147.png)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: DUCK OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="duck-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[449/555] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 449 555"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Left Foot */}
+                {isDuckFootLeftPlaced && (
+                  <path
+                    d={DUCK_PLACED_LEFT_FOOT_PATH}
+                    fill={duckFootLeftColor}
+                    onClick={() => {
+                      setDuckFootLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('duck_foot_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Right Foot */}
+                {isDuckFootRightPlaced && (
+                  <path
+                    d={DUCK_PLACED_RIGHT_FOOT_PATH}
+                    fill={duckFootRightColor}
+                    onClick={() => {
+                      setDuckFootRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('duck_foot_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Body */}
+                {isDuckBodyPlaced && (
+                  <path
+                    d={DUCK_PLACED_BODY_PATH}
+                    fill={duckBodyColor}
+                    onClick={() => {
+                      setDuckBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('duck_body', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Wing */}
+                {isDuckWingPlaced && (
+                  <path
+                    d={DUCK_PLACED_WING_PATH}
+                    fill={duckWingColor}
+                    onClick={() => {
+                      setDuckWingColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('duck_wing', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Beak */}
+                {isDuckBeakPlaced && (
+                  <path
+                    d={DUCK_PLACED_BEAK_PATH}
+                    fill={duckBeakColor}
+                    onClick={() => {
+                      setDuckBeakColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('duck_beak', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={duckOutlineImg}
+                alt="Duck Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: DUCK CUTTING PIECES */}
+            <div
+              id="duck-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[449/555] flex items-center justify-center"
+            >
+              {isDuckBodyPlaced &&
+                isDuckWingPlaced &&
+                isDuckBeakPlaced &&
+                isDuckFootLeftPlaced &&
+                isDuckFootRightPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetDuck}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Beak (Top-Left) */}
+                {!isDuckBeakPlaced && (
+                  <motion.div
+                    id="cutting-duck-beak"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleDuckBeakDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setDuckBeakColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('duck_beak', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '4%',
+                      top: '5%',
+                      width: `${(92 / 449) * 100}%`,
+                      height: `${(56 / 555) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={DUCK_BEAK_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={DUCK_BEAK_PATH}
+                        fill={duckBeakColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Wing (Top-Right) */}
+                {!isDuckWingPlaced && (
+                  <motion.div
+                    id="cutting-duck-wing"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleDuckWingDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setDuckWingColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('duck_wing', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '46%',
+                      top: '4%',
+                      width: `${(227 / 449) * 100}%`,
+                      height: `${(144 / 555) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={DUCK_WING_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={DUCK_WING_PATH}
+                        fill={duckWingColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Duck Head & Body (Center) */}
+                {!isDuckBodyPlaced && (
+                  <motion.div
+                    id="cutting-duck-body"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleDuckBodyDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setDuckBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('duck_body', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-20"
+                    style={{
+                      left: '8%',
+                      top: '24%',
+                      width: `${(393 / 449) * 90}%`,
+                      height: `${(438 / 555) * 72}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={DUCK_BODY_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={DUCK_BODY_PATH}
+                        fill={duckBodyColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Left Foot (Bottom-Left) */}
+                {!isDuckFootLeftPlaced && (
+                  <motion.div
+                    id="cutting-duck-foot-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleDuckFootLeftDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setDuckFootLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('duck_foot_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '12%',
+                      top: '82%',
+                      width: `${(108 / 449) * 100}%`,
+                      height: `${(80 / 555) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={DUCK_LEFT_FOOT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={DUCK_LEFT_FOOT_PATH}
+                        fill={duckFootLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Right Foot (Bottom-Right) */}
+                {!isDuckFootRightPlaced && (
+                  <motion.div
+                    id="cutting-duck-foot-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleDuckFootRightDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setDuckFootRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('duck_foot_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '56%',
+                      top: '82%',
+                      width: `${(118 / 449) * 100}%`,
+                      height: `${(85 / 555) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={DUCK_RIGHT_FOOT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={DUCK_RIGHT_FOOT_PATH}
+                        fill={duckFootRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 5 pieces are placed */}
+                {isDuckBodyPlaced &&
+                  isDuckWingPlaced &&
+                  isDuckBeakPlaced &&
+                  isDuckFootLeftPlaced &&
+                  isDuckFootRightPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ बतख सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'FLOWER' ? (
+          // ================================================================
+          // FLOWER (फूल) GAME SCREEN (Inkeddownload__16__LI_82357b29.jpg)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: FLOWER OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="flower-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[734/750] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 734 750"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Petal Top */}
+                {isFlowerPetalTopPlaced && (
+                  <path
+                    d={FLOWER_PLACED_PETAL_TOP_PATH}
+                    fill={flowerPetalTopColor}
+                    onClick={() => {
+                      setFlowerPetalTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_petal_top', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Petal Top-Right */}
+                {isFlowerPetalTopRightPlaced && (
+                  <path
+                    d={FLOWER_PLACED_PETAL_TOP_RIGHT_PATH}
+                    fill={flowerPetalTopRightColor}
+                    onClick={() => {
+                      setFlowerPetalTopRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_petal_top_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Petal Bottom-Right */}
+                {isFlowerPetalBottomRightPlaced && (
+                  <path
+                    d={FLOWER_PLACED_PETAL_BOTTOM_RIGHT_PATH}
+                    fill={flowerPetalBottomRightColor}
+                    onClick={() => {
+                      setFlowerPetalBottomRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_petal_bottom_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Petal Bottom */}
+                {isFlowerPetalBottomPlaced && (
+                  <path
+                    d={FLOWER_PLACED_PETAL_BOTTOM_PATH}
+                    fill={flowerPetalBottomColor}
+                    onClick={() => {
+                      setFlowerPetalBottomColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_petal_bottom', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Petal Bottom-Left */}
+                {isFlowerPetalBottomLeftPlaced && (
+                  <path
+                    d={FLOWER_PLACED_PETAL_BOTTOM_LEFT_PATH}
+                    fill={flowerPetalBottomLeftColor}
+                    onClick={() => {
+                      setFlowerPetalBottomLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_petal_bottom_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Petal Top-Left */}
+                {isFlowerPetalTopLeftPlaced && (
+                  <path
+                    d={FLOWER_PLACED_PETAL_TOP_LEFT_PATH}
+                    fill={flowerPetalTopLeftColor}
+                    onClick={() => {
+                      setFlowerPetalTopLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_petal_top_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 7. Placed Center Disk */}
+                {isFlowerCenterPlaced && (
+                  <path
+                    d={FLOWER_PLACED_CENTER_PATH}
+                    fill={flowerCenterColor}
+                    onClick={() => {
+                      setFlowerCenterColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_center', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={flowerOutlineImg}
+                alt="Flower Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: FLOWER CUTTING PIECES */}
+            <div
+              id="flower-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[734/750] flex items-center justify-center"
+            >
+              {isFlowerCenterPlaced &&
+                isFlowerPetalTopPlaced &&
+                isFlowerPetalTopRightPlaced &&
+                isFlowerPetalBottomRightPlaced &&
+                isFlowerPetalBottomPlaced &&
+                isFlowerPetalBottomLeftPlaced &&
+                isFlowerPetalTopLeftPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetFlower}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Petal Top */}
+                {!isFlowerPetalTopPlaced && (
+                  <motion.div
+                    id="cutting-flower-petal-top"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleFlowerPetalTopDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setFlowerPetalTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_petal_top', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '32.8%',
+                      top: '2.4%',
+                      width: `${(254 / 734) * 100}%`,
+                      height: `${(263 / 750) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={FLOWER_PETAL_TOP_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={FLOWER_PETAL_TOP_PATH}
+                        fill={flowerPetalTopColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Petal Top-Right */}
+                {!isFlowerPetalTopRightPlaced && (
+                  <motion.div
+                    id="cutting-flower-petal-top-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleFlowerPetalTopRightDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setFlowerPetalTopRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_petal_top_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '58.2%',
+                      top: '14.9%',
+                      width: `${(290 / 734) * 100}%`,
+                      height: `${(257 / 750) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={FLOWER_PETAL_TOP_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={FLOWER_PETAL_TOP_RIGHT_PATH}
+                        fill={flowerPetalTopRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Petal Bottom-Right */}
+                {!isFlowerPetalBottomRightPlaced && (
+                  <motion.div
+                    id="cutting-flower-petal-bottom-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleFlowerPetalBottomRightDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setFlowerPetalBottomRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_petal_bottom_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '58.2%',
+                      top: '50.8%',
+                      width: `${(290 / 734) * 100}%`,
+                      height: `${(257 / 750) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={FLOWER_PETAL_BOTTOM_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={FLOWER_PETAL_BOTTOM_RIGHT_PATH}
+                        fill={flowerPetalBottomRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Petal Bottom */}
+                {!isFlowerPetalBottomPlaced && (
+                  <motion.div
+                    id="cutting-flower-petal-bottom"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleFlowerPetalBottomDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setFlowerPetalBottomColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_petal_bottom', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '32.8%',
+                      top: '62.5%',
+                      width: `${(254 / 734) * 100}%`,
+                      height: `${(263 / 750) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={FLOWER_PETAL_BOTTOM_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={FLOWER_PETAL_BOTTOM_PATH}
+                        fill={flowerPetalBottomColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Petal Bottom-Left */}
+                {!isFlowerPetalBottomLeftPlaced && (
+                  <motion.div
+                    id="cutting-flower-petal-bottom-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleFlowerPetalBottomLeftDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setFlowerPetalBottomLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_petal_bottom_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '2.6%',
+                      top: '50.8%',
+                      width: `${(290 / 734) * 100}%`,
+                      height: `${(257 / 750) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={FLOWER_PETAL_BOTTOM_LEFT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={FLOWER_PETAL_BOTTOM_LEFT_PATH}
+                        fill={flowerPetalBottomLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Petal Top-Left */}
+                {!isFlowerPetalTopLeftPlaced && (
+                  <motion.div
+                    id="cutting-flower-petal-top-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleFlowerPetalTopLeftDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setFlowerPetalTopLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_petal_top_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '2.6%',
+                      top: '14.9%',
+                      width: `${(290 / 734) * 100}%`,
+                      height: `${(257 / 750) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={FLOWER_PETAL_TOP_LEFT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={FLOWER_PETAL_TOP_LEFT_PATH}
+                        fill={flowerPetalTopLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 7. Center Disk */}
+                {!isFlowerCenterPlaced && (
+                  <motion.div
+                    id="cutting-flower-center"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleFlowerCenterDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setFlowerCenterColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('flower_center', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '37.3%',
+                      top: '37.5%',
+                      width: `${(189 / 734) * 100}%`,
+                      height: `${(188 / 750) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={FLOWER_CENTER_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={FLOWER_CENTER_PATH}
+                        fill={flowerCenterColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 7 pieces are placed */}
+                {isFlowerCenterPlaced &&
+                  isFlowerPetalTopPlaced &&
+                  isFlowerPetalTopRightPlaced &&
+                  isFlowerPetalBottomRightPlaced &&
+                  isFlowerPetalBottomPlaced &&
+                  isFlowerPetalBottomLeftPlaced &&
+                  isFlowerPetalTopLeftPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ फूल सही जगह लग गया! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'UMBRELLA' ? (
           // ================================================================
           // UMBRELLA (छाता / छतरी) GAME SCREEN (z67_a60b946b.PNG)
           // ================================================================
