@@ -12,6 +12,75 @@ import hatOutlineImg from '../assets/images/hat_outline.png';
 import umbrellaOutlineImg from '../assets/images/umbrella_outline.png';
 import flowerOutlineImg from '../assets/images/flower_outline.png';
 import duckOutlineImg from '../assets/images/duck_outline.png';
+import lollipopOutlineImg from '../assets/images/lollipop_outline.png';
+import icecreamOutlineImg from '../assets/images/icecream_outline.png';
+import henOutlineImg from '../assets/images/hen_outline.png';
+import caterpillarOutlineImg from '../assets/images/caterpillar_outline.png';
+import {
+  CATERPILLAR_SEG1_VIEWBOX,
+  CATERPILLAR_SEG1_PATH,
+  CATERPILLAR_SEG2_VIEWBOX,
+  CATERPILLAR_SEG2_PATH,
+  CATERPILLAR_SEG3_VIEWBOX,
+  CATERPILLAR_SEG3_PATH,
+  CATERPILLAR_SEG4_VIEWBOX,
+  CATERPILLAR_SEG4_PATH,
+  CATERPILLAR_HEAD_VIEWBOX,
+  CATERPILLAR_HEAD_PATH,
+  CATERPILLAR_PLACED_SEG1_PATH,
+  CATERPILLAR_PLACED_SEG2_PATH,
+  CATERPILLAR_PLACED_SEG3_PATH,
+  CATERPILLAR_PLACED_SEG4_PATH,
+  CATERPILLAR_PLACED_HEAD_PATH,
+} from './caterpillar_constants';
+import {
+  HEN_COMB_VIEWBOX,
+  HEN_COMB_PATH,
+  HEN_HEAD_VIEWBOX,
+  HEN_HEAD_PATH,
+  HEN_BEAK_VIEWBOX,
+  HEN_BEAK_PATH,
+  HEN_WATTLE_VIEWBOX,
+  HEN_WATTLE_PATH,
+  HEN_BODY_VIEWBOX,
+  HEN_BODY_PATH,
+  HEN_LEFT_FOOT_VIEWBOX,
+  HEN_LEFT_FOOT_PATH,
+  HEN_RIGHT_FOOT_VIEWBOX,
+  HEN_RIGHT_FOOT_PATH,
+  HEN_PLACED_COMB_PATH,
+  HEN_PLACED_HEAD_PATH,
+  HEN_PLACED_BEAK_PATH,
+  HEN_PLACED_WATTLE_PATH,
+  HEN_PLACED_BODY_PATH,
+  HEN_PLACED_LEFT_FOOT_PATH,
+  HEN_PLACED_RIGHT_FOOT_PATH,
+} from './hen_constants';
+import {
+  ICECREAM_TOP_VIEWBOX,
+  ICECREAM_TOP_PATH,
+  ICECREAM_BODY_VIEWBOX,
+  ICECREAM_BODY_PATH,
+  ICECREAM_STICK_VIEWBOX,
+  ICECREAM_STICK_PATH,
+  ICECREAM_PLACED_TOP_PATH,
+  ICECREAM_PLACED_BODY_PATH,
+  ICECREAM_PLACED_STICK_PATH,
+} from './icecream_constants';
+import {
+  LOLLIPOP_TOP_VIEWBOX,
+  LOLLIPOP_TOP_PATH,
+  LOLLIPOP_BAND_VIEWBOX,
+  LOLLIPOP_BAND_PATH,
+  LOLLIPOP_BOTTOM_VIEWBOX,
+  LOLLIPOP_BOTTOM_PATH,
+  LOLLIPOP_STICK_VIEWBOX,
+  LOLLIPOP_STICK_PATH,
+  LOLLIPOP_PLACED_TOP_PATH,
+  LOLLIPOP_PLACED_BAND_PATH,
+  LOLLIPOP_PLACED_BOTTOM_PATH,
+  LOLLIPOP_PLACED_STICK_PATH,
+} from './lollipop_constants';
 import {
   DUCK_BEAK_VIEWBOX,
   DUCK_BEAK_PATH,
@@ -289,14 +358,83 @@ const APPLE_STEM_PATH =
 const APPLE_LEAF_PATH =
   'M 205 110 C 220 52, 280 25, 335 38 C 305 85, 250 120, 205 110 Z';
 
-type GameStage = 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
+type GameStage = 'CATERPILLAR' | 'HEN' | 'ICECREAM' | 'LOLLIPOP' | 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
 
 export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled }) => {
-  // Current game stage: starts on DUCK (user attachment 32_Free_Toddler_Coloring_Pages___Print_and_Color-removebg-preview_09847147.png)
-  const [currentStage, setCurrentStage] = useState<GameStage>('DUCK');
+  // Current game stage: starts on CATERPILLAR (user attachment download__21__043dfdca.jfif)
+  const [currentStage, setCurrentStage] = useState<GameStage>('CATERPILLAR');
 
   // Currently active selected color from bottom 6 buttons
   const [selectedColor, setSelectedColor] = useState<ColorOption>(COLOR_OPTIONS[0]); // Default RED
+
+  // ---------------------------------------------------------
+  // CATERPILLAR STAGE STATES (download__21__043dfdca.jfif)
+  // ---------------------------------------------------------
+  const [catHeadColor, setCatHeadColor] = useState<string>('#ffffff');
+  const [isCatHeadPlaced, setIsCatHeadPlaced] = useState<boolean>(false);
+
+  const [catSeg1Color, setCatSeg1Color] = useState<string>('#ffffff');
+  const [isCatSeg1Placed, setIsCatSeg1Placed] = useState<boolean>(false);
+
+  const [catSeg2Color, setCatSeg2Color] = useState<string>('#ffffff');
+  const [isCatSeg2Placed, setIsCatSeg2Placed] = useState<boolean>(false);
+
+  const [catSeg3Color, setCatSeg3Color] = useState<string>('#ffffff');
+  const [isCatSeg3Placed, setIsCatSeg3Placed] = useState<boolean>(false);
+
+  const [catSeg4Color, setCatSeg4Color] = useState<string>('#ffffff');
+  const [isCatSeg4Placed, setIsCatSeg4Placed] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // HEN STAGE STATES (download__19__215567f7.jfif)
+  // ---------------------------------------------------------
+  const [henCombColor, setHenCombColor] = useState<string>('#ffffff');
+  const [isHenCombPlaced, setIsHenCombPlaced] = useState<boolean>(false);
+
+  const [henHeadColor, setHenHeadColor] = useState<string>('#ffffff');
+  const [isHenHeadPlaced, setIsHenHeadPlaced] = useState<boolean>(false);
+
+  const [henBeakColor, setHenBeakColor] = useState<string>('#ffffff');
+  const [isHenBeakPlaced, setIsHenBeakPlaced] = useState<boolean>(false);
+
+  const [henWattleColor, setHenWattleColor] = useState<string>('#ffffff');
+  const [isHenWattlePlaced, setIsHenWattlePlaced] = useState<boolean>(false);
+
+  const [henBodyColor, setHenBodyColor] = useState<string>('#ffffff');
+  const [isHenBodyPlaced, setIsHenBodyPlaced] = useState<boolean>(false);
+
+  const [henFootLeftColor, setHenFootLeftColor] = useState<string>('#ffffff');
+  const [isHenFootLeftPlaced, setIsHenFootLeftPlaced] = useState<boolean>(false);
+
+  const [henFootRightColor, setHenFootRightColor] = useState<string>('#ffffff');
+  const [isHenFootRightPlaced, setIsHenFootRightPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // ICECREAM STAGE STATES (Free_Ice_Cream_Coloring_Pages___Sweet___Fun_Printables_for_Kids_-removebg-preview_76a2a690.png)
+  // ---------------------------------------------------------
+  const [icecreamTopColor, setIcecreamTopColor] = useState<string>('#ffffff');
+  const [isIcecreamTopPlaced, setIsIcecreamTopPlaced] = useState<boolean>(false);
+
+  const [icecreamBodyColor, setIcecreamBodyColor] = useState<string>('#ffffff');
+  const [isIcecreamBodyPlaced, setIsIcecreamBodyPlaced] = useState<boolean>(false);
+
+  const [icecreamStickColor, setIcecreamStickColor] = useState<string>('#ffffff');
+  const [isIcecreamStickPlaced, setIsIcecreamStickPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // LOLLIPOP STAGE STATES (download__17_-removebg-preview__1__cfaaed68.png)
+  // ---------------------------------------------------------
+  const [lollipopTopColor, setLollipopTopColor] = useState<string>('#ffffff');
+  const [isLollipopTopPlaced, setIsLollipopTopPlaced] = useState<boolean>(false);
+
+  const [lollipopBandColor, setLollipopBandColor] = useState<string>('#ffffff');
+  const [isLollipopBandPlaced, setIsLollipopBandPlaced] = useState<boolean>(false);
+
+  const [lollipopBottomColor, setLollipopBottomColor] = useState<string>('#ffffff');
+  const [isLollipopBottomPlaced, setIsLollipopBottomPlaced] = useState<boolean>(false);
+
+  const [lollipopStickColor, setLollipopStickColor] = useState<string>('#ffffff');
+  const [isLollipopStickPlaced, setIsLollipopStickPlaced] = useState<boolean>(false);
 
   // ---------------------------------------------------------
   // DUCK STAGE STATES (32_Free_Toddler_Coloring_Pages___Print_and_Color-removebg-preview_09847147.png)
@@ -495,8 +633,12 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   // Shikshika (Teacher) Voice intro
   useEffect(() => {
     const timer = setTimeout(() => {
-      let voiceKey: 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'duck';
-      if (currentStage === 'DUCK') voiceKey = 'duck';
+      let voiceKey: 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'caterpillar';
+      if (currentStage === 'CATERPILLAR') voiceKey = 'caterpillar';
+      else if (currentStage === 'HEN') voiceKey = 'hen';
+      else if (currentStage === 'ICECREAM') voiceKey = 'icecream';
+      else if (currentStage === 'LOLLIPOP') voiceKey = 'lollipop';
+      else if (currentStage === 'DUCK') voiceKey = 'duck';
       else if (currentStage === 'FLOWER') voiceKey = 'flower';
       else if (currentStage === 'UMBRELLA') voiceKey = 'umbrella';
       else if (currentStage === 'HAT') voiceKey = 'hat';
@@ -529,7 +671,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   };
 
   // Celebration
-  const triggerVictory = (stage: 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
+  const triggerVictory = (stage: 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
     sounds.speakDrawingComplete(stage, soundEnabled);
     try {
       confetti({
@@ -539,6 +681,361 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       });
     } catch {
       // Ignore
+    }
+  };
+
+  // Check if entire Caterpillar is assembled
+  const checkCaterpillarVictory = (
+    head: boolean,
+    seg1: boolean,
+    seg2: boolean,
+    seg3: boolean,
+    seg4: boolean
+  ) => {
+    if (head && seg1 && seg2 && seg3 && seg4) {
+      triggerVictory('caterpillar');
+    }
+  };
+
+  // Drag handlers for Caterpillar (5 pieces: Head + 4 segments)
+  const handleCatHeadDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCatHeadColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('caterpillar_head', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCatHeadPlaced(true);
+      sounds.speakDrawingPiecePlaced('caterpillar_head', soundEnabled);
+      checkCaterpillarVictory(true, isCatSeg1Placed, isCatSeg2Placed, isCatSeg3Placed, isCatSeg4Placed);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCatSeg1DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCatSeg1Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('caterpillar_seg1', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCatSeg1Placed(true);
+      sounds.speakDrawingPiecePlaced('caterpillar_seg1', soundEnabled);
+      checkCaterpillarVictory(isCatHeadPlaced, true, isCatSeg2Placed, isCatSeg3Placed, isCatSeg4Placed);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCatSeg2DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCatSeg2Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('caterpillar_seg2', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCatSeg2Placed(true);
+      sounds.speakDrawingPiecePlaced('caterpillar_seg2', soundEnabled);
+      checkCaterpillarVictory(isCatHeadPlaced, isCatSeg1Placed, true, isCatSeg3Placed, isCatSeg4Placed);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCatSeg3DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCatSeg3Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('caterpillar_seg3', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCatSeg3Placed(true);
+      sounds.speakDrawingPiecePlaced('caterpillar_seg3', soundEnabled);
+      checkCaterpillarVictory(isCatHeadPlaced, isCatSeg1Placed, isCatSeg2Placed, true, isCatSeg4Placed);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCatSeg4DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCatSeg4Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('caterpillar_seg4', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCatSeg4Placed(true);
+      sounds.speakDrawingPiecePlaced('caterpillar_seg4', soundEnabled);
+      checkCaterpillarVictory(isCatHeadPlaced, isCatSeg1Placed, isCatSeg2Placed, isCatSeg3Placed, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Hen is assembled
+  const checkHenVictory = (
+    comb: boolean,
+    head: boolean,
+    beak: boolean,
+    wattle: boolean,
+    body: boolean,
+    footLeft: boolean,
+    footRight: boolean
+  ) => {
+    if (comb && head && beak && wattle && body && footLeft && footRight) {
+      triggerVictory('hen');
+    }
+  };
+
+  // Drag handlers for Hen (7 pieces: Comb, Head, Beak, Wattle, Body, Left Foot, Right Foot)
+  const handleHenCombDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHenCombColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('hen_comb', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHenCombPlaced(true);
+      sounds.speakDrawingPiecePlaced('hen_comb', soundEnabled);
+      checkHenVictory(true, isHenHeadPlaced, isHenBeakPlaced, isHenWattlePlaced, isHenBodyPlaced, isHenFootLeftPlaced, isHenFootRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHenHeadDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHenHeadColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('hen_head', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHenHeadPlaced(true);
+      sounds.speakDrawingPiecePlaced('hen_head', soundEnabled);
+      checkHenVictory(isHenCombPlaced, true, isHenBeakPlaced, isHenWattlePlaced, isHenBodyPlaced, isHenFootLeftPlaced, isHenFootRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHenBeakDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHenBeakColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('hen_beak', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHenBeakPlaced(true);
+      sounds.speakDrawingPiecePlaced('hen_beak', soundEnabled);
+      checkHenVictory(isHenCombPlaced, isHenHeadPlaced, true, isHenWattlePlaced, isHenBodyPlaced, isHenFootLeftPlaced, isHenFootRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHenWattleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHenWattleColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('hen_wattle', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHenWattlePlaced(true);
+      sounds.speakDrawingPiecePlaced('hen_wattle', soundEnabled);
+      checkHenVictory(isHenCombPlaced, isHenHeadPlaced, isHenBeakPlaced, true, isHenBodyPlaced, isHenFootLeftPlaced, isHenFootRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHenBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHenBodyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('hen_body', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHenBodyPlaced(true);
+      sounds.speakDrawingPiecePlaced('hen_body', soundEnabled);
+      checkHenVictory(isHenCombPlaced, isHenHeadPlaced, isHenBeakPlaced, isHenWattlePlaced, true, isHenFootLeftPlaced, isHenFootRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHenFootLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHenFootLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('hen_foot_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHenFootLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('hen_foot_left', soundEnabled);
+      checkHenVictory(isHenCombPlaced, isHenHeadPlaced, isHenBeakPlaced, isHenWattlePlaced, isHenBodyPlaced, true, isHenFootRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHenFootRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHenFootRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('hen_foot_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHenFootRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('hen_foot_right', soundEnabled);
+      checkHenVictory(isHenCombPlaced, isHenHeadPlaced, isHenBeakPlaced, isHenWattlePlaced, isHenBodyPlaced, isHenFootLeftPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Ice Cream is assembled
+  const checkIcecreamVictory = (top: boolean, body: boolean, stick: boolean) => {
+    if (top && body && stick) {
+      triggerVictory('icecream');
+    }
+  };
+
+  // Drag handlers for Ice Cream (3 pieces: Top Icing, Body, Stick)
+  const handleIcecreamTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setIcecreamTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('icecream_top', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsIcecreamTopPlaced(true);
+      sounds.speakDrawingPiecePlaced('icecream_top', soundEnabled);
+      checkIcecreamVictory(true, isIcecreamBodyPlaced, isIcecreamStickPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleIcecreamBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setIcecreamBodyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('icecream_body', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsIcecreamBodyPlaced(true);
+      sounds.speakDrawingPiecePlaced('icecream_body', soundEnabled);
+      checkIcecreamVictory(isIcecreamTopPlaced, true, isIcecreamStickPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleIcecreamStickDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setIcecreamStickColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('icecream_stick', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsIcecreamStickPlaced(true);
+      sounds.speakDrawingPiecePlaced('icecream_stick', soundEnabled);
+      checkIcecreamVictory(isIcecreamTopPlaced, isIcecreamBodyPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Lollipop is assembled (download__17_-removebg-preview__1__cfaaed68.png)
+  const checkLollipopVictory = (
+    top: boolean,
+    band: boolean,
+    bottom: boolean,
+    stick: boolean
+  ) => {
+    if (top && band && bottom && stick) {
+      triggerVictory('lollipop');
+    }
+  };
+
+  // Drag handlers for Lollipop (4 pieces: Top Dome, Band, Bottom Dome, Stick)
+  const handleLollipopTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setLollipopTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('lollipop_top', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsLollipopTopPlaced(true);
+      sounds.speakDrawingPiecePlaced('lollipop_top', soundEnabled);
+      checkLollipopVictory(true, isLollipopBandPlaced, isLollipopBottomPlaced, isLollipopStickPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleLollipopBandDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setLollipopBandColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('lollipop_band', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsLollipopBandPlaced(true);
+      sounds.speakDrawingPiecePlaced('lollipop_band', soundEnabled);
+      checkLollipopVictory(isLollipopTopPlaced, true, isLollipopBottomPlaced, isLollipopStickPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleLollipopBottomDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setLollipopBottomColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('lollipop_bottom', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsLollipopBottomPlaced(true);
+      sounds.speakDrawingPiecePlaced('lollipop_bottom', soundEnabled);
+      checkLollipopVictory(isLollipopTopPlaced, isLollipopBandPlaced, true, isLollipopStickPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleLollipopStickDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setLollipopStickColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('lollipop_stick', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsLollipopStickPlaced(true);
+      sounds.speakDrawingPiecePlaced('lollipop_stick', soundEnabled);
+      checkLollipopVictory(isLollipopTopPlaced, isLollipopBandPlaced, isLollipopBottomPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
     }
   };
 
@@ -1644,10 +2141,22 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
   };
 
-  // NEXT Button Handler: cycles DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> DUCK
+  // NEXT Button Handler: cycles CATERPILLAR -> HEN -> ICECREAM -> LOLLIPOP -> DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> CATERPILLAR
   const handleNext = () => {
     sounds.playPop(soundEnabled);
-    if (currentStage === 'DUCK') {
+    if (currentStage === 'CATERPILLAR') {
+      setCurrentStage('HEN');
+      sounds.speakDrawingNext('hen', soundEnabled);
+    } else if (currentStage === 'HEN') {
+      setCurrentStage('ICECREAM');
+      sounds.speakDrawingNext('icecream', soundEnabled);
+    } else if (currentStage === 'ICECREAM') {
+      setCurrentStage('LOLLIPOP');
+      sounds.speakDrawingNext('lollipop', soundEnabled);
+    } else if (currentStage === 'LOLLIPOP') {
+      setCurrentStage('DUCK');
+      sounds.speakDrawingNext('duck', soundEnabled);
+    } else if (currentStage === 'DUCK') {
       setCurrentStage('FLOWER');
       sounds.speakDrawingNext('flower', soundEnabled);
     } else if (currentStage === 'FLOWER') {
@@ -1681,9 +2190,64 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       setCurrentStage('APPLE');
       sounds.speakDrawingNext('apple', soundEnabled);
     } else {
-      setCurrentStage('DUCK');
-      sounds.speakDrawingNext('duck', soundEnabled);
+      setCurrentStage('CATERPILLAR');
+      sounds.speakDrawingNext('caterpillar', soundEnabled);
     }
+  };
+
+  // Reset Handlers
+  const handleResetCaterpillar = () => {
+    setIsCatHeadPlaced(false);
+    setIsCatSeg1Placed(false);
+    setIsCatSeg2Placed(false);
+    setIsCatSeg3Placed(false);
+    setIsCatSeg4Placed(false);
+    setCatHeadColor('#ffffff');
+    setCatSeg1Color('#ffffff');
+    setCatSeg2Color('#ffffff');
+    setCatSeg3Color('#ffffff');
+    setCatSeg4Color('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetHen = () => {
+    setIsHenCombPlaced(false);
+    setIsHenHeadPlaced(false);
+    setIsHenBeakPlaced(false);
+    setIsHenWattlePlaced(false);
+    setIsHenBodyPlaced(false);
+    setIsHenFootLeftPlaced(false);
+    setIsHenFootRightPlaced(false);
+    setHenCombColor('#ffffff');
+    setHenHeadColor('#ffffff');
+    setHenBeakColor('#ffffff');
+    setHenWattleColor('#ffffff');
+    setHenBodyColor('#ffffff');
+    setHenFootLeftColor('#ffffff');
+    setHenFootRightColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetIcecream = () => {
+    setIsIcecreamTopPlaced(false);
+    setIsIcecreamBodyPlaced(false);
+    setIsIcecreamStickPlaced(false);
+    setIcecreamTopColor('#ffffff');
+    setIcecreamBodyColor('#ffffff');
+    setIcecreamStickColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetLollipop = () => {
+    setIsLollipopTopPlaced(false);
+    setIsLollipopBandPlaced(false);
+    setIsLollipopBottomPlaced(false);
+    setIsLollipopStickPlaced(false);
+    setLollipopTopColor('#ffffff');
+    setLollipopBandColor('#ffffff');
+    setLollipopBottomColor('#ffffff');
+    setLollipopStickColor('#ffffff');
+    sounds.playPop(soundEnabled);
   };
 
   // Reset Handlers
@@ -1913,7 +2477,1213 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         id="drawing-main-stage"
         className="w-full flex-1 flex flex-row items-center justify-between px-2 sm:px-6 md:px-10 py-1 max-w-6xl mx-auto min-h-0 z-20 gap-2 sm:gap-6"
       >
-        {currentStage === 'DUCK' ? (
+        {currentStage === 'CATERPILLAR' ? (
+          // ================================================================
+          // CATERPILLAR (कैटरपिलर / इल्ली) GAME SCREEN (download__21__043dfdca.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: CATERPILLAR OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="caterpillar-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[736/649] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline (back-to-front segment overlap order) */}
+              <svg
+                viewBox="0 0 736 649"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Segment 1 (Leftmost Tail) */}
+                {isCatSeg1Placed && (
+                  <path
+                    d={CATERPILLAR_PLACED_SEG1_PATH}
+                    fill={catSeg1Color}
+                    onClick={() => {
+                      setCatSeg1Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('caterpillar_seg1', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Segment 2 */}
+                {isCatSeg2Placed && (
+                  <path
+                    d={CATERPILLAR_PLACED_SEG2_PATH}
+                    fill={catSeg2Color}
+                    onClick={() => {
+                      setCatSeg2Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('caterpillar_seg2', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Segment 3 */}
+                {isCatSeg3Placed && (
+                  <path
+                    d={CATERPILLAR_PLACED_SEG3_PATH}
+                    fill={catSeg3Color}
+                    onClick={() => {
+                      setCatSeg3Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('caterpillar_seg3', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Segment 4 (Neck Circle) */}
+                {isCatSeg4Placed && (
+                  <path
+                    d={CATERPILLAR_PLACED_SEG4_PATH}
+                    fill={catSeg4Color}
+                    onClick={() => {
+                      setCatSeg4Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('caterpillar_seg4', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Head */}
+                {isCatHeadPlaced && (
+                  <path
+                    d={CATERPILLAR_PLACED_HEAD_PATH}
+                    fill={catHeadColor}
+                    onClick={() => {
+                      setCatHeadColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('caterpillar_head', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={caterpillarOutlineImg}
+                alt="Caterpillar Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: CATERPILLAR CUTTING PIECES */}
+            <div
+              id="caterpillar-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[736/649] flex items-center justify-center"
+            >
+              {isCatHeadPlaced &&
+                isCatSeg1Placed &&
+                isCatSeg2Placed &&
+                isCatSeg3Placed &&
+                isCatSeg4Placed && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetCaterpillar}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Head (Top-Center) */}
+                {!isCatHeadPlaced && (
+                  <motion.div
+                    id="cutting-caterpillar-head"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCatHeadDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCatHeadColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('caterpillar_head', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '34%',
+                      top: '4%',
+                      width: `${(263 / 736) * 85}%`,
+                      height: `${(262 / 649) * 85}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CATERPILLAR_HEAD_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={CATERPILLAR_HEAD_PATH}
+                        fill={catHeadColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Segment 1 (Middle-Left) */}
+                {!isCatSeg1Placed && (
+                  <motion.div
+                    id="cutting-caterpillar-seg1"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCatSeg1DragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCatSeg1Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('caterpillar_seg1', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '6%',
+                      top: '34%',
+                      width: `${(175 / 736) * 90}%`,
+                      height: `${(202 / 649) * 90}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CATERPILLAR_SEG1_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={CATERPILLAR_SEG1_PATH}
+                        fill={catSeg1Color}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Segment 2 (Middle-Right) */}
+                {!isCatSeg2Placed && (
+                  <motion.div
+                    id="cutting-caterpillar-seg2"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCatSeg2DragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCatSeg2Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('caterpillar_seg2', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '70%',
+                      top: '34%',
+                      width: `${(169 / 736) * 90}%`,
+                      height: `${(203 / 649) * 90}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CATERPILLAR_SEG2_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={CATERPILLAR_SEG2_PATH}
+                        fill={catSeg2Color}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Segment 3 (Bottom-Left) */}
+                {!isCatSeg3Placed && (
+                  <motion.div
+                    id="cutting-caterpillar-seg3"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCatSeg3DragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCatSeg3Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('caterpillar_seg3', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '22%',
+                      top: '66%',
+                      width: `${(164 / 736) * 90}%`,
+                      height: `${(203 / 649) * 90}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CATERPILLAR_SEG3_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={CATERPILLAR_SEG3_PATH}
+                        fill={catSeg3Color}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Segment 4 (Bottom-Right) */}
+                {!isCatSeg4Placed && (
+                  <motion.div
+                    id="cutting-caterpillar-seg4"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCatSeg4DragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCatSeg4Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('caterpillar_seg4', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '54%',
+                      top: '68%',
+                      width: `${(204 / 736) * 90}%`,
+                      height: `${(175 / 649) * 90}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CATERPILLAR_SEG4_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={CATERPILLAR_SEG4_PATH}
+                        fill={catSeg4Color}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 5 pieces are placed */}
+                {isCatHeadPlaced &&
+                  isCatSeg1Placed &&
+                  isCatSeg2Placed &&
+                  isCatSeg3Placed &&
+                  isCatSeg4Placed && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ कैटरपिलर सही जगह लग गया! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'HEN' ? (
+          // ================================================================
+          // HEN (मुर्गी) GAME SCREEN (download__19__215567f7.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: HEN OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="hen-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[640/752] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 640 752"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Left Foot */}
+                {isHenFootLeftPlaced && (
+                  <path
+                    d={HEN_PLACED_LEFT_FOOT_PATH}
+                    fill={henFootLeftColor}
+                    onClick={() => {
+                      setHenFootLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_foot_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Right Foot */}
+                {isHenFootRightPlaced && (
+                  <path
+                    d={HEN_PLACED_RIGHT_FOOT_PATH}
+                    fill={henFootRightColor}
+                    onClick={() => {
+                      setHenFootRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_foot_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Body */}
+                {isHenBodyPlaced && (
+                  <path
+                    d={HEN_PLACED_BODY_PATH}
+                    fill={henBodyColor}
+                    onClick={() => {
+                      setHenBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_body', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Head & Neck */}
+                {isHenHeadPlaced && (
+                  <path
+                    d={HEN_PLACED_HEAD_PATH}
+                    fill={henHeadColor}
+                    onClick={() => {
+                      setHenHeadColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_head', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Comb */}
+                {isHenCombPlaced && (
+                  <path
+                    d={HEN_PLACED_COMB_PATH}
+                    fill={henCombColor}
+                    onClick={() => {
+                      setHenCombColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_comb', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Beak */}
+                {isHenBeakPlaced && (
+                  <path
+                    d={HEN_PLACED_BEAK_PATH}
+                    fill={henBeakColor}
+                    onClick={() => {
+                      setHenBeakColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_beak', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 7. Placed Wattle */}
+                {isHenWattlePlaced && (
+                  <path
+                    d={HEN_PLACED_WATTLE_PATH}
+                    fill={henWattleColor}
+                    onClick={() => {
+                      setHenWattleColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_wattle', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={henOutlineImg}
+                alt="Hen Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: HEN CUTTING PIECES */}
+            <div
+              id="hen-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[640/752] flex items-center justify-center"
+            >
+              {isHenCombPlaced &&
+                isHenHeadPlaced &&
+                isHenBeakPlaced &&
+                isHenWattlePlaced &&
+                isHenBodyPlaced &&
+                isHenFootLeftPlaced &&
+                isHenFootRightPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetHen}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Comb (Top-Left) */}
+                {!isHenCombPlaced && (
+                  <motion.div
+                    id="cutting-hen-comb"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHenCombDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHenCombColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_comb', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '8%',
+                      top: '4%',
+                      width: `${(128 / 640) * 100}%`,
+                      height: `${(74 / 752) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HEN_COMB_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={HEN_COMB_PATH}
+                        fill={henCombColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Beak (Top-Middle, enlarged touch area) */}
+                {!isHenBeakPlaced && (
+                  <motion.div
+                    id="cutting-hen-beak"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHenBeakDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHenBeakColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_beak', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '38%',
+                      top: '5%',
+                      width: `${(33 / 640) * 180}%`,
+                      height: `${(18 / 752) * 180}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HEN_BEAK_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-15" y="-15" width="63" height="48" fill="transparent" />
+                      <path
+                        d={HEN_BEAK_PATH}
+                        fill={henBeakColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.0"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Wattle (Top-Right, enlarged touch area) */}
+                {!isHenWattlePlaced && (
+                  <motion.div
+                    id="cutting-hen-wattle"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHenWattleDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHenWattleColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_wattle', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '58%',
+                      top: '4%',
+                      width: `${(28 / 640) * 150}%`,
+                      height: `${(52 / 752) * 150}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HEN_WATTLE_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-15" y="-10" width="58" height="72" fill="transparent" />
+                      <path
+                        d={HEN_WATTLE_PATH}
+                        fill={henWattleColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.0"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Body & Wing (Center-Left) */}
+                {!isHenBodyPlaced && (
+                  <motion.div
+                    id="cutting-hen-body"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHenBodyDragEnd}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHenBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_body', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-20"
+                    style={{
+                      left: '4%',
+                      top: '22%',
+                      width: `${(526 / 640) * 74}%`,
+                      height: `${(483 / 752) * 74}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HEN_BODY_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={HEN_BODY_PATH}
+                        fill={henBodyColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Head & Neck (Middle-Right) */}
+                {!isHenHeadPlaced && (
+                  <motion.div
+                    id="cutting-hen-head"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHenHeadDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHenHeadColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_head', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '68%',
+                      top: '18%',
+                      width: `${(207 / 640) * 88}%`,
+                      height: `${(240 / 752) * 88}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HEN_HEAD_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={HEN_HEAD_PATH}
+                        fill={henHeadColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Left Foot (Bottom-Left) */}
+                {!isHenFootLeftPlaced && (
+                  <motion.div
+                    id="cutting-hen-foot-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHenFootLeftDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHenFootLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_foot_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '16%',
+                      top: '76%',
+                      width: `${(99 / 640) * 110}%`,
+                      height: `${(90 / 752) * 110}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HEN_LEFT_FOOT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={HEN_LEFT_FOOT_PATH}
+                        fill={henFootLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 7. Right Foot (Bottom-Right) */}
+                {!isHenFootRightPlaced && (
+                  <motion.div
+                    id="cutting-hen-foot-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHenFootRightDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHenFootRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('hen_foot_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '56%',
+                      top: '76%',
+                      width: `${(97 / 640) * 110}%`,
+                      height: `${(79 / 752) * 110}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HEN_RIGHT_FOOT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={HEN_RIGHT_FOOT_PATH}
+                        fill={henFootRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 7 pieces are placed */}
+                {isHenCombPlaced &&
+                  isHenHeadPlaced &&
+                  isHenBeakPlaced &&
+                  isHenWattlePlaced &&
+                  isHenBodyPlaced &&
+                  isHenFootLeftPlaced &&
+                  isHenFootRightPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ मुर्गी सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'ICECREAM' ? (
+          // ================================================================
+          // ICECREAM (आइसक्रीम) GAME SCREEN (Free_Ice_Cream_Coloring_Pages___Sweet___Fun_Printables_for_Kids_-removebg-preview_76a2a690.png)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: ICECREAM OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="icecream-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[408/612] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 408 612"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Stick */}
+                {isIcecreamStickPlaced && (
+                  <path
+                    d={ICECREAM_PLACED_STICK_PATH}
+                    fill={icecreamStickColor}
+                    onClick={() => {
+                      setIcecreamStickColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('icecream_stick', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Lower Popsicle Body */}
+                {isIcecreamBodyPlaced && (
+                  <path
+                    d={ICECREAM_PLACED_BODY_PATH}
+                    fill={icecreamBodyColor}
+                    onClick={() => {
+                      setIcecreamBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('icecream_body', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Top Icing */}
+                {isIcecreamTopPlaced && (
+                  <path
+                    d={ICECREAM_PLACED_TOP_PATH}
+                    fill={icecreamTopColor}
+                    onClick={() => {
+                      setIcecreamTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('icecream_top', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={icecreamOutlineImg}
+                alt="Ice Cream Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: ICECREAM CUTTING PIECES */}
+            <div
+              id="icecream-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[408/612] flex items-center justify-center"
+            >
+              {isIcecreamTopPlaced &&
+                isIcecreamBodyPlaced &&
+                isIcecreamStickPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetIcecream}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Top Icing (Top-Left) */}
+                {!isIcecreamTopPlaced && (
+                  <motion.div
+                    id="cutting-icecream-top"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleIcecreamTopDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setIcecreamTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('icecream_top', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '6%',
+                      top: '6%',
+                      width: `${(224 / 408) * 100}%`,
+                      height: `${(227 / 612) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={ICECREAM_TOP_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={ICECREAM_TOP_PATH}
+                        fill={icecreamTopColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Lower Popsicle Body (Bottom-Right) */}
+                {!isIcecreamBodyPlaced && (
+                  <motion.div
+                    id="cutting-icecream-body"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleIcecreamBodyDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setIcecreamBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('icecream_body', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '38%',
+                      top: '46%',
+                      width: `${(224 / 408) * 100}%`,
+                      height: `${(229 / 612) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={ICECREAM_BODY_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={ICECREAM_BODY_PATH}
+                        fill={icecreamBodyColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Popsicle Stick (Bottom-Left, with generous touch hit area) */}
+                {!isIcecreamStickPlaced && (
+                  <motion.div
+                    id="cutting-icecream-stick"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleIcecreamStickDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setIcecreamStickColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('icecream_stick', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '14%',
+                      top: '64%',
+                      width: `${(54 / 408) * 100}%`,
+                      height: `${(94 / 612) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={ICECREAM_STICK_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-12" y="-8" width="78" height="110" fill="transparent" />
+                      <path
+                        d={ICECREAM_STICK_PATH}
+                        fill={icecreamStickColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 3 pieces are placed */}
+                {isIcecreamTopPlaced &&
+                  isIcecreamBodyPlaced &&
+                  isIcecreamStickPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ आइसक्रीम सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'LOLLIPOP' ? (
+          // ================================================================
+          // LOLLIPOP (लॉलीपॉप) GAME SCREEN (download__17_-removebg-preview__1__cfaaed68.png)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: LOLLIPOP OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="lollipop-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[449/556] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 449 556"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Stick */}
+                {isLollipopStickPlaced && (
+                  <path
+                    d={LOLLIPOP_PLACED_STICK_PATH}
+                    fill={lollipopStickColor}
+                    onClick={() => {
+                      setLollipopStickColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('lollipop_stick', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Bottom Candy */}
+                {isLollipopBottomPlaced && (
+                  <path
+                    d={LOLLIPOP_PLACED_BOTTOM_PATH}
+                    fill={lollipopBottomColor}
+                    onClick={() => {
+                      setLollipopBottomColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('lollipop_bottom', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Middle Band */}
+                {isLollipopBandPlaced && (
+                  <path
+                    d={LOLLIPOP_PLACED_BAND_PATH}
+                    fill={lollipopBandColor}
+                    onClick={() => {
+                      setLollipopBandColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('lollipop_band', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Top Candy */}
+                {isLollipopTopPlaced && (
+                  <path
+                    d={LOLLIPOP_PLACED_TOP_PATH}
+                    fill={lollipopTopColor}
+                    onClick={() => {
+                      setLollipopTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('lollipop_top', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={lollipopOutlineImg}
+                alt="Lollipop Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: LOLLIPOP CUTTING PIECES */}
+            <div
+              id="lollipop-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[449/556] flex items-center justify-center"
+            >
+              {isLollipopTopPlaced &&
+                isLollipopBandPlaced &&
+                isLollipopBottomPlaced &&
+                isLollipopStickPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetLollipop}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Top Candy Dome (Top-Left) */}
+                {!isLollipopTopPlaced && (
+                  <motion.div
+                    id="cutting-lollipop-top"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleLollipopTopDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setLollipopTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('lollipop_top', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '14%',
+                      top: '12%',
+                      width: `${(173 / 449) * 100}%`,
+                      height: `${(69 / 556) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={LOLLIPOP_TOP_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={LOLLIPOP_TOP_PATH}
+                        fill={lollipopTopColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Middle Band (Upper-Right) */}
+                {!isLollipopBandPlaced && (
+                  <motion.div
+                    id="cutting-lollipop-band"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleLollipopBandDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setLollipopBandColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('lollipop_band', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '48%',
+                      top: '29%',
+                      width: `${(191 / 449) * 100}%`,
+                      height: `${(45 / 556) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={LOLLIPOP_BAND_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={LOLLIPOP_BAND_PATH}
+                        fill={lollipopBandColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Bottom Candy Dome (Middle-Left) */}
+                {!isLollipopBottomPlaced && (
+                  <motion.div
+                    id="cutting-lollipop-bottom"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleLollipopBottomDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setLollipopBottomColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('lollipop_bottom', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '16%',
+                      top: '48%',
+                      width: `${(173 / 449) * 100}%`,
+                      height: `${(63 / 556) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={LOLLIPOP_BOTTOM_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={LOLLIPOP_BOTTOM_PATH}
+                        fill={lollipopBottomColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Stick (Right-Vertical, with wider transparent touch target) */}
+                {!isLollipopStickPlaced && (
+                  <motion.div
+                    id="cutting-lollipop-stick"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleLollipopStickDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setLollipopStickColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('lollipop_stick', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '72%',
+                      top: '44%',
+                      width: `${(19 / 449) * 100}%`,
+                      height: `${(242 / 556) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={LOLLIPOP_STICK_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      {/* Invisible generous touch hit area */}
+                      <rect x="-14" y="-8" width="47" height="258" fill="transparent" />
+                      <path
+                        d={LOLLIPOP_STICK_PATH}
+                        fill={lollipopStickColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 4 pieces are placed */}
+                {isLollipopTopPlaced &&
+                  isLollipopBandPlaced &&
+                  isLollipopBottomPlaced &&
+                  isLollipopStickPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ लॉलीपॉप सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'DUCK' ? (
           // ================================================================
           // DUCK (बतख) GAME SCREEN (32_Free_Toddler_Coloring_Pages___Print_and_Color-removebg-preview_09847147.png)
           // ================================================================

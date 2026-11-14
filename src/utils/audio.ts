@@ -614,10 +614,18 @@ class SoundManager {
   }
 
   // 10. Drawing Stage: Shikshika (Teacher) Voice for Android Mobile & PC
-  speakDrawingIntro(soundEnabled = true, stage: 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'duck') {
+  speakDrawingIntro(soundEnabled = true, stage: 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'caterpillar') {
     if (!soundEnabled) return;
     let text = 'बच्चों, रंग चुनो और कटिंग इमेज को सही जगह पर लगाओ!';
-    if (stage === 'duck') {
+    if (stage === 'caterpillar') {
+      text = 'बच्चों, रंग चुनो और कटिंग कैटरपिलर को सही जगह पर लगाओ!';
+    } else if (stage === 'hen') {
+      text = 'बच्चों, रंग चुनो और कटिंग मुर्गी को सही जगह पर लगाओ!';
+    } else if (stage === 'icecream') {
+      text = 'बच्चों, रंग चुनो और कटिंग आइसक्रीम को सही जगह पर लगाओ!';
+    } else if (stage === 'lollipop') {
+      text = 'बच्चों, रंग चुनो और कटिंग लॉलीपॉप को सही जगह पर लगाओ!';
+    } else if (stage === 'duck') {
       text = 'बच्चों, रंग चुनो और कटिंग बतख को सही जगह पर लगाओ!';
     } else if (stage === 'flower') {
       text = 'बच्चों, रंग चुनो और कटिंग फूल को सही जगह पर लगाओ!';
@@ -661,13 +669,32 @@ class SoundManager {
   }
 
   speakDrawingPieceColored(
-    piece: 'duck_body' | 'duck_wing' | 'duck_beak' | 'duck_foot_left' | 'duck_foot_right' | 'flower_center' | 'flower_petal_top' | 'flower_petal_top_right' | 'flower_petal_bottom_right' | 'flower_petal_bottom' | 'flower_petal_bottom_left' | 'flower_petal_top_left' | 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br' | 'ball_cap' | 'ball_top_mid' | 'ball_top_right' | 'ball_top_left' | 'ball_bottom_left' | 'ball_bottom_center' | 'ball_bottom_right' | 'hat_crown' | 'hat_band' | 'hat_brim' | 'umbrella_canopy_left' | 'umbrella_canopy_mid' | 'umbrella_canopy_right' | 'umbrella_handle',
+    piece: 'caterpillar_head' | 'caterpillar_seg1' | 'caterpillar_seg2' | 'caterpillar_seg3' | 'caterpillar_seg4' | 'hen_comb' | 'hen_head' | 'hen_beak' | 'hen_wattle' | 'hen_body' | 'hen_foot_left' | 'hen_foot_right' | 'icecream_top' | 'icecream_body' | 'icecream_stick' | 'lollipop_top' | 'lollipop_band' | 'lollipop_bottom' | 'lollipop_stick' | 'duck_body' | 'duck_wing' | 'duck_beak' | 'duck_foot_left' | 'duck_foot_right' | 'flower_center' | 'flower_petal_top' | 'flower_petal_top_right' | 'flower_petal_bottom_right' | 'flower_petal_bottom' | 'flower_petal_bottom_left' | 'flower_petal_top_left' | 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br' | 'ball_cap' | 'ball_top_mid' | 'ball_top_right' | 'ball_top_left' | 'ball_bottom_left' | 'ball_bottom_center' | 'ball_bottom_right' | 'hat_crown' | 'hat_band' | 'hat_brim' | 'umbrella_canopy_left' | 'umbrella_canopy_mid' | 'umbrella_canopy_right' | 'umbrella_handle',
     soundEnabled = true
   ) {
     if (!soundEnabled) return;
     this.playSnap(soundEnabled);
     let text = 'रंग भर दिया, शाबाश!';
-    if (piece === 'duck_body') text = 'बतख के शरीर में रंग भर दिया, बहुत सुंदर!';
+    if (piece === 'caterpillar_head') text = 'कैटरपिलर के चेहरे में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'caterpillar_seg1') text = 'पहले गोले में रंग भर दिया, शाबाश!';
+    else if (piece === 'caterpillar_seg2') text = 'दूसरे गोले में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'caterpillar_seg3') text = 'तीसरे गोले में रंग भर दिया, बहुत खूब!';
+    else if (piece === 'caterpillar_seg4') text = 'चौथे गोले में रंग भर दिया, शाबाश!';
+    else if (piece === 'hen_comb') text = 'मुर्गी की कलगी में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'hen_head') text = 'मुर्गी के सिर और गर्दन में रंग भर दिया, शाबाश!';
+    else if (piece === 'hen_beak') text = 'मुर्गी की चोंच में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'hen_wattle') text = 'गले की कलगी में रंग भर दिया, बहुत खूब!';
+    else if (piece === 'hen_body') text = 'मुर्गी के शरीर में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'hen_foot_left') text = 'मुर्गी के बाएँ पैर में रंग भर दिया, शाबाश!';
+    else if (piece === 'hen_foot_right') text = 'मुर्गी के दाएँ पैर में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'icecream_top') text = 'आइसक्रीम के ऊपरी हिस्से में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'icecream_body') text = 'आइसक्रीम के निचले हिस्से में रंग भर दिया, बहुत खूब!';
+    else if (piece === 'icecream_stick') text = 'आइसक्रीम की डंडी में रंग भर दिया, शाबाश!';
+    else if (piece === 'lollipop_top') text = 'लॉलीपॉप के ऊपरी हिस्से में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'lollipop_band') text = 'बीच की पट्टी में रंग भर दिया, शाबाश!';
+    else if (piece === 'lollipop_bottom') text = 'लॉलीपॉप के निचले हिस्से में रंग भर दिया, बहुत खूब!';
+    else if (piece === 'lollipop_stick') text = 'लॉलीपॉप की डंडी में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'duck_body') text = 'बतख के शरीर में रंग भर दिया, बहुत सुंदर!';
     else if (piece === 'duck_wing') text = 'पंख में रंग भर दिया, बहुत खूब!';
     else if (piece === 'duck_beak') text = 'चोंच में रंग भर दिया, बहुत सुंदर!';
     else if (piece === 'duck_foot_left') text = 'बाएँ पैर में रंग भर दिया, शाबाश!';
@@ -723,13 +750,32 @@ class SoundManager {
   }
 
   speakDrawingPiecePlaced(
-    piece: 'duck_body' | 'duck_wing' | 'duck_beak' | 'duck_foot_left' | 'duck_foot_right' | 'flower_center' | 'flower_petal_top' | 'flower_petal_top_right' | 'flower_petal_bottom_right' | 'flower_petal_bottom' | 'flower_petal_bottom_left' | 'flower_petal_top_left' | 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br' | 'ball_cap' | 'ball_top_mid' | 'ball_top_right' | 'ball_top_left' | 'ball_bottom_left' | 'ball_bottom_center' | 'ball_bottom_right' | 'hat_crown' | 'hat_band' | 'hat_brim' | 'umbrella_canopy_left' | 'umbrella_canopy_mid' | 'umbrella_canopy_right' | 'umbrella_handle',
+    piece: 'caterpillar_head' | 'caterpillar_seg1' | 'caterpillar_seg2' | 'caterpillar_seg3' | 'caterpillar_seg4' | 'hen_comb' | 'hen_head' | 'hen_beak' | 'hen_wattle' | 'hen_body' | 'hen_foot_left' | 'hen_foot_right' | 'icecream_top' | 'icecream_body' | 'icecream_stick' | 'lollipop_top' | 'lollipop_band' | 'lollipop_bottom' | 'lollipop_stick' | 'duck_body' | 'duck_wing' | 'duck_beak' | 'duck_foot_left' | 'duck_foot_right' | 'flower_center' | 'flower_petal_top' | 'flower_petal_top_right' | 'flower_petal_bottom_right' | 'flower_petal_bottom' | 'flower_petal_bottom_left' | 'flower_petal_top_left' | 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br' | 'ball_cap' | 'ball_top_mid' | 'ball_top_right' | 'ball_top_left' | 'ball_bottom_left' | 'ball_bottom_center' | 'ball_bottom_right' | 'hat_crown' | 'hat_band' | 'hat_brim' | 'umbrella_canopy_left' | 'umbrella_canopy_mid' | 'umbrella_canopy_right' | 'umbrella_handle',
     soundEnabled = true
   ) {
     if (!soundEnabled) return;
     this.playSnap(soundEnabled);
     let text = 'शाबाश! सही जगह लग गई!';
-    if (piece === 'duck_body') text = 'शाबाश! बतख का शरीर सही जगह लग गया!';
+    if (piece === 'caterpillar_head') text = 'शाबाश! कैटरपिलर का चेहरा सही जगह लग गया!';
+    else if (piece === 'caterpillar_seg1') text = 'शाबाश! पहला गोला सही जगह लग गया!';
+    else if (piece === 'caterpillar_seg2') text = 'शाबाश! दूसरा गोला सही जगह लग गया!';
+    else if (piece === 'caterpillar_seg3') text = 'शाबाश! तीसरा गोला सही जगह लग गया!';
+    else if (piece === 'caterpillar_seg4') text = 'शाबाश! चौथा गोला सही जगह लग गया!';
+    else if (piece === 'hen_comb') text = 'शाबाश! मुर्गी की कलगी सही जगह लग गई!';
+    else if (piece === 'hen_head') text = 'शाबाश! मुर्गी का सिर सही जगह लग गया!';
+    else if (piece === 'hen_beak') text = 'शाबाश! मुर्गी की चोंच सही जगह लग गई!';
+    else if (piece === 'hen_wattle') text = 'शाबाश! गले की कलगी सही जगह लग गई!';
+    else if (piece === 'hen_body') text = 'शाबाश! मुर्गी का शरीर सही जगह लग गया!';
+    else if (piece === 'hen_foot_left') text = 'शाबाश! मुर्गी का बायाँ पैर सही जगह लग गया!';
+    else if (piece === 'hen_foot_right') text = 'शाबाश! मुर्गी का दायाँ पैर सही जगह लग गया!';
+    else if (piece === 'icecream_top') text = 'शाबाश! आइसक्रीम का ऊपरी हिस्सा सही जगह लग गया!';
+    else if (piece === 'icecream_body') text = 'शाबाश! आइसक्रीम का निचला हिस्सा सही जगह लग गया!';
+    else if (piece === 'icecream_stick') text = 'शाबाश! आइसक्रीम की डंडी सही जगह लग गई!';
+    else if (piece === 'lollipop_top') text = 'शाबाश! लॉलीपॉप का ऊपरी हिस्सा सही जगह लग गया!';
+    else if (piece === 'lollipop_band') text = 'शाबाश! बीच की पट्टी सही जगह लग गई!';
+    else if (piece === 'lollipop_bottom') text = 'शाबाश! लॉलीपॉप का निचला हिस्सा सही जगह लग गया!';
+    else if (piece === 'lollipop_stick') text = 'शाबाश! लॉलीपॉप की डंडी सही जगह लग गई!';
+    else if (piece === 'duck_body') text = 'शाबाश! बतख का शरीर सही जगह लग गया!';
     else if (piece === 'duck_wing') text = 'शाबाश! पंख सही जगह लग गया!';
     else if (piece === 'duck_beak') text = 'शाबाश! चोंच सही जगह लग गई!';
     else if (piece === 'duck_foot_left') text = 'शाबाश! बायाँ पैर सही जगह लग गया!';
@@ -778,11 +824,19 @@ class SoundManager {
     this.playAudio(`drawing_placed_${piece}`, text);
   }
 
-  speakDrawingComplete(stage: 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' | 'hat' | 'umbrella' = 'duck', soundEnabled = true) {
+  speakDrawingComplete(stage: 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' | 'hat' | 'umbrella' = 'caterpillar', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playVictory(soundEnabled);
     let text = 'अरे वाह बच्चों! बहुत सुंदर चित्र बनाया! शाबाश!';
-    if (stage === 'duck') {
+    if (stage === 'caterpillar') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही प्यारा कैटरपिलर बनाया! शाबाश!';
+    } else if (stage === 'hen') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही प्यारी मुर्गी बनाई! शाबाश!';
+    } else if (stage === 'icecream') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही स्वादिष्ट आइसक्रीम बनाई! शाबाश!';
+    } else if (stage === 'lollipop') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर लॉलीपॉप बनाई! शाबाश!';
+    } else if (stage === 'duck') {
       text = 'अरे वाह बच्चों! आपने बहुत ही प्यारी बतख बनाई! शाबाश!';
     } else if (stage === 'flower') {
       text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर फूल बनाया! शाबाश!';
@@ -810,11 +864,19 @@ class SoundManager {
     this.playAudio(`drawing_complete_${stage}`, text);
   }
 
-  speakDrawingNext(stage: 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' | 'hat' | 'umbrella' = 'duck', soundEnabled = true) {
+  speakDrawingNext(stage: 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' | 'hat' | 'umbrella' = 'caterpillar', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playPop(soundEnabled);
     let text = 'चलो फिर से नया चित्र बनाते हैं!';
-    if (stage === 'duck') {
+    if (stage === 'caterpillar') {
+      text = 'चलो अब कैटरपिलर का चित्र बनाते हैं!';
+    } else if (stage === 'hen') {
+      text = 'चलो अब मुर्गी का चित्र बनाते हैं!';
+    } else if (stage === 'icecream') {
+      text = 'चलो अब आइसक्रीम का चित्र बनाते हैं!';
+    } else if (stage === 'lollipop') {
+      text = 'चलो अब लॉलीपॉप का चित्र बनाते हैं!';
+    } else if (stage === 'duck') {
       text = 'चलो अब बतख का चित्र बनाते हैं!';
     } else if (stage === 'flower') {
       text = 'चलो अब फूल का चित्र बनाते हैं!';
