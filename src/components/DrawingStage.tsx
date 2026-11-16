@@ -24,6 +24,147 @@ import candleOutlineImg from '../assets/images/candle_outline.png';
 import cakeOutlineImg from '../assets/images/cake_outline.png';
 import tractorOutlineImg from '../assets/images/tractor_outline.png';
 import glassesOutlineImg from '../assets/images/glasses_outline.png';
+import purseOutlineImg from '../assets/images/purse_outline.png';
+import scissorsOutlineImg from '../assets/images/scissors_outline.png';
+import airplaneOutlineImg from '../assets/images/airplane_outline.png';
+import elephantOutlineImg from '../assets/images/elephant_outline.png';
+import bananaOutlineImg from '../assets/images/banana_outline.png';
+import tulipOutlineImg from '../assets/images/tulip_outline.png';
+import {
+  TULIP_PETAL_TOP_VIEWBOX,
+  TULIP_PETAL_TOP_PATH,
+  TULIP_PETAL_LEFT_INNER_VIEWBOX,
+  TULIP_PETAL_LEFT_INNER_PATH,
+  TULIP_PETAL_RIGHT_INNER_VIEWBOX,
+  TULIP_PETAL_RIGHT_INNER_PATH,
+  TULIP_PETAL_LEFT_VIEWBOX,
+  TULIP_PETAL_LEFT_PATH,
+  TULIP_PETAL_CENTER_VIEWBOX,
+  TULIP_PETAL_CENTER_PATH,
+  TULIP_PETAL_RIGHT_VIEWBOX,
+  TULIP_PETAL_RIGHT_PATH,
+  TULIP_STEM_VIEWBOX,
+  TULIP_STEM_PATH,
+  TULIP_LEAF_LEFT_VIEWBOX,
+  TULIP_LEAF_LEFT_PATH,
+  TULIP_LEAF_RIGHT_VIEWBOX,
+  TULIP_LEAF_RIGHT_PATH,
+  TULIP_PLACED_PETAL_TOP_PATH,
+  TULIP_PLACED_PETAL_LEFT_INNER_PATH,
+  TULIP_PLACED_PETAL_RIGHT_INNER_PATH,
+  TULIP_PLACED_PETAL_LEFT_PATH,
+  TULIP_PLACED_PETAL_CENTER_PATH,
+  TULIP_PLACED_PETAL_RIGHT_PATH,
+  TULIP_PLACED_STEM_PATH,
+  TULIP_PLACED_LEAF_LEFT_PATH,
+  TULIP_PLACED_LEAF_RIGHT_PATH,
+} from './tulip_constants';
+import {
+  AIRPLANE_BODY_VIEWBOX,
+  AIRPLANE_BODY_PATH,
+  AIRPLANE_COCKPIT_VIEWBOX,
+  AIRPLANE_COCKPIT_PATH,
+  AIRPLANE_WING_LEFT_VIEWBOX,
+  AIRPLANE_WING_LEFT_PATH,
+  AIRPLANE_ENGINE_L1_VIEWBOX,
+  AIRPLANE_ENGINE_L1_PATH,
+  AIRPLANE_ENGINE_L2_VIEWBOX,
+  AIRPLANE_ENGINE_L2_PATH,
+  AIRPLANE_WING_RIGHT_VIEWBOX,
+  AIRPLANE_WING_RIGHT_PATH,
+  AIRPLANE_ENGINE_R1_VIEWBOX,
+  AIRPLANE_ENGINE_R1_PATH,
+  AIRPLANE_ENGINE_R2_VIEWBOX,
+  AIRPLANE_ENGINE_R2_PATH,
+  AIRPLANE_TAIL_VIEWBOX,
+  AIRPLANE_TAIL_PATH,
+  AIRPLANE_PLACED_BODY_PATH,
+  AIRPLANE_PLACED_COCKPIT_PATH,
+  AIRPLANE_PLACED_WING_LEFT_PATH,
+  AIRPLANE_PLACED_ENGINE_L1_PATH,
+  AIRPLANE_PLACED_ENGINE_L2_PATH,
+  AIRPLANE_PLACED_WING_RIGHT_PATH,
+  AIRPLANE_PLACED_ENGINE_R1_PATH,
+  AIRPLANE_PLACED_ENGINE_R2_PATH,
+  AIRPLANE_PLACED_TAIL_PATH,
+} from './airplane_constants';
+import {
+  ELEPHANT_HEAD_VIEWBOX,
+  ELEPHANT_HEAD_PATH,
+  ELEPHANT_BODY_VIEWBOX,
+  ELEPHANT_BODY_PATH,
+  ELEPHANT_TUSK_VIEWBOX,
+  ELEPHANT_TUSK_PATH,
+  ELEPHANT_LEG_BACK_VIEWBOX,
+  ELEPHANT_LEG_BACK_PATH,
+  ELEPHANT_LEG_FRONT_VIEWBOX,
+  ELEPHANT_LEG_FRONT_PATH,
+  ELEPHANT_PLACED_HEAD_PATH,
+  ELEPHANT_PLACED_BODY_PATH,
+  ELEPHANT_PLACED_TUSK_PATH,
+  ELEPHANT_PLACED_LEG_BACK_PATH,
+  ELEPHANT_PLACED_LEG_FRONT_PATH,
+} from './elephant_constants';
+import {
+  BANANA_STEM_VIEWBOX,
+  BANANA_STEM_PATH,
+  BANANA_RIGHT_TOP_VIEWBOX,
+  BANANA_RIGHT_TOP_PATH,
+  BANANA_RIGHT_BOT_VIEWBOX,
+  BANANA_RIGHT_BOT_PATH,
+  BANANA_LEFT_TOP_VIEWBOX,
+  BANANA_LEFT_TOP_PATH,
+  BANANA_LEFT_BOT_VIEWBOX,
+  BANANA_LEFT_BOT_PATH,
+  BANANA_TIP_RIGHT_VIEWBOX,
+  BANANA_TIP_RIGHT_PATH,
+  BANANA_TIP_LEFT_VIEWBOX,
+  BANANA_TIP_LEFT_PATH,
+  BANANA_PLACED_STEM_PATH,
+  BANANA_PLACED_RIGHT_TOP_PATH,
+  BANANA_PLACED_RIGHT_BOT_PATH,
+  BANANA_PLACED_LEFT_TOP_PATH,
+  BANANA_PLACED_LEFT_BOT_PATH,
+  BANANA_PLACED_TIP_RIGHT_PATH,
+  BANANA_PLACED_TIP_LEFT_PATH,
+} from './banana_constants';
+import {
+  SCISSORS_BLADE_LEFT_VIEWBOX,
+  SCISSORS_BLADE_LEFT_PATH,
+  SCISSORS_BLADE_RIGHT_VIEWBOX,
+  SCISSORS_BLADE_RIGHT_PATH,
+  SCISSORS_PIVOT_RING_VIEWBOX,
+  SCISSORS_PIVOT_RING_PATH,
+  SCISSORS_PIVOT_SCREW_VIEWBOX,
+  SCISSORS_PIVOT_SCREW_PATH,
+  SCISSORS_HANDLE_VIEWBOX,
+  SCISSORS_HANDLE_PATH,
+  SCISSORS_PLACED_BLADE_LEFT_PATH,
+  SCISSORS_PLACED_BLADE_RIGHT_PATH,
+  SCISSORS_PLACED_PIVOT_RING_PATH,
+  SCISSORS_PLACED_PIVOT_SCREW_PATH,
+  SCISSORS_PLACED_HANDLE_PATH,
+} from './scissors_constants';
+import {
+  PURSE_HANDLE_VIEWBOX,
+  PURSE_HANDLE_PATH,
+  PURSE_RING_LEFT_VIEWBOX,
+  PURSE_RING_LEFT_PATH,
+  PURSE_RING_RIGHT_VIEWBOX,
+  PURSE_RING_RIGHT_PATH,
+  PURSE_FLAP_VIEWBOX,
+  PURSE_FLAP_PATH,
+  PURSE_BODY_VIEWBOX,
+  PURSE_BODY_PATH,
+  PURSE_LOCK_VIEWBOX,
+  PURSE_LOCK_PATH,
+  PURSE_PLACED_HANDLE_PATH,
+  PURSE_PLACED_RING_LEFT_PATH,
+  PURSE_PLACED_RING_RIGHT_PATH,
+  PURSE_PLACED_FLAP_PATH,
+  PURSE_PLACED_BODY_PATH,
+  PURSE_PLACED_LOCK_PATH,
+} from './purse_constants';
 import {
   GLASSES_ARM_LEFT_VIEWBOX,
   GLASSES_ARM_LEFT_PATH,
@@ -541,14 +682,155 @@ const APPLE_STEM_PATH =
 const APPLE_LEAF_PATH =
   'M 205 110 C 220 52, 280 25, 335 38 C 305 85, 250 120, 205 110 Z';
 
-type GameStage = 'GLASSES' | 'TRACTOR' | 'CAKE' | 'CANDLE' | 'HOUSE' | 'BOAT' | 'BUS' | 'PINWHEEL' | 'CATERPILLAR' | 'HEN' | 'ICECREAM' | 'LOLLIPOP' | 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
+type GameStage = 'TULIP' | 'AIRPLANE' | 'ELEPHANT' | 'BANANA' | 'SCISSORS' | 'PURSE' | 'GLASSES' | 'TRACTOR' | 'CAKE' | 'CANDLE' | 'HOUSE' | 'BOAT' | 'BUS' | 'PINWHEEL' | 'CATERPILLAR' | 'HEN' | 'ICECREAM' | 'LOLLIPOP' | 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
 
 export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled }) => {
-  // Current game stage: starts on GLASSES (user attachment Vision_eyeglasses_icon_outline_vector__Eye_test_3c390372.jfif)
-  const [currentStage, setCurrentStage] = useState<GameStage>('GLASSES');
+  // Current game stage: starts on TULIP (user attachment 794674296795607881_4d711042.jfif)
+  const [currentStage, setCurrentStage] = useState<GameStage>('TULIP');
 
   // Currently active selected color from bottom 6 buttons
   const [selectedColor, setSelectedColor] = useState<ColorOption>(COLOR_OPTIONS[0]); // Default RED
+
+  // ---------------------------------------------------------
+  // TULIP STAGE STATES (794674296795607881_4d711042.jfif)
+  // ---------------------------------------------------------
+  const [tulipPetalTopColor, setTulipPetalTopColor] = useState<string>('#ffffff');
+  const [isTulipPetalTopPlaced, setIsTulipPetalTopPlaced] = useState<boolean>(false);
+
+  const [tulipPetalLeftInnerColor, setTulipPetalLeftInnerColor] = useState<string>('#ffffff');
+  const [isTulipPetalLeftInnerPlaced, setIsTulipPetalLeftInnerPlaced] = useState<boolean>(false);
+
+  const [tulipPetalRightInnerColor, setTulipPetalRightInnerColor] = useState<string>('#ffffff');
+  const [isTulipPetalRightInnerPlaced, setIsTulipPetalRightInnerPlaced] = useState<boolean>(false);
+
+  const [tulipPetalLeftColor, setTulipPetalLeftColor] = useState<string>('#ffffff');
+  const [isTulipPetalLeftPlaced, setIsTulipPetalLeftPlaced] = useState<boolean>(false);
+
+  const [tulipPetalCenterColor, setTulipPetalCenterColor] = useState<string>('#ffffff');
+  const [isTulipPetalCenterPlaced, setIsTulipPetalCenterPlaced] = useState<boolean>(false);
+
+  const [tulipPetalRightColor, setTulipPetalRightColor] = useState<string>('#ffffff');
+  const [isTulipPetalRightPlaced, setIsTulipPetalRightPlaced] = useState<boolean>(false);
+
+  const [tulipStemColor, setTulipStemColor] = useState<string>('#ffffff');
+  const [isTulipStemPlaced, setIsTulipStemPlaced] = useState<boolean>(false);
+
+  const [tulipLeafLeftColor, setTulipLeafLeftColor] = useState<string>('#ffffff');
+  const [isTulipLeafLeftPlaced, setIsTulipLeafLeftPlaced] = useState<boolean>(false);
+
+  const [tulipLeafRightColor, setTulipLeafRightColor] = useState<string>('#ffffff');
+  const [isTulipLeafRightPlaced, setIsTulipLeafRightPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // AIRPLANE STAGE STATES (Download_Airplane_Outline_Icon_for_free_423f2f1c.jfif)
+  // ---------------------------------------------------------
+  const [airplaneBodyColor, setAirplaneBodyColor] = useState<string>('#ffffff');
+  const [isAirplaneBodyPlaced, setIsAirplaneBodyPlaced] = useState<boolean>(false);
+
+  const [airplaneCockpitColor, setAirplaneCockpitColor] = useState<string>('#ffffff');
+  const [isAirplaneCockpitPlaced, setIsAirplaneCockpitPlaced] = useState<boolean>(false);
+
+  const [airplaneWingLeftColor, setAirplaneWingLeftColor] = useState<string>('#ffffff');
+  const [isAirplaneWingLeftPlaced, setIsAirplaneWingLeftPlaced] = useState<boolean>(false);
+
+  const [airplaneEngineL1Color, setAirplaneEngineL1Color] = useState<string>('#ffffff');
+  const [isAirplaneEngineL1Placed, setIsAirplaneEngineL1Placed] = useState<boolean>(false);
+
+  const [airplaneEngineL2Color, setAirplaneEngineL2Color] = useState<string>('#ffffff');
+  const [isAirplaneEngineL2Placed, setIsAirplaneEngineL2Placed] = useState<boolean>(false);
+
+  const [airplaneWingRightColor, setAirplaneWingRightColor] = useState<string>('#ffffff');
+  const [isAirplaneWingRightPlaced, setIsAirplaneWingRightPlaced] = useState<boolean>(false);
+
+  const [airplaneEngineR1Color, setAirplaneEngineR1Color] = useState<string>('#ffffff');
+  const [isAirplaneEngineR1Placed, setIsAirplaneEngineR1Placed] = useState<boolean>(false);
+
+  const [airplaneEngineR2Color, setAirplaneEngineR2Color] = useState<string>('#ffffff');
+  const [isAirplaneEngineR2Placed, setIsAirplaneEngineR2Placed] = useState<boolean>(false);
+
+  const [airplaneTailColor, setAirplaneTailColor] = useState<string>('#ffffff');
+  const [isAirplaneTailPlaced, setIsAirplaneTailPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // ELEPHANT STAGE STATES (Elephant_Simple_Art_Kids_SVG___PNG___JPG_Clipart_-_Free_Commercial_Use_fa9fb73f.jfif)
+  // ---------------------------------------------------------
+  const [elephantHeadColor, setElephantHeadColor] = useState<string>('#ffffff');
+  const [isElephantHeadPlaced, setIsElephantHeadPlaced] = useState<boolean>(false);
+
+  const [elephantBodyColor, setElephantBodyColor] = useState<string>('#ffffff');
+  const [isElephantBodyPlaced, setIsElephantBodyPlaced] = useState<boolean>(false);
+
+  const [elephantTuskColor, setElephantTuskColor] = useState<string>('#ffffff');
+  const [isElephantTuskPlaced, setIsElephantTuskPlaced] = useState<boolean>(false);
+
+  const [elephantLegBackColor, setElephantLegBackColor] = useState<string>('#ffffff');
+  const [isElephantLegBackPlaced, setIsElephantLegBackPlaced] = useState<boolean>(false);
+
+  const [elephantLegFrontColor, setElephantLegFrontColor] = useState<string>('#ffffff');
+  const [isElephantLegFrontPlaced, setIsElephantLegFrontPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // BANANA STAGE STATES (download__25__6eb93c33.jfif)
+  // ---------------------------------------------------------
+  const [bananaStemColor, setBananaStemColor] = useState<string>('#ffffff');
+  const [isBananaStemPlaced, setIsBananaStemPlaced] = useState<boolean>(false);
+
+  const [bananaRightTopColor, setBananaRightTopColor] = useState<string>('#ffffff');
+  const [isBananaRightTopPlaced, setIsBananaRightTopPlaced] = useState<boolean>(false);
+
+  const [bananaRightBotColor, setBananaRightBotColor] = useState<string>('#ffffff');
+  const [isBananaRightBotPlaced, setIsBananaRightBotPlaced] = useState<boolean>(false);
+
+  const [bananaLeftTopColor, setBananaLeftTopColor] = useState<string>('#ffffff');
+  const [isBananaLeftTopPlaced, setIsBananaLeftTopPlaced] = useState<boolean>(false);
+
+  const [bananaLeftBotColor, setBananaLeftBotColor] = useState<string>('#ffffff');
+  const [isBananaLeftBotPlaced, setIsBananaLeftBotPlaced] = useState<boolean>(false);
+
+  const [bananaTipRightColor, setBananaTipRightColor] = useState<string>('#ffffff');
+  const [isBananaTipRightPlaced, setIsBananaTipRightPlaced] = useState<boolean>(false);
+
+  const [bananaTipLeftColor, setBananaTipLeftColor] = useState<string>('#ffffff');
+  const [isBananaTipLeftPlaced, setIsBananaTipLeftPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // SCISSORS STAGE STATES (download__24__970e0629.jfif)
+  // ---------------------------------------------------------
+  const [scissorsBladeLeftColor, setScissorsBladeLeftColor] = useState<string>('#ffffff');
+  const [isScissorsBladeLeftPlaced, setIsScissorsBladeLeftPlaced] = useState<boolean>(false);
+
+  const [scissorsBladeRightColor, setScissorsBladeRightColor] = useState<string>('#ffffff');
+  const [isScissorsBladeRightPlaced, setIsScissorsBladeRightPlaced] = useState<boolean>(false);
+
+  const [scissorsPivotRingColor, setScissorsPivotRingColor] = useState<string>('#ffffff');
+  const [isScissorsPivotRingPlaced, setIsScissorsPivotRingPlaced] = useState<boolean>(false);
+
+  const [scissorsPivotScrewColor, setScissorsPivotScrewColor] = useState<string>('#ffffff');
+  const [isScissorsPivotScrewPlaced, setIsScissorsPivotScrewPlaced] = useState<boolean>(false);
+
+  const [scissorsHandleColor, setScissorsHandleColor] = useState<string>('#ffffff');
+  const [isScissorsHandlePlaced, setIsScissorsHandlePlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // PURSE STAGE STATES (download__23__4d55ddc4.jfif)
+  // ---------------------------------------------------------
+  const [purseHandleColor, setPurseHandleColor] = useState<string>('#ffffff');
+  const [isPurseHandlePlaced, setIsPurseHandlePlaced] = useState<boolean>(false);
+
+  const [purseRingLeftColor, setPurseRingLeftColor] = useState<string>('#ffffff');
+  const [isPurseRingLeftPlaced, setIsPurseRingLeftPlaced] = useState<boolean>(false);
+
+  const [purseRingRightColor, setPurseRingRightColor] = useState<string>('#ffffff');
+  const [isPurseRingRightPlaced, setIsPurseRingRightPlaced] = useState<boolean>(false);
+
+  const [purseFlapColor, setPurseFlapColor] = useState<string>('#ffffff');
+  const [isPurseFlapPlaced, setIsPurseFlapPlaced] = useState<boolean>(false);
+
+  const [purseBodyColor, setPurseBodyColor] = useState<string>('#ffffff');
+  const [isPurseBodyPlaced, setIsPurseBodyPlaced] = useState<boolean>(false);
+
+  const [purseLockColor, setPurseLockColor] = useState<string>('#ffffff');
+  const [isPurseLockPlaced, setIsPurseLockPlaced] = useState<boolean>(false);
 
   // ---------------------------------------------------------
   // GLASSES STAGE STATES (Vision_eyeglasses_icon_outline_vector__Eye_test_3c390372.jfif)
@@ -999,8 +1281,14 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   // Shikshika (Teacher) Voice intro
   useEffect(() => {
     const timer = setTimeout(() => {
-      let voiceKey: 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'glasses';
-      if (currentStage === 'GLASSES') voiceKey = 'glasses';
+      let voiceKey: 'tulip' | 'airplane' | 'elephant' | 'banana' | 'scissors' | 'purse' | 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'tulip';
+      if (currentStage === 'TULIP') voiceKey = 'tulip';
+      else if (currentStage === 'AIRPLANE') voiceKey = 'airplane';
+      else if (currentStage === 'ELEPHANT') voiceKey = 'elephant';
+      else if (currentStage === 'BANANA') voiceKey = 'banana';
+      else if (currentStage === 'SCISSORS') voiceKey = 'scissors';
+      else if (currentStage === 'PURSE') voiceKey = 'purse';
+      else if (currentStage === 'GLASSES') voiceKey = 'glasses';
       else if (currentStage === 'TRACTOR') voiceKey = 'tractor';
       else if (currentStage === 'CAKE') voiceKey = 'cake';
       else if (currentStage === 'CANDLE') voiceKey = 'candle';
@@ -1045,7 +1333,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   };
 
   // Celebration
-  const triggerVictory = (stage: 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
+  const triggerVictory = (stage: 'tulip' | 'airplane' | 'elephant' | 'banana' | 'scissors' | 'purse' | 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
     sounds.speakDrawingComplete(stage, soundEnabled);
     try {
       confetti({
@@ -1055,6 +1343,757 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       });
     } catch {
       // Ignore
+    }
+  };
+
+  // Check if entire Tulip is assembled
+  const checkTulipVictory = (
+    pTop: boolean,
+    pLeftInner: boolean,
+    pRightInner: boolean,
+    pLeft: boolean,
+    pCenter: boolean,
+    pRight: boolean,
+    stem: boolean,
+    lLeft: boolean,
+    lRight: boolean
+  ) => {
+    if (pTop && pLeftInner && pRightInner && pLeft && pCenter && pRight && stem && lLeft && lRight) {
+      triggerVictory('tulip');
+    }
+  };
+
+  // Drag handlers for Tulip (9 pieces)
+  const handleTulipPetalTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTulipPetalTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tulip_petal_top', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTulipPetalTopPlaced(true);
+      sounds.speakDrawingPiecePlaced('tulip_petal_top', soundEnabled);
+      checkTulipVictory(true, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTulipPetalLeftInnerDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTulipPetalLeftInnerColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tulip_petal_left_inner', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTulipPetalLeftInnerPlaced(true);
+      sounds.speakDrawingPiecePlaced('tulip_petal_left_inner', soundEnabled);
+      checkTulipVictory(isTulipPetalTopPlaced, true, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTulipPetalRightInnerDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTulipPetalRightInnerColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tulip_petal_right_inner', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTulipPetalRightInnerPlaced(true);
+      sounds.speakDrawingPiecePlaced('tulip_petal_right_inner', soundEnabled);
+      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, true, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTulipPetalLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTulipPetalLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tulip_petal_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTulipPetalLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('tulip_petal_left', soundEnabled);
+      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, true, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTulipPetalCenterDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTulipPetalCenterColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tulip_petal_center', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTulipPetalCenterPlaced(true);
+      sounds.speakDrawingPiecePlaced('tulip_petal_center', soundEnabled);
+      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, true, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTulipPetalRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTulipPetalRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tulip_petal_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTulipPetalRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('tulip_petal_right', soundEnabled);
+      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, true, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTulipStemDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTulipStemColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tulip_stem', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTulipStemPlaced(true);
+      sounds.speakDrawingPiecePlaced('tulip_stem', soundEnabled);
+      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, true, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTulipLeafLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTulipLeafLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tulip_leaf_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTulipLeafLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('tulip_leaf_left', soundEnabled);
+      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, true, isTulipLeafRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTulipLeafRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTulipLeafRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tulip_leaf_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTulipLeafRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('tulip_leaf_right', soundEnabled);
+      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Airplane is assembled
+  const checkAirplaneVictory = (
+    body: boolean,
+    cockpit: boolean,
+    wingLeft: boolean,
+    engL1: boolean,
+    engL2: boolean,
+    wingRight: boolean,
+    engR1: boolean,
+    engR2: boolean,
+    tail: boolean
+  ) => {
+    if (body && cockpit && wingLeft && engL1 && engL2 && wingRight && engR1 && engR2 && tail) {
+      triggerVictory('airplane');
+    }
+  };
+
+  // Drag handlers for Airplane (9 pieces)
+  const handleAirplaneBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setAirplaneBodyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('airplane_body', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsAirplaneBodyPlaced(true);
+      sounds.speakDrawingPiecePlaced('airplane_body', soundEnabled);
+      checkAirplaneVictory(true, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleAirplaneCockpitDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setAirplaneCockpitColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('airplane_cockpit', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsAirplaneCockpitPlaced(true);
+      sounds.speakDrawingPiecePlaced('airplane_cockpit', soundEnabled);
+      checkAirplaneVictory(isAirplaneBodyPlaced, true, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleAirplaneWingLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setAirplaneWingLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('airplane_wing_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsAirplaneWingLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('airplane_wing_left', soundEnabled);
+      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, true, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleAirplaneEngineL1DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setAirplaneEngineL1Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('airplane_engine_l1', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsAirplaneEngineL1Placed(true);
+      sounds.speakDrawingPiecePlaced('airplane_engine_l1', soundEnabled);
+      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, true, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleAirplaneEngineL2DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setAirplaneEngineL2Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('airplane_engine_l2', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsAirplaneEngineL2Placed(true);
+      sounds.speakDrawingPiecePlaced('airplane_engine_l2', soundEnabled);
+      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, true, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleAirplaneWingRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setAirplaneWingRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('airplane_wing_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsAirplaneWingRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('airplane_wing_right', soundEnabled);
+      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, true, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleAirplaneEngineR1DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setAirplaneEngineR1Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('airplane_engine_r1', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsAirplaneEngineR1Placed(true);
+      sounds.speakDrawingPiecePlaced('airplane_engine_r1', soundEnabled);
+      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, true, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleAirplaneEngineR2DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setAirplaneEngineR2Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('airplane_engine_r2', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsAirplaneEngineR2Placed(true);
+      sounds.speakDrawingPiecePlaced('airplane_engine_r2', soundEnabled);
+      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, true, isAirplaneTailPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleAirplaneTailDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setAirplaneTailColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('airplane_tail', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsAirplaneTailPlaced(true);
+      sounds.speakDrawingPiecePlaced('airplane_tail', soundEnabled);
+      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Elephant is assembled
+  const checkElephantVictory = (
+    head: boolean,
+    body: boolean,
+    tusk: boolean,
+    legBack: boolean,
+    legFront: boolean
+  ) => {
+    if (head && body && tusk && legBack && legFront) {
+      triggerVictory('elephant');
+    }
+  };
+
+  // Drag handlers for Elephant (5 pieces)
+  const handleElephantHeadDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setElephantHeadColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('elephant_head', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsElephantHeadPlaced(true);
+      sounds.speakDrawingPiecePlaced('elephant_head', soundEnabled);
+      checkElephantVictory(true, isElephantBodyPlaced, isElephantTuskPlaced, isElephantLegBackPlaced, isElephantLegFrontPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleElephantBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setElephantBodyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('elephant_body', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsElephantBodyPlaced(true);
+      sounds.speakDrawingPiecePlaced('elephant_body', soundEnabled);
+      checkElephantVictory(isElephantHeadPlaced, true, isElephantTuskPlaced, isElephantLegBackPlaced, isElephantLegFrontPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleElephantTuskDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setElephantTuskColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('elephant_tusk', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsElephantTuskPlaced(true);
+      sounds.speakDrawingPiecePlaced('elephant_tusk', soundEnabled);
+      checkElephantVictory(isElephantHeadPlaced, isElephantBodyPlaced, true, isElephantLegBackPlaced, isElephantLegFrontPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleElephantLegBackDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setElephantLegBackColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('elephant_leg_back', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsElephantLegBackPlaced(true);
+      sounds.speakDrawingPiecePlaced('elephant_leg_back', soundEnabled);
+      checkElephantVictory(isElephantHeadPlaced, isElephantBodyPlaced, isElephantTuskPlaced, true, isElephantLegFrontPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleElephantLegFrontDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setElephantLegFrontColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('elephant_leg_front', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsElephantLegFrontPlaced(true);
+      sounds.speakDrawingPiecePlaced('elephant_leg_front', soundEnabled);
+      checkElephantVictory(isElephantHeadPlaced, isElephantBodyPlaced, isElephantTuskPlaced, isElephantLegBackPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Banana is assembled
+  const checkBananaVictory = (
+    stem: boolean,
+    rTop: boolean,
+    rBot: boolean,
+    lTop: boolean,
+    lBot: boolean,
+    tipR: boolean,
+    tipL: boolean
+  ) => {
+    if (stem && rTop && rBot && lTop && lBot && tipR && tipL) {
+      triggerVictory('banana');
+    }
+  };
+
+  // Drag handlers for Banana (7 pieces)
+  const handleBananaStemDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBananaStemColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('banana_stem', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBananaStemPlaced(true);
+      sounds.speakDrawingPiecePlaced('banana_stem', soundEnabled);
+      checkBananaVictory(true, isBananaRightTopPlaced, isBananaRightBotPlaced, isBananaLeftTopPlaced, isBananaLeftBotPlaced, isBananaTipRightPlaced, isBananaTipLeftPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBananaRightTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBananaRightTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('banana_right_top', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBananaRightTopPlaced(true);
+      sounds.speakDrawingPiecePlaced('banana_right_top', soundEnabled);
+      checkBananaVictory(isBananaStemPlaced, true, isBananaRightBotPlaced, isBananaLeftTopPlaced, isBananaLeftBotPlaced, isBananaTipRightPlaced, isBananaTipLeftPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBananaRightBotDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBananaRightBotColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('banana_right_bot', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBananaRightBotPlaced(true);
+      sounds.speakDrawingPiecePlaced('banana_right_bot', soundEnabled);
+      checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, true, isBananaLeftTopPlaced, isBananaLeftBotPlaced, isBananaTipRightPlaced, isBananaTipLeftPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBananaLeftTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBananaLeftTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('banana_left_top', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBananaLeftTopPlaced(true);
+      sounds.speakDrawingPiecePlaced('banana_left_top', soundEnabled);
+      checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, isBananaRightBotPlaced, true, isBananaLeftBotPlaced, isBananaTipRightPlaced, isBananaTipLeftPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBananaLeftBotDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBananaLeftBotColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('banana_left_bot', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBananaLeftBotPlaced(true);
+      sounds.speakDrawingPiecePlaced('banana_left_bot', soundEnabled);
+      checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, isBananaRightBotPlaced, isBananaLeftTopPlaced, true, isBananaTipRightPlaced, isBananaTipLeftPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBananaTipRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBananaTipRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('banana_tip_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBananaTipRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('banana_tip_right', soundEnabled);
+      checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, isBananaRightBotPlaced, isBananaLeftTopPlaced, isBananaLeftBotPlaced, true, isBananaTipLeftPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBananaTipLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBananaTipLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('banana_tip_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBananaTipLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('banana_tip_left', soundEnabled);
+      checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, isBananaRightBotPlaced, isBananaLeftTopPlaced, isBananaLeftBotPlaced, isBananaTipRightPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Scissors is assembled
+  const checkScissorsVictory = (
+    bladeLeft: boolean,
+    bladeRight: boolean,
+    pivotRing: boolean,
+    pivotScrew: boolean,
+    handle: boolean
+  ) => {
+    if (bladeLeft && bladeRight && pivotRing && pivotScrew && handle) {
+      triggerVictory('scissors');
+    }
+  };
+
+  // Drag handlers for Scissors (5 pieces: Left Blade, Right Blade, Pivot Ring, Pivot Screw, Handle)
+  const handleScissorsBladeLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setScissorsBladeLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('scissors_blade_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsScissorsBladeLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('scissors_blade_left', soundEnabled);
+      checkScissorsVictory(true, isScissorsBladeRightPlaced, isScissorsPivotRingPlaced, isScissorsPivotScrewPlaced, isScissorsHandlePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleScissorsBladeRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setScissorsBladeRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('scissors_blade_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsScissorsBladeRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('scissors_blade_right', soundEnabled);
+      checkScissorsVictory(isScissorsBladeLeftPlaced, true, isScissorsPivotRingPlaced, isScissorsPivotScrewPlaced, isScissorsHandlePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleScissorsPivotRingDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setScissorsPivotRingColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('scissors_pivot_ring', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsScissorsPivotRingPlaced(true);
+      sounds.speakDrawingPiecePlaced('scissors_pivot_ring', soundEnabled);
+      checkScissorsVictory(isScissorsBladeLeftPlaced, isScissorsBladeRightPlaced, true, isScissorsPivotScrewPlaced, isScissorsHandlePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleScissorsPivotScrewDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setScissorsPivotScrewColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('scissors_pivot_screw', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsScissorsPivotScrewPlaced(true);
+      sounds.speakDrawingPiecePlaced('scissors_pivot_screw', soundEnabled);
+      checkScissorsVictory(isScissorsBladeLeftPlaced, isScissorsBladeRightPlaced, isScissorsPivotRingPlaced, true, isScissorsHandlePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleScissorsHandleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setScissorsHandleColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('scissors_handle', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsScissorsHandlePlaced(true);
+      sounds.speakDrawingPiecePlaced('scissors_handle', soundEnabled);
+      checkScissorsVictory(isScissorsBladeLeftPlaced, isScissorsBladeRightPlaced, isScissorsPivotRingPlaced, isScissorsPivotScrewPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Purse is assembled
+  const checkPurseVictory = (
+    handle: boolean,
+    ringLeft: boolean,
+    ringRight: boolean,
+    flap: boolean,
+    body: boolean,
+    lock: boolean
+  ) => {
+    if (handle && ringLeft && ringRight && flap && body && lock) {
+      triggerVictory('purse');
+    }
+  };
+
+  // Drag handlers for Purse (6 pieces: Handle, Ring Left, Ring Right, Flap, Body, Lock)
+  const handlePurseHandleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setPurseHandleColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('purse_handle', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsPurseHandlePlaced(true);
+      sounds.speakDrawingPiecePlaced('purse_handle', soundEnabled);
+      checkPurseVictory(true, isPurseRingLeftPlaced, isPurseRingRightPlaced, isPurseFlapPlaced, isPurseBodyPlaced, isPurseLockPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handlePurseRingLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setPurseRingLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('purse_ring_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsPurseRingLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('purse_ring_left', soundEnabled);
+      checkPurseVictory(isPurseHandlePlaced, true, isPurseRingRightPlaced, isPurseFlapPlaced, isPurseBodyPlaced, isPurseLockPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handlePurseRingRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setPurseRingRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('purse_ring_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsPurseRingRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('purse_ring_right', soundEnabled);
+      checkPurseVictory(isPurseHandlePlaced, isPurseRingLeftPlaced, true, isPurseFlapPlaced, isPurseBodyPlaced, isPurseLockPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handlePurseFlapDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setPurseFlapColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('purse_flap', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsPurseFlapPlaced(true);
+      sounds.speakDrawingPiecePlaced('purse_flap', soundEnabled);
+      checkPurseVictory(isPurseHandlePlaced, isPurseRingLeftPlaced, isPurseRingRightPlaced, true, isPurseBodyPlaced, isPurseLockPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handlePurseBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setPurseBodyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('purse_body', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsPurseBodyPlaced(true);
+      sounds.speakDrawingPiecePlaced('purse_body', soundEnabled);
+      checkPurseVictory(isPurseHandlePlaced, isPurseRingLeftPlaced, isPurseRingRightPlaced, isPurseFlapPlaced, true, isPurseLockPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handlePurseLockDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setPurseLockColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('purse_lock', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsPurseLockPlaced(true);
+      sounds.speakDrawingPiecePlaced('purse_lock', soundEnabled);
+      checkPurseVictory(isPurseHandlePlaced, isPurseRingLeftPlaced, isPurseRingRightPlaced, isPurseFlapPlaced, isPurseBodyPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
     }
   };
 
@@ -3488,10 +4527,28 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
   };
 
-  // NEXT Button Handler: cycles GLASSES -> TRACTOR -> CAKE -> CANDLE -> HOUSE -> BOAT -> BUS -> PINWHEEL -> CATERPILLAR -> HEN -> ICECREAM -> LOLLIPOP -> DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> GLASSES
+  // NEXT Button Handler: cycles TULIP -> AIRPLANE -> ELEPHANT -> BANANA -> SCISSORS -> PURSE -> GLASSES -> TRACTOR -> CAKE -> CANDLE -> HOUSE -> BOAT -> BUS -> PINWHEEL -> CATERPILLAR -> HEN -> ICECREAM -> LOLLIPOP -> DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> TULIP
   const handleNext = () => {
     sounds.playPop(soundEnabled);
-    if (currentStage === 'GLASSES') {
+    if (currentStage === 'TULIP') {
+      setCurrentStage('AIRPLANE');
+      sounds.speakDrawingNext('airplane', soundEnabled);
+    } else if (currentStage === 'AIRPLANE') {
+      setCurrentStage('ELEPHANT');
+      sounds.speakDrawingNext('elephant', soundEnabled);
+    } else if (currentStage === 'ELEPHANT') {
+      setCurrentStage('BANANA');
+      sounds.speakDrawingNext('banana', soundEnabled);
+    } else if (currentStage === 'BANANA') {
+      setCurrentStage('SCISSORS');
+      sounds.speakDrawingNext('scissors', soundEnabled);
+    } else if (currentStage === 'SCISSORS') {
+      setCurrentStage('PURSE');
+      sounds.speakDrawingNext('purse', soundEnabled);
+    } else if (currentStage === 'PURSE') {
+      setCurrentStage('GLASSES');
+      sounds.speakDrawingNext('glasses', soundEnabled);
+    } else if (currentStage === 'GLASSES') {
       setCurrentStage('TRACTOR');
       sounds.speakDrawingNext('tractor', soundEnabled);
     } else if (currentStage === 'TRACTOR') {
@@ -3561,12 +4618,118 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       setCurrentStage('APPLE');
       sounds.speakDrawingNext('apple', soundEnabled);
     } else {
-      setCurrentStage('GLASSES');
-      sounds.speakDrawingNext('glasses', soundEnabled);
+      setCurrentStage('TULIP');
+      sounds.speakDrawingNext('tulip', soundEnabled);
     }
   };
 
   // Reset Handlers
+  const handleResetTulip = () => {
+    setIsTulipPetalTopPlaced(false);
+    setIsTulipPetalLeftInnerPlaced(false);
+    setIsTulipPetalRightInnerPlaced(false);
+    setIsTulipPetalLeftPlaced(false);
+    setIsTulipPetalCenterPlaced(false);
+    setIsTulipPetalRightPlaced(false);
+    setIsTulipStemPlaced(false);
+    setIsTulipLeafLeftPlaced(false);
+    setIsTulipLeafRightPlaced(false);
+    setTulipPetalTopColor('#ffffff');
+    setTulipPetalLeftInnerColor('#ffffff');
+    setTulipPetalRightInnerColor('#ffffff');
+    setTulipPetalLeftColor('#ffffff');
+    setTulipPetalCenterColor('#ffffff');
+    setTulipPetalRightColor('#ffffff');
+    setTulipStemColor('#ffffff');
+    setTulipLeafLeftColor('#ffffff');
+    setTulipLeafRightColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetAirplane = () => {
+    setIsAirplaneBodyPlaced(false);
+    setIsAirplaneCockpitPlaced(false);
+    setIsAirplaneWingLeftPlaced(false);
+    setIsAirplaneEngineL1Placed(false);
+    setIsAirplaneEngineL2Placed(false);
+    setIsAirplaneWingRightPlaced(false);
+    setIsAirplaneEngineR1Placed(false);
+    setIsAirplaneEngineR2Placed(false);
+    setIsAirplaneTailPlaced(false);
+    setAirplaneBodyColor('#ffffff');
+    setAirplaneCockpitColor('#ffffff');
+    setAirplaneWingLeftColor('#ffffff');
+    setAirplaneEngineL1Color('#ffffff');
+    setAirplaneEngineL2Color('#ffffff');
+    setAirplaneWingRightColor('#ffffff');
+    setAirplaneEngineR1Color('#ffffff');
+    setAirplaneEngineR2Color('#ffffff');
+    setAirplaneTailColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetElephant = () => {
+    setIsElephantHeadPlaced(false);
+    setIsElephantBodyPlaced(false);
+    setIsElephantTuskPlaced(false);
+    setIsElephantLegBackPlaced(false);
+    setIsElephantLegFrontPlaced(false);
+    setElephantHeadColor('#ffffff');
+    setElephantBodyColor('#ffffff');
+    setElephantTuskColor('#ffffff');
+    setElephantLegBackColor('#ffffff');
+    setElephantLegFrontColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetBanana = () => {
+    setIsBananaStemPlaced(false);
+    setIsBananaRightTopPlaced(false);
+    setIsBananaRightBotPlaced(false);
+    setIsBananaLeftTopPlaced(false);
+    setIsBananaLeftBotPlaced(false);
+    setIsBananaTipRightPlaced(false);
+    setIsBananaTipLeftPlaced(false);
+    setBananaStemColor('#ffffff');
+    setBananaRightTopColor('#ffffff');
+    setBananaRightBotColor('#ffffff');
+    setBananaLeftTopColor('#ffffff');
+    setBananaLeftBotColor('#ffffff');
+    setBananaTipRightColor('#ffffff');
+    setBananaTipLeftColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetScissors = () => {
+    setIsScissorsBladeLeftPlaced(false);
+    setIsScissorsBladeRightPlaced(false);
+    setIsScissorsPivotRingPlaced(false);
+    setIsScissorsPivotScrewPlaced(false);
+    setIsScissorsHandlePlaced(false);
+    setScissorsBladeLeftColor('#ffffff');
+    setScissorsBladeRightColor('#ffffff');
+    setScissorsPivotRingColor('#ffffff');
+    setScissorsPivotScrewColor('#ffffff');
+    setScissorsHandleColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetPurse = () => {
+    setIsPurseHandlePlaced(false);
+    setIsPurseRingLeftPlaced(false);
+    setIsPurseRingRightPlaced(false);
+    setIsPurseFlapPlaced(false);
+    setIsPurseBodyPlaced(false);
+    setIsPurseLockPlaced(false);
+    setPurseHandleColor('#ffffff');
+    setPurseRingLeftColor('#ffffff');
+    setPurseRingRightColor('#ffffff');
+    setPurseFlapColor('#ffffff');
+    setPurseBodyColor('#ffffff');
+    setPurseLockColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
   const handleResetGlasses = () => {
     setIsGlassesArmLeftPlaced(false);
     setIsGlassesArmRightPlaced(false);
@@ -3986,7 +5149,2078 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         id="drawing-main-stage"
         className="w-full flex-1 flex flex-row items-center justify-between px-2 sm:px-6 md:px-10 py-1 max-w-6xl mx-auto min-h-0 z-20 gap-2 sm:gap-6"
       >
-        {currentStage === 'GLASSES' ? (
+        {currentStage === 'TULIP' ? (
+          // ================================================================
+          // TULIP (ट्यूलिप फूल) GAME SCREEN (794674296795607881_4d711042.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: TULIP OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="tulip-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[548/988] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 548 988"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Top Petal */}
+                {isTulipPetalTopPlaced && (
+                  <path
+                    d={TULIP_PLACED_PETAL_TOP_PATH}
+                    fill={tulipPetalTopColor}
+                    onClick={() => {
+                      setTulipPetalTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_petal_top', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Left Inner Petal */}
+                {isTulipPetalLeftInnerPlaced && (
+                  <path
+                    d={TULIP_PLACED_PETAL_LEFT_INNER_PATH}
+                    fill={tulipPetalLeftInnerColor}
+                    onClick={() => {
+                      setTulipPetalLeftInnerColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_petal_left_inner', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Right Inner Petal */}
+                {isTulipPetalRightInnerPlaced && (
+                  <path
+                    d={TULIP_PLACED_PETAL_RIGHT_INNER_PATH}
+                    fill={tulipPetalRightInnerColor}
+                    onClick={() => {
+                      setTulipPetalRightInnerColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_petal_right_inner', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Left Outer Petal */}
+                {isTulipPetalLeftPlaced && (
+                  <path
+                    d={TULIP_PLACED_PETAL_LEFT_PATH}
+                    fill={tulipPetalLeftColor}
+                    onClick={() => {
+                      setTulipPetalLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_petal_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Center Petal */}
+                {isTulipPetalCenterPlaced && (
+                  <path
+                    d={TULIP_PLACED_PETAL_CENTER_PATH}
+                    fill={tulipPetalCenterColor}
+                    onClick={() => {
+                      setTulipPetalCenterColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_petal_center', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Right Outer Petal */}
+                {isTulipPetalRightPlaced && (
+                  <path
+                    d={TULIP_PLACED_PETAL_RIGHT_PATH}
+                    fill={tulipPetalRightColor}
+                    onClick={() => {
+                      setTulipPetalRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_petal_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 7. Placed Stem */}
+                {isTulipStemPlaced && (
+                  <path
+                    d={TULIP_PLACED_STEM_PATH}
+                    fill={tulipStemColor}
+                    onClick={() => {
+                      setTulipStemColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_stem', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 8. Placed Left Leaf */}
+                {isTulipLeafLeftPlaced && (
+                  <path
+                    d={TULIP_PLACED_LEAF_LEFT_PATH}
+                    fill={tulipLeafLeftColor}
+                    onClick={() => {
+                      setTulipLeafLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_leaf_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 9. Placed Right Leaf */}
+                {isTulipLeafRightPlaced && (
+                  <path
+                    d={TULIP_PLACED_LEAF_RIGHT_PATH}
+                    fill={tulipLeafRightColor}
+                    onClick={() => {
+                      setTulipLeafRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_leaf_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={tulipOutlineImg}
+                alt="Tulip Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: TULIP CUTTING PIECES */}
+            <div
+              id="tulip-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] flex items-center justify-center"
+            >
+              {isTulipPetalTopPlaced &&
+                isTulipPetalLeftInnerPlaced &&
+                isTulipPetalRightInnerPlaced &&
+                isTulipPetalLeftPlaced &&
+                isTulipPetalCenterPlaced &&
+                isTulipPetalRightPlaced &&
+                isTulipStemPlaced &&
+                isTulipLeafLeftPlaced &&
+                isTulipLeafRightPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetTulip}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full max-w-[460px] h-full">
+                {/* 1. Left Inner Petal */}
+                {!isTulipPetalLeftInnerPlaced && (
+                  <motion.div
+                    id="cutting-tulip-petal-left-inner"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTulipPetalLeftInnerDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTulipPetalLeftInnerColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_petal_left_inner', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '2%', top: '2%', width: '19%', height: '24%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={TULIP_PETAL_LEFT_INNER_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={TULIP_PETAL_LEFT_INNER_PATH} fill={tulipPetalLeftInnerColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Top Back Petal */}
+                {!isTulipPetalTopPlaced && (
+                  <motion.div
+                    id="cutting-tulip-petal-top"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTulipPetalTopDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTulipPetalTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_petal_top', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '25%', top: '2%', width: '24%', height: '24%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={TULIP_PETAL_TOP_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={TULIP_PETAL_TOP_PATH} fill={tulipPetalTopColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Right Inner Petal */}
+                {!isTulipPetalRightInnerPlaced && (
+                  <motion.div
+                    id="cutting-tulip-petal-right-inner"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTulipPetalRightInnerDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTulipPetalRightInnerColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_petal_right_inner', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '53%', top: '2%', width: '22%', height: '27%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={TULIP_PETAL_RIGHT_INNER_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={TULIP_PETAL_RIGHT_INNER_PATH} fill={tulipPetalRightInnerColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Center Petal */}
+                {!isTulipPetalCenterPlaced && (
+                  <motion.div
+                    id="cutting-tulip-petal-center"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTulipPetalCenterDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTulipPetalCenterColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_petal_center', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '2%', top: '30%', width: '30%', height: '38%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={TULIP_PETAL_CENTER_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={TULIP_PETAL_CENTER_PATH} fill={tulipPetalCenterColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Left Outer Petal */}
+                {!isTulipPetalLeftPlaced && (
+                  <motion.div
+                    id="cutting-tulip-petal-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTulipPetalLeftDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTulipPetalLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_petal_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '35%', top: '29%', width: '19%', height: '37%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={TULIP_PETAL_LEFT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={TULIP_PETAL_LEFT_PATH} fill={tulipPetalLeftColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Right Outer Petal */}
+                {!isTulipPetalRightPlaced && (
+                  <motion.div
+                    id="cutting-tulip-petal-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTulipPetalRightDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTulipPetalRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_petal_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '57%', top: '31%', width: '21%', height: '37%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={TULIP_PETAL_RIGHT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={TULIP_PETAL_RIGHT_PATH} fill={tulipPetalRightColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 7. Stem */}
+                {!isTulipStemPlaced && (
+                  <motion.div
+                    id="cutting-tulip-stem"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTulipStemDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTulipStemColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_stem', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '82%', top: '4%', width: '16%', height: '54%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={TULIP_STEM_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-30" y="-12" width="113" height="538" fill="transparent" />
+                      <path d={TULIP_STEM_PATH} fill={tulipStemColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 8. Left Leaf */}
+                {!isTulipLeafLeftPlaced && (
+                  <motion.div
+                    id="cutting-tulip-leaf-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTulipLeafLeftDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTulipLeafLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_leaf_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '6%', top: '71%', width: '36%', height: '27%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={TULIP_LEAF_LEFT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={TULIP_LEAF_LEFT_PATH} fill={tulipLeafLeftColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 9. Right Leaf */}
+                {!isTulipLeafRightPlaced && (
+                  <motion.div
+                    id="cutting-tulip-leaf-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTulipLeafRightDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTulipLeafRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tulip_leaf_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '52%', top: '71%', width: '40%', height: '27%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={TULIP_LEAF_RIGHT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={TULIP_LEAF_RIGHT_PATH} fill={tulipLeafRightColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 9 pieces are placed */}
+                {isTulipPetalTopPlaced &&
+                  isTulipPetalLeftInnerPlaced &&
+                  isTulipPetalRightInnerPlaced &&
+                  isTulipPetalLeftPlaced &&
+                  isTulipPetalCenterPlaced &&
+                  isTulipPetalRightPlaced &&
+                  isTulipStemPlaced &&
+                  isTulipLeafLeftPlaced &&
+                  isTulipLeafRightPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ ट्यूलिप फूल सही जगह लग गया! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'AIRPLANE' ? (
+          // ================================================================
+          // AIRPLANE (हवाई जहाज़) GAME SCREEN (Download_Airplane_Outline_Icon_for_free_423f2f1c.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: AIRPLANE OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="airplane-outline-container"
+              className="relative flex-1 w-full max-w-[480px] max-h-[480px] aspect-square flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 768 768"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Fuselage / Body (evenodd with cockpit cutout) */}
+                {isAirplaneBodyPlaced && (
+                  <path
+                    d={AIRPLANE_PLACED_BODY_PATH}
+                    fill={airplaneBodyColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setAirplaneBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_body', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Cockpit Window */}
+                {isAirplaneCockpitPlaced && (
+                  <path
+                    d={AIRPLANE_PLACED_COCKPIT_PATH}
+                    fill={airplaneCockpitColor}
+                    onClick={() => {
+                      setAirplaneCockpitColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_cockpit', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Left Wing */}
+                {isAirplaneWingLeftPlaced && (
+                  <path
+                    d={AIRPLANE_PLACED_WING_LEFT_PATH}
+                    fill={airplaneWingLeftColor}
+                    onClick={() => {
+                      setAirplaneWingLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_wing_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Left Outer Engine */}
+                {isAirplaneEngineL1Placed && (
+                  <path
+                    d={AIRPLANE_PLACED_ENGINE_L1_PATH}
+                    fill={airplaneEngineL1Color}
+                    onClick={() => {
+                      setAirplaneEngineL1Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_engine_l1', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Left Inner Engine */}
+                {isAirplaneEngineL2Placed && (
+                  <path
+                    d={AIRPLANE_PLACED_ENGINE_L2_PATH}
+                    fill={airplaneEngineL2Color}
+                    onClick={() => {
+                      setAirplaneEngineL2Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_engine_l2', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Right Wing */}
+                {isAirplaneWingRightPlaced && (
+                  <path
+                    d={AIRPLANE_PLACED_WING_RIGHT_PATH}
+                    fill={airplaneWingRightColor}
+                    onClick={() => {
+                      setAirplaneWingRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_wing_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 7. Placed Right Inner Engine */}
+                {isAirplaneEngineR1Placed && (
+                  <path
+                    d={AIRPLANE_PLACED_ENGINE_R1_PATH}
+                    fill={airplaneEngineR1Color}
+                    onClick={() => {
+                      setAirplaneEngineR1Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_engine_r1', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 8. Placed Right Outer Engine */}
+                {isAirplaneEngineR2Placed && (
+                  <path
+                    d={AIRPLANE_PLACED_ENGINE_R2_PATH}
+                    fill={airplaneEngineR2Color}
+                    onClick={() => {
+                      setAirplaneEngineR2Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_engine_r2', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 9. Placed Tail */}
+                {isAirplaneTailPlaced && (
+                  <path
+                    d={AIRPLANE_PLACED_TAIL_PATH}
+                    fill={airplaneTailColor}
+                    onClick={() => {
+                      setAirplaneTailColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_tail', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={airplaneOutlineImg}
+                alt="Airplane Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: AIRPLANE CUTTING PIECES */}
+            <div
+              id="airplane-cutting-container"
+              className="relative flex-1 w-full max-w-[480px] max-h-[480px] aspect-square flex items-center justify-center"
+            >
+              {isAirplaneBodyPlaced &&
+                isAirplaneCockpitPlaced &&
+                isAirplaneWingLeftPlaced &&
+                isAirplaneEngineL1Placed &&
+                isAirplaneEngineL2Placed &&
+                isAirplaneWingRightPlaced &&
+                isAirplaneEngineR1Placed &&
+                isAirplaneEngineR2Placed &&
+                isAirplaneTailPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetAirplane}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Left Wing */}
+                {!isAirplaneWingLeftPlaced && (
+                  <motion.div
+                    id="cutting-airplane-wing-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleAirplaneWingLeftDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setAirplaneWingLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_wing_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '2%', top: '2%', width: '44%', height: '24%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={AIRPLANE_WING_LEFT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={AIRPLANE_WING_LEFT_PATH} fill={airplaneWingLeftColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Cockpit Window */}
+                {!isAirplaneCockpitPlaced && (
+                  <motion.div
+                    id="cutting-airplane-cockpit"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleAirplaneCockpitDragEnd}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setAirplaneCockpitColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_cockpit', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '49%', top: '5%', width: '14%', height: '14%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={AIRPLANE_COCKPIT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-14" y="-14" width="94" height="94" fill="transparent" />
+                      <path d={AIRPLANE_COCKPIT_PATH} fill={airplaneCockpitColor} stroke="#e2e8f0" strokeWidth="1.4" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Tail */}
+                {!isAirplaneTailPlaced && (
+                  <motion.div
+                    id="cutting-airplane-tail"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleAirplaneTailDragEnd}
+                    whileHover={{ scale: 1.07 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setAirplaneTailColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_tail', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '67%', top: '2%', width: '30%', height: '30%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={AIRPLANE_TAIL_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={AIRPLANE_TAIL_PATH} fill={airplaneTailColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Fuselage / Body (evenodd with cockpit cutout) */}
+                {!isAirplaneBodyPlaced && (
+                  <motion.div
+                    id="cutting-airplane-body"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleAirplaneBodyDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setAirplaneBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_body', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '2%', top: '30%', width: '46%', height: '46%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={AIRPLANE_BODY_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={AIRPLANE_BODY_PATH} fill={airplaneBodyColor} fillRule="evenodd" stroke="#e2e8f0" strokeWidth="1.6" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Right Wing */}
+                {!isAirplaneWingRightPlaced && (
+                  <motion.div
+                    id="cutting-airplane-wing-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleAirplaneWingRightDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setAirplaneWingRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_wing_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '50%', top: '34%', width: '26%', height: '48%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={AIRPLANE_WING_RIGHT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={AIRPLANE_WING_RIGHT_PATH} fill={airplaneWingRightColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Left Outer Engine */}
+                {!isAirplaneEngineL1Placed && (
+                  <motion.div
+                    id="cutting-airplane-engine-l1"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleAirplaneEngineL1DragEnd}
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setAirplaneEngineL1Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_engine_l1', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '79%', top: '36%', width: '17%', height: '11%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={AIRPLANE_ENGINE_L1_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-14" y="-14" width="104" height="77" fill="transparent" />
+                      <path d={AIRPLANE_ENGINE_L1_PATH} fill={airplaneEngineL1Color} stroke="#e2e8f0" strokeWidth="1.4" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 7. Left Inner Engine */}
+                {!isAirplaneEngineL2Placed && (
+                  <motion.div
+                    id="cutting-airplane-engine-l2"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleAirplaneEngineL2DragEnd}
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setAirplaneEngineL2Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_engine_l2', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '79%', top: '52%', width: '17%', height: '11%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={AIRPLANE_ENGINE_L2_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-14" y="-14" width="103" height="77" fill="transparent" />
+                      <path d={AIRPLANE_ENGINE_L2_PATH} fill={airplaneEngineL2Color} stroke="#e2e8f0" strokeWidth="1.4" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 8. Right Inner Engine */}
+                {!isAirplaneEngineR1Placed && (
+                  <motion.div
+                    id="cutting-airplane-engine-r1"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleAirplaneEngineR1DragEnd}
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setAirplaneEngineR1Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_engine_r1', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '14%', top: '79%', width: '12%', height: '17%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={AIRPLANE_ENGINE_R1_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-14" y="-14" width="77" height="103" fill="transparent" />
+                      <path d={AIRPLANE_ENGINE_R1_PATH} fill={airplaneEngineR1Color} stroke="#e2e8f0" strokeWidth="1.4" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 9. Right Outer Engine */}
+                {!isAirplaneEngineR2Placed && (
+                  <motion.div
+                    id="cutting-airplane-engine-r2"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleAirplaneEngineR2DragEnd}
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setAirplaneEngineR2Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('airplane_engine_r2', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '34%', top: '79%', width: '12%', height: '17%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={AIRPLANE_ENGINE_R2_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-14" y="-14" width="77" height="104" fill="transparent" />
+                      <path d={AIRPLANE_ENGINE_R2_PATH} fill={airplaneEngineR2Color} stroke="#e2e8f0" strokeWidth="1.4" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 9 pieces are placed */}
+                {isAirplaneBodyPlaced &&
+                  isAirplaneCockpitPlaced &&
+                  isAirplaneWingLeftPlaced &&
+                  isAirplaneEngineL1Placed &&
+                  isAirplaneEngineL2Placed &&
+                  isAirplaneWingRightPlaced &&
+                  isAirplaneEngineR1Placed &&
+                  isAirplaneEngineR2Placed &&
+                  isAirplaneTailPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ हवाई जहाज़ सही जगह लग गया! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'ELEPHANT' ? (
+          // ================================================================
+          // ELEPHANT (हाथी) GAME SCREEN (Elephant_Simple_Art_Kids_SVG___PNG___JPG_Clipart_-_Free_Commercial_Use_fa9fb73f.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: ELEPHANT OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="elephant-outline-container"
+              className="relative flex-1 w-full max-w-[540px] max-h-[480px] aspect-[691/528] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 691 528"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Head + Ear + Trunk (evenodd excludes solid eye dot) */}
+                {isElephantHeadPlaced && (
+                  <path
+                    d={ELEPHANT_PLACED_HEAD_PATH}
+                    fill={elephantHeadColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setElephantHeadColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('elephant_head', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Body */}
+                {isElephantBodyPlaced && (
+                  <path
+                    d={ELEPHANT_PLACED_BODY_PATH}
+                    fill={elephantBodyColor}
+                    onClick={() => {
+                      setElephantBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('elephant_body', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Tusk */}
+                {isElephantTuskPlaced && (
+                  <path
+                    d={ELEPHANT_PLACED_TUSK_PATH}
+                    fill={elephantTuskColor}
+                    onClick={() => {
+                      setElephantTuskColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('elephant_tusk', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Back Leg */}
+                {isElephantLegBackPlaced && (
+                  <path
+                    d={ELEPHANT_PLACED_LEG_BACK_PATH}
+                    fill={elephantLegBackColor}
+                    onClick={() => {
+                      setElephantLegBackColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('elephant_leg_back', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Front Leg */}
+                {isElephantLegFrontPlaced && (
+                  <path
+                    d={ELEPHANT_PLACED_LEG_FRONT_PATH}
+                    fill={elephantLegFrontColor}
+                    onClick={() => {
+                      setElephantLegFrontColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('elephant_leg_front', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={elephantOutlineImg}
+                alt="Elephant Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: ELEPHANT CUTTING PIECES */}
+            <div
+              id="elephant-cutting-container"
+              className="relative flex-1 w-full max-w-[540px] max-h-[480px] aspect-[691/528] flex items-center justify-center"
+            >
+              {isElephantHeadPlaced &&
+                isElephantBodyPlaced &&
+                isElephantTuskPlaced &&
+                isElephantLegBackPlaced &&
+                isElephantLegFrontPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetElephant}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Head + Ear + Trunk */}
+                {!isElephantHeadPlaced && (
+                  <motion.div
+                    id="cutting-elephant-head"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleElephantHeadDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setElephantHeadColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('elephant_head', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '2%', top: '4%', width: '40%', height: '58%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={ELEPHANT_HEAD_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={ELEPHANT_HEAD_PATH} fill={elephantHeadColor} fillRule="evenodd" stroke="#e2e8f0" strokeWidth="1.6" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Body */}
+                {!isElephantBodyPlaced && (
+                  <motion.div
+                    id="cutting-elephant-body"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleElephantBodyDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setElephantBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('elephant_body', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '44%', top: '4%', width: '52%', height: '58%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={ELEPHANT_BODY_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={ELEPHANT_BODY_PATH} fill={elephantBodyColor} stroke="#e2e8f0" strokeWidth="1.6" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Tusk */}
+                {!isElephantTuskPlaced && (
+                  <motion.div
+                    id="cutting-elephant-tusk"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleElephantTuskDragEnd}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setElephantTuskColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('elephant_tusk', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '8%', top: '67%', width: '20%', height: '26%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={ELEPHANT_TUSK_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-12" y="-12" width="96" height="105" fill="transparent" />
+                      <path d={ELEPHANT_TUSK_PATH} fill={elephantTuskColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Back Leg */}
+                {!isElephantLegBackPlaced && (
+                  <motion.div
+                    id="cutting-elephant-leg-back"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleElephantLegBackDragEnd}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setElephantLegBackColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('elephant_leg_back', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '42%', top: '65%', width: '16%', height: '32%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={ELEPHANT_LEG_BACK_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-14" y="-12" width="79" height="155" fill="transparent" />
+                      <path d={ELEPHANT_LEG_BACK_PATH} fill={elephantLegBackColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Front Leg */}
+                {!isElephantLegFrontPlaced && (
+                  <motion.div
+                    id="cutting-elephant-leg-front"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleElephantLegFrontDragEnd}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setElephantLegFrontColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('elephant_leg_front', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '72%', top: '66%', width: '18%', height: '30%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={ELEPHANT_LEG_FRONT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-14" y="-12" width="88" height="132" fill="transparent" />
+                      <path d={ELEPHANT_LEG_FRONT_PATH} fill={elephantLegFrontColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 5 pieces are placed */}
+                {isElephantHeadPlaced &&
+                  isElephantBodyPlaced &&
+                  isElephantTuskPlaced &&
+                  isElephantLegBackPlaced &&
+                  isElephantLegFrontPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ हाथी सही जगह लग गया! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'BANANA' ? (
+          // ================================================================
+          // BANANA (केला) GAME SCREEN (download__25__6eb93c33.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: BANANA OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="banana-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[750/833] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 750 833"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Stem */}
+                {isBananaStemPlaced && (
+                  <path
+                    d={BANANA_PLACED_STEM_PATH}
+                    fill={bananaStemColor}
+                    onClick={() => {
+                      setBananaStemColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_stem', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Right Banana Top Ridge */}
+                {isBananaRightTopPlaced && (
+                  <path
+                    d={BANANA_PLACED_RIGHT_TOP_PATH}
+                    fill={bananaRightTopColor}
+                    onClick={() => {
+                      setBananaRightTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_right_top', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Right Banana Lower Belly */}
+                {isBananaRightBotPlaced && (
+                  <path
+                    d={BANANA_PLACED_RIGHT_BOT_PATH}
+                    fill={bananaRightBotColor}
+                    onClick={() => {
+                      setBananaRightBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_right_bot', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Left Banana Top Ridge */}
+                {isBananaLeftTopPlaced && (
+                  <path
+                    d={BANANA_PLACED_LEFT_TOP_PATH}
+                    fill={bananaLeftTopColor}
+                    onClick={() => {
+                      setBananaLeftTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_left_top', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Left Banana Lower Belly */}
+                {isBananaLeftBotPlaced && (
+                  <path
+                    d={BANANA_PLACED_LEFT_BOT_PATH}
+                    fill={bananaLeftBotColor}
+                    onClick={() => {
+                      setBananaLeftBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_left_bot', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Right Tip */}
+                {isBananaTipRightPlaced && (
+                  <path
+                    d={BANANA_PLACED_TIP_RIGHT_PATH}
+                    fill={bananaTipRightColor}
+                    onClick={() => {
+                      setBananaTipRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_tip_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 7. Placed Left Tip */}
+                {isBananaTipLeftPlaced && (
+                  <path
+                    d={BANANA_PLACED_TIP_LEFT_PATH}
+                    fill={bananaTipLeftColor}
+                    onClick={() => {
+                      setBananaTipLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_tip_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={bananaOutlineImg}
+                alt="Banana Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: BANANA CUTTING PIECES */}
+            <div
+              id="banana-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] flex items-center justify-center"
+            >
+              {isBananaStemPlaced &&
+                isBananaRightTopPlaced &&
+                isBananaRightBotPlaced &&
+                isBananaLeftTopPlaced &&
+                isBananaLeftBotPlaced &&
+                isBananaTipRightPlaced &&
+                isBananaTipLeftPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetBanana}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full max-w-[440px] h-full">
+                {/* 1. Left Banana Lower Belly */}
+                {!isBananaLeftBotPlaced && (
+                  <motion.div
+                    id="cutting-banana-left-bot"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBananaLeftBotDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBananaLeftBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_left_bot', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '2%', top: '4%', width: '38%', height: '44%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={BANANA_LEFT_BOT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={BANANA_LEFT_BOT_PATH} fill={bananaLeftBotColor} stroke="#e2e8f0" strokeWidth="1.6" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Left Banana Top Ridge */}
+                {!isBananaLeftTopPlaced && (
+                  <motion.div
+                    id="cutting-banana-left-top"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBananaLeftTopDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBananaLeftTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_left_top', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '42%', top: '4%', width: '34%', height: '42%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={BANANA_LEFT_TOP_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={BANANA_LEFT_TOP_PATH} fill={bananaLeftTopColor} stroke="#e2e8f0" strokeWidth="1.6" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Stem Crown */}
+                {!isBananaStemPlaced && (
+                  <motion.div
+                    id="cutting-banana-stem"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBananaStemDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBananaStemColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_stem', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '78%', top: '8%', width: '20%', height: '16%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={BANANA_STEM_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-12" y="-12" width="187" height="128" fill="transparent" />
+                      <path d={BANANA_STEM_PATH} fill={bananaStemColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Left Banana Tip */}
+                {!isBananaTipLeftPlaced && (
+                  <motion.div
+                    id="cutting-banana-tip-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBananaTipLeftDragEnd}
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBananaTipLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_tip_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '81%', top: '29%', width: '15%', height: '16%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={BANANA_TIP_LEFT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-14" y="-14" width="75" height="103" fill="transparent" />
+                      <path d={BANANA_TIP_LEFT_PATH} fill={bananaTipLeftColor} stroke="#e2e8f0" strokeWidth="1.4" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Right Banana Top Ridge */}
+                {!isBananaRightTopPlaced && (
+                  <motion.div
+                    id="cutting-banana-right-top"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBananaRightTopDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBananaRightTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_right_top', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '2%', top: '52%', width: '36%', height: '40%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={BANANA_RIGHT_TOP_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={BANANA_RIGHT_TOP_PATH} fill={bananaRightTopColor} stroke="#e2e8f0" strokeWidth="1.6" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Right Banana Lower Belly */}
+                {!isBananaRightBotPlaced && (
+                  <motion.div
+                    id="cutting-banana-right-bot"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBananaRightBotDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBananaRightBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_right_bot', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '41%', top: '52%', width: '38%', height: '42%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={BANANA_RIGHT_BOT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={BANANA_RIGHT_BOT_PATH} fill={bananaRightBotColor} stroke="#e2e8f0" strokeWidth="1.6" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 7. Right Banana Tip */}
+                {!isBananaTipRightPlaced && (
+                  <motion.div
+                    id="cutting-banana-tip-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBananaTipRightDragEnd}
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBananaTipRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('banana_tip_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '81%', top: '62%', width: '15%', height: '16%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={BANANA_TIP_RIGHT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-14" y="-14" width="70" height="97" fill="transparent" />
+                      <path d={BANANA_TIP_RIGHT_PATH} fill={bananaTipRightColor} stroke="#e2e8f0" strokeWidth="1.4" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 7 pieces are placed */}
+                {isBananaStemPlaced &&
+                  isBananaRightTopPlaced &&
+                  isBananaRightBotPlaced &&
+                  isBananaLeftTopPlaced &&
+                  isBananaLeftBotPlaced &&
+                  isBananaTipRightPlaced &&
+                  isBananaTipLeftPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ केले सही जगह लग गए! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'SCISSORS' ? (
+          // ================================================================
+          // SCISSORS (कैंची) GAME SCREEN (download__24__970e0629.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: SCISSORS OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="scissors-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[623/1128] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 623 1128"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Left Blade */}
+                {isScissorsBladeLeftPlaced && (
+                  <path
+                    d={SCISSORS_PLACED_BLADE_LEFT_PATH}
+                    fill={scissorsBladeLeftColor}
+                    onClick={() => {
+                      setScissorsBladeLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('scissors_blade_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Right Blade */}
+                {isScissorsBladeRightPlaced && (
+                  <path
+                    d={SCISSORS_PLACED_BLADE_RIGHT_PATH}
+                    fill={scissorsBladeRightColor}
+                    onClick={() => {
+                      setScissorsBladeRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('scissors_blade_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Center Pivot Ring (evenodd with center screw cutout) */}
+                {isScissorsPivotRingPlaced && (
+                  <path
+                    d={SCISSORS_PLACED_PIVOT_RING_PATH}
+                    fill={scissorsPivotRingColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setScissorsPivotRingColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('scissors_pivot_ring', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Center Pivot Screw */}
+                {isScissorsPivotScrewPlaced && (
+                  <path
+                    d={SCISSORS_PLACED_PIVOT_SCREW_PATH}
+                    fill={scissorsPivotScrewColor}
+                    onClick={() => {
+                      setScissorsPivotScrewColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('scissors_pivot_screw', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Handle (evenodd with 2 finger holes) */}
+                {isScissorsHandlePlaced && (
+                  <path
+                    d={SCISSORS_PLACED_HANDLE_PATH}
+                    fill={scissorsHandleColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setScissorsHandleColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('scissors_handle', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={scissorsOutlineImg}
+                alt="Scissors Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: SCISSORS CUTTING PIECES */}
+            <div
+              id="scissors-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] flex items-center justify-center"
+            >
+              {isScissorsBladeLeftPlaced &&
+                isScissorsBladeRightPlaced &&
+                isScissorsPivotRingPlaced &&
+                isScissorsPivotScrewPlaced &&
+                isScissorsHandlePlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetScissors}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full max-w-[440px] h-full">
+                {/* 1. Left Blade */}
+                {!isScissorsBladeLeftPlaced && (
+                  <motion.div
+                    id="cutting-scissors-blade-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleScissorsBladeLeftDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setScissorsBladeLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('scissors_blade_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '4%',
+                      top: '3%',
+                      width: '30%',
+                      height: '45%',
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={SCISSORS_BLADE_LEFT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={SCISSORS_BLADE_LEFT_PATH}
+                        fill={scissorsBladeLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Right Blade */}
+                {!isScissorsBladeRightPlaced && (
+                  <motion.div
+                    id="cutting-scissors-blade-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleScissorsBladeRightDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setScissorsBladeRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('scissors_blade_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '38%',
+                      top: '3%',
+                      width: '22%',
+                      height: '45%',
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={SCISSORS_BLADE_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={SCISSORS_BLADE_RIGHT_PATH}
+                        fill={scissorsBladeRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Center Pivot Ring (evenodd with center screw hole) */}
+                {!isScissorsPivotRingPlaced && (
+                  <motion.div
+                    id="cutting-scissors-pivot-ring"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleScissorsPivotRingDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setScissorsPivotRingColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('scissors_pivot_ring', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '64%',
+                      top: '10%',
+                      width: '32%',
+                      height: '18%',
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={SCISSORS_PIVOT_RING_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={SCISSORS_PIVOT_RING_PATH}
+                        fill={scissorsPivotRingColor}
+                        fillRule="evenodd"
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Center Pivot Screw */}
+                {!isScissorsPivotScrewPlaced && (
+                  <motion.div
+                    id="cutting-scissors-pivot-screw"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleScissorsPivotScrewDragEnd}
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setScissorsPivotScrewColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('scissors_pivot_screw', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '70%',
+                      top: '33%',
+                      width: '20%',
+                      height: '16%',
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={SCISSORS_PIVOT_SCREW_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-18" y="-18" width="67" height="67" fill="transparent" />
+                      <path
+                        d={SCISSORS_PIVOT_SCREW_PATH}
+                        fill={scissorsPivotScrewColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.2"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Handle (evenodd with 2 finger holes) */}
+                {!isScissorsHandlePlaced && (
+                  <motion.div
+                    id="cutting-scissors-handle"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleScissorsHandleDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setScissorsHandleColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('scissors_handle', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '14%',
+                      top: '53%',
+                      width: '72%',
+                      height: '44%',
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={SCISSORS_HANDLE_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={SCISSORS_HANDLE_PATH}
+                        fill={scissorsHandleColor}
+                        fillRule="evenodd"
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 5 pieces are placed */}
+                {isScissorsBladeLeftPlaced &&
+                  isScissorsBladeRightPlaced &&
+                  isScissorsPivotRingPlaced &&
+                  isScissorsPivotScrewPlaced &&
+                  isScissorsHandlePlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ कैंची सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'PURSE' ? (
+          // ================================================================
+          // PURSE (पर्स) GAME SCREEN (download__23__4d55ddc4.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: PURSE OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="purse-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[629/731] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 629 731"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Handle */}
+                {isPurseHandlePlaced && (
+                  <path
+                    d={PURSE_PLACED_HANDLE_PATH}
+                    fill={purseHandleColor}
+                    onClick={() => {
+                      setPurseHandleColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('purse_handle', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Left Ring */}
+                {isPurseRingLeftPlaced && (
+                  <path
+                    d={PURSE_PLACED_RING_LEFT_PATH}
+                    fill={purseRingLeftColor}
+                    onClick={() => {
+                      setPurseRingLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('purse_ring_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Right Ring */}
+                {isPurseRingRightPlaced && (
+                  <path
+                    d={PURSE_PLACED_RING_RIGHT_PATH}
+                    fill={purseRingRightColor}
+                    onClick={() => {
+                      setPurseRingRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('purse_ring_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Flap */}
+                {isPurseFlapPlaced && (
+                  <path
+                    d={PURSE_PLACED_FLAP_PATH}
+                    fill={purseFlapColor}
+                    onClick={() => {
+                      setPurseFlapColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('purse_flap', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Body */}
+                {isPurseBodyPlaced && (
+                  <path
+                    d={PURSE_PLACED_BODY_PATH}
+                    fill={purseBodyColor}
+                    onClick={() => {
+                      setPurseBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('purse_body', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Lock */}
+                {isPurseLockPlaced && (
+                  <path
+                    d={PURSE_PLACED_LOCK_PATH}
+                    fill={purseLockColor}
+                    onClick={() => {
+                      setPurseLockColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('purse_lock', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={purseOutlineImg}
+                alt="Purse Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: PURSE CUTTING PIECES */}
+            <div
+              id="purse-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] flex items-center justify-center"
+            >
+              {isPurseHandlePlaced &&
+                isPurseRingLeftPlaced &&
+                isPurseRingRightPlaced &&
+                isPurseFlapPlaced &&
+                isPurseBodyPlaced &&
+                isPurseLockPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetPurse}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full max-w-[440px] h-full aspect-[629/731]">
+                {/* 1. Handle */}
+                {!isPurseHandlePlaced && (
+                  <motion.div
+                    id="cutting-purse-handle"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handlePurseHandleDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setPurseHandleColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('purse_handle', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '2%',
+                      top: '3%',
+                      width: `${(361 / 629) * 85}%`,
+                      height: `${(181 / 731) * 85}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={PURSE_HANDLE_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={PURSE_HANDLE_PATH}
+                        fill={purseHandleColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Left Ring */}
+                {!isPurseRingLeftPlaced && (
+                  <motion.div
+                    id="cutting-purse-ring-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handlePurseRingLeftDragEnd}
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setPurseRingLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('purse_ring_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '56%',
+                      top: '7%',
+                      width: `${(48 / 629) * 220}%`,
+                      height: `${(36 / 731) * 220}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={PURSE_RING_LEFT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-14" y="-14" width="76" height="64" fill="transparent" />
+                      <path
+                        d={PURSE_RING_LEFT_PATH}
+                        fill={purseRingLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Right Ring */}
+                {!isPurseRingRightPlaced && (
+                  <motion.div
+                    id="cutting-purse-ring-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handlePurseRingRightDragEnd}
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setPurseRingRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('purse_ring_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '78%',
+                      top: '7%',
+                      width: `${(48 / 629) * 220}%`,
+                      height: `${(36 / 731) * 220}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={PURSE_RING_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-14" y="-14" width="76" height="64" fill="transparent" />
+                      <path
+                        d={PURSE_RING_RIGHT_PATH}
+                        fill={purseRingRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Top Flap */}
+                {!isPurseFlapPlaced && (
+                  <motion.div
+                    id="cutting-purse-flap"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handlePurseFlapDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setPurseFlapColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('purse_flap', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '2%',
+                      top: '29%',
+                      width: `${(504 / 629) * 82}%`,
+                      height: `${(212 / 731) * 82}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={PURSE_FLAP_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={PURSE_FLAP_PATH}
+                        fill={purseFlapColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Center Lock */}
+                {!isPurseLockPlaced && (
+                  <motion.div
+                    id="cutting-purse-lock"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handlePurseLockDragEnd}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setPurseLockColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('purse_lock', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '74%',
+                      top: '34%',
+                      width: `${(73 / 629) * 180}%`,
+                      height: `${(48 / 731) * 180}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={PURSE_LOCK_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-12" y="-12" width="97" height="72" fill="transparent" />
+                      <path
+                        d={PURSE_LOCK_PATH}
+                        fill={purseLockColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Lower Body */}
+                {!isPurseBodyPlaced && (
+                  <motion.div
+                    id="cutting-purse-body"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handlePurseBodyDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setPurseBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('purse_body', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '16%',
+                      top: '58%',
+                      width: `${(547 / 629) * 78}%`,
+                      height: `${(313 / 731) * 78}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={PURSE_BODY_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={PURSE_BODY_PATH}
+                        fill={purseBodyColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 6 pieces are placed */}
+                {isPurseHandlePlaced &&
+                  isPurseRingLeftPlaced &&
+                  isPurseRingRightPlaced &&
+                  isPurseFlapPlaced &&
+                  isPurseBodyPlaced &&
+                  isPurseLockPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ पर्स सही जगह लग गया! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'GLASSES' ? (
           // ================================================================
           // GLASSES (चश्मा) GAME SCREEN (Vision_eyeglasses_icon_outline_vector__Eye_test_3c390372.jfif)
           // ================================================================
