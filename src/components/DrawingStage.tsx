@@ -20,6 +20,75 @@ import pinwheelOutlineImg from '../assets/images/pinwheel_outline.png';
 import busOutlineImg from '../assets/images/bus_outline.png';
 import boatOutlineImg from '../assets/images/boat_outline.png';
 import houseOutlineImg from '../assets/images/house_outline.png';
+import candleOutlineImg from '../assets/images/candle_outline.png';
+import cakeOutlineImg from '../assets/images/cake_outline.png';
+import tractorOutlineImg from '../assets/images/tractor_outline.png';
+import {
+  TRACTOR_BODY_VIEWBOX,
+  TRACTOR_BODY_PATH,
+  TRACTOR_WIN_LEFT_VIEWBOX,
+  TRACTOR_WIN_LEFT_PATH,
+  TRACTOR_WIN_RIGHT_VIEWBOX,
+  TRACTOR_WIN_RIGHT_PATH,
+  TRACTOR_EXHAUST_VIEWBOX,
+  TRACTOR_EXHAUST_PATH,
+  TRACTOR_FENDER_VIEWBOX,
+  TRACTOR_FENDER_PATH,
+  TRACTOR_TIRE_REAR_VIEWBOX,
+  TRACTOR_TIRE_REAR_PATH,
+  TRACTOR_HUB_REAR_VIEWBOX,
+  TRACTOR_HUB_REAR_PATH,
+  TRACTOR_TIRE_FRONT_VIEWBOX,
+  TRACTOR_TIRE_FRONT_PATH,
+  TRACTOR_HUB_FRONT_VIEWBOX,
+  TRACTOR_HUB_FRONT_PATH,
+  TRACTOR_PLACED_BODY_PATH,
+  TRACTOR_PLACED_WIN_LEFT_PATH,
+  TRACTOR_PLACED_WIN_RIGHT_PATH,
+  TRACTOR_PLACED_EXHAUST_PATH,
+  TRACTOR_PLACED_FENDER_PATH,
+  TRACTOR_PLACED_TIRE_REAR_PATH,
+  TRACTOR_PLACED_HUB_REAR_PATH,
+  TRACTOR_PLACED_TIRE_FRONT_PATH,
+  TRACTOR_PLACED_HUB_FRONT_PATH,
+} from './tractor_constants';
+import {
+  CAKE_TOP_VIEWBOX,
+  CAKE_TOP_PATH,
+  CAKE_HEART_TOP_VIEWBOX,
+  CAKE_HEART_TOP_PATH,
+  CAKE_HEART_LEFT_VIEWBOX,
+  CAKE_HEART_LEFT_PATH,
+  CAKE_HEART_RIGHT_VIEWBOX,
+  CAKE_HEART_RIGHT_PATH,
+  CAKE_LAYER_TOP_VIEWBOX,
+  CAKE_LAYER_TOP_PATH,
+  CAKE_LAYER_BOT_VIEWBOX,
+  CAKE_LAYER_BOT_PATH,
+  CAKE_PLATE_VIEWBOX,
+  CAKE_PLATE_PATH,
+  CAKE_PLACED_TOP_PATH,
+  CAKE_PLACED_HEART_TOP_PATH,
+  CAKE_PLACED_HEART_LEFT_PATH,
+  CAKE_PLACED_HEART_RIGHT_PATH,
+  CAKE_PLACED_LAYER_TOP_PATH,
+  CAKE_PLACED_LAYER_BOT_PATH,
+  CAKE_PLACED_PLATE_PATH,
+} from './cake_constants';
+import {
+  CANDLE_FLAME_VIEWBOX,
+  CANDLE_FLAME_PATH,
+  CANDLE_WICK_VIEWBOX,
+  CANDLE_WICK_PATH,
+  CANDLE_WAX_VIEWBOX,
+  CANDLE_WAX_PATH,
+  CANDLE_BODY_VIEWBOX,
+  CANDLE_BODY_PATH,
+  CANDLE_PLACED_FLAME_PATH,
+  CANDLE_PLACED_WICK_PATH,
+  CANDLE_PLACED_WAX_PATH,
+  CANDLE_PLACED_BODY_PATH,
+} from './candle_constants';
 import {
   HOUSE_CHIMNEY_VIEWBOX,
   HOUSE_CHIMNEY_PATH,
@@ -454,14 +523,83 @@ const APPLE_STEM_PATH =
 const APPLE_LEAF_PATH =
   'M 205 110 C 220 52, 280 25, 335 38 C 305 85, 250 120, 205 110 Z';
 
-type GameStage = 'HOUSE' | 'BOAT' | 'BUS' | 'PINWHEEL' | 'CATERPILLAR' | 'HEN' | 'ICECREAM' | 'LOLLIPOP' | 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
+type GameStage = 'TRACTOR' | 'CAKE' | 'CANDLE' | 'HOUSE' | 'BOAT' | 'BUS' | 'PINWHEEL' | 'CATERPILLAR' | 'HEN' | 'ICECREAM' | 'LOLLIPOP' | 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
 
 export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled }) => {
-  // Current game stage: starts on HOUSE (user attachment Kinderd_Canvas___Digital_Store_66dece07.jfif)
-  const [currentStage, setCurrentStage] = useState<GameStage>('HOUSE');
+  // Current game stage: starts on TRACTOR (user attachment Tractor_-_Graphics_by_Canva_c2293e43.jfif)
+  const [currentStage, setCurrentStage] = useState<GameStage>('TRACTOR');
 
   // Currently active selected color from bottom 6 buttons
   const [selectedColor, setSelectedColor] = useState<ColorOption>(COLOR_OPTIONS[0]); // Default RED
+
+  // ---------------------------------------------------------
+  // TRACTOR STAGE STATES (Tractor_-_Graphics_by_Canva_c2293e43.jfif)
+  // ---------------------------------------------------------
+  const [tractorBodyColor, setTractorBodyColor] = useState<string>('#ffffff');
+  const [isTractorBodyPlaced, setIsTractorBodyPlaced] = useState<boolean>(false);
+
+  const [tractorWinLeftColor, setTractorWinLeftColor] = useState<string>('#ffffff');
+  const [isTractorWinLeftPlaced, setIsTractorWinLeftPlaced] = useState<boolean>(false);
+
+  const [tractorWinRightColor, setTractorWinRightColor] = useState<string>('#ffffff');
+  const [isTractorWinRightPlaced, setIsTractorWinRightPlaced] = useState<boolean>(false);
+
+  const [tractorExhaustColor, setTractorExhaustColor] = useState<string>('#ffffff');
+  const [isTractorExhaustPlaced, setIsTractorExhaustPlaced] = useState<boolean>(false);
+
+  const [tractorFenderColor, setTractorFenderColor] = useState<string>('#ffffff');
+  const [isTractorFenderPlaced, setIsTractorFenderPlaced] = useState<boolean>(false);
+
+  const [tractorTireRearColor, setTractorTireRearColor] = useState<string>('#ffffff');
+  const [isTractorTireRearPlaced, setIsTractorTireRearPlaced] = useState<boolean>(false);
+
+  const [tractorHubRearColor, setTractorHubRearColor] = useState<string>('#ffffff');
+  const [isTractorHubRearPlaced, setIsTractorHubRearPlaced] = useState<boolean>(false);
+
+  const [tractorTireFrontColor, setTractorTireFrontColor] = useState<string>('#ffffff');
+  const [isTractorTireFrontPlaced, setIsTractorTireFrontPlaced] = useState<boolean>(false);
+
+  const [tractorHubFrontColor, setTractorHubFrontColor] = useState<string>('#ffffff');
+  const [isTractorHubFrontPlaced, setIsTractorHubFrontPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // CAKE STAGE STATES (Coloring_page_10ce63ff.jfif)
+  // ---------------------------------------------------------
+  const [cakeTopColor, setCakeTopColor] = useState<string>('#ffffff');
+  const [isCakeTopPlaced, setIsCakeTopPlaced] = useState<boolean>(false);
+
+  const [cakeHeartTopColor, setCakeHeartTopColor] = useState<string>('#ffffff');
+  const [isCakeHeartTopPlaced, setIsCakeHeartTopPlaced] = useState<boolean>(false);
+
+  const [cakeHeartLeftColor, setCakeHeartLeftColor] = useState<string>('#ffffff');
+  const [isCakeHeartLeftPlaced, setIsCakeHeartLeftPlaced] = useState<boolean>(false);
+
+  const [cakeHeartRightColor, setCakeHeartRightColor] = useState<string>('#ffffff');
+  const [isCakeHeartRightPlaced, setIsCakeHeartRightPlaced] = useState<boolean>(false);
+
+  const [cakeLayerTopColor, setCakeLayerTopColor] = useState<string>('#ffffff');
+  const [isCakeLayerTopPlaced, setIsCakeLayerTopPlaced] = useState<boolean>(false);
+
+  const [cakeLayerBotColor, setCakeLayerBotColor] = useState<string>('#ffffff');
+  const [isCakeLayerBotPlaced, setIsCakeLayerBotPlaced] = useState<boolean>(false);
+
+  const [cakePlateColor, setCakePlateColor] = useState<string>('#ffffff');
+  const [isCakePlatePlaced, setIsCakePlatePlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // CANDLE STAGE STATES (dibujos-de-vela-para-colorear-11_png__1137_1517__ea93299f.jfif)
+  // ---------------------------------------------------------
+  const [candleFlameColor, setCandleFlameColor] = useState<string>('#ffffff');
+  const [isCandleFlamePlaced, setIsCandleFlamePlaced] = useState<boolean>(false);
+
+  const [candleWickColor, setCandleWickColor] = useState<string>('#ffffff');
+  const [isCandleWickPlaced, setIsCandleWickPlaced] = useState<boolean>(false);
+
+  const [candleWaxColor, setCandleWaxColor] = useState<string>('#ffffff');
+  const [isCandleWaxPlaced, setIsCandleWaxPlaced] = useState<boolean>(false);
+
+  const [candleBodyColor, setCandleBodyColor] = useState<string>('#ffffff');
+  const [isCandleBodyPlaced, setIsCandleBodyPlaced] = useState<boolean>(false);
 
   // ---------------------------------------------------------
   // HOUSE STAGE STATES (Kinderd_Canvas___Digital_Store_66dece07.jfif)
@@ -825,8 +963,11 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   // Shikshika (Teacher) Voice intro
   useEffect(() => {
     const timer = setTimeout(() => {
-      let voiceKey: 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'house';
-      if (currentStage === 'HOUSE') voiceKey = 'house';
+      let voiceKey: 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'tractor';
+      if (currentStage === 'TRACTOR') voiceKey = 'tractor';
+      else if (currentStage === 'CAKE') voiceKey = 'cake';
+      else if (currentStage === 'CANDLE') voiceKey = 'candle';
+      else if (currentStage === 'HOUSE') voiceKey = 'house';
       else if (currentStage === 'BOAT') voiceKey = 'boat';
       else if (currentStage === 'BUS') voiceKey = 'bus';
       else if (currentStage === 'PINWHEEL') voiceKey = 'pinwheel';
@@ -867,7 +1008,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   };
 
   // Celebration
-  const triggerVictory = (stage: 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
+  const triggerVictory = (stage: 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
     sounds.speakDrawingComplete(stage, soundEnabled);
     try {
       confetti({
@@ -877,6 +1018,373 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       });
     } catch {
       // Ignore
+    }
+  };
+
+  // Check if entire Tractor is assembled
+  const checkTractorVictory = (
+    body: boolean,
+    wLeft: boolean,
+    wRight: boolean,
+    exhaust: boolean,
+    fender: boolean,
+    tRear: boolean,
+    hRear: boolean,
+    tFront: boolean,
+    hFront: boolean
+  ) => {
+    if (body && wLeft && wRight && exhaust && fender && tRear && hRear && tFront && hFront) {
+      triggerVictory('tractor');
+    }
+  };
+
+  // Drag handlers for Tractor (9 pieces)
+  const handleTractorBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTractorBodyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tractor_body', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTractorBodyPlaced(true);
+      sounds.speakDrawingPiecePlaced('tractor_body', soundEnabled);
+      checkTractorVictory(true, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTractorWinLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTractorWinLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tractor_win_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTractorWinLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('tractor_win_left', soundEnabled);
+      checkTractorVictory(isTractorBodyPlaced, true, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTractorWinRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTractorWinRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tractor_win_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTractorWinRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('tractor_win_right', soundEnabled);
+      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, true, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTractorExhaustDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTractorExhaustColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tractor_exhaust', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTractorExhaustPlaced(true);
+      sounds.speakDrawingPiecePlaced('tractor_exhaust', soundEnabled);
+      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, true, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTractorFenderDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTractorFenderColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tractor_fender', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTractorFenderPlaced(true);
+      sounds.speakDrawingPiecePlaced('tractor_fender', soundEnabled);
+      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, true, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTractorTireRearDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTractorTireRearColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tractor_tire_rear', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTractorTireRearPlaced(true);
+      sounds.speakDrawingPiecePlaced('tractor_tire_rear', soundEnabled);
+      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, true, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTractorHubRearDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTractorHubRearColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tractor_hub_rear', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTractorHubRearPlaced(true);
+      sounds.speakDrawingPiecePlaced('tractor_hub_rear', soundEnabled);
+      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, true, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTractorTireFrontDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTractorTireFrontColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tractor_tire_front', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTractorTireFrontPlaced(true);
+      sounds.speakDrawingPiecePlaced('tractor_tire_front', soundEnabled);
+      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, true, isTractorHubFrontPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleTractorHubFrontDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setTractorHubFrontColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('tractor_hub_front', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsTractorHubFrontPlaced(true);
+      sounds.speakDrawingPiecePlaced('tractor_hub_front', soundEnabled);
+      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Cake is assembled
+  const checkCakeVictory = (
+    top: boolean,
+    hTop: boolean,
+    hLeft: boolean,
+    hRight: boolean,
+    lTop: boolean,
+    lBot: boolean,
+    plate: boolean
+  ) => {
+    if (top && hTop && hLeft && hRight && lTop && lBot && plate) {
+      triggerVictory('cake');
+    }
+  };
+
+  // Drag handlers for Cake (7 pieces: Top, 3 Hearts, Frosting Layer, Base Layer, Plate)
+  const handleCakeTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCakeTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('cake_top', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCakeTopPlaced(true);
+      sounds.speakDrawingPiecePlaced('cake_top', soundEnabled);
+      checkCakeVictory(true, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, isCakeLayerTopPlaced, isCakeLayerBotPlaced, isCakePlatePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCakeHeartTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCakeHeartTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('cake_heart_top', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCakeHeartTopPlaced(true);
+      sounds.speakDrawingPiecePlaced('cake_heart_top', soundEnabled);
+      checkCakeVictory(isCakeTopPlaced, true, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, isCakeLayerTopPlaced, isCakeLayerBotPlaced, isCakePlatePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCakeHeartLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCakeHeartLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('cake_heart_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCakeHeartLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('cake_heart_left', soundEnabled);
+      checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, true, isCakeHeartRightPlaced, isCakeLayerTopPlaced, isCakeLayerBotPlaced, isCakePlatePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCakeHeartRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCakeHeartRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('cake_heart_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCakeHeartRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('cake_heart_right', soundEnabled);
+      checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, true, isCakeLayerTopPlaced, isCakeLayerBotPlaced, isCakePlatePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCakeLayerTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCakeLayerTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('cake_layer_top', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCakeLayerTopPlaced(true);
+      sounds.speakDrawingPiecePlaced('cake_layer_top', soundEnabled);
+      checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, true, isCakeLayerBotPlaced, isCakePlatePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCakeLayerBotDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCakeLayerBotColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('cake_layer_bot', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCakeLayerBotPlaced(true);
+      sounds.speakDrawingPiecePlaced('cake_layer_bot', soundEnabled);
+      checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, isCakeLayerTopPlaced, true, isCakePlatePlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCakePlateDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCakePlateColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('cake_plate', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCakePlatePlaced(true);
+      sounds.speakDrawingPiecePlaced('cake_plate', soundEnabled);
+      checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, isCakeLayerTopPlaced, isCakeLayerBotPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Candle is assembled
+  const checkCandleVictory = (
+    flame: boolean,
+    wick: boolean,
+    wax: boolean,
+    body: boolean
+  ) => {
+    if (flame && wick && wax && body) {
+      triggerVictory('candle');
+    }
+  };
+
+  // Drag handlers for Candle (4 pieces: Flame, Wick, Melted Wax, Body)
+  const handleCandleFlameDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCandleFlameColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('candle_flame', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCandleFlamePlaced(true);
+      sounds.speakDrawingPiecePlaced('candle_flame', soundEnabled);
+      checkCandleVictory(true, isCandleWickPlaced, isCandleWaxPlaced, isCandleBodyPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCandleWickDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCandleWickColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('candle_wick', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCandleWickPlaced(true);
+      sounds.speakDrawingPiecePlaced('candle_wick', soundEnabled);
+      checkCandleVictory(isCandleFlamePlaced, true, isCandleWaxPlaced, isCandleBodyPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCandleWaxDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCandleWaxColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('candle_wax', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCandleWaxPlaced(true);
+      sounds.speakDrawingPiecePlaced('candle_wax', soundEnabled);
+      checkCandleVictory(isCandleFlamePlaced, isCandleWickPlaced, true, isCandleBodyPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleCandleBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setCandleBodyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('candle_body', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsCandleBodyPlaced(true);
+      sounds.speakDrawingPiecePlaced('candle_body', soundEnabled);
+      checkCandleVictory(isCandleFlamePlaced, isCandleWickPlaced, isCandleWaxPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
     }
   };
 
@@ -2849,10 +3357,19 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
   };
 
-  // NEXT Button Handler: cycles HOUSE -> BOAT -> BUS -> PINWHEEL -> CATERPILLAR -> HEN -> ICECREAM -> LOLLIPOP -> DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> HOUSE
+  // NEXT Button Handler: cycles TRACTOR -> CAKE -> CANDLE -> HOUSE -> BOAT -> BUS -> PINWHEEL -> CATERPILLAR -> HEN -> ICECREAM -> LOLLIPOP -> DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> TRACTOR
   const handleNext = () => {
     sounds.playPop(soundEnabled);
-    if (currentStage === 'HOUSE') {
+    if (currentStage === 'TRACTOR') {
+      setCurrentStage('CAKE');
+      sounds.speakDrawingNext('cake', soundEnabled);
+    } else if (currentStage === 'CAKE') {
+      setCurrentStage('CANDLE');
+      sounds.speakDrawingNext('candle', soundEnabled);
+    } else if (currentStage === 'CANDLE') {
+      setCurrentStage('HOUSE');
+      sounds.speakDrawingNext('house', soundEnabled);
+    } else if (currentStage === 'HOUSE') {
       setCurrentStage('BOAT');
       sounds.speakDrawingNext('boat', soundEnabled);
     } else if (currentStage === 'BOAT') {
@@ -2910,12 +3427,64 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       setCurrentStage('APPLE');
       sounds.speakDrawingNext('apple', soundEnabled);
     } else {
-      setCurrentStage('HOUSE');
-      sounds.speakDrawingNext('house', soundEnabled);
+      setCurrentStage('TRACTOR');
+      sounds.speakDrawingNext('tractor', soundEnabled);
     }
   };
 
   // Reset Handlers
+  const handleResetTractor = () => {
+    setIsTractorBodyPlaced(false);
+    setIsTractorWinLeftPlaced(false);
+    setIsTractorWinRightPlaced(false);
+    setIsTractorExhaustPlaced(false);
+    setIsTractorFenderPlaced(false);
+    setIsTractorTireRearPlaced(false);
+    setIsTractorHubRearPlaced(false);
+    setIsTractorTireFrontPlaced(false);
+    setIsTractorHubFrontPlaced(false);
+    setTractorBodyColor('#ffffff');
+    setTractorWinLeftColor('#ffffff');
+    setTractorWinRightColor('#ffffff');
+    setTractorExhaustColor('#ffffff');
+    setTractorFenderColor('#ffffff');
+    setTractorTireRearColor('#ffffff');
+    setTractorHubRearColor('#ffffff');
+    setTractorTireFrontColor('#ffffff');
+    setTractorHubFrontColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetCake = () => {
+    setIsCakeTopPlaced(false);
+    setIsCakeHeartTopPlaced(false);
+    setIsCakeHeartLeftPlaced(false);
+    setIsCakeHeartRightPlaced(false);
+    setIsCakeLayerTopPlaced(false);
+    setIsCakeLayerBotPlaced(false);
+    setIsCakePlatePlaced(false);
+    setCakeTopColor('#ffffff');
+    setCakeHeartTopColor('#ffffff');
+    setCakeHeartLeftColor('#ffffff');
+    setCakeHeartRightColor('#ffffff');
+    setCakeLayerTopColor('#ffffff');
+    setCakeLayerBotColor('#ffffff');
+    setCakePlateColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetCandle = () => {
+    setIsCandleFlamePlaced(false);
+    setIsCandleWickPlaced(false);
+    setIsCandleWaxPlaced(false);
+    setIsCandleBodyPlaced(false);
+    setCandleFlameColor('#ffffff');
+    setCandleWickColor('#ffffff');
+    setCandleWaxColor('#ffffff');
+    setCandleBodyColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
   const handleResetHouse = () => {
     setIsHouseChimneyPlaced(false);
     setIsHouseRoofPlaced(false);
@@ -3269,7 +3838,1217 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         id="drawing-main-stage"
         className="w-full flex-1 flex flex-row items-center justify-between px-2 sm:px-6 md:px-10 py-1 max-w-6xl mx-auto min-h-0 z-20 gap-2 sm:gap-6"
       >
-        {currentStage === 'HOUSE' ? (
+        {currentStage === 'TRACTOR' ? (
+          // ================================================================
+          // TRACTOR (ट्रैक्टर) GAME SCREEN (Tractor_-_Graphics_by_Canva_c2293e43.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: TRACTOR OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="tractor-outline-container"
+              className="relative flex-1 w-full max-w-[540px] max-h-[480px] aspect-[547/460] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 547 460"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Tractor Body & Cab (with evenodd holes for windows and grille bars) */}
+                {isTractorBodyPlaced && (
+                  <path
+                    d={TRACTOR_PLACED_BODY_PATH}
+                    fill={tractorBodyColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setTractorBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_body', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Left Window */}
+                {isTractorWinLeftPlaced && (
+                  <path
+                    d={TRACTOR_PLACED_WIN_LEFT_PATH}
+                    fill={tractorWinLeftColor}
+                    onClick={() => {
+                      setTractorWinLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_win_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Right Window */}
+                {isTractorWinRightPlaced && (
+                  <path
+                    d={TRACTOR_PLACED_WIN_RIGHT_PATH}
+                    fill={tractorWinRightColor}
+                    onClick={() => {
+                      setTractorWinRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_win_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Exhaust Pipe */}
+                {isTractorExhaustPlaced && (
+                  <path
+                    d={TRACTOR_PLACED_EXHAUST_PATH}
+                    fill={tractorExhaustColor}
+                    onClick={() => {
+                      setTractorExhaustColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_exhaust', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Rear Fender */}
+                {isTractorFenderPlaced && (
+                  <path
+                    d={TRACTOR_PLACED_FENDER_PATH}
+                    fill={tractorFenderColor}
+                    onClick={() => {
+                      setTractorFenderColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_fender', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Rear Big Tire (evenodd doughnut) */}
+                {isTractorTireRearPlaced && (
+                  <path
+                    d={TRACTOR_PLACED_TIRE_REAR_PATH}
+                    fill={tractorTireRearColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setTractorTireRearColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_tire_rear', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 7. Placed Rear Wheel Hub */}
+                {isTractorHubRearPlaced && (
+                  <path
+                    d={TRACTOR_PLACED_HUB_REAR_PATH}
+                    fill={tractorHubRearColor}
+                    onClick={() => {
+                      setTractorHubRearColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_hub_rear', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 8. Placed Front Small Tire (evenodd doughnut) */}
+                {isTractorTireFrontPlaced && (
+                  <path
+                    d={TRACTOR_PLACED_TIRE_FRONT_PATH}
+                    fill={tractorTireFrontColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setTractorTireFrontColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_tire_front', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 9. Placed Front Wheel Hub */}
+                {isTractorHubFrontPlaced && (
+                  <path
+                    d={TRACTOR_PLACED_HUB_FRONT_PATH}
+                    fill={tractorHubFrontColor}
+                    onClick={() => {
+                      setTractorHubFrontColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_hub_front', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={tractorOutlineImg}
+                alt="Tractor Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: TRACTOR CUTTING PIECES */}
+            <div
+              id="tractor-cutting-container"
+              className="relative flex-1 w-full max-w-[540px] max-h-[480px] aspect-[547/460] flex items-center justify-center"
+            >
+              {isTractorBodyPlaced &&
+                isTractorWinLeftPlaced &&
+                isTractorWinRightPlaced &&
+                isTractorExhaustPlaced &&
+                isTractorFenderPlaced &&
+                isTractorTireRearPlaced &&
+                isTractorHubRearPlaced &&
+                isTractorTireFrontPlaced &&
+                isTractorHubFrontPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetTractor}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Tractor Body (with evenodd holes) */}
+                {!isTractorBodyPlaced && (
+                  <motion.div
+                    id="cutting-tractor-body"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTractorBodyDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTractorBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_body', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '2%',
+                      top: '3%',
+                      width: `${(392 / 547) * 52}%`,
+                      height: `${(312 / 460) * 52}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={TRACTOR_BODY_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={TRACTOR_BODY_PATH}
+                        fill={tractorBodyColor}
+                        fillRule="evenodd"
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Left Window */}
+                {!isTractorWinLeftPlaced && (
+                  <motion.div
+                    id="cutting-tractor-win-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTractorWinLeftDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTractorWinLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_win_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '43%',
+                      top: '5%',
+                      width: `${(61 / 547) * 90}%`,
+                      height: `${(110 / 460) * 90}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={TRACTOR_WIN_LEFT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={TRACTOR_WIN_LEFT_PATH}
+                        fill={tractorWinLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Right Window */}
+                {!isTractorWinRightPlaced && (
+                  <motion.div
+                    id="cutting-tractor-win-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTractorWinRightDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTractorWinRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_win_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '56%',
+                      top: '4%',
+                      width: `${(90 / 547) * 75}%`,
+                      height: `${(169 / 460) * 75}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={TRACTOR_WIN_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={TRACTOR_WIN_RIGHT_PATH}
+                        fill={tractorWinRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Exhaust Pipe (with generous transparent hitbox) */}
+                {!isTractorExhaustPlaced && (
+                  <motion.div
+                    id="cutting-tractor-exhaust"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTractorExhaustDragEnd}
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTractorExhaustColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_exhaust', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '72%',
+                      top: '7%',
+                      width: `${(17 / 547) * 160}%`,
+                      height: `${(55 / 460) * 160}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={TRACTOR_EXHAUST_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-20" y="-12" width="57" height="79" fill="transparent" />
+                      <path
+                        d={TRACTOR_EXHAUST_PATH}
+                        fill={tractorExhaustColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Rear Hub */}
+                {!isTractorHubRearPlaced && (
+                  <motion.div
+                    id="cutting-tractor-hub-rear"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTractorHubRearDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTractorHubRearColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_hub_rear', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '81%',
+                      top: '6%',
+                      width: `${(100 / 547) * 85}%`,
+                      height: `${(100 / 460) * 85}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={TRACTOR_HUB_REAR_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={TRACTOR_HUB_REAR_PATH}
+                        fill={tractorHubRearColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Rear Fender */}
+                {!isTractorFenderPlaced && (
+                  <motion.div
+                    id="cutting-tractor-fender"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTractorFenderDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTractorFenderColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_fender', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '3%',
+                      top: '42%',
+                      width: `${(220 / 547) * 85}%`,
+                      height: `${(70 / 460) * 85}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={TRACTOR_FENDER_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={TRACTOR_FENDER_PATH}
+                        fill={tractorFenderColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 7. Front Hub */}
+                {!isTractorHubFrontPlaced && (
+                  <motion.div
+                    id="cutting-tractor-hub-front"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTractorHubFrontDragEnd}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTractorHubFrontColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_hub_front', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '14%',
+                      top: '62%',
+                      width: `${(65 / 547) * 105}%`,
+                      height: `${(65 / 460) * 105}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={TRACTOR_HUB_FRONT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-12" y="-12" width="89" height="89" fill="transparent" />
+                      <path
+                        d={TRACTOR_HUB_FRONT_PATH}
+                        fill={tractorHubFrontColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 8. Rear Big Tire (evenodd doughnut) */}
+                {!isTractorTireRearPlaced && (
+                  <motion.div
+                    id="cutting-tractor-tire-rear"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTractorTireRearDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTractorTireRearColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_tire_rear', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '40%',
+                      top: '42%',
+                      width: `${(217 / 547) * 72}%`,
+                      height: `${(218 / 460) * 72}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={TRACTOR_TIRE_REAR_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={TRACTOR_TIRE_REAR_PATH}
+                        fill={tractorTireRearColor}
+                        fillRule="evenodd"
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 9. Front Small Tire (evenodd doughnut) */}
+                {!isTractorTireFrontPlaced && (
+                  <motion.div
+                    id="cutting-tractor-tire-front"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleTractorTireFrontDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setTractorTireFrontColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('tractor_tire_front', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '72%',
+                      top: '44%',
+                      width: `${(153 / 547) * 85}%`,
+                      height: `${(153 / 460) * 85}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={TRACTOR_TIRE_FRONT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={TRACTOR_TIRE_FRONT_PATH}
+                        fill={tractorTireFrontColor}
+                        fillRule="evenodd"
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 9 pieces are placed */}
+                {isTractorBodyPlaced &&
+                  isTractorWinLeftPlaced &&
+                  isTractorWinRightPlaced &&
+                  isTractorExhaustPlaced &&
+                  isTractorFenderPlaced &&
+                  isTractorTireRearPlaced &&
+                  isTractorHubRearPlaced &&
+                  isTractorTireFrontPlaced &&
+                  isTractorHubFrontPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ ट्रैक्टर सही जगह लग गया! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'CAKE' ? (
+          // ================================================================
+          // CAKE (केक) GAME SCREEN (Coloring_page_10ce63ff.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: CAKE OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="cake-outline-container"
+              className="relative flex-1 w-full max-w-[540px] max-h-[480px] aspect-[673/484] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 673 484"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Top Surface (with evenodd 3 heart holes) */}
+                {isCakeTopPlaced && (
+                  <path
+                    d={CAKE_PLACED_TOP_PATH}
+                    fill={cakeTopColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setCakeTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_top', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Top Small Heart */}
+                {isCakeHeartTopPlaced && (
+                  <path
+                    d={CAKE_PLACED_HEART_TOP_PATH}
+                    fill={cakeHeartTopColor}
+                    onClick={() => {
+                      setCakeHeartTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_heart_top', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Left Big Heart */}
+                {isCakeHeartLeftPlaced && (
+                  <path
+                    d={CAKE_PLACED_HEART_LEFT_PATH}
+                    fill={cakeHeartLeftColor}
+                    onClick={() => {
+                      setCakeHeartLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_heart_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Right Heart */}
+                {isCakeHeartRightPlaced && (
+                  <path
+                    d={CAKE_PLACED_HEART_RIGHT_PATH}
+                    fill={cakeHeartRightColor}
+                    onClick={() => {
+                      setCakeHeartRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_heart_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Upper Frosting Layer */}
+                {isCakeLayerTopPlaced && (
+                  <path
+                    d={CAKE_PLACED_LAYER_TOP_PATH}
+                    fill={cakeLayerTopColor}
+                    onClick={() => {
+                      setCakeLayerTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_layer_top', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Lower Cake Layer */}
+                {isCakeLayerBotPlaced && (
+                  <path
+                    d={CAKE_PLACED_LAYER_BOT_PATH}
+                    fill={cakeLayerBotColor}
+                    onClick={() => {
+                      setCakeLayerBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_layer_bot', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 7. Placed Plate */}
+                {isCakePlatePlaced && (
+                  <path
+                    d={CAKE_PLACED_PLATE_PATH}
+                    fill={cakePlateColor}
+                    onClick={() => {
+                      setCakePlateColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_plate', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={cakeOutlineImg}
+                alt="Cake Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: CAKE CUTTING PIECES */}
+            <div
+              id="cake-cutting-container"
+              className="relative flex-1 w-full max-w-[540px] max-h-[480px] aspect-[673/484] flex items-center justify-center"
+            >
+              {isCakeTopPlaced &&
+                isCakeHeartTopPlaced &&
+                isCakeHeartLeftPlaced &&
+                isCakeHeartRightPlaced &&
+                isCakeLayerTopPlaced &&
+                isCakeLayerBotPlaced &&
+                isCakePlatePlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetCake}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Cake Top Surface (with evenodd heart holes) */}
+                {!isCakeTopPlaced && (
+                  <motion.div
+                    id="cutting-cake-top"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCakeTopDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCakeTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_top', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '2%',
+                      top: '4%',
+                      width: `${(489 / 673) * 65}%`,
+                      height: `${(183 / 484) * 65}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CAKE_TOP_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={CAKE_TOP_PATH}
+                        fill={cakeTopColor}
+                        fillRule="evenodd"
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Left Big Heart */}
+                {!isCakeHeartLeftPlaced && (
+                  <motion.div
+                    id="cutting-cake-heart-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCakeHeartLeftDragEnd}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCakeHeartLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_heart_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '54%',
+                      top: '10%',
+                      width: `${(74 / 673) * 125}%`,
+                      height: `${(64 / 484) * 125}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CAKE_HEART_LEFT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-12" y="-12" width="98" height="88" fill="transparent" />
+                      <path
+                        d={CAKE_HEART_LEFT_PATH}
+                        fill={cakeHeartLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Top Small Heart */}
+                {!isCakeHeartTopPlaced && (
+                  <motion.div
+                    id="cutting-cake-heart-top"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCakeHeartTopDragEnd}
+                    whileHover={{ scale: 1.12 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCakeHeartTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_heart_top', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '71%',
+                      top: '13%',
+                      width: `${(37 / 673) * 150}%`,
+                      height: `${(30 / 484) * 150}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CAKE_HEART_TOP_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-14" y="-14" width="65" height="58" fill="transparent" />
+                      <path
+                        d={CAKE_HEART_TOP_PATH}
+                        fill={cakeHeartTopColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Right Heart */}
+                {!isCakeHeartRightPlaced && (
+                  <motion.div
+                    id="cutting-cake-heart-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCakeHeartRightDragEnd}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCakeHeartRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_heart_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '84%',
+                      top: '12%',
+                      width: `${(47 / 673) * 140}%`,
+                      height: `${(42 / 484) * 140}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CAKE_HEART_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-12" y="-12" width="71" height="66" fill="transparent" />
+                      <path
+                        d={CAKE_HEART_RIGHT_PATH}
+                        fill={cakeHeartRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Upper Frosting Layer */}
+                {!isCakeLayerTopPlaced && (
+                  <motion.div
+                    id="cutting-cake-layer-top"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCakeLayerTopDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCakeLayerTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_layer_top', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '2%',
+                      top: '34%',
+                      width: `${(489 / 673) * 65}%`,
+                      height: `${(182 / 484) * 65}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CAKE_LAYER_TOP_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={CAKE_LAYER_TOP_PATH}
+                        fill={cakeLayerTopColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Plate */}
+                {!isCakePlatePlaced && (
+                  <motion.div
+                    id="cutting-cake-plate"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCakePlateDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCakePlateColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_plate', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '51%',
+                      top: '52%',
+                      width: `${(620 / 673) * 52}%`,
+                      height: `${(157 / 484) * 52}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CAKE_PLATE_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={CAKE_PLATE_PATH}
+                        fill={cakePlateColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 7. Lower Cake Body Layer */}
+                {!isCakeLayerBotPlaced && (
+                  <motion.div
+                    id="cutting-cake-layer-bot"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCakeLayerBotDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCakeLayerBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('cake_layer_bot', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '2%',
+                      top: '66%',
+                      width: `${(489 / 673) * 65}%`,
+                      height: `${(155 / 484) * 65}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CAKE_LAYER_BOT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={CAKE_LAYER_BOT_PATH}
+                        fill={cakeLayerBotColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 7 pieces are placed */}
+                {isCakeTopPlaced &&
+                  isCakeHeartTopPlaced &&
+                  isCakeHeartLeftPlaced &&
+                  isCakeHeartRightPlaced &&
+                  isCakeLayerTopPlaced &&
+                  isCakeLayerBotPlaced &&
+                  isCakePlatePlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ केक सही जगह लग गया! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'CANDLE' ? (
+          // ================================================================
+          // CANDLE (मोमबत्ती) GAME SCREEN (dibujos-de-vela-para-colorear-11_png__1137_1517__ea93299f.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: CANDLE OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="candle-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[393/952] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 393 952"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Flame */}
+                {isCandleFlamePlaced && (
+                  <path
+                    d={CANDLE_PLACED_FLAME_PATH}
+                    fill={candleFlameColor}
+                    onClick={() => {
+                      setCandleFlameColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('candle_flame', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Wick */}
+                {isCandleWickPlaced && (
+                  <path
+                    d={CANDLE_PLACED_WICK_PATH}
+                    fill={candleWickColor}
+                    onClick={() => {
+                      setCandleWickColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('candle_wick', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Melted Wax */}
+                {isCandleWaxPlaced && (
+                  <path
+                    d={CANDLE_PLACED_WAX_PATH}
+                    fill={candleWaxColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setCandleWaxColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('candle_wax', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Candle Body */}
+                {isCandleBodyPlaced && (
+                  <path
+                    d={CANDLE_PLACED_BODY_PATH}
+                    fill={candleBodyColor}
+                    onClick={() => {
+                      setCandleBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('candle_body', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={candleOutlineImg}
+                alt="Candle Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: CANDLE CUTTING PIECES */}
+            <div
+              id="candle-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] flex items-center justify-center"
+            >
+              {isCandleFlamePlaced &&
+                isCandleWickPlaced &&
+                isCandleWaxPlaced &&
+                isCandleBodyPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetCandle}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full max-w-[420px] h-full">
+                {/* 1. Flame */}
+                {!isCandleFlamePlaced && (
+                  <motion.div
+                    id="cutting-candle-flame"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCandleFlameDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCandleFlameColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('candle_flame', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '8%',
+                      top: '4%',
+                      width: '28%',
+                      height: '44%',
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CANDLE_FLAME_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={CANDLE_FLAME_PATH}
+                        fill={candleFlameColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Wick */}
+                {!isCandleWickPlaced && (
+                  <motion.div
+                    id="cutting-candle-wick"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCandleWickDragEnd}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCandleWickColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('candle_wick', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '44%',
+                      top: '14%',
+                      width: '12%',
+                      height: '24%',
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CANDLE_WICK_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-25" y="-15" width="73" height="93" fill="transparent" />
+                      <path
+                        d={CANDLE_WICK_PATH}
+                        fill={candleWickColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Melted Wax */}
+                {!isCandleWaxPlaced && (
+                  <motion.div
+                    id="cutting-candle-wax"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCandleWaxDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCandleWaxColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('candle_wax', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '58%',
+                      top: '4%',
+                      width: '38%',
+                      height: '44%',
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CANDLE_WAX_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={CANDLE_WAX_PATH}
+                        fill={candleWaxColor}
+                        fillRule="evenodd"
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Candle Body */}
+                {!isCandleBodyPlaced && (
+                  <motion.div
+                    id="cutting-candle-body"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleCandleBodyDragEnd}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setCandleBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('candle_body', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '28%',
+                      top: '51%',
+                      width: '44%',
+                      height: '46%',
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={CANDLE_BODY_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={CANDLE_BODY_PATH}
+                        fill={candleBodyColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 4 pieces are placed */}
+                {isCandleFlamePlaced &&
+                  isCandleWickPlaced &&
+                  isCandleWaxPlaced &&
+                  isCandleBodyPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ मोमबत्ती सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'HOUSE' ? (
           // ================================================================
           // HOUSE (घर) GAME SCREEN (Kinderd_Canvas___Digital_Store_66dece07.jfif)
           // ================================================================
