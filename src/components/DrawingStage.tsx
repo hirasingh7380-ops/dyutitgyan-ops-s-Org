@@ -23,6 +23,24 @@ import houseOutlineImg from '../assets/images/house_outline.png';
 import candleOutlineImg from '../assets/images/candle_outline.png';
 import cakeOutlineImg from '../assets/images/cake_outline.png';
 import tractorOutlineImg from '../assets/images/tractor_outline.png';
+import glassesOutlineImg from '../assets/images/glasses_outline.png';
+import {
+  GLASSES_ARM_LEFT_VIEWBOX,
+  GLASSES_ARM_LEFT_PATH,
+  GLASSES_ARM_RIGHT_VIEWBOX,
+  GLASSES_ARM_RIGHT_PATH,
+  GLASSES_FRAME_VIEWBOX,
+  GLASSES_FRAME_PATH,
+  GLASSES_LENS_LEFT_VIEWBOX,
+  GLASSES_LENS_LEFT_PATH,
+  GLASSES_LENS_RIGHT_VIEWBOX,
+  GLASSES_LENS_RIGHT_PATH,
+  GLASSES_PLACED_ARM_LEFT_PATH,
+  GLASSES_PLACED_ARM_RIGHT_PATH,
+  GLASSES_PLACED_FRAME_PATH,
+  GLASSES_PLACED_LENS_LEFT_PATH,
+  GLASSES_PLACED_LENS_RIGHT_PATH,
+} from './glasses_constants';
 import {
   TRACTOR_BODY_VIEWBOX,
   TRACTOR_BODY_PATH,
@@ -523,14 +541,32 @@ const APPLE_STEM_PATH =
 const APPLE_LEAF_PATH =
   'M 205 110 C 220 52, 280 25, 335 38 C 305 85, 250 120, 205 110 Z';
 
-type GameStage = 'TRACTOR' | 'CAKE' | 'CANDLE' | 'HOUSE' | 'BOAT' | 'BUS' | 'PINWHEEL' | 'CATERPILLAR' | 'HEN' | 'ICECREAM' | 'LOLLIPOP' | 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
+type GameStage = 'GLASSES' | 'TRACTOR' | 'CAKE' | 'CANDLE' | 'HOUSE' | 'BOAT' | 'BUS' | 'PINWHEEL' | 'CATERPILLAR' | 'HEN' | 'ICECREAM' | 'LOLLIPOP' | 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
 
 export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled }) => {
-  // Current game stage: starts on TRACTOR (user attachment Tractor_-_Graphics_by_Canva_c2293e43.jfif)
-  const [currentStage, setCurrentStage] = useState<GameStage>('TRACTOR');
+  // Current game stage: starts on GLASSES (user attachment Vision_eyeglasses_icon_outline_vector__Eye_test_3c390372.jfif)
+  const [currentStage, setCurrentStage] = useState<GameStage>('GLASSES');
 
   // Currently active selected color from bottom 6 buttons
   const [selectedColor, setSelectedColor] = useState<ColorOption>(COLOR_OPTIONS[0]); // Default RED
+
+  // ---------------------------------------------------------
+  // GLASSES STAGE STATES (Vision_eyeglasses_icon_outline_vector__Eye_test_3c390372.jfif)
+  // ---------------------------------------------------------
+  const [glassesArmLeftColor, setGlassesArmLeftColor] = useState<string>('#ffffff');
+  const [isGlassesArmLeftPlaced, setIsGlassesArmLeftPlaced] = useState<boolean>(false);
+
+  const [glassesArmRightColor, setGlassesArmRightColor] = useState<string>('#ffffff');
+  const [isGlassesArmRightPlaced, setIsGlassesArmRightPlaced] = useState<boolean>(false);
+
+  const [glassesFrameColor, setGlassesFrameColor] = useState<string>('#ffffff');
+  const [isGlassesFramePlaced, setIsGlassesFramePlaced] = useState<boolean>(false);
+
+  const [glassesLensLeftColor, setGlassesLensLeftColor] = useState<string>('#ffffff');
+  const [isGlassesLensLeftPlaced, setIsGlassesLensLeftPlaced] = useState<boolean>(false);
+
+  const [glassesLensRightColor, setGlassesLensRightColor] = useState<string>('#ffffff');
+  const [isGlassesLensRightPlaced, setIsGlassesLensRightPlaced] = useState<boolean>(false);
 
   // ---------------------------------------------------------
   // TRACTOR STAGE STATES (Tractor_-_Graphics_by_Canva_c2293e43.jfif)
@@ -963,8 +999,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   // Shikshika (Teacher) Voice intro
   useEffect(() => {
     const timer = setTimeout(() => {
-      let voiceKey: 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'tractor';
-      if (currentStage === 'TRACTOR') voiceKey = 'tractor';
+      let voiceKey: 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'glasses';
+      if (currentStage === 'GLASSES') voiceKey = 'glasses';
+      else if (currentStage === 'TRACTOR') voiceKey = 'tractor';
       else if (currentStage === 'CAKE') voiceKey = 'cake';
       else if (currentStage === 'CANDLE') voiceKey = 'candle';
       else if (currentStage === 'HOUSE') voiceKey = 'house';
@@ -1008,7 +1045,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   };
 
   // Celebration
-  const triggerVictory = (stage: 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
+  const triggerVictory = (stage: 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
     sounds.speakDrawingComplete(stage, soundEnabled);
     try {
       confetti({
@@ -1018,6 +1055,100 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       });
     } catch {
       // Ignore
+    }
+  };
+
+  // Check if entire Glasses is assembled
+  const checkGlassesVictory = (
+    armLeft: boolean,
+    armRight: boolean,
+    frame: boolean,
+    lensLeft: boolean,
+    lensRight: boolean
+  ) => {
+    if (armLeft && armRight && frame && lensLeft && lensRight) {
+      triggerVictory('glasses');
+    }
+  };
+
+  // Drag handlers for Glasses (5 pieces: Left Arm, Right Arm, Frame, Left Lens, Right Lens)
+  const handleGlassesArmLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setGlassesArmLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('glasses_arm_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsGlassesArmLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('glasses_arm_left', soundEnabled);
+      checkGlassesVictory(true, isGlassesArmRightPlaced, isGlassesFramePlaced, isGlassesLensLeftPlaced, isGlassesLensRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleGlassesArmRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setGlassesArmRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('glasses_arm_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsGlassesArmRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('glasses_arm_right', soundEnabled);
+      checkGlassesVictory(isGlassesArmLeftPlaced, true, isGlassesFramePlaced, isGlassesLensLeftPlaced, isGlassesLensRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleGlassesFrameDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setGlassesFrameColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('glasses_frame', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsGlassesFramePlaced(true);
+      sounds.speakDrawingPiecePlaced('glasses_frame', soundEnabled);
+      checkGlassesVictory(isGlassesArmLeftPlaced, isGlassesArmRightPlaced, true, isGlassesLensLeftPlaced, isGlassesLensRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleGlassesLensLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setGlassesLensLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('glasses_lens_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsGlassesLensLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('glasses_lens_left', soundEnabled);
+      checkGlassesVictory(isGlassesArmLeftPlaced, isGlassesArmRightPlaced, isGlassesFramePlaced, true, isGlassesLensRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleGlassesLensRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setGlassesLensRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('glasses_lens_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsGlassesLensRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('glasses_lens_right', soundEnabled);
+      checkGlassesVictory(isGlassesArmLeftPlaced, isGlassesArmRightPlaced, isGlassesFramePlaced, isGlassesLensLeftPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
     }
   };
 
@@ -3357,10 +3488,13 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
   };
 
-  // NEXT Button Handler: cycles TRACTOR -> CAKE -> CANDLE -> HOUSE -> BOAT -> BUS -> PINWHEEL -> CATERPILLAR -> HEN -> ICECREAM -> LOLLIPOP -> DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> TRACTOR
+  // NEXT Button Handler: cycles GLASSES -> TRACTOR -> CAKE -> CANDLE -> HOUSE -> BOAT -> BUS -> PINWHEEL -> CATERPILLAR -> HEN -> ICECREAM -> LOLLIPOP -> DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> GLASSES
   const handleNext = () => {
     sounds.playPop(soundEnabled);
-    if (currentStage === 'TRACTOR') {
+    if (currentStage === 'GLASSES') {
+      setCurrentStage('TRACTOR');
+      sounds.speakDrawingNext('tractor', soundEnabled);
+    } else if (currentStage === 'TRACTOR') {
       setCurrentStage('CAKE');
       sounds.speakDrawingNext('cake', soundEnabled);
     } else if (currentStage === 'CAKE') {
@@ -3427,12 +3561,26 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       setCurrentStage('APPLE');
       sounds.speakDrawingNext('apple', soundEnabled);
     } else {
-      setCurrentStage('TRACTOR');
-      sounds.speakDrawingNext('tractor', soundEnabled);
+      setCurrentStage('GLASSES');
+      sounds.speakDrawingNext('glasses', soundEnabled);
     }
   };
 
   // Reset Handlers
+  const handleResetGlasses = () => {
+    setIsGlassesArmLeftPlaced(false);
+    setIsGlassesArmRightPlaced(false);
+    setIsGlassesFramePlaced(false);
+    setIsGlassesLensLeftPlaced(false);
+    setIsGlassesLensRightPlaced(false);
+    setGlassesArmLeftColor('#ffffff');
+    setGlassesArmRightColor('#ffffff');
+    setGlassesFrameColor('#ffffff');
+    setGlassesLensLeftColor('#ffffff');
+    setGlassesLensRightColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
   const handleResetTractor = () => {
     setIsTractorBodyPlaced(false);
     setIsTractorWinLeftPlaced(false);
@@ -3838,7 +3986,324 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         id="drawing-main-stage"
         className="w-full flex-1 flex flex-row items-center justify-between px-2 sm:px-6 md:px-10 py-1 max-w-6xl mx-auto min-h-0 z-20 gap-2 sm:gap-6"
       >
-        {currentStage === 'TRACTOR' ? (
+        {currentStage === 'GLASSES' ? (
+          // ================================================================
+          // GLASSES (चश्मा) GAME SCREEN (Vision_eyeglasses_icon_outline_vector__Eye_test_3c390372.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: GLASSES OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="glasses-outline-container"
+              className="relative flex-1 w-full max-w-[540px] max-h-[480px] aspect-[694/454] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 694 454"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Left Temple Arm */}
+                {isGlassesArmLeftPlaced && (
+                  <path
+                    d={GLASSES_PLACED_ARM_LEFT_PATH}
+                    fill={glassesArmLeftColor}
+                    onClick={() => {
+                      setGlassesArmLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('glasses_arm_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Right Temple Arm */}
+                {isGlassesArmRightPlaced && (
+                  <path
+                    d={GLASSES_PLACED_ARM_RIGHT_PATH}
+                    fill={glassesArmRightColor}
+                    onClick={() => {
+                      setGlassesArmRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('glasses_arm_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Frame Rim (evenodd with 2 lens holes) */}
+                {isGlassesFramePlaced && (
+                  <path
+                    d={GLASSES_PLACED_FRAME_PATH}
+                    fill={glassesFrameColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setGlassesFrameColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('glasses_frame', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Left Lens */}
+                {isGlassesLensLeftPlaced && (
+                  <path
+                    d={GLASSES_PLACED_LENS_LEFT_PATH}
+                    fill={glassesLensLeftColor}
+                    onClick={() => {
+                      setGlassesLensLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('glasses_lens_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Right Lens */}
+                {isGlassesLensRightPlaced && (
+                  <path
+                    d={GLASSES_PLACED_LENS_RIGHT_PATH}
+                    fill={glassesLensRightColor}
+                    onClick={() => {
+                      setGlassesLensRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('glasses_lens_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={glassesOutlineImg}
+                alt="Glasses Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: GLASSES CUTTING PIECES */}
+            <div
+              id="glasses-cutting-container"
+              className="relative flex-1 w-full max-w-[540px] max-h-[480px] aspect-[694/454] flex items-center justify-center"
+            >
+              {isGlassesArmLeftPlaced &&
+                isGlassesArmRightPlaced &&
+                isGlassesFramePlaced &&
+                isGlassesLensLeftPlaced &&
+                isGlassesLensRightPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetGlasses}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Left Temple Arm */}
+                {!isGlassesArmLeftPlaced && (
+                  <motion.div
+                    id="cutting-glasses-arm-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleGlassesArmLeftDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setGlassesArmLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('glasses_arm_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '8%',
+                      top: '4%',
+                      width: `${(145 / 694) * 90}%`,
+                      height: `${(206 / 454) * 90}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={GLASSES_ARM_LEFT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-12" y="-10" width="169" height="226" fill="transparent" />
+                      <path
+                        d={GLASSES_ARM_LEFT_PATH}
+                        fill={glassesArmLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Right Temple Arm */}
+                {!isGlassesArmRightPlaced && (
+                  <motion.div
+                    id="cutting-glasses-arm-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleGlassesArmRightDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setGlassesArmRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('glasses_arm_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '34%',
+                      top: '4%',
+                      width: `${(145 / 694) * 90}%`,
+                      height: `${(206 / 454) * 90}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={GLASSES_ARM_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-12" y="-10" width="169" height="226" fill="transparent" />
+                      <path
+                        d={GLASSES_ARM_RIGHT_PATH}
+                        fill={glassesArmRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Left Lens */}
+                {!isGlassesLensLeftPlaced && (
+                  <motion.div
+                    id="cutting-glasses-lens-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleGlassesLensLeftDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setGlassesLensLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('glasses_lens_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '60%',
+                      top: '6%',
+                      width: `${(208 / 694) * 110}%`,
+                      height: `${(150 / 454) * 110}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={GLASSES_LENS_LEFT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={GLASSES_LENS_LEFT_PATH}
+                        fill={glassesLensLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Eyeglass Frame (evenodd with 2 lens holes) */}
+                {!isGlassesFramePlaced && (
+                  <motion.div
+                    id="cutting-glasses-frame"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleGlassesFrameDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setGlassesFrameColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('glasses_frame', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '3%',
+                      top: '56%',
+                      width: `${(634 / 694) * 62}%`,
+                      height: `${(195 / 454) * 62}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={GLASSES_FRAME_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={GLASSES_FRAME_PATH}
+                        fill={glassesFrameColor}
+                        fillRule="evenodd"
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Right Lens */}
+                {!isGlassesLensRightPlaced && (
+                  <motion.div
+                    id="cutting-glasses-lens-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleGlassesLensRightDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setGlassesLensRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('glasses_lens_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '63%',
+                      top: '52%',
+                      width: `${(208 / 694) * 110}%`,
+                      height: `${(150 / 454) * 110}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={GLASSES_LENS_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={GLASSES_LENS_RIGHT_PATH}
+                        fill={glassesLensRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 5 pieces are placed */}
+                {isGlassesArmLeftPlaced &&
+                  isGlassesArmRightPlaced &&
+                  isGlassesFramePlaced &&
+                  isGlassesLensLeftPlaced &&
+                  isGlassesLensRightPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ चश्मा सही जगह लग गया! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'TRACTOR' ? (
           // ================================================================
           // TRACTOR (ट्रैक्टर) GAME SCREEN (Tractor_-_Graphics_by_Canva_c2293e43.jfif)
           // ================================================================

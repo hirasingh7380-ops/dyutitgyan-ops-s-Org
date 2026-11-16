@@ -614,10 +614,12 @@ class SoundManager {
   }
 
   // 10. Drawing Stage: Shikshika (Teacher) Voice for Android Mobile & PC
-  speakDrawingIntro(soundEnabled = true, stage: 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'tractor') {
+  speakDrawingIntro(soundEnabled = true, stage: 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'glasses') {
     if (!soundEnabled) return;
     let text = 'बच्चों, रंग चुनो और कटिंग इमेज को सही जगह पर लगाओ!';
-    if (stage === 'tractor') {
+    if (stage === 'glasses') {
+      text = 'बच्चों, रंग चुनो और कटिंग चश्मा को सही जगह पर लगाओ!';
+    } else if (stage === 'tractor') {
       text = 'बच्चों, रंग चुनो और कटिंग ट्रैक्टर को सही जगह पर लगाओ!';
     } else if (stage === 'cake') {
       text = 'बच्चों, रंग चुनो और कटिंग केक को सही जगह पर लगाओ!';
@@ -683,13 +685,18 @@ class SoundManager {
   }
 
   speakDrawingPieceColored(
-    piece: 'tractor_body' | 'tractor_win_left' | 'tractor_win_right' | 'tractor_exhaust' | 'tractor_fender' | 'tractor_tire_rear' | 'tractor_hub_rear' | 'tractor_tire_front' | 'tractor_hub_front' | 'cake_top' | 'cake_heart_top' | 'cake_heart_left' | 'cake_heart_right' | 'cake_layer_top' | 'cake_layer_bot' | 'cake_plate' | 'candle_flame' | 'candle_wick' | 'candle_wax' | 'candle_body' | 'house_chimney' | 'house_roof' | 'house_win_top' | 'house_wall' | 'house_win_bot' | 'house_door' | 'house_base_left' | 'house_base_right' | 'boat_mast' | 'boat_sail_ltop' | 'boat_sail_lmid' | 'boat_sail_lbot' | 'boat_sail_right' | 'boat_hull_top' | 'boat_hull_bot' | 'bus_body' | 'bus_win1' | 'bus_win2' | 'bus_win3' | 'bus_win4' | 'bus_wheel1' | 'bus_wheel2' | 'pinwheel_blade_tl' | 'pinwheel_blade_tr' | 'pinwheel_center' | 'pinwheel_blade_br' | 'pinwheel_blade_bl' | 'pinwheel_stick' | 'caterpillar_head' | 'caterpillar_seg1' | 'caterpillar_seg2' | 'caterpillar_seg3' | 'caterpillar_seg4' | 'hen_comb' | 'hen_head' | 'hen_beak' | 'hen_wattle' | 'hen_body' | 'hen_foot_left' | 'hen_foot_right' | 'icecream_top' | 'icecream_body' | 'icecream_stick' | 'lollipop_top' | 'lollipop_band' | 'lollipop_bottom' | 'lollipop_stick' | 'duck_body' | 'duck_wing' | 'duck_beak' | 'duck_foot_left' | 'duck_foot_right' | 'flower_center' | 'flower_petal_top' | 'flower_petal_top_right' | 'flower_petal_bottom_right' | 'flower_petal_bottom' | 'flower_petal_bottom_left' | 'flower_petal_top_left' | 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br' | 'ball_cap' | 'ball_top_mid' | 'ball_top_right' | 'ball_top_left' | 'ball_bottom_left' | 'ball_bottom_center' | 'ball_bottom_right' | 'hat_crown' | 'hat_band' | 'hat_brim' | 'umbrella_canopy_left' | 'umbrella_canopy_mid' | 'umbrella_canopy_right' | 'umbrella_handle',
+    piece: 'glasses_arm_left' | 'glasses_arm_right' | 'glasses_frame' | 'glasses_lens_left' | 'glasses_lens_right' | 'tractor_body' | 'tractor_win_left' | 'tractor_win_right' | 'tractor_exhaust' | 'tractor_fender' | 'tractor_tire_rear' | 'tractor_hub_rear' | 'tractor_tire_front' | 'tractor_hub_front' | 'cake_top' | 'cake_heart_top' | 'cake_heart_left' | 'cake_heart_right' | 'cake_layer_top' | 'cake_layer_bot' | 'cake_plate' | 'candle_flame' | 'candle_wick' | 'candle_wax' | 'candle_body' | 'house_chimney' | 'house_roof' | 'house_win_top' | 'house_wall' | 'house_win_bot' | 'house_door' | 'house_base_left' | 'house_base_right' | 'boat_mast' | 'boat_sail_ltop' | 'boat_sail_lmid' | 'boat_sail_lbot' | 'boat_sail_right' | 'boat_hull_top' | 'boat_hull_bot' | 'bus_body' | 'bus_win1' | 'bus_win2' | 'bus_win3' | 'bus_win4' | 'bus_wheel1' | 'bus_wheel2' | 'pinwheel_blade_tl' | 'pinwheel_blade_tr' | 'pinwheel_center' | 'pinwheel_blade_br' | 'pinwheel_blade_bl' | 'pinwheel_stick' | 'caterpillar_head' | 'caterpillar_seg1' | 'caterpillar_seg2' | 'caterpillar_seg3' | 'caterpillar_seg4' | 'hen_comb' | 'hen_head' | 'hen_beak' | 'hen_wattle' | 'hen_body' | 'hen_foot_left' | 'hen_foot_right' | 'icecream_top' | 'icecream_body' | 'icecream_stick' | 'lollipop_top' | 'lollipop_band' | 'lollipop_bottom' | 'lollipop_stick' | 'duck_body' | 'duck_wing' | 'duck_beak' | 'duck_foot_left' | 'duck_foot_right' | 'flower_center' | 'flower_petal_top' | 'flower_petal_top_right' | 'flower_petal_bottom_right' | 'flower_petal_bottom' | 'flower_petal_bottom_left' | 'flower_petal_top_left' | 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br' | 'ball_cap' | 'ball_top_mid' | 'ball_top_right' | 'ball_top_left' | 'ball_bottom_left' | 'ball_bottom_center' | 'ball_bottom_right' | 'hat_crown' | 'hat_band' | 'hat_brim' | 'umbrella_canopy_left' | 'umbrella_canopy_mid' | 'umbrella_canopy_right' | 'umbrella_handle',
     soundEnabled = true
   ) {
     if (!soundEnabled) return;
     this.playSnap(soundEnabled);
     let text = 'रंग भर दिया, शाबाश!';
-    if (piece === 'tractor_body') text = 'ट्रैक्टर के शरीर में रंग भर दिया, बहुत सुंदर!';
+    if (piece === 'glasses_arm_left') text = 'चश्मे की बाईं डंडी में रंग भर दिया, शाबाश!';
+    else if (piece === 'glasses_arm_right') text = 'चश्मे की दाईं डंडी में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'glasses_frame') text = 'चश्मे के फ्रेम में रंग भर दिया, बहुत खूब!';
+    else if (piece === 'glasses_lens_left') text = 'चश्मे के बाएँ शीशे में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'glasses_lens_right') text = 'चश्मे के दाएँ शीशे में रंग भर दिया, शाबाश!';
+    else if (piece === 'tractor_body') text = 'ट्रैक्टर के शरीर में रंग भर दिया, बहुत सुंदर!';
     else if (piece === 'tractor_win_left') text = 'पीछे की खिड़की में रंग भर दिया, शाबाश!';
     else if (piece === 'tractor_win_right') text = 'सामने की खिड़की में रंग भर दिया, बहुत सुंदर!';
     else if (piece === 'tractor_exhaust') text = 'साइलेंसर में रंग भर दिया, बहुत खूब!';
@@ -812,13 +819,18 @@ class SoundManager {
   }
 
   speakDrawingPiecePlaced(
-    piece: 'tractor_body' | 'tractor_win_left' | 'tractor_win_right' | 'tractor_exhaust' | 'tractor_fender' | 'tractor_tire_rear' | 'tractor_hub_rear' | 'tractor_tire_front' | 'tractor_hub_front' | 'cake_top' | 'cake_heart_top' | 'cake_heart_left' | 'cake_heart_right' | 'cake_layer_top' | 'cake_layer_bot' | 'cake_plate' | 'candle_flame' | 'candle_wick' | 'candle_wax' | 'candle_body' | 'house_chimney' | 'house_roof' | 'house_win_top' | 'house_wall' | 'house_win_bot' | 'house_door' | 'house_base_left' | 'house_base_right' | 'boat_mast' | 'boat_sail_ltop' | 'boat_sail_lmid' | 'boat_sail_lbot' | 'boat_sail_right' | 'boat_hull_top' | 'boat_hull_bot' | 'bus_body' | 'bus_win1' | 'bus_win2' | 'bus_win3' | 'bus_win4' | 'bus_wheel1' | 'bus_wheel2' | 'pinwheel_blade_tl' | 'pinwheel_blade_tr' | 'pinwheel_center' | 'pinwheel_blade_br' | 'pinwheel_blade_bl' | 'pinwheel_stick' | 'caterpillar_head' | 'caterpillar_seg1' | 'caterpillar_seg2' | 'caterpillar_seg3' | 'caterpillar_seg4' | 'hen_comb' | 'hen_head' | 'hen_beak' | 'hen_wattle' | 'hen_body' | 'hen_foot_left' | 'hen_foot_right' | 'icecream_top' | 'icecream_body' | 'icecream_stick' | 'lollipop_top' | 'lollipop_band' | 'lollipop_bottom' | 'lollipop_stick' | 'duck_body' | 'duck_wing' | 'duck_beak' | 'duck_foot_left' | 'duck_foot_right' | 'flower_center' | 'flower_petal_top' | 'flower_petal_top_right' | 'flower_petal_bottom_right' | 'flower_petal_bottom' | 'flower_petal_bottom_left' | 'flower_petal_top_left' | 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br' | 'ball_cap' | 'ball_top_mid' | 'ball_top_right' | 'ball_top_left' | 'ball_bottom_left' | 'ball_bottom_center' | 'ball_bottom_right' | 'hat_crown' | 'hat_band' | 'hat_brim' | 'umbrella_canopy_left' | 'umbrella_canopy_mid' | 'umbrella_canopy_right' | 'umbrella_handle',
+    piece: 'glasses_arm_left' | 'glasses_arm_right' | 'glasses_frame' | 'glasses_lens_left' | 'glasses_lens_right' | 'tractor_body' | 'tractor_win_left' | 'tractor_win_right' | 'tractor_exhaust' | 'tractor_fender' | 'tractor_tire_rear' | 'tractor_hub_rear' | 'tractor_tire_front' | 'tractor_hub_front' | 'cake_top' | 'cake_heart_top' | 'cake_heart_left' | 'cake_heart_right' | 'cake_layer_top' | 'cake_layer_bot' | 'cake_plate' | 'candle_flame' | 'candle_wick' | 'candle_wax' | 'candle_body' | 'house_chimney' | 'house_roof' | 'house_win_top' | 'house_wall' | 'house_win_bot' | 'house_door' | 'house_base_left' | 'house_base_right' | 'boat_mast' | 'boat_sail_ltop' | 'boat_sail_lmid' | 'boat_sail_lbot' | 'boat_sail_right' | 'boat_hull_top' | 'boat_hull_bot' | 'bus_body' | 'bus_win1' | 'bus_win2' | 'bus_win3' | 'bus_win4' | 'bus_wheel1' | 'bus_wheel2' | 'pinwheel_blade_tl' | 'pinwheel_blade_tr' | 'pinwheel_center' | 'pinwheel_blade_br' | 'pinwheel_blade_bl' | 'pinwheel_stick' | 'caterpillar_head' | 'caterpillar_seg1' | 'caterpillar_seg2' | 'caterpillar_seg3' | 'caterpillar_seg4' | 'hen_comb' | 'hen_head' | 'hen_beak' | 'hen_wattle' | 'hen_body' | 'hen_foot_left' | 'hen_foot_right' | 'icecream_top' | 'icecream_body' | 'icecream_stick' | 'lollipop_top' | 'lollipop_band' | 'lollipop_bottom' | 'lollipop_stick' | 'duck_body' | 'duck_wing' | 'duck_beak' | 'duck_foot_left' | 'duck_foot_right' | 'flower_center' | 'flower_petal_top' | 'flower_petal_top_right' | 'flower_petal_bottom_right' | 'flower_petal_bottom' | 'flower_petal_bottom_left' | 'flower_petal_top_left' | 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br' | 'ball_cap' | 'ball_top_mid' | 'ball_top_right' | 'ball_top_left' | 'ball_bottom_left' | 'ball_bottom_center' | 'ball_bottom_right' | 'hat_crown' | 'hat_band' | 'hat_brim' | 'umbrella_canopy_left' | 'umbrella_canopy_mid' | 'umbrella_canopy_right' | 'umbrella_handle',
     soundEnabled = true
   ) {
     if (!soundEnabled) return;
     this.playSnap(soundEnabled);
     let text = 'शाबाश! सही जगह लग गई!';
-    if (piece === 'tractor_body') text = 'शाबाश! ट्रैक्टर का शरीर सही जगह लग गया!';
+    if (piece === 'glasses_arm_left') text = 'शाबाश! चश्मे की बाईं डंडी सही जगह लग गई!';
+    else if (piece === 'glasses_arm_right') text = 'शाबाश! चश्मे की दाईं डंडी सही जगह लग गई!';
+    else if (piece === 'glasses_frame') text = 'शाबाश! चश्मे का फ्रेम सही जगह लग गया!';
+    else if (piece === 'glasses_lens_left') text = 'शाबाश! चश्मे का बायाँ शीशा सही जगह लग गया!';
+    else if (piece === 'glasses_lens_right') text = 'शाबाश! चश्मे का दायाँ शीशा सही जगह लग गया!';
+    else if (piece === 'tractor_body') text = 'शाबाश! ट्रैक्टर का शरीर सही जगह लग गया!';
     else if (piece === 'tractor_win_left') text = 'शाबाश! पीछे की खिड़की सही जगह लग गई!';
     else if (piece === 'tractor_win_right') text = 'शाबाश! सामने की खिड़की सही जगह लग गई!';
     else if (piece === 'tractor_exhaust') text = 'शाबाश! साइलेंसर सही जगह लग गया!';
@@ -934,11 +946,13 @@ class SoundManager {
     this.playAudio(`drawing_placed_${piece}`, text);
   }
 
-  speakDrawingComplete(stage: 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' | 'hat' | 'umbrella' = 'tractor', soundEnabled = true) {
+  speakDrawingComplete(stage: 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' | 'hat' | 'umbrella' = 'glasses', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playVictory(soundEnabled);
     let text = 'अरे वाह बच्चों! बहुत सुंदर चित्र बनाया! शाबाश!';
-    if (stage === 'tractor') {
+    if (stage === 'glasses') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर चश्मा बनाया! शाबाश!';
+    } else if (stage === 'tractor') {
       text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर ट्रैक्टर बनाया! शाबाश!';
     } else if (stage === 'cake') {
       text = 'अरे वाह बच्चों! आपने बहुत ही स्वादिष्ट केक बनाया! शाबाश!';
@@ -988,11 +1002,13 @@ class SoundManager {
     this.playAudio(`drawing_complete_${stage}`, text);
   }
 
-  speakDrawingNext(stage: 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' | 'hat' | 'umbrella' = 'tractor', soundEnabled = true) {
+  speakDrawingNext(stage: 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' | 'hat' | 'umbrella' = 'glasses', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playPop(soundEnabled);
     let text = 'चलो फिर से नया चित्र बनाते हैं!';
-    if (stage === 'tractor') {
+    if (stage === 'glasses') {
+      text = 'चलो अब चश्मे का चित्र बनाते हैं!';
+    } else if (stage === 'tractor') {
       text = 'चलो अब ट्रैक्टर का चित्र बनाते हैं!';
     } else if (stage === 'cake') {
       text = 'चलो अब केक का चित्र बनाते हैं!';
