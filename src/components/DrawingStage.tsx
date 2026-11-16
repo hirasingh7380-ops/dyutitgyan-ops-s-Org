@@ -16,6 +16,102 @@ import lollipopOutlineImg from '../assets/images/lollipop_outline.png';
 import icecreamOutlineImg from '../assets/images/icecream_outline.png';
 import henOutlineImg from '../assets/images/hen_outline.png';
 import caterpillarOutlineImg from '../assets/images/caterpillar_outline.png';
+import pinwheelOutlineImg from '../assets/images/pinwheel_outline.png';
+import busOutlineImg from '../assets/images/bus_outline.png';
+import boatOutlineImg from '../assets/images/boat_outline.png';
+import houseOutlineImg from '../assets/images/house_outline.png';
+import {
+  HOUSE_CHIMNEY_VIEWBOX,
+  HOUSE_CHIMNEY_PATH,
+  HOUSE_ROOF_VIEWBOX,
+  HOUSE_ROOF_PATH,
+  HOUSE_WIN_TOP_VIEWBOX,
+  HOUSE_WIN_TOP_PATH,
+  HOUSE_WALL_VIEWBOX,
+  HOUSE_WALL_PATH,
+  HOUSE_WIN_BOT_VIEWBOX,
+  HOUSE_WIN_BOT_PATH,
+  HOUSE_DOOR_VIEWBOX,
+  HOUSE_DOOR_PATH,
+  HOUSE_BASE_LEFT_VIEWBOX,
+  HOUSE_BASE_LEFT_PATH,
+  HOUSE_BASE_RIGHT_VIEWBOX,
+  HOUSE_BASE_RIGHT_PATH,
+  HOUSE_PLACED_CHIMNEY_PATH,
+  HOUSE_PLACED_ROOF_PATH,
+  HOUSE_PLACED_WIN_TOP_PATH,
+  HOUSE_PLACED_WALL_PATH,
+  HOUSE_PLACED_WIN_BOT_PATH,
+  HOUSE_PLACED_DOOR_PATH,
+  HOUSE_PLACED_BASE_LEFT_PATH,
+  HOUSE_PLACED_BASE_RIGHT_PATH,
+} from './house_constants';
+import {
+  BOAT_MAST_VIEWBOX,
+  BOAT_MAST_PATH,
+  BOAT_SAIL_LTOP_VIEWBOX,
+  BOAT_SAIL_LTOP_PATH,
+  BOAT_SAIL_LMID_VIEWBOX,
+  BOAT_SAIL_LMID_PATH,
+  BOAT_SAIL_LBOT_VIEWBOX,
+  BOAT_SAIL_LBOT_PATH,
+  BOAT_SAIL_RIGHT_VIEWBOX,
+  BOAT_SAIL_RIGHT_PATH,
+  BOAT_HULL_TOP_VIEWBOX,
+  BOAT_HULL_TOP_PATH,
+  BOAT_HULL_BOT_VIEWBOX,
+  BOAT_HULL_BOT_PATH,
+  BOAT_PLACED_MAST_PATH,
+  BOAT_PLACED_SAIL_LTOP_PATH,
+  BOAT_PLACED_SAIL_LMID_PATH,
+  BOAT_PLACED_SAIL_LBOT_PATH,
+  BOAT_PLACED_SAIL_RIGHT_PATH,
+  BOAT_PLACED_HULL_TOP_PATH,
+  BOAT_PLACED_HULL_BOT_PATH,
+} from './boat_constants';
+import {
+  BUS_BODY_VIEWBOX,
+  BUS_BODY_PATH,
+  BUS_WIN1_VIEWBOX,
+  BUS_WIN1_PATH,
+  BUS_WIN2_VIEWBOX,
+  BUS_WIN2_PATH,
+  BUS_WIN3_VIEWBOX,
+  BUS_WIN3_PATH,
+  BUS_WIN4_VIEWBOX,
+  BUS_WIN4_PATH,
+  BUS_WHEEL1_VIEWBOX,
+  BUS_WHEEL1_PATH,
+  BUS_WHEEL2_VIEWBOX,
+  BUS_WHEEL2_PATH,
+  BUS_PLACED_BODY_PATH,
+  BUS_PLACED_WIN1_PATH,
+  BUS_PLACED_WIN2_PATH,
+  BUS_PLACED_WIN3_PATH,
+  BUS_PLACED_WIN4_PATH,
+  BUS_PLACED_WHEEL1_PATH,
+  BUS_PLACED_WHEEL2_PATH,
+} from './bus_constants';
+import {
+  PINWHEEL_BLADE_TL_VIEWBOX,
+  PINWHEEL_BLADE_TL_PATH,
+  PINWHEEL_BLADE_TR_VIEWBOX,
+  PINWHEEL_BLADE_TR_PATH,
+  PINWHEEL_CENTER_VIEWBOX,
+  PINWHEEL_CENTER_PATH,
+  PINWHEEL_BLADE_BR_VIEWBOX,
+  PINWHEEL_BLADE_BR_PATH,
+  PINWHEEL_BLADE_BL_VIEWBOX,
+  PINWHEEL_BLADE_BL_PATH,
+  PINWHEEL_STICK_VIEWBOX,
+  PINWHEEL_STICK_PATH,
+  PINWHEEL_PLACED_BLADE_TL_PATH,
+  PINWHEEL_PLACED_BLADE_TR_PATH,
+  PINWHEEL_PLACED_CENTER_PATH,
+  PINWHEEL_PLACED_BLADE_BR_PATH,
+  PINWHEEL_PLACED_BLADE_BL_PATH,
+  PINWHEEL_PLACED_STICK_PATH,
+} from './pinwheel_constants';
 import {
   CATERPILLAR_SEG1_VIEWBOX,
   CATERPILLAR_SEG1_PATH,
@@ -358,14 +454,110 @@ const APPLE_STEM_PATH =
 const APPLE_LEAF_PATH =
   'M 205 110 C 220 52, 280 25, 335 38 C 305 85, 250 120, 205 110 Z';
 
-type GameStage = 'CATERPILLAR' | 'HEN' | 'ICECREAM' | 'LOLLIPOP' | 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
+type GameStage = 'HOUSE' | 'BOAT' | 'BUS' | 'PINWHEEL' | 'CATERPILLAR' | 'HEN' | 'ICECREAM' | 'LOLLIPOP' | 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
 
 export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled }) => {
-  // Current game stage: starts on CATERPILLAR (user attachment download__21__043dfdca.jfif)
-  const [currentStage, setCurrentStage] = useState<GameStage>('CATERPILLAR');
+  // Current game stage: starts on HOUSE (user attachment Kinderd_Canvas___Digital_Store_66dece07.jfif)
+  const [currentStage, setCurrentStage] = useState<GameStage>('HOUSE');
 
   // Currently active selected color from bottom 6 buttons
   const [selectedColor, setSelectedColor] = useState<ColorOption>(COLOR_OPTIONS[0]); // Default RED
+
+  // ---------------------------------------------------------
+  // HOUSE STAGE STATES (Kinderd_Canvas___Digital_Store_66dece07.jfif)
+  // ---------------------------------------------------------
+  const [houseChimneyColor, setHouseChimneyColor] = useState<string>('#ffffff');
+  const [isHouseChimneyPlaced, setIsHouseChimneyPlaced] = useState<boolean>(false);
+
+  const [houseRoofColor, setHouseRoofColor] = useState<string>('#ffffff');
+  const [isHouseRoofPlaced, setIsHouseRoofPlaced] = useState<boolean>(false);
+
+  const [houseWinTopColor, setHouseWinTopColor] = useState<string>('#ffffff');
+  const [isHouseWinTopPlaced, setIsHouseWinTopPlaced] = useState<boolean>(false);
+
+  const [houseWallColor, setHouseWallColor] = useState<string>('#ffffff');
+  const [isHouseWallPlaced, setIsHouseWallPlaced] = useState<boolean>(false);
+
+  const [houseWinBotColor, setHouseWinBotColor] = useState<string>('#ffffff');
+  const [isHouseWinBotPlaced, setIsHouseWinBotPlaced] = useState<boolean>(false);
+
+  const [houseDoorColor, setHouseDoorColor] = useState<string>('#ffffff');
+  const [isHouseDoorPlaced, setIsHouseDoorPlaced] = useState<boolean>(false);
+
+  const [houseBaseLeftColor, setHouseBaseLeftColor] = useState<string>('#ffffff');
+  const [isHouseBaseLeftPlaced, setIsHouseBaseLeftPlaced] = useState<boolean>(false);
+
+  const [houseBaseRightColor, setHouseBaseRightColor] = useState<string>('#ffffff');
+  const [isHouseBaseRightPlaced, setIsHouseBaseRightPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // BOAT STAGE STATES (540361655284408540_334b6940.jfif)
+  // ---------------------------------------------------------
+  const [boatMastColor, setBoatMastColor] = useState<string>('#ffffff');
+  const [isBoatMastPlaced, setIsBoatMastPlaced] = useState<boolean>(false);
+
+  const [boatSailLTopColor, setBoatSailLTopColor] = useState<string>('#ffffff');
+  const [isBoatSailLTopPlaced, setIsBoatSailLTopPlaced] = useState<boolean>(false);
+
+  const [boatSailLMidColor, setBoatSailLMidColor] = useState<string>('#ffffff');
+  const [isBoatSailLMidPlaced, setIsBoatSailLMidPlaced] = useState<boolean>(false);
+
+  const [boatSailLBotColor, setBoatSailLBotColor] = useState<string>('#ffffff');
+  const [isBoatSailLBotPlaced, setIsBoatSailLBotPlaced] = useState<boolean>(false);
+
+  const [boatSailRightColor, setBoatSailRightColor] = useState<string>('#ffffff');
+  const [isBoatSailRightPlaced, setIsBoatSailRightPlaced] = useState<boolean>(false);
+
+  const [boatHullTopColor, setBoatHullTopColor] = useState<string>('#ffffff');
+  const [isBoatHullTopPlaced, setIsBoatHullTopPlaced] = useState<boolean>(false);
+
+  const [boatHullBotColor, setBoatHullBotColor] = useState<string>('#ffffff');
+  const [isBoatHullBotPlaced, setIsBoatHullBotPlaced] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // BUS STAGE STATES (download__26__92570187.jfif)
+  // ---------------------------------------------------------
+  const [busBodyColor, setBusBodyColor] = useState<string>('#ffffff');
+  const [isBusBodyPlaced, setIsBusBodyPlaced] = useState<boolean>(false);
+
+  const [busWin1Color, setBusWin1Color] = useState<string>('#ffffff');
+  const [isBusWin1Placed, setIsBusWin1Placed] = useState<boolean>(false);
+
+  const [busWin2Color, setBusWin2Color] = useState<string>('#ffffff');
+  const [isBusWin2Placed, setIsBusWin2Placed] = useState<boolean>(false);
+
+  const [busWin3Color, setBusWin3Color] = useState<string>('#ffffff');
+  const [isBusWin3Placed, setIsBusWin3Placed] = useState<boolean>(false);
+
+  const [busWin4Color, setBusWin4Color] = useState<string>('#ffffff');
+  const [isBusWin4Placed, setIsBusWin4Placed] = useState<boolean>(false);
+
+  const [busWheel1Color, setBusWheel1Color] = useState<string>('#ffffff');
+  const [isBusWheel1Placed, setIsBusWheel1Placed] = useState<boolean>(false);
+
+  const [busWheel2Color, setBusWheel2Color] = useState<string>('#ffffff');
+  const [isBusWheel2Placed, setIsBusWheel2Placed] = useState<boolean>(false);
+
+  // ---------------------------------------------------------
+  // PINWHEEL STAGE STATES (download__22__a51dd624.jfif)
+  // ---------------------------------------------------------
+  const [pinwheelBladeTLColor, setPinwheelBladeTLColor] = useState<string>('#ffffff');
+  const [isPinwheelBladeTLPlaced, setIsPinwheelBladeTLPlaced] = useState<boolean>(false);
+
+  const [pinwheelBladeTRColor, setPinwheelBladeTRColor] = useState<string>('#ffffff');
+  const [isPinwheelBladeTRPlaced, setIsPinwheelBladeTRPlaced] = useState<boolean>(false);
+
+  const [pinwheelCenterColor, setPinwheelCenterColor] = useState<string>('#ffffff');
+  const [isPinwheelCenterPlaced, setIsPinwheelCenterPlaced] = useState<boolean>(false);
+
+  const [pinwheelBladeBRColor, setPinwheelBladeBRColor] = useState<string>('#ffffff');
+  const [isPinwheelBladeBRPlaced, setIsPinwheelBladeBRPlaced] = useState<boolean>(false);
+
+  const [pinwheelBladeBLColor, setPinwheelBladeBLColor] = useState<string>('#ffffff');
+  const [isPinwheelBladeBLPlaced, setIsPinwheelBladeBLPlaced] = useState<boolean>(false);
+
+  const [pinwheelStickColor, setPinwheelStickColor] = useState<string>('#ffffff');
+  const [isPinwheelStickPlaced, setIsPinwheelStickPlaced] = useState<boolean>(false);
 
   // ---------------------------------------------------------
   // CATERPILLAR STAGE STATES (download__21__043dfdca.jfif)
@@ -633,8 +825,12 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   // Shikshika (Teacher) Voice intro
   useEffect(() => {
     const timer = setTimeout(() => {
-      let voiceKey: 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'caterpillar';
-      if (currentStage === 'CATERPILLAR') voiceKey = 'caterpillar';
+      let voiceKey: 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'house';
+      if (currentStage === 'HOUSE') voiceKey = 'house';
+      else if (currentStage === 'BOAT') voiceKey = 'boat';
+      else if (currentStage === 'BUS') voiceKey = 'bus';
+      else if (currentStage === 'PINWHEEL') voiceKey = 'pinwheel';
+      else if (currentStage === 'CATERPILLAR') voiceKey = 'caterpillar';
       else if (currentStage === 'HEN') voiceKey = 'hen';
       else if (currentStage === 'ICECREAM') voiceKey = 'icecream';
       else if (currentStage === 'LOLLIPOP') voiceKey = 'lollipop';
@@ -671,7 +867,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   };
 
   // Celebration
-  const triggerVictory = (stage: 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
+  const triggerVictory = (stage: 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
     sounds.speakDrawingComplete(stage, soundEnabled);
     try {
       confetti({
@@ -681,6 +877,518 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       });
     } catch {
       // Ignore
+    }
+  };
+
+  // Check if entire House is assembled
+  const checkHouseVictory = (
+    chimney: boolean,
+    roof: boolean,
+    winTop: boolean,
+    wall: boolean,
+    winBot: boolean,
+    door: boolean,
+    baseLeft: boolean,
+    baseRight: boolean
+  ) => {
+    if (chimney && roof && winTop && wall && winBot && door && baseLeft && baseRight) {
+      triggerVictory('house');
+    }
+  };
+
+  // Drag handlers for House (8 pieces: Chimney, Roof, Top Window, Wall, Bottom Window, Door, Base Left, Base Right)
+  const handleHouseChimneyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHouseChimneyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('house_chimney', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHouseChimneyPlaced(true);
+      sounds.speakDrawingPiecePlaced('house_chimney', soundEnabled);
+      checkHouseVictory(true, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHouseRoofDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHouseRoofColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('house_roof', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHouseRoofPlaced(true);
+      sounds.speakDrawingPiecePlaced('house_roof', soundEnabled);
+      checkHouseVictory(isHouseChimneyPlaced, true, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHouseWinTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHouseWinTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('house_win_top', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHouseWinTopPlaced(true);
+      sounds.speakDrawingPiecePlaced('house_win_top', soundEnabled);
+      checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, true, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHouseWallDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHouseWallColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('house_wall', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHouseWallPlaced(true);
+      sounds.speakDrawingPiecePlaced('house_wall', soundEnabled);
+      checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, true, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHouseWinBotDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHouseWinBotColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('house_win_bot', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHouseWinBotPlaced(true);
+      sounds.speakDrawingPiecePlaced('house_win_bot', soundEnabled);
+      checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, true, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHouseDoorDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHouseDoorColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('house_door', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHouseDoorPlaced(true);
+      sounds.speakDrawingPiecePlaced('house_door', soundEnabled);
+      checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, true, isHouseBaseLeftPlaced, isHouseBaseRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHouseBaseLeftDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHouseBaseLeftColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('house_base_left', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHouseBaseLeftPlaced(true);
+      sounds.speakDrawingPiecePlaced('house_base_left', soundEnabled);
+      checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, true, isHouseBaseRightPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleHouseBaseRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setHouseBaseRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('house_base_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsHouseBaseRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('house_base_right', soundEnabled);
+      checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Boat is assembled
+  const checkBoatVictory = (
+    mast: boolean,
+    ltop: boolean,
+    lmid: boolean,
+    lbot: boolean,
+    right: boolean,
+    htop: boolean,
+    hbot: boolean
+  ) => {
+    if (mast && ltop && lmid && lbot && right && htop && hbot) {
+      triggerVictory('boat');
+    }
+  };
+
+  // Drag handlers for Boat (7 pieces: Mast, Sail LTop/LMid/LBot, Sail Right, Hull Top/Bot)
+  const handleBoatMastDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBoatMastColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('boat_mast', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBoatMastPlaced(true);
+      sounds.speakDrawingPiecePlaced('boat_mast', soundEnabled);
+      checkBoatVictory(true, isBoatSailLTopPlaced, isBoatSailLMidPlaced, isBoatSailLBotPlaced, isBoatSailRightPlaced, isBoatHullTopPlaced, isBoatHullBotPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBoatSailLTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBoatSailLTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('boat_sail_ltop', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBoatSailLTopPlaced(true);
+      sounds.speakDrawingPiecePlaced('boat_sail_ltop', soundEnabled);
+      checkBoatVictory(isBoatMastPlaced, true, isBoatSailLMidPlaced, isBoatSailLBotPlaced, isBoatSailRightPlaced, isBoatHullTopPlaced, isBoatHullBotPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBoatSailLMidDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBoatSailLMidColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('boat_sail_lmid', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBoatSailLMidPlaced(true);
+      sounds.speakDrawingPiecePlaced('boat_sail_lmid', soundEnabled);
+      checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, true, isBoatSailLBotPlaced, isBoatSailRightPlaced, isBoatHullTopPlaced, isBoatHullBotPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBoatSailLBotDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBoatSailLBotColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('boat_sail_lbot', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBoatSailLBotPlaced(true);
+      sounds.speakDrawingPiecePlaced('boat_sail_lbot', soundEnabled);
+      checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, isBoatSailLMidPlaced, true, isBoatSailRightPlaced, isBoatHullTopPlaced, isBoatHullBotPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBoatSailRightDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBoatSailRightColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('boat_sail_right', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBoatSailRightPlaced(true);
+      sounds.speakDrawingPiecePlaced('boat_sail_right', soundEnabled);
+      checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, isBoatSailLMidPlaced, isBoatSailLBotPlaced, true, isBoatHullTopPlaced, isBoatHullBotPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBoatHullTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBoatHullTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('boat_hull_top', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBoatHullTopPlaced(true);
+      sounds.speakDrawingPiecePlaced('boat_hull_top', soundEnabled);
+      checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, isBoatSailLMidPlaced, isBoatSailLBotPlaced, isBoatSailRightPlaced, true, isBoatHullBotPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBoatHullBotDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBoatHullBotColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('boat_hull_bot', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBoatHullBotPlaced(true);
+      sounds.speakDrawingPiecePlaced('boat_hull_bot', soundEnabled);
+      checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, isBoatSailLMidPlaced, isBoatSailLBotPlaced, isBoatSailRightPlaced, isBoatHullTopPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Bus is assembled
+  const checkBusVictory = (
+    body: boolean,
+    w1: boolean,
+    w2: boolean,
+    w3: boolean,
+    w4: boolean,
+    wh1: boolean,
+    wh2: boolean
+  ) => {
+    if (body && w1 && w2 && w3 && w4 && wh1 && wh2) {
+      triggerVictory('bus');
+    }
+  };
+
+  // Drag handlers for Bus (7 pieces: Body, 4 Windows, 2 Wheel Hubs)
+  const handleBusBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBusBodyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('bus_body', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBusBodyPlaced(true);
+      sounds.speakDrawingPiecePlaced('bus_body', soundEnabled);
+      checkBusVictory(true, isBusWin1Placed, isBusWin2Placed, isBusWin3Placed, isBusWin4Placed, isBusWheel1Placed, isBusWheel2Placed);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBusWin1DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBusWin1Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('bus_win1', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBusWin1Placed(true);
+      sounds.speakDrawingPiecePlaced('bus_win1', soundEnabled);
+      checkBusVictory(isBusBodyPlaced, true, isBusWin2Placed, isBusWin3Placed, isBusWin4Placed, isBusWheel1Placed, isBusWheel2Placed);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBusWin2DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBusWin2Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('bus_win2', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBusWin2Placed(true);
+      sounds.speakDrawingPiecePlaced('bus_win2', soundEnabled);
+      checkBusVictory(isBusBodyPlaced, isBusWin1Placed, true, isBusWin3Placed, isBusWin4Placed, isBusWheel1Placed, isBusWheel2Placed);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBusWin3DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBusWin3Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('bus_win3', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBusWin3Placed(true);
+      sounds.speakDrawingPiecePlaced('bus_win3', soundEnabled);
+      checkBusVictory(isBusBodyPlaced, isBusWin1Placed, isBusWin2Placed, true, isBusWin4Placed, isBusWheel1Placed, isBusWheel2Placed);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBusWin4DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBusWin4Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('bus_win4', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBusWin4Placed(true);
+      sounds.speakDrawingPiecePlaced('bus_win4', soundEnabled);
+      checkBusVictory(isBusBodyPlaced, isBusWin1Placed, isBusWin2Placed, isBusWin3Placed, true, isBusWheel1Placed, isBusWheel2Placed);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBusWheel1DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBusWheel1Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('bus_wheel1', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBusWheel1Placed(true);
+      sounds.speakDrawingPiecePlaced('bus_wheel1', soundEnabled);
+      checkBusVictory(isBusBodyPlaced, isBusWin1Placed, isBusWin2Placed, isBusWin3Placed, isBusWin4Placed, true, isBusWheel2Placed);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleBusWheel2DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setBusWheel2Color(selectedColor.hex);
+      sounds.speakDrawingPieceColored('bus_wheel2', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsBusWheel2Placed(true);
+      sounds.speakDrawingPiecePlaced('bus_wheel2', soundEnabled);
+      checkBusVictory(isBusBodyPlaced, isBusWin1Placed, isBusWin2Placed, isBusWin3Placed, isBusWin4Placed, isBusWheel1Placed, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  // Check if entire Pinwheel is assembled
+  const checkPinwheelVictory = (
+    tl: boolean,
+    tr: boolean,
+    center: boolean,
+    br: boolean,
+    bl: boolean,
+    stick: boolean
+  ) => {
+    if (tl && tr && center && br && bl && stick) {
+      triggerVictory('pinwheel');
+    }
+  };
+
+  // Drag handlers for Pinwheel (6 pieces: Blade TL, Blade TR, Center, Blade BR, Blade BL, Stick)
+  const handlePinwheelBladeTLDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setPinwheelBladeTLColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('pinwheel_blade_tl', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsPinwheelBladeTLPlaced(true);
+      sounds.speakDrawingPiecePlaced('pinwheel_blade_tl', soundEnabled);
+      checkPinwheelVictory(true, isPinwheelBladeTRPlaced, isPinwheelCenterPlaced, isPinwheelBladeBRPlaced, isPinwheelBladeBLPlaced, isPinwheelStickPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handlePinwheelBladeTRDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setPinwheelBladeTRColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('pinwheel_blade_tr', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsPinwheelBladeTRPlaced(true);
+      sounds.speakDrawingPiecePlaced('pinwheel_blade_tr', soundEnabled);
+      checkPinwheelVictory(isPinwheelBladeTLPlaced, true, isPinwheelCenterPlaced, isPinwheelBladeBRPlaced, isPinwheelBladeBLPlaced, isPinwheelStickPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handlePinwheelCenterDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setPinwheelCenterColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('pinwheel_center', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsPinwheelCenterPlaced(true);
+      sounds.speakDrawingPiecePlaced('pinwheel_center', soundEnabled);
+      checkPinwheelVictory(isPinwheelBladeTLPlaced, isPinwheelBladeTRPlaced, true, isPinwheelBladeBRPlaced, isPinwheelBladeBLPlaced, isPinwheelStickPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handlePinwheelBladeBRDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setPinwheelBladeBRColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('pinwheel_blade_br', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsPinwheelBladeBRPlaced(true);
+      sounds.speakDrawingPiecePlaced('pinwheel_blade_br', soundEnabled);
+      checkPinwheelVictory(isPinwheelBladeTLPlaced, isPinwheelBladeTRPlaced, isPinwheelCenterPlaced, true, isPinwheelBladeBLPlaced, isPinwheelStickPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handlePinwheelBladeBLDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setPinwheelBladeBLColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('pinwheel_blade_bl', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsPinwheelBladeBLPlaced(true);
+      sounds.speakDrawingPiecePlaced('pinwheel_blade_bl', soundEnabled);
+      checkPinwheelVictory(isPinwheelBladeTLPlaced, isPinwheelBladeTRPlaced, isPinwheelCenterPlaced, isPinwheelBladeBRPlaced, true, isPinwheelStickPlaced);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handlePinwheelStickDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setPinwheelStickColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('pinwheel_stick', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsPinwheelStickPlaced(true);
+      sounds.speakDrawingPiecePlaced('pinwheel_stick', soundEnabled);
+      checkPinwheelVictory(isPinwheelBladeTLPlaced, isPinwheelBladeTRPlaced, isPinwheelCenterPlaced, isPinwheelBladeBRPlaced, isPinwheelBladeBLPlaced, true);
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
     }
   };
 
@@ -2141,10 +2849,22 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
   };
 
-  // NEXT Button Handler: cycles CATERPILLAR -> HEN -> ICECREAM -> LOLLIPOP -> DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> CATERPILLAR
+  // NEXT Button Handler: cycles HOUSE -> BOAT -> BUS -> PINWHEEL -> CATERPILLAR -> HEN -> ICECREAM -> LOLLIPOP -> DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> HOUSE
   const handleNext = () => {
     sounds.playPop(soundEnabled);
-    if (currentStage === 'CATERPILLAR') {
+    if (currentStage === 'HOUSE') {
+      setCurrentStage('BOAT');
+      sounds.speakDrawingNext('boat', soundEnabled);
+    } else if (currentStage === 'BOAT') {
+      setCurrentStage('BUS');
+      sounds.speakDrawingNext('bus', soundEnabled);
+    } else if (currentStage === 'BUS') {
+      setCurrentStage('PINWHEEL');
+      sounds.speakDrawingNext('pinwheel', soundEnabled);
+    } else if (currentStage === 'PINWHEEL') {
+      setCurrentStage('CATERPILLAR');
+      sounds.speakDrawingNext('caterpillar', soundEnabled);
+    } else if (currentStage === 'CATERPILLAR') {
       setCurrentStage('HEN');
       sounds.speakDrawingNext('hen', soundEnabled);
     } else if (currentStage === 'HEN') {
@@ -2190,12 +2910,84 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       setCurrentStage('APPLE');
       sounds.speakDrawingNext('apple', soundEnabled);
     } else {
-      setCurrentStage('CATERPILLAR');
-      sounds.speakDrawingNext('caterpillar', soundEnabled);
+      setCurrentStage('HOUSE');
+      sounds.speakDrawingNext('house', soundEnabled);
     }
   };
 
   // Reset Handlers
+  const handleResetHouse = () => {
+    setIsHouseChimneyPlaced(false);
+    setIsHouseRoofPlaced(false);
+    setIsHouseWinTopPlaced(false);
+    setIsHouseWallPlaced(false);
+    setIsHouseWinBotPlaced(false);
+    setIsHouseDoorPlaced(false);
+    setIsHouseBaseLeftPlaced(false);
+    setIsHouseBaseRightPlaced(false);
+    setHouseChimneyColor('#ffffff');
+    setHouseRoofColor('#ffffff');
+    setHouseWinTopColor('#ffffff');
+    setHouseWallColor('#ffffff');
+    setHouseWinBotColor('#ffffff');
+    setHouseDoorColor('#ffffff');
+    setHouseBaseLeftColor('#ffffff');
+    setHouseBaseRightColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetBoat = () => {
+    setIsBoatMastPlaced(false);
+    setIsBoatSailLTopPlaced(false);
+    setIsBoatSailLMidPlaced(false);
+    setIsBoatSailLBotPlaced(false);
+    setIsBoatSailRightPlaced(false);
+    setIsBoatHullTopPlaced(false);
+    setIsBoatHullBotPlaced(false);
+    setBoatMastColor('#ffffff');
+    setBoatSailLTopColor('#ffffff');
+    setBoatSailLMidColor('#ffffff');
+    setBoatSailLBotColor('#ffffff');
+    setBoatSailRightColor('#ffffff');
+    setBoatHullTopColor('#ffffff');
+    setBoatHullBotColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetBus = () => {
+    setIsBusBodyPlaced(false);
+    setIsBusWin1Placed(false);
+    setIsBusWin2Placed(false);
+    setIsBusWin3Placed(false);
+    setIsBusWin4Placed(false);
+    setIsBusWheel1Placed(false);
+    setIsBusWheel2Placed(false);
+    setBusBodyColor('#ffffff');
+    setBusWin1Color('#ffffff');
+    setBusWin2Color('#ffffff');
+    setBusWin3Color('#ffffff');
+    setBusWin4Color('#ffffff');
+    setBusWheel1Color('#ffffff');
+    setBusWheel2Color('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
+  const handleResetPinwheel = () => {
+    setIsPinwheelBladeTLPlaced(false);
+    setIsPinwheelBladeTRPlaced(false);
+    setIsPinwheelCenterPlaced(false);
+    setIsPinwheelBladeBRPlaced(false);
+    setIsPinwheelBladeBLPlaced(false);
+    setIsPinwheelStickPlaced(false);
+    setPinwheelBladeTLColor('#ffffff');
+    setPinwheelBladeTRColor('#ffffff');
+    setPinwheelCenterColor('#ffffff');
+    setPinwheelBladeBRColor('#ffffff');
+    setPinwheelBladeBLColor('#ffffff');
+    setPinwheelStickColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
   const handleResetCaterpillar = () => {
     setIsCatHeadPlaced(false);
     setIsCatSeg1Placed(false);
@@ -2477,7 +3269,1683 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         id="drawing-main-stage"
         className="w-full flex-1 flex flex-row items-center justify-between px-2 sm:px-6 md:px-10 py-1 max-w-6xl mx-auto min-h-0 z-20 gap-2 sm:gap-6"
       >
-        {currentStage === 'CATERPILLAR' ? (
+        {currentStage === 'HOUSE' ? (
+          // ================================================================
+          // HOUSE (घर) GAME SCREEN (Kinderd_Canvas___Digital_Store_66dece07.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: HOUSE OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="house-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[715/790] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 715 790"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Chimney */}
+                {isHouseChimneyPlaced && (
+                  <path
+                    d={HOUSE_PLACED_CHIMNEY_PATH}
+                    fill={houseChimneyColor}
+                    onClick={() => {
+                      setHouseChimneyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_chimney', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Roof (with evenodd top window hole) */}
+                {isHouseRoofPlaced && (
+                  <path
+                    d={HOUSE_PLACED_ROOF_PATH}
+                    fill={houseRoofColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setHouseRoofColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_roof', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Top Window */}
+                {isHouseWinTopPlaced && (
+                  <path
+                    d={HOUSE_PLACED_WIN_TOP_PATH}
+                    fill={houseWinTopColor}
+                    onClick={() => {
+                      setHouseWinTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_win_top', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Wall (with evenodd bottom window hole) */}
+                {isHouseWallPlaced && (
+                  <path
+                    d={HOUSE_PLACED_WALL_PATH}
+                    fill={houseWallColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setHouseWallColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_wall', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Bottom Window */}
+                {isHouseWinBotPlaced && (
+                  <path
+                    d={HOUSE_PLACED_WIN_BOT_PATH}
+                    fill={houseWinBotColor}
+                    onClick={() => {
+                      setHouseWinBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_win_bot', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Door */}
+                {isHouseDoorPlaced && (
+                  <path
+                    d={HOUSE_PLACED_DOOR_PATH}
+                    fill={houseDoorColor}
+                    onClick={() => {
+                      setHouseDoorColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_door', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 7. Placed Foundation Left */}
+                {isHouseBaseLeftPlaced && (
+                  <path
+                    d={HOUSE_PLACED_BASE_LEFT_PATH}
+                    fill={houseBaseLeftColor}
+                    onClick={() => {
+                      setHouseBaseLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_base_left', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 8. Placed Foundation Right */}
+                {isHouseBaseRightPlaced && (
+                  <path
+                    d={HOUSE_PLACED_BASE_RIGHT_PATH}
+                    fill={houseBaseRightColor}
+                    onClick={() => {
+                      setHouseBaseRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_base_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={houseOutlineImg}
+                alt="House Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: HOUSE CUTTING PIECES */}
+            <div
+              id="house-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[715/790] flex items-center justify-center"
+            >
+              {isHouseChimneyPlaced &&
+                isHouseRoofPlaced &&
+                isHouseWinTopPlaced &&
+                isHouseWallPlaced &&
+                isHouseWinBotPlaced &&
+                isHouseDoorPlaced &&
+                isHouseBaseLeftPlaced &&
+                isHouseBaseRightPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetHouse}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Roof */}
+                {!isHouseRoofPlaced && (
+                  <motion.div
+                    id="cutting-house-roof"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHouseRoofDragEnd}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHouseRoofColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_roof', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '4%',
+                      top: '3%',
+                      width: `${(659 / 715) * 60}%`,
+                      height: `${(338 / 790) * 60}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HOUSE_ROOF_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={HOUSE_ROOF_PATH}
+                        fill={houseRoofColor}
+                        fillRule="evenodd"
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Chimney */}
+                {!isHouseChimneyPlaced && (
+                  <motion.div
+                    id="cutting-house-chimney"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHouseChimneyDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHouseChimneyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_chimney', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '64%',
+                      top: '4%',
+                      width: `${(84 / 715) * 75}%`,
+                      height: `${(170 / 790) * 75}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HOUSE_CHIMNEY_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-10" y="-10" width="104" height="190" fill="transparent" />
+                      <path
+                        d={HOUSE_CHIMNEY_PATH}
+                        fill={houseChimneyColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Top Window */}
+                {!isHouseWinTopPlaced && (
+                  <motion.div
+                    id="cutting-house-win-top"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHouseWinTopDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHouseWinTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_win_top', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '79%',
+                      top: '5%',
+                      width: `${(105 / 715) * 75}%`,
+                      height: `${(110 / 790) * 75}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HOUSE_WIN_TOP_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-10" y="-10" width="125" height="130" fill="transparent" />
+                      <path
+                        d={HOUSE_WIN_TOP_PATH}
+                        fill={houseWinTopColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Wall */}
+                {!isHouseWallPlaced && (
+                  <motion.div
+                    id="cutting-house-wall"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHouseWallDragEnd}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHouseWallColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_wall', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '4%',
+                      top: '32%',
+                      width: `${(589 / 715) * 56}%`,
+                      height: `${(327 / 790) * 56}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HOUSE_WALL_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={HOUSE_WALL_PATH}
+                        fill={houseWallColor}
+                        fillRule="evenodd"
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Bottom Window */}
+                {!isHouseWinBotPlaced && (
+                  <motion.div
+                    id="cutting-house-win-bot"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHouseWinBotDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHouseWinBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_win_bot', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '54%',
+                      top: '34%',
+                      width: `${(136 / 715) * 72}%`,
+                      height: `${(144 / 790) * 72}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HOUSE_WIN_BOT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-10" y="-10" width="156" height="164" fill="transparent" />
+                      <path
+                        d={HOUSE_WIN_BOT_PATH}
+                        fill={houseWinBotColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Door */}
+                {!isHouseDoorPlaced && (
+                  <motion.div
+                    id="cutting-house-door"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHouseDoorDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHouseDoorColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_door', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '73%',
+                      top: '30%',
+                      width: `${(187 / 715) * 70}%`,
+                      height: `${(286 / 790) * 70}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HOUSE_DOOR_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={HOUSE_DOOR_PATH}
+                        fill={houseDoorColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 7. Foundation Left */}
+                {!isHouseBaseLeftPlaced && (
+                  <motion.div
+                    id="cutting-house-base-left"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHouseBaseLeftDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHouseBaseLeftColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_base_left', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '8%',
+                      top: '65%',
+                      width: `${(322 / 715) * 85}%`,
+                      height: `${(50 / 790) * 85}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HOUSE_BASE_LEFT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-10" y="-14" width="342" height="78" fill="transparent" />
+                      <path
+                        d={HOUSE_BASE_LEFT_PATH}
+                        fill={houseBaseLeftColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 8. Foundation Right */}
+                {!isHouseBaseRightPlaced && (
+                  <motion.div
+                    id="cutting-house-base-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleHouseBaseRightDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setHouseBaseRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('house_base_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '58%',
+                      top: '65%',
+                      width: `${(77 / 715) * 95}%`,
+                      height: `${(49 / 790) * 95}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={HOUSE_BASE_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-14" y="-14" width="105" height="77" fill="transparent" />
+                      <path
+                        d={HOUSE_BASE_RIGHT_PATH}
+                        fill={houseBaseRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 8 pieces are placed */}
+                {isHouseChimneyPlaced &&
+                  isHouseRoofPlaced &&
+                  isHouseWinTopPlaced &&
+                  isHouseWallPlaced &&
+                  isHouseWinBotPlaced &&
+                  isHouseDoorPlaced &&
+                  isHouseBaseLeftPlaced &&
+                  isHouseBaseRightPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ घर सही जगह लग गया! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'BOAT' ? (
+          // ================================================================
+          // BOAT (नाव) GAME SCREEN (540361655284408540_334b6940.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: BOAT OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="boat-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[625/844] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 625 844"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Mast */}
+                {isBoatMastPlaced && (
+                  <path
+                    d={BOAT_PLACED_MAST_PATH}
+                    fill={boatMastColor}
+                    onClick={() => {
+                      setBoatMastColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_mast', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Left Sail Top */}
+                {isBoatSailLTopPlaced && (
+                  <path
+                    d={BOAT_PLACED_SAIL_LTOP_PATH}
+                    fill={boatSailLTopColor}
+                    onClick={() => {
+                      setBoatSailLTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_sail_ltop', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Left Sail Middle */}
+                {isBoatSailLMidPlaced && (
+                  <path
+                    d={BOAT_PLACED_SAIL_LMID_PATH}
+                    fill={boatSailLMidColor}
+                    onClick={() => {
+                      setBoatSailLMidColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_sail_lmid', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Left Sail Bottom */}
+                {isBoatSailLBotPlaced && (
+                  <path
+                    d={BOAT_PLACED_SAIL_LBOT_PATH}
+                    fill={boatSailLBotColor}
+                    onClick={() => {
+                      setBoatSailLBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_sail_lbot', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Right Sail */}
+                {isBoatSailRightPlaced && (
+                  <path
+                    d={BOAT_PLACED_SAIL_RIGHT_PATH}
+                    fill={boatSailRightColor}
+                    onClick={() => {
+                      setBoatSailRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_sail_right', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Hull Top Band */}
+                {isBoatHullTopPlaced && (
+                  <path
+                    d={BOAT_PLACED_HULL_TOP_PATH}
+                    fill={boatHullTopColor}
+                    onClick={() => {
+                      setBoatHullTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_hull_top', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 7. Placed Hull Bottom Base */}
+                {isBoatHullBotPlaced && (
+                  <path
+                    d={BOAT_PLACED_HULL_BOT_PATH}
+                    fill={boatHullBotColor}
+                    onClick={() => {
+                      setBoatHullBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_hull_bot', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={boatOutlineImg}
+                alt="Boat Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: BOAT CUTTING PIECES */}
+            <div
+              id="boat-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[625/844] flex items-center justify-center"
+            >
+              {isBoatMastPlaced &&
+                isBoatSailLTopPlaced &&
+                isBoatSailLMidPlaced &&
+                isBoatSailLBotPlaced &&
+                isBoatSailRightPlaced &&
+                isBoatHullTopPlaced &&
+                isBoatHullBotPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetBoat}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Left Sail Top */}
+                {!isBoatSailLTopPlaced && (
+                  <motion.div
+                    id="cutting-boat-sail-ltop"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBoatSailLTopDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBoatSailLTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_sail_ltop', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '4%',
+                      top: '4%',
+                      width: `${(126 / 625) * 80}%`,
+                      height: `${(235 / 844) * 80}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BOAT_SAIL_LTOP_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BOAT_SAIL_LTOP_PATH}
+                        fill={boatSailLTopColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Left Sail Middle */}
+                {!isBoatSailLMidPlaced && (
+                  <motion.div
+                    id="cutting-boat-sail-lmid"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBoatSailLMidDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBoatSailLMidColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_sail_lmid', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '25%',
+                      top: '4%',
+                      width: `${(143 / 625) * 80}%`,
+                      height: `${(229 / 844) * 80}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BOAT_SAIL_LMID_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BOAT_SAIL_LMID_PATH}
+                        fill={boatSailLMidColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Mast */}
+                {!isBoatMastPlaced && (
+                  <motion.div
+                    id="cutting-boat-mast"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBoatMastDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBoatMastColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_mast', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '49%',
+                      top: '4%',
+                      width: `${(62 / 625) * 68}%`,
+                      height: `${(578 / 844) * 68}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BOAT_MAST_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-14" y="-8" width="90" height="594" fill="transparent" />
+                      <path
+                        d={BOAT_MAST_PATH}
+                        fill={boatMastColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Right Sail */}
+                {!isBoatSailRightPlaced && (
+                  <motion.div
+                    id="cutting-boat-sail-right"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBoatSailRightDragEnd}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBoatSailRightColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_sail_right', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '64%',
+                      top: '4%',
+                      width: `${(228 / 625) * 70}%`,
+                      height: `${(539 / 844) * 70}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BOAT_SAIL_RIGHT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BOAT_SAIL_RIGHT_PATH}
+                        fill={boatSailRightColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Left Sail Bottom */}
+                {!isBoatSailLBotPlaced && (
+                  <motion.div
+                    id="cutting-boat-sail-lbot"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBoatSailLBotDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBoatSailLBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_sail_lbot', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '10%',
+                      top: '31%',
+                      width: `${(195 / 625) * 78}%`,
+                      height: `${(232 / 844) * 78}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BOAT_SAIL_LBOT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BOAT_SAIL_LBOT_PATH}
+                        fill={boatSailLBotColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Hull Top Band */}
+                {!isBoatHullTopPlaced && (
+                  <motion.div
+                    id="cutting-boat-hull-top"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBoatHullTopDragEnd}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBoatHullTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_hull_top', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '13%',
+                      top: '59%',
+                      width: `${(573 / 625) * 80}%`,
+                      height: `${(74 / 844) * 80}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BOAT_HULL_TOP_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-8" y="-12" width="589" height="98" fill="transparent" />
+                      <path
+                        d={BOAT_HULL_TOP_PATH}
+                        fill={boatHullTopColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 7. Hull Bottom Base */}
+                {!isBoatHullBotPlaced && (
+                  <motion.div
+                    id="cutting-boat-hull-bot"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBoatHullBotDragEnd}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setBoatHullBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('boat_hull_bot', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '17%',
+                      top: '72%',
+                      width: `${(519 / 625) * 80}%`,
+                      height: `${(134 / 844) * 80}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BOAT_HULL_BOT_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BOAT_HULL_BOT_PATH}
+                        fill={boatHullBotColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 7 pieces are placed */}
+                {isBoatMastPlaced &&
+                  isBoatSailLTopPlaced &&
+                  isBoatSailLMidPlaced &&
+                  isBoatSailLBotPlaced &&
+                  isBoatSailRightPlaced &&
+                  isBoatHullTopPlaced &&
+                  isBoatHullBotPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ नाव सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'BUS' ? (
+          // ================================================================
+          // BUS (बस) GAME SCREEN (download__26__92570187.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: BUS OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="bus-outline-container"
+              className="relative flex-1 w-full max-w-[540px] max-h-[480px] aspect-[729/391] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 729 391"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Bus Body (with evenodd window holes) */}
+                {isBusBodyPlaced && (
+                  <path
+                    d={BUS_PLACED_BODY_PATH}
+                    fill={busBodyColor}
+                    fillRule="evenodd"
+                    onClick={() => {
+                      setBusBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_body', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Window 1 */}
+                {isBusWin1Placed && (
+                  <path
+                    d={BUS_PLACED_WIN1_PATH}
+                    fill={busWin1Color}
+                    onClick={() => {
+                      setBusWin1Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_win1', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Window 2 */}
+                {isBusWin2Placed && (
+                  <path
+                    d={BUS_PLACED_WIN2_PATH}
+                    fill={busWin2Color}
+                    onClick={() => {
+                      setBusWin2Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_win2', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Window 3 */}
+                {isBusWin3Placed && (
+                  <path
+                    d={BUS_PLACED_WIN3_PATH}
+                    fill={busWin3Color}
+                    onClick={() => {
+                      setBusWin3Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_win3', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Window 4 */}
+                {isBusWin4Placed && (
+                  <path
+                    d={BUS_PLACED_WIN4_PATH}
+                    fill={busWin4Color}
+                    onClick={() => {
+                      setBusWin4Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_win4', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Wheel 1 (Rear Hub) */}
+                {isBusWheel1Placed && (
+                  <path
+                    d={BUS_PLACED_WHEEL1_PATH}
+                    fill={busWheel1Color}
+                    onClick={() => {
+                      setBusWheel1Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_wheel1', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 7. Placed Wheel 2 (Front Hub) */}
+                {isBusWheel2Placed && (
+                  <path
+                    d={BUS_PLACED_WHEEL2_PATH}
+                    fill={busWheel2Color}
+                    onClick={() => {
+                      setBusWheel2Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_wheel2', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={busOutlineImg}
+                alt="Bus Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: BUS CUTTING PIECES */}
+            <div
+              id="bus-cutting-container"
+              className="relative flex-1 w-full max-w-[540px] max-h-[480px] aspect-[729/391] flex items-center justify-center"
+            >
+              {isBusBodyPlaced &&
+                isBusWin1Placed &&
+                isBusWin2Placed &&
+                isBusWin3Placed &&
+                isBusWin4Placed &&
+                isBusWheel1Placed &&
+                isBusWheel2Placed && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetBus}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Bus Body (Top Center) */}
+                {!isBusBodyPlaced && (
+                  <motion.div
+                    id="cutting-bus-body"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBusBodyDragEnd}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => {
+                      setBusBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_body', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '18%',
+                      top: '4%',
+                      width: `${(683 / 729) * 68}%`,
+                      height: `${(279 / 391) * 68}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BUS_BODY_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BUS_BODY_PATH}
+                        fill={busBodyColor}
+                        fillRule="evenodd"
+                        stroke="#e2e8f0"
+                        strokeWidth="1.6"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Window 1 (Bottom Row Left) */}
+                {!isBusWin1Placed && (
+                  <motion.div
+                    id="cutting-bus-win1"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBusWin1DragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      setBusWin1Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_win1', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '4%',
+                      top: '60%',
+                      width: `${(101 / 729) * 80}%`,
+                      height: `${(93 / 391) * 80}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BUS_WIN1_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BUS_WIN1_PATH}
+                        fill={busWin1Color}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Window 2 */}
+                {!isBusWin2Placed && (
+                  <motion.div
+                    id="cutting-bus-win2"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBusWin2DragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      setBusWin2Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_win2', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '19%',
+                      top: '60%',
+                      width: `${(95 / 729) * 80}%`,
+                      height: `${(93 / 391) * 80}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BUS_WIN2_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BUS_WIN2_PATH}
+                        fill={busWin2Color}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Window 3 */}
+                {!isBusWin3Placed && (
+                  <motion.div
+                    id="cutting-bus-win3"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBusWin3DragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      setBusWin3Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_win3', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '34%',
+                      top: '60%',
+                      width: `${(91 / 729) * 80}%`,
+                      height: `${(93 / 391) * 80}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BUS_WIN3_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BUS_WIN3_PATH}
+                        fill={busWin3Color}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Window 4 */}
+                {!isBusWin4Placed && (
+                  <motion.div
+                    id="cutting-bus-win4"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBusWin4DragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      setBusWin4Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_win4', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '48%',
+                      top: '60%',
+                      width: `${(88 / 729) * 80}%`,
+                      height: `${(92 / 391) * 80}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BUS_WIN4_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={BUS_WIN4_PATH}
+                        fill={busWin4Color}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Wheel 1 (Rear Hub) */}
+                {!isBusWheel1Placed && (
+                  <motion.div
+                    id="cutting-bus-wheel1"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBusWheel1DragEnd}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.94 }}
+                    onClick={() => {
+                      setBusWheel1Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_wheel1', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '64%',
+                      top: '63%',
+                      width: `${(55 / 729) * 100}%`,
+                      height: `${(55 / 391) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BUS_WHEEL1_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-10" y="-10" width="75" height="75" fill="transparent" />
+                      <path
+                        d={BUS_WHEEL1_PATH}
+                        fill={busWheel1Color}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 7. Wheel 2 (Front Hub) */}
+                {!isBusWheel2Placed && (
+                  <motion.div
+                    id="cutting-bus-wheel2"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleBusWheel2DragEnd}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.94 }}
+                    onClick={() => {
+                      setBusWheel2Color(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('bus_wheel2', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '79%',
+                      top: '63%',
+                      width: `${(55 / 729) * 100}%`,
+                      height: `${(55 / 391) * 100}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={BUS_WHEEL2_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-10" y="-10" width="75" height="75" fill="transparent" />
+                      <path
+                        d={BUS_WHEEL2_PATH}
+                        fill={busWheel2Color}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 7 pieces are placed */}
+                {isBusBodyPlaced &&
+                  isBusWin1Placed &&
+                  isBusWin2Placed &&
+                  isBusWin3Placed &&
+                  isBusWin4Placed &&
+                  isBusWheel1Placed &&
+                  isBusWheel2Placed && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ बस सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'PINWHEEL' ? (
+          // ================================================================
+          // PINWHEEL (फिरकी) GAME SCREEN (download__22__a51dd624.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: PINWHEEL OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="pinwheel-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[748/1012] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 748 1012"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Stick (Bottom) */}
+                {isPinwheelStickPlaced && (
+                  <path
+                    d={PINWHEEL_PLACED_STICK_PATH}
+                    fill={pinwheelStickColor}
+                    onClick={() => {
+                      setPinwheelStickColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('pinwheel_stick', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Top-Left Blade */}
+                {isPinwheelBladeTLPlaced && (
+                  <path
+                    d={PINWHEEL_PLACED_BLADE_TL_PATH}
+                    fill={pinwheelBladeTLColor}
+                    onClick={() => {
+                      setPinwheelBladeTLColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('pinwheel_blade_tl', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Top-Right Blade */}
+                {isPinwheelBladeTRPlaced && (
+                  <path
+                    d={PINWHEEL_PLACED_BLADE_TR_PATH}
+                    fill={pinwheelBladeTRColor}
+                    onClick={() => {
+                      setPinwheelBladeTRColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('pinwheel_blade_tr', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Bottom-Right Blade */}
+                {isPinwheelBladeBRPlaced && (
+                  <path
+                    d={PINWHEEL_PLACED_BLADE_BR_PATH}
+                    fill={pinwheelBladeBRColor}
+                    onClick={() => {
+                      setPinwheelBladeBRColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('pinwheel_blade_br', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 5. Placed Bottom-Left Blade */}
+                {isPinwheelBladeBLPlaced && (
+                  <path
+                    d={PINWHEEL_PLACED_BLADE_BL_PATH}
+                    fill={pinwheelBladeBLColor}
+                    onClick={() => {
+                      setPinwheelBladeBLColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('pinwheel_blade_bl', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 6. Placed Center Circle */}
+                {isPinwheelCenterPlaced && (
+                  <path
+                    d={PINWHEEL_PLACED_CENTER_PATH}
+                    fill={pinwheelCenterColor}
+                    onClick={() => {
+                      setPinwheelCenterColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('pinwheel_center', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={pinwheelOutlineImg}
+                alt="Pinwheel Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: PINWHEEL CUTTING PIECES */}
+            <div
+              id="pinwheel-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[748/1012] flex items-center justify-center"
+            >
+              {isPinwheelBladeTLPlaced &&
+                isPinwheelBladeTRPlaced &&
+                isPinwheelCenterPlaced &&
+                isPinwheelBladeBRPlaced &&
+                isPinwheelBladeBLPlaced &&
+                isPinwheelStickPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetPinwheel}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full h-full">
+                {/* 1. Blade Top-Left */}
+                {!isPinwheelBladeTLPlaced && (
+                  <motion.div
+                    id="cutting-pinwheel-blade-tl"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handlePinwheelBladeTLDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setPinwheelBladeTLColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('pinwheel_blade_tl', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '8%',
+                      top: '5%',
+                      width: `${(212 / 748) * 75}%`,
+                      height: `${(354 / 1012) * 75}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={PINWHEEL_BLADE_TL_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={PINWHEEL_BLADE_TL_PATH}
+                        fill={pinwheelBladeTLColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Center Circle */}
+                {!isPinwheelCenterPlaced && (
+                  <motion.div
+                    id="cutting-pinwheel-center"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handlePinwheelCenterDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      setPinwheelCenterColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('pinwheel_center', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '40%',
+                      top: '8%',
+                      width: `${(114 / 748) * 90}%`,
+                      height: `${(113 / 1012) * 90}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={PINWHEEL_CENTER_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={PINWHEEL_CENTER_PATH}
+                        fill={pinwheelCenterColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Blade Top-Right */}
+                {!isPinwheelBladeTRPlaced && (
+                  <motion.div
+                    id="cutting-pinwheel-blade-tr"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handlePinwheelBladeTRDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setPinwheelBladeTRColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('pinwheel_blade_tr', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '58%',
+                      top: '12%',
+                      width: `${(352 / 748) * 78}%`,
+                      height: `${(220 / 1012) * 78}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={PINWHEEL_BLADE_TR_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={PINWHEEL_BLADE_TR_PATH}
+                        fill={pinwheelBladeTRColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Blade Bottom-Left */}
+                {!isPinwheelBladeBLPlaced && (
+                  <motion.div
+                    id="cutting-pinwheel-blade-bl"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handlePinwheelBladeBLDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setPinwheelBladeBLColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('pinwheel_blade_bl', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '6%',
+                      top: '44%',
+                      width: `${(355 / 748) * 78}%`,
+                      height: `${(229 / 1012) * 78}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={PINWHEEL_BLADE_BL_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={PINWHEEL_BLADE_BL_PATH}
+                        fill={pinwheelBladeBLColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 5. Blade Bottom-Right */}
+                {!isPinwheelBladeBRPlaced && (
+                  <motion.div
+                    id="cutting-pinwheel-blade-br"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handlePinwheelBladeBRDragEnd}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setPinwheelBladeBRColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('pinwheel_blade_br', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '48%',
+                      top: '44%',
+                      width: `${(217 / 748) * 75}%`,
+                      height: `${(359 / 1012) * 75}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={PINWHEEL_BLADE_BR_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <path
+                        d={PINWHEEL_BLADE_BR_PATH}
+                        fill={pinwheelBladeBRColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 6. Stick */}
+                {!isPinwheelStickPlaced && (
+                  <motion.div
+                    id="cutting-pinwheel-stick"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handlePinwheelStickDragEnd}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setPinwheelStickColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('pinwheel_stick', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{
+                      left: '80%',
+                      top: '42%',
+                      width: `${(50 / 748) * 85}%`,
+                      height: `${(403 / 1012) * 85}%`,
+                    }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg
+                      viewBox={PINWHEEL_STICK_VIEWBOX}
+                      className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible"
+                    >
+                      <rect x="-16" y="-8" width="82" height="419" fill="transparent" />
+                      <path
+                        d={PINWHEEL_STICK_PATH}
+                        fill={pinwheelStickColor}
+                        stroke="#e2e8f0"
+                        strokeWidth="1.4"
+                      />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* Success Banner when all 6 pieces are placed */}
+                {isPinwheelBladeTLPlaced &&
+                  isPinwheelBladeTRPlaced &&
+                  isPinwheelCenterPlaced &&
+                  isPinwheelBladeBRPlaced &&
+                  isPinwheelBladeBLPlaced &&
+                  isPinwheelStickPlaced && (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="w-full h-full flex flex-col items-center justify-center gap-3"
+                    >
+                      <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
+                        ⭐ फिरकी सही जगह लग गई! शाबाश! ⭐
+                      </div>
+                    </motion.div>
+                  )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'CATERPILLAR' ? (
           // ================================================================
           // CATERPILLAR (कैटरपिलर / इल्ली) GAME SCREEN (download__21__043dfdca.jfif)
           // ================================================================
