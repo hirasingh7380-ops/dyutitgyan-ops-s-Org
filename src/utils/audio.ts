@@ -81,7 +81,7 @@ class SoundManager {
     // Ensure audio pipeline is initialized
     this.init();
 
-    // Stop currently playing voice clip
+    // Stop currently playing voice clip and any queued Web Speech
     if (this.currentAudio) {
       try {
         this.currentAudio.pause();
@@ -90,6 +90,13 @@ class SoundManager {
         // Ignore
       }
       this.currentAudio = null;
+    }
+    if ('speechSynthesis' in window) {
+      try {
+        window.speechSynthesis.cancel();
+      } catch {
+        // Ignore
+      }
     }
 
     // Try primary MP3 from public/audio
@@ -614,10 +621,12 @@ class SoundManager {
   }
 
   // 10. Drawing Stage: Shikshika (Teacher) Voice for Android Mobile & PC
-  speakDrawingIntro(soundEnabled = true, stage: 'tulip' | 'airplane' | 'elephant' | 'banana' | 'scissors' | 'purse' | 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' = 'tulip') {
+  speakDrawingIntro(soundEnabled = true, stage: 'mango' | 'tulip' | 'airplane' | 'elephant' | 'banana' | 'scissors' | 'purse' | 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'kite' | 'brinjal' = 'mango') {
     if (!soundEnabled) return;
     let text = 'बच्चों, रंग चुनो और कटिंग इमेज को सही जगह पर लगाओ!';
-    if (stage === 'tulip') {
+    if (stage === 'mango') {
+      text = 'बच्चों, रंग चुनो और कटिंग आम को सही जगह पर लगाओ!';
+    } else if (stage === 'tulip') {
       text = 'बच्चों, रंग चुनो और कटिंग ट्यूलिप फूल को सही जगह पर लगाओ!';
     } else if (stage === 'airplane') {
       text = 'बच्चों, रंग चुनो और कटिंग हवाई जहाज़ को सही जगह पर लगाओ!';
@@ -673,8 +682,6 @@ class SoundManager {
       text = 'बच्चों, रंग चुनो और कटिंग बैंगन को सही जगह पर लगाओ!';
     } else if (stage === 'kite') {
       text = 'बच्चों, रंग चुनो और कटिंग पतंग को सही जगह पर लगाओ!';
-    } else if (stage === 'mango') {
-      text = 'बच्चों, रंग चुनो और कटिंग आम को सही जगह पर लगाओ!';
     } else if (stage === 'apple') {
       text = 'बच्चों, रंग चुनो और कटिंग सेब को सही जगह पर लगाओ!';
     }
@@ -697,13 +704,17 @@ class SoundManager {
   }
 
   speakDrawingPieceColored(
-    piece: 'tulip_petal_top' | 'tulip_petal_left_inner' | 'tulip_petal_right_inner' | 'tulip_petal_left' | 'tulip_petal_center' | 'tulip_petal_right' | 'tulip_stem' | 'tulip_leaf_left' | 'tulip_leaf_right' | 'airplane_body' | 'airplane_cockpit' | 'airplane_wing_left' | 'airplane_engine_l1' | 'airplane_engine_l2' | 'airplane_wing_right' | 'airplane_engine_r1' | 'airplane_engine_r2' | 'airplane_tail' | 'elephant_head' | 'elephant_body' | 'elephant_tusk' | 'elephant_leg_back' | 'elephant_leg_front' | 'banana_stem' | 'banana_right_top' | 'banana_right_bot' | 'banana_left_top' | 'banana_left_bot' | 'banana_tip_right' | 'banana_tip_left' | 'scissors_blade_left' | 'scissors_blade_right' | 'scissors_pivot_ring' | 'scissors_pivot_screw' | 'scissors_handle' | 'purse_handle' | 'purse_ring_left' | 'purse_ring_right' | 'purse_flap' | 'purse_body' | 'purse_lock' | 'glasses_arm_left' | 'glasses_arm_right' | 'glasses_frame' | 'glasses_lens_left' | 'glasses_lens_right' | 'tractor_body' | 'tractor_win_left' | 'tractor_win_right' | 'tractor_exhaust' | 'tractor_fender' | 'tractor_tire_rear' | 'tractor_hub_rear' | 'tractor_tire_front' | 'tractor_hub_front' | 'cake_top' | 'cake_heart_top' | 'cake_heart_left' | 'cake_heart_right' | 'cake_layer_top' | 'cake_layer_bot' | 'cake_plate' | 'candle_flame' | 'candle_wick' | 'candle_wax' | 'candle_body' | 'house_chimney' | 'house_roof' | 'house_win_top' | 'house_wall' | 'house_win_bot' | 'house_door' | 'house_base_left' | 'house_base_right' | 'boat_mast' | 'boat_sail_ltop' | 'boat_sail_lmid' | 'boat_sail_lbot' | 'boat_sail_right' | 'boat_hull_top' | 'boat_hull_bot' | 'bus_body' | 'bus_win1' | 'bus_win2' | 'bus_win3' | 'bus_win4' | 'bus_wheel1' | 'bus_wheel2' | 'pinwheel_blade_tl' | 'pinwheel_blade_tr' | 'pinwheel_center' | 'pinwheel_blade_br' | 'pinwheel_blade_bl' | 'pinwheel_stick' | 'caterpillar_head' | 'caterpillar_seg1' | 'caterpillar_seg2' | 'caterpillar_seg3' | 'caterpillar_seg4' | 'hen_comb' | 'hen_head' | 'hen_beak' | 'hen_wattle' | 'hen_body' | 'hen_foot_left' | 'hen_foot_right' | 'icecream_top' | 'icecream_body' | 'icecream_stick' | 'lollipop_top' | 'lollipop_band' | 'lollipop_bottom' | 'lollipop_stick' | 'duck_body' | 'duck_wing' | 'duck_beak' | 'duck_foot_left' | 'duck_foot_right' | 'flower_center' | 'flower_petal_top' | 'flower_petal_top_right' | 'flower_petal_bottom_right' | 'flower_petal_bottom' | 'flower_petal_bottom_left' | 'flower_petal_top_left' | 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br' | 'ball_cap' | 'ball_top_mid' | 'ball_top_right' | 'ball_top_left' | 'ball_bottom_left' | 'ball_bottom_center' | 'ball_bottom_right' | 'hat_crown' | 'hat_band' | 'hat_brim' | 'umbrella_canopy_left' | 'umbrella_canopy_mid' | 'umbrella_canopy_right' | 'umbrella_handle',
+    piece: 'mango_stem' | 'mango_leaf_top' | 'mango_leaf_bot' | 'mango_body' | 'tulip_petal_top' | 'tulip_petal_left_inner' | 'tulip_petal_right_inner' | 'tulip_petal_left' | 'tulip_petal_center' | 'tulip_petal_right' | 'tulip_stem' | 'tulip_leaf_left' | 'tulip_leaf_right' | 'airplane_body' | 'airplane_cockpit' | 'airplane_wing_left' | 'airplane_engine_l1' | 'airplane_engine_l2' | 'airplane_wing_right' | 'airplane_engine_r1' | 'airplane_engine_r2' | 'airplane_tail' | 'elephant_head' | 'elephant_body' | 'elephant_tusk' | 'elephant_leg_back' | 'elephant_leg_front' | 'banana_stem' | 'banana_right_top' | 'banana_right_bot' | 'banana_left_top' | 'banana_left_bot' | 'banana_tip_right' | 'banana_tip_left' | 'scissors_blade_left' | 'scissors_blade_right' | 'scissors_pivot_ring' | 'scissors_pivot_screw' | 'scissors_handle' | 'purse_handle' | 'purse_ring_left' | 'purse_ring_right' | 'purse_flap' | 'purse_body' | 'purse_lock' | 'glasses_arm_left' | 'glasses_arm_right' | 'glasses_frame' | 'glasses_lens_left' | 'glasses_lens_right' | 'tractor_body' | 'tractor_win_left' | 'tractor_win_right' | 'tractor_exhaust' | 'tractor_fender' | 'tractor_tire_rear' | 'tractor_hub_rear' | 'tractor_tire_front' | 'tractor_hub_front' | 'cake_top' | 'cake_heart_top' | 'cake_heart_left' | 'cake_heart_right' | 'cake_layer_top' | 'cake_layer_bot' | 'cake_plate' | 'candle_flame' | 'candle_wick' | 'candle_wax' | 'candle_body' | 'house_chimney' | 'house_roof' | 'house_win_top' | 'house_wall' | 'house_win_bot' | 'house_door' | 'house_base_left' | 'house_base_right' | 'boat_mast' | 'boat_sail_ltop' | 'boat_sail_lmid' | 'boat_sail_lbot' | 'boat_sail_right' | 'boat_hull_top' | 'boat_hull_bot' | 'bus_body' | 'bus_win1' | 'bus_win2' | 'bus_win3' | 'bus_win4' | 'bus_wheel1' | 'bus_wheel2' | 'pinwheel_blade_tl' | 'pinwheel_blade_tr' | 'pinwheel_center' | 'pinwheel_blade_br' | 'pinwheel_blade_bl' | 'pinwheel_stick' | 'caterpillar_head' | 'caterpillar_seg1' | 'caterpillar_seg2' | 'caterpillar_seg3' | 'caterpillar_seg4' | 'hen_comb' | 'hen_head' | 'hen_beak' | 'hen_wattle' | 'hen_body' | 'hen_foot_left' | 'hen_foot_right' | 'icecream_top' | 'icecream_body' | 'icecream_stick' | 'lollipop_top' | 'lollipop_band' | 'lollipop_bottom' | 'lollipop_stick' | 'duck_body' | 'duck_wing' | 'duck_beak' | 'duck_foot_left' | 'duck_foot_right' | 'flower_center' | 'flower_petal_top' | 'flower_petal_top_right' | 'flower_petal_bottom_right' | 'flower_petal_bottom' | 'flower_petal_bottom_left' | 'flower_petal_top_left' | 'leaf' | 'body' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br' | 'ball_cap' | 'ball_top_mid' | 'ball_top_right' | 'ball_top_left' | 'ball_bottom_left' | 'ball_bottom_center' | 'ball_bottom_right' | 'hat_crown' | 'hat_band' | 'hat_brim' | 'umbrella_canopy_left' | 'umbrella_canopy_mid' | 'umbrella_canopy_right' | 'umbrella_handle',
     soundEnabled = true
   ) {
     if (!soundEnabled) return;
     this.playSnap(soundEnabled);
     let text = 'रंग भर दिया, शाबाश!';
-    if (piece === 'tulip_petal_top') text = 'ऊपरी पंखुड़ी में रंग भर दिया, बहुत सुंदर!';
+    if (piece === 'mango_stem') text = 'आम के डंठल में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'mango_leaf_top') text = 'पत्ती के ऊपरी हिस्से में रंग भर दिया, शाबाश!';
+    else if (piece === 'mango_leaf_bot') text = 'पत्ती के निचले हिस्से में रंग भर दिया, बहुत खूब!';
+    else if (piece === 'mango_body') text = 'रसीले आम में रंग भर दिया, बहुत सुंदर!';
+    else if (piece === 'tulip_petal_top') text = 'ऊपरी पंखुड़ी में रंग भर दिया, बहुत सुंदर!';
     else if (piece === 'tulip_petal_left_inner') text = 'बाईं ऊपरी पंखुड़ी में रंग भर दिया, शाबाश!';
     else if (piece === 'tulip_petal_right_inner') text = 'दाईं ऊपरी पंखुड़ी में रंग भर दिया, बहुत खूब!';
     else if (piece === 'tulip_petal_left') text = 'बाईं पंखुड़ी में रंग भर दिया, बहुत सुंदर!';
@@ -830,8 +841,6 @@ class SoundManager {
     else if (piece === 'flower_petal_top_left') text = 'ऊपरी बाईं पंखुड़ी में रंग भर दिया, शाबाश!';
     else if (piece === 'leaf') text = 'पत्ती में रंग भर दिया, बहुत सुंदर!';
     else if (piece === 'body') text = 'सेब में रंग भर दिया, शाबाश!';
-    else if (piece === 'mango') text = 'आम में रंग भर दिया, बहुत सुंदर!';
-    else if (piece === 'splash') text = 'वाह! बहुत सुंदर रंग भरा!';
     else if (piece === 'kite_quad') text = 'पतंग के हिस्से में रंग भर दिया, बहुत खूब!';
     else if (piece === 'kite_tail') text = 'पतंग की पूंछ में रंग भर दिया, शाबाश!';
     else if (piece === 'brinjal_calyx') text = 'ताज में रंग भर दिया, बहुत सुंदर!';
@@ -872,13 +881,17 @@ class SoundManager {
   }
 
   speakDrawingPiecePlaced(
-    piece: 'tulip_petal_top' | 'tulip_petal_left_inner' | 'tulip_petal_right_inner' | 'tulip_petal_left' | 'tulip_petal_center' | 'tulip_petal_right' | 'tulip_stem' | 'tulip_leaf_left' | 'tulip_leaf_right' | 'airplane_body' | 'airplane_cockpit' | 'airplane_wing_left' | 'airplane_engine_l1' | 'airplane_engine_l2' | 'airplane_wing_right' | 'airplane_engine_r1' | 'airplane_engine_r2' | 'airplane_tail' | 'elephant_head' | 'elephant_body' | 'elephant_tusk' | 'elephant_leg_back' | 'elephant_leg_front' | 'banana_stem' | 'banana_right_top' | 'banana_right_bot' | 'banana_left_top' | 'banana_left_bot' | 'banana_tip_right' | 'banana_tip_left' | 'scissors_blade_left' | 'scissors_blade_right' | 'scissors_pivot_ring' | 'scissors_pivot_screw' | 'scissors_handle' | 'purse_handle' | 'purse_ring_left' | 'purse_ring_right' | 'purse_flap' | 'purse_body' | 'purse_lock' | 'glasses_arm_left' | 'glasses_arm_right' | 'glasses_frame' | 'glasses_lens_left' | 'glasses_lens_right' | 'tractor_body' | 'tractor_win_left' | 'tractor_win_right' | 'tractor_exhaust' | 'tractor_fender' | 'tractor_tire_rear' | 'tractor_hub_rear' | 'tractor_tire_front' | 'tractor_hub_front' | 'cake_top' | 'cake_heart_top' | 'cake_heart_left' | 'cake_heart_right' | 'cake_layer_top' | 'cake_layer_bot' | 'cake_plate' | 'candle_flame' | 'candle_wick' | 'candle_wax' | 'candle_body' | 'house_chimney' | 'house_roof' | 'house_win_top' | 'house_wall' | 'house_win_bot' | 'house_door' | 'house_base_left' | 'house_base_right' | 'boat_mast' | 'boat_sail_ltop' | 'boat_sail_lmid' | 'boat_sail_lbot' | 'boat_sail_right' | 'boat_hull_top' | 'boat_hull_bot' | 'bus_body' | 'bus_win1' | 'bus_win2' | 'bus_win3' | 'bus_win4' | 'bus_wheel1' | 'bus_wheel2' | 'pinwheel_blade_tl' | 'pinwheel_blade_tr' | 'pinwheel_center' | 'pinwheel_blade_br' | 'pinwheel_blade_bl' | 'pinwheel_stick' | 'caterpillar_head' | 'caterpillar_seg1' | 'caterpillar_seg2' | 'caterpillar_seg3' | 'caterpillar_seg4' | 'hen_comb' | 'hen_head' | 'hen_beak' | 'hen_wattle' | 'hen_body' | 'hen_foot_left' | 'hen_foot_right' | 'icecream_top' | 'icecream_body' | 'icecream_stick' | 'lollipop_top' | 'lollipop_band' | 'lollipop_bottom' | 'lollipop_stick' | 'duck_body' | 'duck_wing' | 'duck_beak' | 'duck_foot_left' | 'duck_foot_right' | 'flower_center' | 'flower_petal_top' | 'flower_petal_top_right' | 'flower_petal_bottom_right' | 'flower_petal_bottom' | 'flower_petal_bottom_left' | 'flower_petal_top_left' | 'leaf' | 'body' | 'mango' | 'splash' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br' | 'ball_cap' | 'ball_top_mid' | 'ball_top_right' | 'ball_top_left' | 'ball_bottom_left' | 'ball_bottom_center' | 'ball_bottom_right' | 'hat_crown' | 'hat_band' | 'hat_brim' | 'umbrella_canopy_left' | 'umbrella_canopy_mid' | 'umbrella_canopy_right' | 'umbrella_handle',
+    piece: 'mango_stem' | 'mango_leaf_top' | 'mango_leaf_bot' | 'mango_body' | 'tulip_petal_top' | 'tulip_petal_left_inner' | 'tulip_petal_right_inner' | 'tulip_petal_left' | 'tulip_petal_center' | 'tulip_petal_right' | 'tulip_stem' | 'tulip_leaf_left' | 'tulip_leaf_right' | 'airplane_body' | 'airplane_cockpit' | 'airplane_wing_left' | 'airplane_engine_l1' | 'airplane_engine_l2' | 'airplane_wing_right' | 'airplane_engine_r1' | 'airplane_engine_r2' | 'airplane_tail' | 'elephant_head' | 'elephant_body' | 'elephant_tusk' | 'elephant_leg_back' | 'elephant_leg_front' | 'banana_stem' | 'banana_right_top' | 'banana_right_bot' | 'banana_left_top' | 'banana_left_bot' | 'banana_tip_right' | 'banana_tip_left' | 'scissors_blade_left' | 'scissors_blade_right' | 'scissors_pivot_ring' | 'scissors_pivot_screw' | 'scissors_handle' | 'purse_handle' | 'purse_ring_left' | 'purse_ring_right' | 'purse_flap' | 'purse_body' | 'purse_lock' | 'glasses_arm_left' | 'glasses_arm_right' | 'glasses_frame' | 'glasses_lens_left' | 'glasses_lens_right' | 'tractor_body' | 'tractor_win_left' | 'tractor_win_right' | 'tractor_exhaust' | 'tractor_fender' | 'tractor_tire_rear' | 'tractor_hub_rear' | 'tractor_tire_front' | 'tractor_hub_front' | 'cake_top' | 'cake_heart_top' | 'cake_heart_left' | 'cake_heart_right' | 'cake_layer_top' | 'cake_layer_bot' | 'cake_plate' | 'candle_flame' | 'candle_wick' | 'candle_wax' | 'candle_body' | 'house_chimney' | 'house_roof' | 'house_win_top' | 'house_wall' | 'house_win_bot' | 'house_door' | 'house_base_left' | 'house_base_right' | 'boat_mast' | 'boat_sail_ltop' | 'boat_sail_lmid' | 'boat_sail_lbot' | 'boat_sail_right' | 'boat_hull_top' | 'boat_hull_bot' | 'bus_body' | 'bus_win1' | 'bus_win2' | 'bus_win3' | 'bus_win4' | 'bus_wheel1' | 'bus_wheel2' | 'pinwheel_blade_tl' | 'pinwheel_blade_tr' | 'pinwheel_center' | 'pinwheel_blade_br' | 'pinwheel_blade_bl' | 'pinwheel_stick' | 'caterpillar_head' | 'caterpillar_seg1' | 'caterpillar_seg2' | 'caterpillar_seg3' | 'caterpillar_seg4' | 'hen_comb' | 'hen_head' | 'hen_beak' | 'hen_wattle' | 'hen_body' | 'hen_foot_left' | 'hen_foot_right' | 'icecream_top' | 'icecream_body' | 'icecream_stick' | 'lollipop_top' | 'lollipop_band' | 'lollipop_bottom' | 'lollipop_stick' | 'duck_body' | 'duck_wing' | 'duck_beak' | 'duck_foot_left' | 'duck_foot_right' | 'flower_center' | 'flower_petal_top' | 'flower_petal_top_right' | 'flower_petal_bottom_right' | 'flower_petal_bottom' | 'flower_petal_bottom_left' | 'flower_petal_top_left' | 'leaf' | 'body' | 'kite_quad' | 'kite_tail' | 'brinjal_calyx' | 'brinjal_body' | 'capsicum_body' | 'capsicum_stem' | 'capsicum_lobe' | 'jug_body' | 'jug_handle' | 'jug_rim' | 'jug_base' | 'butterfly_body' | 'butterfly_wing_tl' | 'butterfly_wing_bl' | 'butterfly_wing_tr' | 'butterfly_wing_br' | 'ball_cap' | 'ball_top_mid' | 'ball_top_right' | 'ball_top_left' | 'ball_bottom_left' | 'ball_bottom_center' | 'ball_bottom_right' | 'hat_crown' | 'hat_band' | 'hat_brim' | 'umbrella_canopy_left' | 'umbrella_canopy_mid' | 'umbrella_canopy_right' | 'umbrella_handle',
     soundEnabled = true
   ) {
     if (!soundEnabled) return;
     this.playSnap(soundEnabled);
     let text = 'शाबाश! सही जगह लग गई!';
-    if (piece === 'tulip_petal_top') text = 'शाबाश! ऊपरी पंखुड़ी सही जगह लग गई!';
+    if (piece === 'mango_stem') text = 'शाबाश! आम का डंठल सही जगह लग गया!';
+    else if (piece === 'mango_leaf_top') text = 'शाबाश! पत्ती का ऊपरी हिस्सा सही जगह लग गया!';
+    else if (piece === 'mango_leaf_bot') text = 'शाबाश! पत्ती का निचला हिस्सा सही जगह लग गया!';
+    else if (piece === 'mango_body') text = 'शाबाश! आम सही जगह लग गया!';
+    else if (piece === 'tulip_petal_top') text = 'शाबाश! ऊपरी पंखुड़ी सही जगह लग गई!';
     else if (piece === 'tulip_petal_left_inner') text = 'शाबाश! बाईं ऊपरी पंखुड़ी सही जगह लग गई!';
     else if (piece === 'tulip_petal_right_inner') text = 'शाबाश! दाईं ऊपरी पंखुड़ी सही जगह लग गई!';
     else if (piece === 'tulip_petal_left') text = 'शाबाश! बाईं पंखुड़ी सही जगह लग गई!';
@@ -1005,8 +1018,6 @@ class SoundManager {
     else if (piece === 'flower_petal_top_left') text = 'शाबाश! ऊपरी बाईं पंखुड़ी सही जगह लग गई!';
     else if (piece === 'leaf') text = 'शाबाश! पत्ती सही जगह लग गई!';
     else if (piece === 'body') text = 'शाबाश! सेब सही जगह लग गया!';
-    else if (piece === 'mango') text = 'शाबाश! आम सही जगह लग गया!';
-    else if (piece === 'splash') text = 'शाबाश! बहुत सुंदर कटिंग लगाई!';
     else if (piece === 'kite_quad') text = 'शाबाश! पतंग का हिस्सा सही जगह लग गया!';
     else if (piece === 'kite_tail') text = 'शाबाश! पतंग की पूंछ सही जगह लग गई!';
     else if (piece === 'brinjal_calyx') text = 'शाबाश! ताज सही जगह लग गया!';
@@ -1040,11 +1051,12 @@ class SoundManager {
     this.playAudio(`drawing_placed_${piece}`, text);
   }
 
-  speakDrawingComplete(stage: 'tulip' | 'airplane' | 'elephant' | 'banana' | 'scissors' | 'purse' | 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' | 'hat' | 'umbrella' = 'tulip', soundEnabled = true) {
+  speakDrawingComplete(stage: 'mango' | 'tulip' | 'airplane' | 'elephant' | 'banana' | 'scissors' | 'purse' | 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'kite' | 'brinjal' | 'hat' | 'umbrella' = 'mango', soundEnabled = true) {
     if (!soundEnabled) return;
-    this.playVictory(soundEnabled);
     let text = 'अरे वाह बच्चों! बहुत सुंदर चित्र बनाया! शाबाश!';
-    if (stage === 'tulip') {
+    if (stage === 'mango') {
+      text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर आम बनाया! शाबाश!';
+    } else if (stage === 'tulip') {
       text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर ट्यूलिप फूल बनाया! शाबाश!';
     } else if (stage === 'airplane') {
       text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर हवाई जहाज़ बनाया! शाबाश!';
@@ -1100,19 +1112,19 @@ class SoundManager {
       text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर बैंगन बनाया! शाबाश!';
     } else if (stage === 'kite') {
       text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर पतंग बनाई! शाबाश!';
-    } else if (stage === 'mango') {
-      text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर आम बनाया! शाबाश!';
     } else if (stage === 'apple') {
       text = 'अरे वाह बच्चों! आपने बहुत ही सुंदर सेब बनाया! शाबाश!';
     }
     this.playAudio(`drawing_complete_${stage}`, text);
   }
 
-  speakDrawingNext(stage: 'tulip' | 'airplane' | 'elephant' | 'banana' | 'scissors' | 'purse' | 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'mango' | 'kite' | 'brinjal' | 'hat' | 'umbrella' = 'tulip', soundEnabled = true) {
+  speakDrawingNext(stage: 'mango' | 'tulip' | 'airplane' | 'elephant' | 'banana' | 'scissors' | 'purse' | 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'apple' | 'kite' | 'brinjal' | 'hat' | 'umbrella' = 'mango', soundEnabled = true) {
     if (!soundEnabled) return;
     this.playPop(soundEnabled);
     let text = 'चलो फिर से नया चित्र बनाते हैं!';
-    if (stage === 'tulip') {
+    if (stage === 'mango') {
+      text = 'चलो अब आम का चित्र बनाते हैं!';
+    } else if (stage === 'tulip') {
       text = 'चलो अब ट्यूलिप फूल का चित्र बनाते हैं!';
     } else if (stage === 'airplane') {
       text = 'चलो अब हवाई जहाज़ का चित्र बनाते हैं!';
@@ -1168,8 +1180,6 @@ class SoundManager {
       text = 'चलो अब बैंगन का चित्र बनाते हैं!';
     } else if (stage === 'kite') {
       text = 'चलो अब पतंग का चित्र बनाते हैं!';
-    } else if (stage === 'mango') {
-      text = 'चलो अब आम का चित्र बनाते हैं!';
     } else if (stage === 'apple') {
       text = 'चलो अब सेब का चित्र बनाते हैं!';
     }

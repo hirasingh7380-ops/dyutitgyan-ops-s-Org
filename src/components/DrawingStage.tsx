@@ -30,6 +30,21 @@ import airplaneOutlineImg from '../assets/images/airplane_outline.png';
 import elephantOutlineImg from '../assets/images/elephant_outline.png';
 import bananaOutlineImg from '../assets/images/banana_outline.png';
 import tulipOutlineImg from '../assets/images/tulip_outline.png';
+import mangoOutlineImg from '../assets/images/mango_outline.png';
+import {
+  MANGO_STEM_VIEWBOX,
+  MANGO_STEM_PATH,
+  MANGO_LEAF_TOP_VIEWBOX,
+  MANGO_LEAF_TOP_PATH,
+  MANGO_LEAF_BOT_VIEWBOX,
+  MANGO_LEAF_BOT_PATH,
+  MANGO_BODY_VIEWBOX,
+  MANGO_BODY_PATH,
+  MANGO_PLACED_STEM_PATH,
+  MANGO_PLACED_LEAF_TOP_PATH,
+  MANGO_PLACED_LEAF_BOT_PATH,
+  MANGO_PLACED_BODY_PATH,
+} from './mango_constants';
 import {
   TULIP_PETAL_TOP_VIEWBOX,
   TULIP_PETAL_TOP_PATH,
@@ -644,33 +659,6 @@ const KITE_TAIL_TRIANGLE_PATH =
   'M 250 420 L 195 475 Q 250 485 305 475 Z';
 
 // ============================================================================
-// 4. MANGO GEOMETRY (Stage 4 - zq8.png & zq9.PNG) - Coordinate space (0 0 420 580)
-// ============================================================================
-const MANGO_BODY_PATH =
-  'M 166 172 C 120 180, 62 232, 48 300 C 32 368, 56 438, 104 496 C 118 514, 134 540, 156 555 C 178 570, 214 570, 244 550 C 305 508, 382 414, 390 310 C 398 214, 305 172, 218 172 Z';
-
-const MANGO_STEM_PATH =
-  'M 158 170 C 148 136, 128 106, 112 86 C 118 78, 130 76, 138 80 C 158 102, 176 134, 184 168 Z';
-
-const MANGO_STEM_BASE_PATH =
-  'M 148 170 C 148 164, 194 164, 194 170 C 194 176, 148 176, 148 170 Z';
-
-const MANGO_LEAF_PATH =
-  'M 180 125 C 220 62, 300 48, 392 146 C 315 106, 238 116, 184 148 Z';
-
-const MANGO_CUTTING_BODY_PATH =
-  'M 166 172 C 120 180, 62 232, 48 300 C 32 368, 56 438, 104 496 C 118 514, 134 540, 156 555 C 178 570, 214 570, 244 550 C 305 508, 382 414, 390 310 C 398 214, 305 172, 218 172 C 208 172, 204 180, 198 183 C 192 180, 188 172, 180 172 C 172 172, 168 172, 166 172 Z';
-
-const MANGO_SPLASH_1_PATH =
-  'M 45 10 C 62 34, 70 62, 66 88 C 58 80, 52 56, 40 30 Z';
-
-const MANGO_SPLASH_2_PATH =
-  'M 12 55 C 50 36, 96 66, 134 140 C 88 106, 48 88, 12 55 Z';
-
-const MANGO_SPLASH_3_PATH =
-  'M 30 20 C 68 18, 106 50, 144 115 C 100 85, 65 64, 30 20 Z';
-
-// ============================================================================
 // 5. APPLE GEOMETRY (Stage 5 - Apple Screen) - Coordinate space (0 0 400 400)
 // ============================================================================
 const APPLE_BODY_PATH =
@@ -682,14 +670,29 @@ const APPLE_STEM_PATH =
 const APPLE_LEAF_PATH =
   'M 205 110 C 220 52, 280 25, 335 38 C 305 85, 250 120, 205 110 Z';
 
-type GameStage = 'TULIP' | 'AIRPLANE' | 'ELEPHANT' | 'BANANA' | 'SCISSORS' | 'PURSE' | 'GLASSES' | 'TRACTOR' | 'CAKE' | 'CANDLE' | 'HOUSE' | 'BOAT' | 'BUS' | 'PINWHEEL' | 'CATERPILLAR' | 'HEN' | 'ICECREAM' | 'LOLLIPOP' | 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'MANGO' | 'APPLE';
+type GameStage = 'MANGO' | 'TULIP' | 'AIRPLANE' | 'ELEPHANT' | 'BANANA' | 'SCISSORS' | 'PURSE' | 'GLASSES' | 'TRACTOR' | 'CAKE' | 'CANDLE' | 'HOUSE' | 'BOAT' | 'BUS' | 'PINWHEEL' | 'CATERPILLAR' | 'HEN' | 'ICECREAM' | 'LOLLIPOP' | 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'APPLE';
 
 export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled }) => {
-  // Current game stage: starts on TULIP (user attachment 794674296795607881_4d711042.jfif)
-  const [currentStage, setCurrentStage] = useState<GameStage>('TULIP');
+  // Current game stage: starts on MANGO (user attachment Fruits_Coloring_Pages_for_Kids___Fun_Printable_Learning_Activity_b8c6aa74.jfif)
+  const [currentStage, setCurrentStage] = useState<GameStage>('MANGO');
 
   // Currently active selected color from bottom 6 buttons
   const [selectedColor, setSelectedColor] = useState<ColorOption>(COLOR_OPTIONS[0]); // Default RED
+
+  // ---------------------------------------------------------
+  // MANGO STAGE STATES (Fruits_Coloring_Pages_for_Kids___Fun_Printable_Learning_Activity_b8c6aa74.jfif)
+  // ---------------------------------------------------------
+  const [mangoStemColor, setMangoStemColor] = useState<string>('#ffffff');
+  const [isMangoStemPlaced, setIsMangoStemPlaced] = useState<boolean>(false);
+
+  const [mangoLeafTopColor, setMangoLeafTopColor] = useState<string>('#ffffff');
+  const [isMangoLeafTopPlaced, setIsMangoLeafTopPlaced] = useState<boolean>(false);
+
+  const [mangoLeafBotColor, setMangoLeafBotColor] = useState<string>('#ffffff');
+  const [isMangoLeafBotPlaced, setIsMangoLeafBotPlaced] = useState<boolean>(false);
+
+  const [mangoBodyColor, setMangoBodyColor] = useState<string>('#ffffff');
+  const [isMangoBodyPlaced, setIsMangoBodyPlaced] = useState<boolean>(false);
 
   // ---------------------------------------------------------
   // TULIP STAGE STATES (794674296795607881_4d711042.jfif)
@@ -1254,21 +1257,6 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   const [isKiteTailPlaced, setIsKiteTailPlaced] = useState<boolean>(false);
 
   // ---------------------------------------------------------
-  // MANGO STAGE STATES (zq8.png & zq9.PNG)
-  // ---------------------------------------------------------
-  const [splash1Color, setSplash1Color] = useState<string>('#ffffff');
-  const [isSplash1Placed, setIsSplash1Placed] = useState<boolean>(false);
-
-  const [splash2Color, setSplash2Color] = useState<string>('#ffffff');
-  const [isSplash2Placed, setIsSplash2Placed] = useState<boolean>(false);
-
-  const [splash3Color, setSplash3Color] = useState<string>('#ffffff');
-  const [isSplash3Placed, setIsSplash3Placed] = useState<boolean>(false);
-
-  const [mangoBodyColor, setMangoBodyColor] = useState<string>('#ffffff');
-  const [isMangoBodyPlaced, setIsMangoBodyPlaced] = useState<boolean>(false);
-
-  // ---------------------------------------------------------
   // APPLE STAGE STATES
   // ---------------------------------------------------------
   const [appleBodyColor, setAppleBodyColor] = useState<string>('#ffffff');
@@ -1281,8 +1269,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   // Shikshika (Teacher) Voice intro
   useEffect(() => {
     const timer = setTimeout(() => {
-      let voiceKey: 'tulip' | 'airplane' | 'elephant' | 'banana' | 'scissors' | 'purse' | 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' = 'tulip';
-      if (currentStage === 'TULIP') voiceKey = 'tulip';
+      let voiceKey: 'mango' | 'tulip' | 'airplane' | 'elephant' | 'banana' | 'scissors' | 'purse' | 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'umbrella' | 'hat' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'apple' = 'mango';
+      if (currentStage === 'MANGO') voiceKey = 'mango';
+      else if (currentStage === 'TULIP') voiceKey = 'tulip';
       else if (currentStage === 'AIRPLANE') voiceKey = 'airplane';
       else if (currentStage === 'ELEPHANT') voiceKey = 'elephant';
       else if (currentStage === 'BANANA') voiceKey = 'banana';
@@ -1310,7 +1299,6 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       else if (currentStage === 'CAPSICUM') voiceKey = 'capsicum';
       else if (currentStage === 'BRINJAL') voiceKey = 'brinjal';
       else if (currentStage === 'KITE') voiceKey = 'kite';
-      else if (currentStage === 'MANGO') voiceKey = 'mango';
       else if (currentStage === 'APPLE') voiceKey = 'apple';
       sounds.speakDrawingIntro(soundEnabled, voiceKey);
     }, 400);
@@ -1333,7 +1321,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   };
 
   // Celebration
-  const triggerVictory = (stage: 'tulip' | 'airplane' | 'elephant' | 'banana' | 'scissors' | 'purse' | 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'mango' | 'apple' | 'hat' | 'umbrella') => {
+  const triggerVictory = (stage: 'mango' | 'tulip' | 'airplane' | 'elephant' | 'banana' | 'scissors' | 'purse' | 'glasses' | 'tractor' | 'cake' | 'candle' | 'house' | 'boat' | 'bus' | 'pinwheel' | 'caterpillar' | 'hen' | 'icecream' | 'lollipop' | 'duck' | 'flower' | 'ball' | 'butterfly' | 'jug' | 'capsicum' | 'brinjal' | 'kite' | 'apple' | 'hat' | 'umbrella') => {
     sounds.speakDrawingComplete(stage, soundEnabled);
     try {
       confetti({
@@ -1343,6 +1331,84 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       });
     } catch {
       // Ignore
+    }
+  };
+
+  // Check if entire Mango is assembled
+  const checkMangoVictory = (stem: boolean, leafTop: boolean, leafBot: boolean, body: boolean) => {
+    if (stem && leafTop && leafBot && body) {
+      triggerVictory('mango');
+      return true;
+    }
+    return false;
+  };
+
+  // Drag handlers for Mango (4 pieces)
+  const handleMangoStemDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setMangoStemColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('mango_stem', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsMangoStemPlaced(true);
+      if (!checkMangoVictory(true, isMangoLeafTopPlaced, isMangoLeafBotPlaced, isMangoBodyPlaced)) {
+        sounds.speakDrawingPiecePlaced('mango_stem', soundEnabled);
+      }
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleMangoLeafTopDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setMangoLeafTopColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('mango_leaf_top', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsMangoLeafTopPlaced(true);
+      if (!checkMangoVictory(isMangoStemPlaced, true, isMangoLeafBotPlaced, isMangoBodyPlaced)) {
+        sounds.speakDrawingPiecePlaced('mango_leaf_top', soundEnabled);
+      }
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleMangoLeafBotDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setMangoLeafBotColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('mango_leaf_bot', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsMangoLeafBotPlaced(true);
+      if (!checkMangoVictory(isMangoStemPlaced, isMangoLeafTopPlaced, true, isMangoBodyPlaced)) {
+        sounds.speakDrawingPiecePlaced('mango_leaf_bot', soundEnabled);
+      }
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
+    }
+  };
+
+  const handleMangoBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance < 12) {
+      setMangoBodyColor(selectedColor.hex);
+      sounds.speakDrawingPieceColored('mango_body', soundEnabled);
+      return;
+    }
+    if (checkDroppedInOutline(info.point.x, info.point.y)) {
+      setIsMangoBodyPlaced(true);
+      if (!checkMangoVictory(isMangoStemPlaced, isMangoLeafTopPlaced, isMangoLeafBotPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('mango_body', soundEnabled);
+      }
+    } else {
+      sounds.speakDrawingWrongDrop(soundEnabled);
     }
   };
 
@@ -1360,7 +1426,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (pTop && pLeftInner && pRightInner && pLeft && pCenter && pRight && stem && lLeft && lRight) {
       triggerVictory('tulip');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Tulip (9 pieces)
@@ -1373,8 +1441,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTulipPetalTopPlaced(true);
-      sounds.speakDrawingPiecePlaced('tulip_petal_top', soundEnabled);
-      checkTulipVictory(true, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+      if (!checkTulipVictory(true, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('tulip_petal_top', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1389,8 +1458,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTulipPetalLeftInnerPlaced(true);
-      sounds.speakDrawingPiecePlaced('tulip_petal_left_inner', soundEnabled);
-      checkTulipVictory(isTulipPetalTopPlaced, true, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+      if (!checkTulipVictory(isTulipPetalTopPlaced, true, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('tulip_petal_left_inner', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1405,8 +1475,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTulipPetalRightInnerPlaced(true);
-      sounds.speakDrawingPiecePlaced('tulip_petal_right_inner', soundEnabled);
-      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, true, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+      if (!checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, true, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('tulip_petal_right_inner', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1421,8 +1492,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTulipPetalLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('tulip_petal_left', soundEnabled);
-      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, true, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+      if (!checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, true, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('tulip_petal_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1437,8 +1509,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTulipPetalCenterPlaced(true);
-      sounds.speakDrawingPiecePlaced('tulip_petal_center', soundEnabled);
-      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, true, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+      if (!checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, true, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('tulip_petal_center', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1453,8 +1526,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTulipPetalRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('tulip_petal_right', soundEnabled);
-      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, true, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+      if (!checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, true, isTulipStemPlaced, isTulipLeafLeftPlaced, isTulipLeafRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('tulip_petal_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1469,8 +1543,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTulipStemPlaced(true);
-      sounds.speakDrawingPiecePlaced('tulip_stem', soundEnabled);
-      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, true, isTulipLeafLeftPlaced, isTulipLeafRightPlaced);
+      if (!checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, true, isTulipLeafLeftPlaced, isTulipLeafRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('tulip_stem', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1485,8 +1560,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTulipLeafLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('tulip_leaf_left', soundEnabled);
-      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, true, isTulipLeafRightPlaced);
+      if (!checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, true, isTulipLeafRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('tulip_leaf_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1501,8 +1577,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTulipLeafRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('tulip_leaf_right', soundEnabled);
-      checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, true);
+      if (!checkTulipVictory(isTulipPetalTopPlaced, isTulipPetalLeftInnerPlaced, isTulipPetalRightInnerPlaced, isTulipPetalLeftPlaced, isTulipPetalCenterPlaced, isTulipPetalRightPlaced, isTulipStemPlaced, isTulipLeafLeftPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('tulip_leaf_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1522,7 +1599,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (body && cockpit && wingLeft && engL1 && engL2 && wingRight && engR1 && engR2 && tail) {
       triggerVictory('airplane');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Airplane (9 pieces)
@@ -1535,8 +1614,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsAirplaneBodyPlaced(true);
-      sounds.speakDrawingPiecePlaced('airplane_body', soundEnabled);
-      checkAirplaneVictory(true, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+      if (!checkAirplaneVictory(true, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced)) {
+        sounds.speakDrawingPiecePlaced('airplane_body', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1551,8 +1631,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsAirplaneCockpitPlaced(true);
-      sounds.speakDrawingPiecePlaced('airplane_cockpit', soundEnabled);
-      checkAirplaneVictory(isAirplaneBodyPlaced, true, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+      if (!checkAirplaneVictory(isAirplaneBodyPlaced, true, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced)) {
+        sounds.speakDrawingPiecePlaced('airplane_cockpit', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1567,8 +1648,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsAirplaneWingLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('airplane_wing_left', soundEnabled);
-      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, true, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+      if (!checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, true, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced)) {
+        sounds.speakDrawingPiecePlaced('airplane_wing_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1583,8 +1665,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsAirplaneEngineL1Placed(true);
-      sounds.speakDrawingPiecePlaced('airplane_engine_l1', soundEnabled);
-      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, true, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+      if (!checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, true, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced)) {
+        sounds.speakDrawingPiecePlaced('airplane_engine_l1', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1599,8 +1682,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsAirplaneEngineL2Placed(true);
-      sounds.speakDrawingPiecePlaced('airplane_engine_l2', soundEnabled);
-      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, true, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+      if (!checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, true, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced)) {
+        sounds.speakDrawingPiecePlaced('airplane_engine_l2', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1615,8 +1699,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsAirplaneWingRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('airplane_wing_right', soundEnabled);
-      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, true, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+      if (!checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, true, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, isAirplaneTailPlaced)) {
+        sounds.speakDrawingPiecePlaced('airplane_wing_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1631,8 +1716,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsAirplaneEngineR1Placed(true);
-      sounds.speakDrawingPiecePlaced('airplane_engine_r1', soundEnabled);
-      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, true, isAirplaneEngineR2Placed, isAirplaneTailPlaced);
+      if (!checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, true, isAirplaneEngineR2Placed, isAirplaneTailPlaced)) {
+        sounds.speakDrawingPiecePlaced('airplane_engine_r1', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1647,8 +1733,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsAirplaneEngineR2Placed(true);
-      sounds.speakDrawingPiecePlaced('airplane_engine_r2', soundEnabled);
-      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, true, isAirplaneTailPlaced);
+      if (!checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, true, isAirplaneTailPlaced)) {
+        sounds.speakDrawingPiecePlaced('airplane_engine_r2', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1663,8 +1750,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsAirplaneTailPlaced(true);
-      sounds.speakDrawingPiecePlaced('airplane_tail', soundEnabled);
-      checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, true);
+      if (!checkAirplaneVictory(isAirplaneBodyPlaced, isAirplaneCockpitPlaced, isAirplaneWingLeftPlaced, isAirplaneEngineL1Placed, isAirplaneEngineL2Placed, isAirplaneWingRightPlaced, isAirplaneEngineR1Placed, isAirplaneEngineR2Placed, true)) {
+        sounds.speakDrawingPiecePlaced('airplane_tail', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1680,7 +1768,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (head && body && tusk && legBack && legFront) {
       triggerVictory('elephant');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Elephant (5 pieces)
@@ -1693,8 +1783,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsElephantHeadPlaced(true);
-      sounds.speakDrawingPiecePlaced('elephant_head', soundEnabled);
-      checkElephantVictory(true, isElephantBodyPlaced, isElephantTuskPlaced, isElephantLegBackPlaced, isElephantLegFrontPlaced);
+      if (!checkElephantVictory(true, isElephantBodyPlaced, isElephantTuskPlaced, isElephantLegBackPlaced, isElephantLegFrontPlaced)) {
+        sounds.speakDrawingPiecePlaced('elephant_head', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1709,8 +1800,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsElephantBodyPlaced(true);
-      sounds.speakDrawingPiecePlaced('elephant_body', soundEnabled);
-      checkElephantVictory(isElephantHeadPlaced, true, isElephantTuskPlaced, isElephantLegBackPlaced, isElephantLegFrontPlaced);
+      if (!checkElephantVictory(isElephantHeadPlaced, true, isElephantTuskPlaced, isElephantLegBackPlaced, isElephantLegFrontPlaced)) {
+        sounds.speakDrawingPiecePlaced('elephant_body', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1725,8 +1817,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsElephantTuskPlaced(true);
-      sounds.speakDrawingPiecePlaced('elephant_tusk', soundEnabled);
-      checkElephantVictory(isElephantHeadPlaced, isElephantBodyPlaced, true, isElephantLegBackPlaced, isElephantLegFrontPlaced);
+      if (!checkElephantVictory(isElephantHeadPlaced, isElephantBodyPlaced, true, isElephantLegBackPlaced, isElephantLegFrontPlaced)) {
+        sounds.speakDrawingPiecePlaced('elephant_tusk', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1741,8 +1834,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsElephantLegBackPlaced(true);
-      sounds.speakDrawingPiecePlaced('elephant_leg_back', soundEnabled);
-      checkElephantVictory(isElephantHeadPlaced, isElephantBodyPlaced, isElephantTuskPlaced, true, isElephantLegFrontPlaced);
+      if (!checkElephantVictory(isElephantHeadPlaced, isElephantBodyPlaced, isElephantTuskPlaced, true, isElephantLegFrontPlaced)) {
+        sounds.speakDrawingPiecePlaced('elephant_leg_back', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1757,8 +1851,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsElephantLegFrontPlaced(true);
-      sounds.speakDrawingPiecePlaced('elephant_leg_front', soundEnabled);
-      checkElephantVictory(isElephantHeadPlaced, isElephantBodyPlaced, isElephantTuskPlaced, isElephantLegBackPlaced, true);
+      if (!checkElephantVictory(isElephantHeadPlaced, isElephantBodyPlaced, isElephantTuskPlaced, isElephantLegBackPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('elephant_leg_front', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1776,7 +1871,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (stem && rTop && rBot && lTop && lBot && tipR && tipL) {
       triggerVictory('banana');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Banana (7 pieces)
@@ -1789,8 +1886,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBananaStemPlaced(true);
-      sounds.speakDrawingPiecePlaced('banana_stem', soundEnabled);
-      checkBananaVictory(true, isBananaRightTopPlaced, isBananaRightBotPlaced, isBananaLeftTopPlaced, isBananaLeftBotPlaced, isBananaTipRightPlaced, isBananaTipLeftPlaced);
+      if (!checkBananaVictory(true, isBananaRightTopPlaced, isBananaRightBotPlaced, isBananaLeftTopPlaced, isBananaLeftBotPlaced, isBananaTipRightPlaced, isBananaTipLeftPlaced)) {
+        sounds.speakDrawingPiecePlaced('banana_stem', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1805,8 +1903,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBananaRightTopPlaced(true);
-      sounds.speakDrawingPiecePlaced('banana_right_top', soundEnabled);
-      checkBananaVictory(isBananaStemPlaced, true, isBananaRightBotPlaced, isBananaLeftTopPlaced, isBananaLeftBotPlaced, isBananaTipRightPlaced, isBananaTipLeftPlaced);
+      if (!checkBananaVictory(isBananaStemPlaced, true, isBananaRightBotPlaced, isBananaLeftTopPlaced, isBananaLeftBotPlaced, isBananaTipRightPlaced, isBananaTipLeftPlaced)) {
+        sounds.speakDrawingPiecePlaced('banana_right_top', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1821,8 +1920,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBananaRightBotPlaced(true);
-      sounds.speakDrawingPiecePlaced('banana_right_bot', soundEnabled);
-      checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, true, isBananaLeftTopPlaced, isBananaLeftBotPlaced, isBananaTipRightPlaced, isBananaTipLeftPlaced);
+      if (!checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, true, isBananaLeftTopPlaced, isBananaLeftBotPlaced, isBananaTipRightPlaced, isBananaTipLeftPlaced)) {
+        sounds.speakDrawingPiecePlaced('banana_right_bot', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1837,8 +1937,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBananaLeftTopPlaced(true);
-      sounds.speakDrawingPiecePlaced('banana_left_top', soundEnabled);
-      checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, isBananaRightBotPlaced, true, isBananaLeftBotPlaced, isBananaTipRightPlaced, isBananaTipLeftPlaced);
+      if (!checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, isBananaRightBotPlaced, true, isBananaLeftBotPlaced, isBananaTipRightPlaced, isBananaTipLeftPlaced)) {
+        sounds.speakDrawingPiecePlaced('banana_left_top', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1853,8 +1954,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBananaLeftBotPlaced(true);
-      sounds.speakDrawingPiecePlaced('banana_left_bot', soundEnabled);
-      checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, isBananaRightBotPlaced, isBananaLeftTopPlaced, true, isBananaTipRightPlaced, isBananaTipLeftPlaced);
+      if (!checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, isBananaRightBotPlaced, isBananaLeftTopPlaced, true, isBananaTipRightPlaced, isBananaTipLeftPlaced)) {
+        sounds.speakDrawingPiecePlaced('banana_left_bot', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1869,8 +1971,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBananaTipRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('banana_tip_right', soundEnabled);
-      checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, isBananaRightBotPlaced, isBananaLeftTopPlaced, isBananaLeftBotPlaced, true, isBananaTipLeftPlaced);
+      if (!checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, isBananaRightBotPlaced, isBananaLeftTopPlaced, isBananaLeftBotPlaced, true, isBananaTipLeftPlaced)) {
+        sounds.speakDrawingPiecePlaced('banana_tip_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1885,8 +1988,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBananaTipLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('banana_tip_left', soundEnabled);
-      checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, isBananaRightBotPlaced, isBananaLeftTopPlaced, isBananaLeftBotPlaced, isBananaTipRightPlaced, true);
+      if (!checkBananaVictory(isBananaStemPlaced, isBananaRightTopPlaced, isBananaRightBotPlaced, isBananaLeftTopPlaced, isBananaLeftBotPlaced, isBananaTipRightPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('banana_tip_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1902,7 +2006,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (bladeLeft && bladeRight && pivotRing && pivotScrew && handle) {
       triggerVictory('scissors');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Scissors (5 pieces: Left Blade, Right Blade, Pivot Ring, Pivot Screw, Handle)
@@ -1915,8 +2021,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsScissorsBladeLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('scissors_blade_left', soundEnabled);
-      checkScissorsVictory(true, isScissorsBladeRightPlaced, isScissorsPivotRingPlaced, isScissorsPivotScrewPlaced, isScissorsHandlePlaced);
+      if (!checkScissorsVictory(true, isScissorsBladeRightPlaced, isScissorsPivotRingPlaced, isScissorsPivotScrewPlaced, isScissorsHandlePlaced)) {
+        sounds.speakDrawingPiecePlaced('scissors_blade_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1931,8 +2038,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsScissorsBladeRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('scissors_blade_right', soundEnabled);
-      checkScissorsVictory(isScissorsBladeLeftPlaced, true, isScissorsPivotRingPlaced, isScissorsPivotScrewPlaced, isScissorsHandlePlaced);
+      if (!checkScissorsVictory(isScissorsBladeLeftPlaced, true, isScissorsPivotRingPlaced, isScissorsPivotScrewPlaced, isScissorsHandlePlaced)) {
+        sounds.speakDrawingPiecePlaced('scissors_blade_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1947,8 +2055,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsScissorsPivotRingPlaced(true);
-      sounds.speakDrawingPiecePlaced('scissors_pivot_ring', soundEnabled);
-      checkScissorsVictory(isScissorsBladeLeftPlaced, isScissorsBladeRightPlaced, true, isScissorsPivotScrewPlaced, isScissorsHandlePlaced);
+      if (!checkScissorsVictory(isScissorsBladeLeftPlaced, isScissorsBladeRightPlaced, true, isScissorsPivotScrewPlaced, isScissorsHandlePlaced)) {
+        sounds.speakDrawingPiecePlaced('scissors_pivot_ring', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1963,8 +2072,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsScissorsPivotScrewPlaced(true);
-      sounds.speakDrawingPiecePlaced('scissors_pivot_screw', soundEnabled);
-      checkScissorsVictory(isScissorsBladeLeftPlaced, isScissorsBladeRightPlaced, isScissorsPivotRingPlaced, true, isScissorsHandlePlaced);
+      if (!checkScissorsVictory(isScissorsBladeLeftPlaced, isScissorsBladeRightPlaced, isScissorsPivotRingPlaced, true, isScissorsHandlePlaced)) {
+        sounds.speakDrawingPiecePlaced('scissors_pivot_screw', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1979,8 +2089,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsScissorsHandlePlaced(true);
-      sounds.speakDrawingPiecePlaced('scissors_handle', soundEnabled);
-      checkScissorsVictory(isScissorsBladeLeftPlaced, isScissorsBladeRightPlaced, isScissorsPivotRingPlaced, isScissorsPivotScrewPlaced, true);
+      if (!checkScissorsVictory(isScissorsBladeLeftPlaced, isScissorsBladeRightPlaced, isScissorsPivotRingPlaced, isScissorsPivotScrewPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('scissors_handle', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -1997,7 +2108,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (handle && ringLeft && ringRight && flap && body && lock) {
       triggerVictory('purse');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Purse (6 pieces: Handle, Ring Left, Ring Right, Flap, Body, Lock)
@@ -2010,8 +2123,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsPurseHandlePlaced(true);
-      sounds.speakDrawingPiecePlaced('purse_handle', soundEnabled);
-      checkPurseVictory(true, isPurseRingLeftPlaced, isPurseRingRightPlaced, isPurseFlapPlaced, isPurseBodyPlaced, isPurseLockPlaced);
+      if (!checkPurseVictory(true, isPurseRingLeftPlaced, isPurseRingRightPlaced, isPurseFlapPlaced, isPurseBodyPlaced, isPurseLockPlaced)) {
+        sounds.speakDrawingPiecePlaced('purse_handle', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2026,8 +2140,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsPurseRingLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('purse_ring_left', soundEnabled);
-      checkPurseVictory(isPurseHandlePlaced, true, isPurseRingRightPlaced, isPurseFlapPlaced, isPurseBodyPlaced, isPurseLockPlaced);
+      if (!checkPurseVictory(isPurseHandlePlaced, true, isPurseRingRightPlaced, isPurseFlapPlaced, isPurseBodyPlaced, isPurseLockPlaced)) {
+        sounds.speakDrawingPiecePlaced('purse_ring_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2042,8 +2157,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsPurseRingRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('purse_ring_right', soundEnabled);
-      checkPurseVictory(isPurseHandlePlaced, isPurseRingLeftPlaced, true, isPurseFlapPlaced, isPurseBodyPlaced, isPurseLockPlaced);
+      if (!checkPurseVictory(isPurseHandlePlaced, isPurseRingLeftPlaced, true, isPurseFlapPlaced, isPurseBodyPlaced, isPurseLockPlaced)) {
+        sounds.speakDrawingPiecePlaced('purse_ring_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2058,8 +2174,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsPurseFlapPlaced(true);
-      sounds.speakDrawingPiecePlaced('purse_flap', soundEnabled);
-      checkPurseVictory(isPurseHandlePlaced, isPurseRingLeftPlaced, isPurseRingRightPlaced, true, isPurseBodyPlaced, isPurseLockPlaced);
+      if (!checkPurseVictory(isPurseHandlePlaced, isPurseRingLeftPlaced, isPurseRingRightPlaced, true, isPurseBodyPlaced, isPurseLockPlaced)) {
+        sounds.speakDrawingPiecePlaced('purse_flap', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2074,8 +2191,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsPurseBodyPlaced(true);
-      sounds.speakDrawingPiecePlaced('purse_body', soundEnabled);
-      checkPurseVictory(isPurseHandlePlaced, isPurseRingLeftPlaced, isPurseRingRightPlaced, isPurseFlapPlaced, true, isPurseLockPlaced);
+      if (!checkPurseVictory(isPurseHandlePlaced, isPurseRingLeftPlaced, isPurseRingRightPlaced, isPurseFlapPlaced, true, isPurseLockPlaced)) {
+        sounds.speakDrawingPiecePlaced('purse_body', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2090,8 +2208,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsPurseLockPlaced(true);
-      sounds.speakDrawingPiecePlaced('purse_lock', soundEnabled);
-      checkPurseVictory(isPurseHandlePlaced, isPurseRingLeftPlaced, isPurseRingRightPlaced, isPurseFlapPlaced, isPurseBodyPlaced, true);
+      if (!checkPurseVictory(isPurseHandlePlaced, isPurseRingLeftPlaced, isPurseRingRightPlaced, isPurseFlapPlaced, isPurseBodyPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('purse_lock', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2107,7 +2226,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (armLeft && armRight && frame && lensLeft && lensRight) {
       triggerVictory('glasses');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Glasses (5 pieces: Left Arm, Right Arm, Frame, Left Lens, Right Lens)
@@ -2120,8 +2241,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsGlassesArmLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('glasses_arm_left', soundEnabled);
-      checkGlassesVictory(true, isGlassesArmRightPlaced, isGlassesFramePlaced, isGlassesLensLeftPlaced, isGlassesLensRightPlaced);
+      if (!checkGlassesVictory(true, isGlassesArmRightPlaced, isGlassesFramePlaced, isGlassesLensLeftPlaced, isGlassesLensRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('glasses_arm_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2136,8 +2258,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsGlassesArmRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('glasses_arm_right', soundEnabled);
-      checkGlassesVictory(isGlassesArmLeftPlaced, true, isGlassesFramePlaced, isGlassesLensLeftPlaced, isGlassesLensRightPlaced);
+      if (!checkGlassesVictory(isGlassesArmLeftPlaced, true, isGlassesFramePlaced, isGlassesLensLeftPlaced, isGlassesLensRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('glasses_arm_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2152,8 +2275,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsGlassesFramePlaced(true);
-      sounds.speakDrawingPiecePlaced('glasses_frame', soundEnabled);
-      checkGlassesVictory(isGlassesArmLeftPlaced, isGlassesArmRightPlaced, true, isGlassesLensLeftPlaced, isGlassesLensRightPlaced);
+      if (!checkGlassesVictory(isGlassesArmLeftPlaced, isGlassesArmRightPlaced, true, isGlassesLensLeftPlaced, isGlassesLensRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('glasses_frame', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2168,8 +2292,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsGlassesLensLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('glasses_lens_left', soundEnabled);
-      checkGlassesVictory(isGlassesArmLeftPlaced, isGlassesArmRightPlaced, isGlassesFramePlaced, true, isGlassesLensRightPlaced);
+      if (!checkGlassesVictory(isGlassesArmLeftPlaced, isGlassesArmRightPlaced, isGlassesFramePlaced, true, isGlassesLensRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('glasses_lens_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2184,8 +2309,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsGlassesLensRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('glasses_lens_right', soundEnabled);
-      checkGlassesVictory(isGlassesArmLeftPlaced, isGlassesArmRightPlaced, isGlassesFramePlaced, isGlassesLensLeftPlaced, true);
+      if (!checkGlassesVictory(isGlassesArmLeftPlaced, isGlassesArmRightPlaced, isGlassesFramePlaced, isGlassesLensLeftPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('glasses_lens_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2205,7 +2331,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (body && wLeft && wRight && exhaust && fender && tRear && hRear && tFront && hFront) {
       triggerVictory('tractor');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Tractor (9 pieces)
@@ -2218,8 +2346,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTractorBodyPlaced(true);
-      sounds.speakDrawingPiecePlaced('tractor_body', soundEnabled);
-      checkTractorVictory(true, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+      if (!checkTractorVictory(true, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced)) {
+        sounds.speakDrawingPiecePlaced('tractor_body', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2234,8 +2363,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTractorWinLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('tractor_win_left', soundEnabled);
-      checkTractorVictory(isTractorBodyPlaced, true, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+      if (!checkTractorVictory(isTractorBodyPlaced, true, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced)) {
+        sounds.speakDrawingPiecePlaced('tractor_win_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2250,8 +2380,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTractorWinRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('tractor_win_right', soundEnabled);
-      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, true, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+      if (!checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, true, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced)) {
+        sounds.speakDrawingPiecePlaced('tractor_win_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2266,8 +2397,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTractorExhaustPlaced(true);
-      sounds.speakDrawingPiecePlaced('tractor_exhaust', soundEnabled);
-      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, true, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+      if (!checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, true, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced)) {
+        sounds.speakDrawingPiecePlaced('tractor_exhaust', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2282,8 +2414,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTractorFenderPlaced(true);
-      sounds.speakDrawingPiecePlaced('tractor_fender', soundEnabled);
-      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, true, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+      if (!checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, true, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced)) {
+        sounds.speakDrawingPiecePlaced('tractor_fender', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2298,8 +2431,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTractorTireRearPlaced(true);
-      sounds.speakDrawingPiecePlaced('tractor_tire_rear', soundEnabled);
-      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, true, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+      if (!checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, true, isTractorHubRearPlaced, isTractorTireFrontPlaced, isTractorHubFrontPlaced)) {
+        sounds.speakDrawingPiecePlaced('tractor_tire_rear', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2314,8 +2448,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTractorHubRearPlaced(true);
-      sounds.speakDrawingPiecePlaced('tractor_hub_rear', soundEnabled);
-      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, true, isTractorTireFrontPlaced, isTractorHubFrontPlaced);
+      if (!checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, true, isTractorTireFrontPlaced, isTractorHubFrontPlaced)) {
+        sounds.speakDrawingPiecePlaced('tractor_hub_rear', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2330,8 +2465,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTractorTireFrontPlaced(true);
-      sounds.speakDrawingPiecePlaced('tractor_tire_front', soundEnabled);
-      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, true, isTractorHubFrontPlaced);
+      if (!checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, true, isTractorHubFrontPlaced)) {
+        sounds.speakDrawingPiecePlaced('tractor_tire_front', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2346,8 +2482,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsTractorHubFrontPlaced(true);
-      sounds.speakDrawingPiecePlaced('tractor_hub_front', soundEnabled);
-      checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, true);
+      if (!checkTractorVictory(isTractorBodyPlaced, isTractorWinLeftPlaced, isTractorWinRightPlaced, isTractorExhaustPlaced, isTractorFenderPlaced, isTractorTireRearPlaced, isTractorHubRearPlaced, isTractorTireFrontPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('tractor_hub_front', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2365,7 +2502,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (top && hTop && hLeft && hRight && lTop && lBot && plate) {
       triggerVictory('cake');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Cake (7 pieces: Top, 3 Hearts, Frosting Layer, Base Layer, Plate)
@@ -2378,8 +2517,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCakeTopPlaced(true);
-      sounds.speakDrawingPiecePlaced('cake_top', soundEnabled);
-      checkCakeVictory(true, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, isCakeLayerTopPlaced, isCakeLayerBotPlaced, isCakePlatePlaced);
+      if (!checkCakeVictory(true, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, isCakeLayerTopPlaced, isCakeLayerBotPlaced, isCakePlatePlaced)) {
+        sounds.speakDrawingPiecePlaced('cake_top', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2394,8 +2534,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCakeHeartTopPlaced(true);
-      sounds.speakDrawingPiecePlaced('cake_heart_top', soundEnabled);
-      checkCakeVictory(isCakeTopPlaced, true, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, isCakeLayerTopPlaced, isCakeLayerBotPlaced, isCakePlatePlaced);
+      if (!checkCakeVictory(isCakeTopPlaced, true, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, isCakeLayerTopPlaced, isCakeLayerBotPlaced, isCakePlatePlaced)) {
+        sounds.speakDrawingPiecePlaced('cake_heart_top', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2410,8 +2551,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCakeHeartLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('cake_heart_left', soundEnabled);
-      checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, true, isCakeHeartRightPlaced, isCakeLayerTopPlaced, isCakeLayerBotPlaced, isCakePlatePlaced);
+      if (!checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, true, isCakeHeartRightPlaced, isCakeLayerTopPlaced, isCakeLayerBotPlaced, isCakePlatePlaced)) {
+        sounds.speakDrawingPiecePlaced('cake_heart_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2426,8 +2568,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCakeHeartRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('cake_heart_right', soundEnabled);
-      checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, true, isCakeLayerTopPlaced, isCakeLayerBotPlaced, isCakePlatePlaced);
+      if (!checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, true, isCakeLayerTopPlaced, isCakeLayerBotPlaced, isCakePlatePlaced)) {
+        sounds.speakDrawingPiecePlaced('cake_heart_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2442,8 +2585,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCakeLayerTopPlaced(true);
-      sounds.speakDrawingPiecePlaced('cake_layer_top', soundEnabled);
-      checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, true, isCakeLayerBotPlaced, isCakePlatePlaced);
+      if (!checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, true, isCakeLayerBotPlaced, isCakePlatePlaced)) {
+        sounds.speakDrawingPiecePlaced('cake_layer_top', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2458,8 +2602,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCakeLayerBotPlaced(true);
-      sounds.speakDrawingPiecePlaced('cake_layer_bot', soundEnabled);
-      checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, isCakeLayerTopPlaced, true, isCakePlatePlaced);
+      if (!checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, isCakeLayerTopPlaced, true, isCakePlatePlaced)) {
+        sounds.speakDrawingPiecePlaced('cake_layer_bot', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2474,8 +2619,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCakePlatePlaced(true);
-      sounds.speakDrawingPiecePlaced('cake_plate', soundEnabled);
-      checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, isCakeLayerTopPlaced, isCakeLayerBotPlaced, true);
+      if (!checkCakeVictory(isCakeTopPlaced, isCakeHeartTopPlaced, isCakeHeartLeftPlaced, isCakeHeartRightPlaced, isCakeLayerTopPlaced, isCakeLayerBotPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('cake_plate', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2490,7 +2636,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (flame && wick && wax && body) {
       triggerVictory('candle');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Candle (4 pieces: Flame, Wick, Melted Wax, Body)
@@ -2503,8 +2651,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCandleFlamePlaced(true);
-      sounds.speakDrawingPiecePlaced('candle_flame', soundEnabled);
-      checkCandleVictory(true, isCandleWickPlaced, isCandleWaxPlaced, isCandleBodyPlaced);
+      if (!checkCandleVictory(true, isCandleWickPlaced, isCandleWaxPlaced, isCandleBodyPlaced)) {
+        sounds.speakDrawingPiecePlaced('candle_flame', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2519,8 +2668,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCandleWickPlaced(true);
-      sounds.speakDrawingPiecePlaced('candle_wick', soundEnabled);
-      checkCandleVictory(isCandleFlamePlaced, true, isCandleWaxPlaced, isCandleBodyPlaced);
+      if (!checkCandleVictory(isCandleFlamePlaced, true, isCandleWaxPlaced, isCandleBodyPlaced)) {
+        sounds.speakDrawingPiecePlaced('candle_wick', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2535,8 +2685,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCandleWaxPlaced(true);
-      sounds.speakDrawingPiecePlaced('candle_wax', soundEnabled);
-      checkCandleVictory(isCandleFlamePlaced, isCandleWickPlaced, true, isCandleBodyPlaced);
+      if (!checkCandleVictory(isCandleFlamePlaced, isCandleWickPlaced, true, isCandleBodyPlaced)) {
+        sounds.speakDrawingPiecePlaced('candle_wax', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2551,8 +2702,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCandleBodyPlaced(true);
-      sounds.speakDrawingPiecePlaced('candle_body', soundEnabled);
-      checkCandleVictory(isCandleFlamePlaced, isCandleWickPlaced, isCandleWaxPlaced, true);
+      if (!checkCandleVictory(isCandleFlamePlaced, isCandleWickPlaced, isCandleWaxPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('candle_body', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2571,7 +2723,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (chimney && roof && winTop && wall && winBot && door && baseLeft && baseRight) {
       triggerVictory('house');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for House (8 pieces: Chimney, Roof, Top Window, Wall, Bottom Window, Door, Base Left, Base Right)
@@ -2584,8 +2738,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHouseChimneyPlaced(true);
-      sounds.speakDrawingPiecePlaced('house_chimney', soundEnabled);
-      checkHouseVictory(true, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced);
+      if (!checkHouseVictory(true, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('house_chimney', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2600,8 +2755,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHouseRoofPlaced(true);
-      sounds.speakDrawingPiecePlaced('house_roof', soundEnabled);
-      checkHouseVictory(isHouseChimneyPlaced, true, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced);
+      if (!checkHouseVictory(isHouseChimneyPlaced, true, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('house_roof', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2616,8 +2772,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHouseWinTopPlaced(true);
-      sounds.speakDrawingPiecePlaced('house_win_top', soundEnabled);
-      checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, true, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced);
+      if (!checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, true, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('house_win_top', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2632,8 +2789,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHouseWallPlaced(true);
-      sounds.speakDrawingPiecePlaced('house_wall', soundEnabled);
-      checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, true, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced);
+      if (!checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, true, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('house_wall', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2648,8 +2806,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHouseWinBotPlaced(true);
-      sounds.speakDrawingPiecePlaced('house_win_bot', soundEnabled);
-      checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, true, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced);
+      if (!checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, true, isHouseDoorPlaced, isHouseBaseLeftPlaced, isHouseBaseRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('house_win_bot', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2664,8 +2823,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHouseDoorPlaced(true);
-      sounds.speakDrawingPiecePlaced('house_door', soundEnabled);
-      checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, true, isHouseBaseLeftPlaced, isHouseBaseRightPlaced);
+      if (!checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, true, isHouseBaseLeftPlaced, isHouseBaseRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('house_door', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2680,8 +2840,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHouseBaseLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('house_base_left', soundEnabled);
-      checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, true, isHouseBaseRightPlaced);
+      if (!checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, true, isHouseBaseRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('house_base_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2696,8 +2857,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHouseBaseRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('house_base_right', soundEnabled);
-      checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, true);
+      if (!checkHouseVictory(isHouseChimneyPlaced, isHouseRoofPlaced, isHouseWinTopPlaced, isHouseWallPlaced, isHouseWinBotPlaced, isHouseDoorPlaced, isHouseBaseLeftPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('house_base_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2715,7 +2877,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (mast && ltop && lmid && lbot && right && htop && hbot) {
       triggerVictory('boat');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Boat (7 pieces: Mast, Sail LTop/LMid/LBot, Sail Right, Hull Top/Bot)
@@ -2728,8 +2892,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBoatMastPlaced(true);
-      sounds.speakDrawingPiecePlaced('boat_mast', soundEnabled);
-      checkBoatVictory(true, isBoatSailLTopPlaced, isBoatSailLMidPlaced, isBoatSailLBotPlaced, isBoatSailRightPlaced, isBoatHullTopPlaced, isBoatHullBotPlaced);
+      if (!checkBoatVictory(true, isBoatSailLTopPlaced, isBoatSailLMidPlaced, isBoatSailLBotPlaced, isBoatSailRightPlaced, isBoatHullTopPlaced, isBoatHullBotPlaced)) {
+        sounds.speakDrawingPiecePlaced('boat_mast', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2744,8 +2909,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBoatSailLTopPlaced(true);
-      sounds.speakDrawingPiecePlaced('boat_sail_ltop', soundEnabled);
-      checkBoatVictory(isBoatMastPlaced, true, isBoatSailLMidPlaced, isBoatSailLBotPlaced, isBoatSailRightPlaced, isBoatHullTopPlaced, isBoatHullBotPlaced);
+      if (!checkBoatVictory(isBoatMastPlaced, true, isBoatSailLMidPlaced, isBoatSailLBotPlaced, isBoatSailRightPlaced, isBoatHullTopPlaced, isBoatHullBotPlaced)) {
+        sounds.speakDrawingPiecePlaced('boat_sail_ltop', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2760,8 +2926,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBoatSailLMidPlaced(true);
-      sounds.speakDrawingPiecePlaced('boat_sail_lmid', soundEnabled);
-      checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, true, isBoatSailLBotPlaced, isBoatSailRightPlaced, isBoatHullTopPlaced, isBoatHullBotPlaced);
+      if (!checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, true, isBoatSailLBotPlaced, isBoatSailRightPlaced, isBoatHullTopPlaced, isBoatHullBotPlaced)) {
+        sounds.speakDrawingPiecePlaced('boat_sail_lmid', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2776,8 +2943,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBoatSailLBotPlaced(true);
-      sounds.speakDrawingPiecePlaced('boat_sail_lbot', soundEnabled);
-      checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, isBoatSailLMidPlaced, true, isBoatSailRightPlaced, isBoatHullTopPlaced, isBoatHullBotPlaced);
+      if (!checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, isBoatSailLMidPlaced, true, isBoatSailRightPlaced, isBoatHullTopPlaced, isBoatHullBotPlaced)) {
+        sounds.speakDrawingPiecePlaced('boat_sail_lbot', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2792,8 +2960,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBoatSailRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('boat_sail_right', soundEnabled);
-      checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, isBoatSailLMidPlaced, isBoatSailLBotPlaced, true, isBoatHullTopPlaced, isBoatHullBotPlaced);
+      if (!checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, isBoatSailLMidPlaced, isBoatSailLBotPlaced, true, isBoatHullTopPlaced, isBoatHullBotPlaced)) {
+        sounds.speakDrawingPiecePlaced('boat_sail_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2808,8 +2977,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBoatHullTopPlaced(true);
-      sounds.speakDrawingPiecePlaced('boat_hull_top', soundEnabled);
-      checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, isBoatSailLMidPlaced, isBoatSailLBotPlaced, isBoatSailRightPlaced, true, isBoatHullBotPlaced);
+      if (!checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, isBoatSailLMidPlaced, isBoatSailLBotPlaced, isBoatSailRightPlaced, true, isBoatHullBotPlaced)) {
+        sounds.speakDrawingPiecePlaced('boat_hull_top', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2824,8 +2994,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBoatHullBotPlaced(true);
-      sounds.speakDrawingPiecePlaced('boat_hull_bot', soundEnabled);
-      checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, isBoatSailLMidPlaced, isBoatSailLBotPlaced, isBoatSailRightPlaced, isBoatHullTopPlaced, true);
+      if (!checkBoatVictory(isBoatMastPlaced, isBoatSailLTopPlaced, isBoatSailLMidPlaced, isBoatSailLBotPlaced, isBoatSailRightPlaced, isBoatHullTopPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('boat_hull_bot', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2843,7 +3014,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (body && w1 && w2 && w3 && w4 && wh1 && wh2) {
       triggerVictory('bus');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Bus (7 pieces: Body, 4 Windows, 2 Wheel Hubs)
@@ -2856,8 +3029,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBusBodyPlaced(true);
-      sounds.speakDrawingPiecePlaced('bus_body', soundEnabled);
-      checkBusVictory(true, isBusWin1Placed, isBusWin2Placed, isBusWin3Placed, isBusWin4Placed, isBusWheel1Placed, isBusWheel2Placed);
+      if (!checkBusVictory(true, isBusWin1Placed, isBusWin2Placed, isBusWin3Placed, isBusWin4Placed, isBusWheel1Placed, isBusWheel2Placed)) {
+        sounds.speakDrawingPiecePlaced('bus_body', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2872,8 +3046,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBusWin1Placed(true);
-      sounds.speakDrawingPiecePlaced('bus_win1', soundEnabled);
-      checkBusVictory(isBusBodyPlaced, true, isBusWin2Placed, isBusWin3Placed, isBusWin4Placed, isBusWheel1Placed, isBusWheel2Placed);
+      if (!checkBusVictory(isBusBodyPlaced, true, isBusWin2Placed, isBusWin3Placed, isBusWin4Placed, isBusWheel1Placed, isBusWheel2Placed)) {
+        sounds.speakDrawingPiecePlaced('bus_win1', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2888,8 +3063,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBusWin2Placed(true);
-      sounds.speakDrawingPiecePlaced('bus_win2', soundEnabled);
-      checkBusVictory(isBusBodyPlaced, isBusWin1Placed, true, isBusWin3Placed, isBusWin4Placed, isBusWheel1Placed, isBusWheel2Placed);
+      if (!checkBusVictory(isBusBodyPlaced, isBusWin1Placed, true, isBusWin3Placed, isBusWin4Placed, isBusWheel1Placed, isBusWheel2Placed)) {
+        sounds.speakDrawingPiecePlaced('bus_win2', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2904,8 +3080,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBusWin3Placed(true);
-      sounds.speakDrawingPiecePlaced('bus_win3', soundEnabled);
-      checkBusVictory(isBusBodyPlaced, isBusWin1Placed, isBusWin2Placed, true, isBusWin4Placed, isBusWheel1Placed, isBusWheel2Placed);
+      if (!checkBusVictory(isBusBodyPlaced, isBusWin1Placed, isBusWin2Placed, true, isBusWin4Placed, isBusWheel1Placed, isBusWheel2Placed)) {
+        sounds.speakDrawingPiecePlaced('bus_win3', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2920,8 +3097,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBusWin4Placed(true);
-      sounds.speakDrawingPiecePlaced('bus_win4', soundEnabled);
-      checkBusVictory(isBusBodyPlaced, isBusWin1Placed, isBusWin2Placed, isBusWin3Placed, true, isBusWheel1Placed, isBusWheel2Placed);
+      if (!checkBusVictory(isBusBodyPlaced, isBusWin1Placed, isBusWin2Placed, isBusWin3Placed, true, isBusWheel1Placed, isBusWheel2Placed)) {
+        sounds.speakDrawingPiecePlaced('bus_win4', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2936,8 +3114,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBusWheel1Placed(true);
-      sounds.speakDrawingPiecePlaced('bus_wheel1', soundEnabled);
-      checkBusVictory(isBusBodyPlaced, isBusWin1Placed, isBusWin2Placed, isBusWin3Placed, isBusWin4Placed, true, isBusWheel2Placed);
+      if (!checkBusVictory(isBusBodyPlaced, isBusWin1Placed, isBusWin2Placed, isBusWin3Placed, isBusWin4Placed, true, isBusWheel2Placed)) {
+        sounds.speakDrawingPiecePlaced('bus_wheel1', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2952,8 +3131,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBusWheel2Placed(true);
-      sounds.speakDrawingPiecePlaced('bus_wheel2', soundEnabled);
-      checkBusVictory(isBusBodyPlaced, isBusWin1Placed, isBusWin2Placed, isBusWin3Placed, isBusWin4Placed, isBusWheel1Placed, true);
+      if (!checkBusVictory(isBusBodyPlaced, isBusWin1Placed, isBusWin2Placed, isBusWin3Placed, isBusWin4Placed, isBusWheel1Placed, true)) {
+        sounds.speakDrawingPiecePlaced('bus_wheel2', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2970,7 +3150,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (tl && tr && center && br && bl && stick) {
       triggerVictory('pinwheel');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Pinwheel (6 pieces: Blade TL, Blade TR, Center, Blade BR, Blade BL, Stick)
@@ -2983,8 +3165,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsPinwheelBladeTLPlaced(true);
-      sounds.speakDrawingPiecePlaced('pinwheel_blade_tl', soundEnabled);
-      checkPinwheelVictory(true, isPinwheelBladeTRPlaced, isPinwheelCenterPlaced, isPinwheelBladeBRPlaced, isPinwheelBladeBLPlaced, isPinwheelStickPlaced);
+      if (!checkPinwheelVictory(true, isPinwheelBladeTRPlaced, isPinwheelCenterPlaced, isPinwheelBladeBRPlaced, isPinwheelBladeBLPlaced, isPinwheelStickPlaced)) {
+        sounds.speakDrawingPiecePlaced('pinwheel_blade_tl', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -2999,8 +3182,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsPinwheelBladeTRPlaced(true);
-      sounds.speakDrawingPiecePlaced('pinwheel_blade_tr', soundEnabled);
-      checkPinwheelVictory(isPinwheelBladeTLPlaced, true, isPinwheelCenterPlaced, isPinwheelBladeBRPlaced, isPinwheelBladeBLPlaced, isPinwheelStickPlaced);
+      if (!checkPinwheelVictory(isPinwheelBladeTLPlaced, true, isPinwheelCenterPlaced, isPinwheelBladeBRPlaced, isPinwheelBladeBLPlaced, isPinwheelStickPlaced)) {
+        sounds.speakDrawingPiecePlaced('pinwheel_blade_tr', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3015,8 +3199,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsPinwheelCenterPlaced(true);
-      sounds.speakDrawingPiecePlaced('pinwheel_center', soundEnabled);
-      checkPinwheelVictory(isPinwheelBladeTLPlaced, isPinwheelBladeTRPlaced, true, isPinwheelBladeBRPlaced, isPinwheelBladeBLPlaced, isPinwheelStickPlaced);
+      if (!checkPinwheelVictory(isPinwheelBladeTLPlaced, isPinwheelBladeTRPlaced, true, isPinwheelBladeBRPlaced, isPinwheelBladeBLPlaced, isPinwheelStickPlaced)) {
+        sounds.speakDrawingPiecePlaced('pinwheel_center', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3031,8 +3216,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsPinwheelBladeBRPlaced(true);
-      sounds.speakDrawingPiecePlaced('pinwheel_blade_br', soundEnabled);
-      checkPinwheelVictory(isPinwheelBladeTLPlaced, isPinwheelBladeTRPlaced, isPinwheelCenterPlaced, true, isPinwheelBladeBLPlaced, isPinwheelStickPlaced);
+      if (!checkPinwheelVictory(isPinwheelBladeTLPlaced, isPinwheelBladeTRPlaced, isPinwheelCenterPlaced, true, isPinwheelBladeBLPlaced, isPinwheelStickPlaced)) {
+        sounds.speakDrawingPiecePlaced('pinwheel_blade_br', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3047,8 +3233,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsPinwheelBladeBLPlaced(true);
-      sounds.speakDrawingPiecePlaced('pinwheel_blade_bl', soundEnabled);
-      checkPinwheelVictory(isPinwheelBladeTLPlaced, isPinwheelBladeTRPlaced, isPinwheelCenterPlaced, isPinwheelBladeBRPlaced, true, isPinwheelStickPlaced);
+      if (!checkPinwheelVictory(isPinwheelBladeTLPlaced, isPinwheelBladeTRPlaced, isPinwheelCenterPlaced, isPinwheelBladeBRPlaced, true, isPinwheelStickPlaced)) {
+        sounds.speakDrawingPiecePlaced('pinwheel_blade_bl', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3063,8 +3250,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsPinwheelStickPlaced(true);
-      sounds.speakDrawingPiecePlaced('pinwheel_stick', soundEnabled);
-      checkPinwheelVictory(isPinwheelBladeTLPlaced, isPinwheelBladeTRPlaced, isPinwheelCenterPlaced, isPinwheelBladeBRPlaced, isPinwheelBladeBLPlaced, true);
+      if (!checkPinwheelVictory(isPinwheelBladeTLPlaced, isPinwheelBladeTRPlaced, isPinwheelCenterPlaced, isPinwheelBladeBRPlaced, isPinwheelBladeBLPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('pinwheel_stick', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3080,7 +3268,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (head && seg1 && seg2 && seg3 && seg4) {
       triggerVictory('caterpillar');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Caterpillar (5 pieces: Head + 4 segments)
@@ -3093,8 +3283,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCatHeadPlaced(true);
-      sounds.speakDrawingPiecePlaced('caterpillar_head', soundEnabled);
-      checkCaterpillarVictory(true, isCatSeg1Placed, isCatSeg2Placed, isCatSeg3Placed, isCatSeg4Placed);
+      if (!checkCaterpillarVictory(true, isCatSeg1Placed, isCatSeg2Placed, isCatSeg3Placed, isCatSeg4Placed)) {
+        sounds.speakDrawingPiecePlaced('caterpillar_head', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3109,8 +3300,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCatSeg1Placed(true);
-      sounds.speakDrawingPiecePlaced('caterpillar_seg1', soundEnabled);
-      checkCaterpillarVictory(isCatHeadPlaced, true, isCatSeg2Placed, isCatSeg3Placed, isCatSeg4Placed);
+      if (!checkCaterpillarVictory(isCatHeadPlaced, true, isCatSeg2Placed, isCatSeg3Placed, isCatSeg4Placed)) {
+        sounds.speakDrawingPiecePlaced('caterpillar_seg1', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3125,8 +3317,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCatSeg2Placed(true);
-      sounds.speakDrawingPiecePlaced('caterpillar_seg2', soundEnabled);
-      checkCaterpillarVictory(isCatHeadPlaced, isCatSeg1Placed, true, isCatSeg3Placed, isCatSeg4Placed);
+      if (!checkCaterpillarVictory(isCatHeadPlaced, isCatSeg1Placed, true, isCatSeg3Placed, isCatSeg4Placed)) {
+        sounds.speakDrawingPiecePlaced('caterpillar_seg2', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3141,8 +3334,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCatSeg3Placed(true);
-      sounds.speakDrawingPiecePlaced('caterpillar_seg3', soundEnabled);
-      checkCaterpillarVictory(isCatHeadPlaced, isCatSeg1Placed, isCatSeg2Placed, true, isCatSeg4Placed);
+      if (!checkCaterpillarVictory(isCatHeadPlaced, isCatSeg1Placed, isCatSeg2Placed, true, isCatSeg4Placed)) {
+        sounds.speakDrawingPiecePlaced('caterpillar_seg3', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3157,8 +3351,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCatSeg4Placed(true);
-      sounds.speakDrawingPiecePlaced('caterpillar_seg4', soundEnabled);
-      checkCaterpillarVictory(isCatHeadPlaced, isCatSeg1Placed, isCatSeg2Placed, isCatSeg3Placed, true);
+      if (!checkCaterpillarVictory(isCatHeadPlaced, isCatSeg1Placed, isCatSeg2Placed, isCatSeg3Placed, true)) {
+        sounds.speakDrawingPiecePlaced('caterpillar_seg4', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3176,7 +3371,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (comb && head && beak && wattle && body && footLeft && footRight) {
       triggerVictory('hen');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Hen (7 pieces: Comb, Head, Beak, Wattle, Body, Left Foot, Right Foot)
@@ -3189,8 +3386,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHenCombPlaced(true);
-      sounds.speakDrawingPiecePlaced('hen_comb', soundEnabled);
-      checkHenVictory(true, isHenHeadPlaced, isHenBeakPlaced, isHenWattlePlaced, isHenBodyPlaced, isHenFootLeftPlaced, isHenFootRightPlaced);
+      if (!checkHenVictory(true, isHenHeadPlaced, isHenBeakPlaced, isHenWattlePlaced, isHenBodyPlaced, isHenFootLeftPlaced, isHenFootRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('hen_comb', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3205,8 +3403,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHenHeadPlaced(true);
-      sounds.speakDrawingPiecePlaced('hen_head', soundEnabled);
-      checkHenVictory(isHenCombPlaced, true, isHenBeakPlaced, isHenWattlePlaced, isHenBodyPlaced, isHenFootLeftPlaced, isHenFootRightPlaced);
+      if (!checkHenVictory(isHenCombPlaced, true, isHenBeakPlaced, isHenWattlePlaced, isHenBodyPlaced, isHenFootLeftPlaced, isHenFootRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('hen_head', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3221,8 +3420,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHenBeakPlaced(true);
-      sounds.speakDrawingPiecePlaced('hen_beak', soundEnabled);
-      checkHenVictory(isHenCombPlaced, isHenHeadPlaced, true, isHenWattlePlaced, isHenBodyPlaced, isHenFootLeftPlaced, isHenFootRightPlaced);
+      if (!checkHenVictory(isHenCombPlaced, isHenHeadPlaced, true, isHenWattlePlaced, isHenBodyPlaced, isHenFootLeftPlaced, isHenFootRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('hen_beak', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3237,8 +3437,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHenWattlePlaced(true);
-      sounds.speakDrawingPiecePlaced('hen_wattle', soundEnabled);
-      checkHenVictory(isHenCombPlaced, isHenHeadPlaced, isHenBeakPlaced, true, isHenBodyPlaced, isHenFootLeftPlaced, isHenFootRightPlaced);
+      if (!checkHenVictory(isHenCombPlaced, isHenHeadPlaced, isHenBeakPlaced, true, isHenBodyPlaced, isHenFootLeftPlaced, isHenFootRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('hen_wattle', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3253,8 +3454,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHenBodyPlaced(true);
-      sounds.speakDrawingPiecePlaced('hen_body', soundEnabled);
-      checkHenVictory(isHenCombPlaced, isHenHeadPlaced, isHenBeakPlaced, isHenWattlePlaced, true, isHenFootLeftPlaced, isHenFootRightPlaced);
+      if (!checkHenVictory(isHenCombPlaced, isHenHeadPlaced, isHenBeakPlaced, isHenWattlePlaced, true, isHenFootLeftPlaced, isHenFootRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('hen_body', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3269,8 +3471,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHenFootLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('hen_foot_left', soundEnabled);
-      checkHenVictory(isHenCombPlaced, isHenHeadPlaced, isHenBeakPlaced, isHenWattlePlaced, isHenBodyPlaced, true, isHenFootRightPlaced);
+      if (!checkHenVictory(isHenCombPlaced, isHenHeadPlaced, isHenBeakPlaced, isHenWattlePlaced, isHenBodyPlaced, true, isHenFootRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('hen_foot_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3285,8 +3488,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHenFootRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('hen_foot_right', soundEnabled);
-      checkHenVictory(isHenCombPlaced, isHenHeadPlaced, isHenBeakPlaced, isHenWattlePlaced, isHenBodyPlaced, isHenFootLeftPlaced, true);
+      if (!checkHenVictory(isHenCombPlaced, isHenHeadPlaced, isHenBeakPlaced, isHenWattlePlaced, isHenBodyPlaced, isHenFootLeftPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('hen_foot_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3296,7 +3500,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   const checkIcecreamVictory = (top: boolean, body: boolean, stick: boolean) => {
     if (top && body && stick) {
       triggerVictory('icecream');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Ice Cream (3 pieces: Top Icing, Body, Stick)
@@ -3309,8 +3515,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsIcecreamTopPlaced(true);
-      sounds.speakDrawingPiecePlaced('icecream_top', soundEnabled);
-      checkIcecreamVictory(true, isIcecreamBodyPlaced, isIcecreamStickPlaced);
+      if (!checkIcecreamVictory(true, isIcecreamBodyPlaced, isIcecreamStickPlaced)) {
+        sounds.speakDrawingPiecePlaced('icecream_top', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3325,8 +3532,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsIcecreamBodyPlaced(true);
-      sounds.speakDrawingPiecePlaced('icecream_body', soundEnabled);
-      checkIcecreamVictory(isIcecreamTopPlaced, true, isIcecreamStickPlaced);
+      if (!checkIcecreamVictory(isIcecreamTopPlaced, true, isIcecreamStickPlaced)) {
+        sounds.speakDrawingPiecePlaced('icecream_body', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3341,8 +3549,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsIcecreamStickPlaced(true);
-      sounds.speakDrawingPiecePlaced('icecream_stick', soundEnabled);
-      checkIcecreamVictory(isIcecreamTopPlaced, isIcecreamBodyPlaced, true);
+      if (!checkIcecreamVictory(isIcecreamTopPlaced, isIcecreamBodyPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('icecream_stick', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3357,7 +3566,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (top && band && bottom && stick) {
       triggerVictory('lollipop');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Lollipop (4 pieces: Top Dome, Band, Bottom Dome, Stick)
@@ -3370,8 +3581,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsLollipopTopPlaced(true);
-      sounds.speakDrawingPiecePlaced('lollipop_top', soundEnabled);
-      checkLollipopVictory(true, isLollipopBandPlaced, isLollipopBottomPlaced, isLollipopStickPlaced);
+      if (!checkLollipopVictory(true, isLollipopBandPlaced, isLollipopBottomPlaced, isLollipopStickPlaced)) {
+        sounds.speakDrawingPiecePlaced('lollipop_top', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3386,8 +3598,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsLollipopBandPlaced(true);
-      sounds.speakDrawingPiecePlaced('lollipop_band', soundEnabled);
-      checkLollipopVictory(isLollipopTopPlaced, true, isLollipopBottomPlaced, isLollipopStickPlaced);
+      if (!checkLollipopVictory(isLollipopTopPlaced, true, isLollipopBottomPlaced, isLollipopStickPlaced)) {
+        sounds.speakDrawingPiecePlaced('lollipop_band', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3402,8 +3615,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsLollipopBottomPlaced(true);
-      sounds.speakDrawingPiecePlaced('lollipop_bottom', soundEnabled);
-      checkLollipopVictory(isLollipopTopPlaced, isLollipopBandPlaced, true, isLollipopStickPlaced);
+      if (!checkLollipopVictory(isLollipopTopPlaced, isLollipopBandPlaced, true, isLollipopStickPlaced)) {
+        sounds.speakDrawingPiecePlaced('lollipop_bottom', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3418,8 +3632,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsLollipopStickPlaced(true);
-      sounds.speakDrawingPiecePlaced('lollipop_stick', soundEnabled);
-      checkLollipopVictory(isLollipopTopPlaced, isLollipopBandPlaced, isLollipopBottomPlaced, true);
+      if (!checkLollipopVictory(isLollipopTopPlaced, isLollipopBandPlaced, isLollipopBottomPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('lollipop_stick', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3435,7 +3650,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (body && wing && beak && footLeft && footRight) {
       triggerVictory('duck');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Duck (5 pieces: Body, Wing, Beak, Left Foot, Right Foot)
@@ -3448,8 +3665,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsDuckBodyPlaced(true);
-      sounds.speakDrawingPiecePlaced('duck_body', soundEnabled);
-      checkDuckVictory(true, isDuckWingPlaced, isDuckBeakPlaced, isDuckFootLeftPlaced, isDuckFootRightPlaced);
+      if (!checkDuckVictory(true, isDuckWingPlaced, isDuckBeakPlaced, isDuckFootLeftPlaced, isDuckFootRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('duck_body', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3464,8 +3682,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsDuckWingPlaced(true);
-      sounds.speakDrawingPiecePlaced('duck_wing', soundEnabled);
-      checkDuckVictory(isDuckBodyPlaced, true, isDuckBeakPlaced, isDuckFootLeftPlaced, isDuckFootRightPlaced);
+      if (!checkDuckVictory(isDuckBodyPlaced, true, isDuckBeakPlaced, isDuckFootLeftPlaced, isDuckFootRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('duck_wing', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3480,8 +3699,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsDuckBeakPlaced(true);
-      sounds.speakDrawingPiecePlaced('duck_beak', soundEnabled);
-      checkDuckVictory(isDuckBodyPlaced, isDuckWingPlaced, true, isDuckFootLeftPlaced, isDuckFootRightPlaced);
+      if (!checkDuckVictory(isDuckBodyPlaced, isDuckWingPlaced, true, isDuckFootLeftPlaced, isDuckFootRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('duck_beak', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3496,8 +3716,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsDuckFootLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('duck_foot_left', soundEnabled);
-      checkDuckVictory(isDuckBodyPlaced, isDuckWingPlaced, isDuckBeakPlaced, true, isDuckFootRightPlaced);
+      if (!checkDuckVictory(isDuckBodyPlaced, isDuckWingPlaced, isDuckBeakPlaced, true, isDuckFootRightPlaced)) {
+        sounds.speakDrawingPiecePlaced('duck_foot_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3512,8 +3733,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsDuckFootRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('duck_foot_right', soundEnabled);
-      checkDuckVictory(isDuckBodyPlaced, isDuckWingPlaced, isDuckBeakPlaced, isDuckFootLeftPlaced, true);
+      if (!checkDuckVictory(isDuckBodyPlaced, isDuckWingPlaced, isDuckBeakPlaced, isDuckFootLeftPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('duck_foot_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3531,7 +3753,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (c && pt && ptr && pbr && pb && pbl && ptl) {
       triggerVictory('flower');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Flower (7 pieces: 1 center + 6 petals)
@@ -3544,8 +3768,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsFlowerCenterPlaced(true);
-      sounds.speakDrawingPiecePlaced('flower_center', soundEnabled);
-      checkFlowerVictory(true, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced);
+      if (!checkFlowerVictory(true, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced)) {
+        sounds.speakDrawingPiecePlaced('flower_center', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3560,8 +3785,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsFlowerPetalTopPlaced(true);
-      sounds.speakDrawingPiecePlaced('flower_petal_top', soundEnabled);
-      checkFlowerVictory(isFlowerCenterPlaced, true, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced);
+      if (!checkFlowerVictory(isFlowerCenterPlaced, true, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced)) {
+        sounds.speakDrawingPiecePlaced('flower_petal_top', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3576,8 +3802,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsFlowerPetalTopRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('flower_petal_top_right', soundEnabled);
-      checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, true, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced);
+      if (!checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, true, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced)) {
+        sounds.speakDrawingPiecePlaced('flower_petal_top_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3592,8 +3819,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsFlowerPetalBottomRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('flower_petal_bottom_right', soundEnabled);
-      checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, true, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced);
+      if (!checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, true, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced)) {
+        sounds.speakDrawingPiecePlaced('flower_petal_bottom_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3608,8 +3836,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsFlowerPetalBottomPlaced(true);
-      sounds.speakDrawingPiecePlaced('flower_petal_bottom', soundEnabled);
-      checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, true, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced);
+      if (!checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, true, isFlowerPetalBottomLeftPlaced, isFlowerPetalTopLeftPlaced)) {
+        sounds.speakDrawingPiecePlaced('flower_petal_bottom', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3624,8 +3853,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsFlowerPetalBottomLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('flower_petal_bottom_left', soundEnabled);
-      checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, true, isFlowerPetalTopLeftPlaced);
+      if (!checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, true, isFlowerPetalTopLeftPlaced)) {
+        sounds.speakDrawingPiecePlaced('flower_petal_bottom_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3640,8 +3870,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsFlowerPetalTopLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('flower_petal_top_left', soundEnabled);
-      checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, true);
+      if (!checkFlowerVictory(isFlowerCenterPlaced, isFlowerPetalTopPlaced, isFlowerPetalTopRightPlaced, isFlowerPetalBottomRightPlaced, isFlowerPetalBottomPlaced, isFlowerPetalBottomLeftPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('flower_petal_top_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3656,7 +3887,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (nextLeft && nextMid && nextRight && nextHandle) {
       triggerVictory('umbrella');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Umbrella (z67_a60b946b.PNG)
@@ -3669,8 +3902,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsUmbrellaCanopyLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('umbrella_canopy_left', soundEnabled);
-      checkUmbrellaVictory(true, isUmbrellaCanopyMidPlaced, isUmbrellaCanopyRightPlaced, isUmbrellaHandlePlaced);
+      if (!checkUmbrellaVictory(true, isUmbrellaCanopyMidPlaced, isUmbrellaCanopyRightPlaced, isUmbrellaHandlePlaced)) {
+        sounds.speakDrawingPiecePlaced('umbrella_canopy_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3685,8 +3919,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsUmbrellaCanopyMidPlaced(true);
-      sounds.speakDrawingPiecePlaced('umbrella_canopy_mid', soundEnabled);
-      checkUmbrellaVictory(isUmbrellaCanopyLeftPlaced, true, isUmbrellaCanopyRightPlaced, isUmbrellaHandlePlaced);
+      if (!checkUmbrellaVictory(isUmbrellaCanopyLeftPlaced, true, isUmbrellaCanopyRightPlaced, isUmbrellaHandlePlaced)) {
+        sounds.speakDrawingPiecePlaced('umbrella_canopy_mid', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3701,8 +3936,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsUmbrellaCanopyRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('umbrella_canopy_right', soundEnabled);
-      checkUmbrellaVictory(isUmbrellaCanopyLeftPlaced, isUmbrellaCanopyMidPlaced, true, isUmbrellaHandlePlaced);
+      if (!checkUmbrellaVictory(isUmbrellaCanopyLeftPlaced, isUmbrellaCanopyMidPlaced, true, isUmbrellaHandlePlaced)) {
+        sounds.speakDrawingPiecePlaced('umbrella_canopy_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3717,8 +3953,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsUmbrellaHandlePlaced(true);
-      sounds.speakDrawingPiecePlaced('umbrella_handle', soundEnabled);
-      checkUmbrellaVictory(isUmbrellaCanopyLeftPlaced, isUmbrellaCanopyMidPlaced, isUmbrellaCanopyRightPlaced, true);
+      if (!checkUmbrellaVictory(isUmbrellaCanopyLeftPlaced, isUmbrellaCanopyMidPlaced, isUmbrellaCanopyRightPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('umbrella_handle', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3732,7 +3969,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (nextCrown && nextBand && nextBrim) {
       triggerVictory('hat');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Hat (z66_690aba2c.PNG)
@@ -3745,8 +3984,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHatCrownPlaced(true);
-      sounds.speakDrawingPiecePlaced('hat_crown', soundEnabled);
-      checkHatVictory(true, isHatBandPlaced, isHatBrimPlaced);
+      if (!checkHatVictory(true, isHatBandPlaced, isHatBrimPlaced)) {
+        sounds.speakDrawingPiecePlaced('hat_crown', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3761,8 +4001,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHatBandPlaced(true);
-      sounds.speakDrawingPiecePlaced('hat_band', soundEnabled);
-      checkHatVictory(isHatCrownPlaced, true, isHatBrimPlaced);
+      if (!checkHatVictory(isHatCrownPlaced, true, isHatBrimPlaced)) {
+        sounds.speakDrawingPiecePlaced('hat_band', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3777,8 +4018,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsHatBrimPlaced(true);
-      sounds.speakDrawingPiecePlaced('hat_brim', soundEnabled);
-      checkHatVictory(isHatCrownPlaced, isHatBandPlaced, true);
+      if (!checkHatVictory(isHatCrownPlaced, isHatBandPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('hat_brim', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3804,7 +4046,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       nextBottomRight
     ) {
       triggerVictory('ball');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Ball (z65_209ca702.PNG)
@@ -3817,8 +4061,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBallCapPlaced(true);
-      sounds.speakDrawingPiecePlaced('ball_cap', soundEnabled);
-      checkBallVictory(
+      if (!checkBallVictory(
         true,
         isBallTopMidPlaced,
         isBallTopRightPlaced,
@@ -3826,7 +4069,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         isBallBottomLeftPlaced,
         isBallBottomCenterPlaced,
         isBallBottomRightPlaced
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('ball_cap', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3841,8 +4086,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBallTopMidPlaced(true);
-      sounds.speakDrawingPiecePlaced('ball_top_mid', soundEnabled);
-      checkBallVictory(
+      if (!checkBallVictory(
         isBallCapPlaced,
         true,
         isBallTopRightPlaced,
@@ -3850,7 +4094,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         isBallBottomLeftPlaced,
         isBallBottomCenterPlaced,
         isBallBottomRightPlaced
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('ball_top_mid', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3865,8 +4111,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBallTopRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('ball_top_right', soundEnabled);
-      checkBallVictory(
+      if (!checkBallVictory(
         isBallCapPlaced,
         isBallTopMidPlaced,
         true,
@@ -3874,7 +4119,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         isBallBottomLeftPlaced,
         isBallBottomCenterPlaced,
         isBallBottomRightPlaced
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('ball_top_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3889,8 +4136,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBallTopLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('ball_top_left', soundEnabled);
-      checkBallVictory(
+      if (!checkBallVictory(
         isBallCapPlaced,
         isBallTopMidPlaced,
         isBallTopRightPlaced,
@@ -3898,7 +4144,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         isBallBottomLeftPlaced,
         isBallBottomCenterPlaced,
         isBallBottomRightPlaced
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('ball_top_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3913,8 +4161,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBallBottomLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('ball_bottom_left', soundEnabled);
-      checkBallVictory(
+      if (!checkBallVictory(
         isBallCapPlaced,
         isBallTopMidPlaced,
         isBallTopRightPlaced,
@@ -3922,7 +4169,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         true,
         isBallBottomCenterPlaced,
         isBallBottomRightPlaced
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('ball_bottom_left', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3937,8 +4186,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBallBottomCenterPlaced(true);
-      sounds.speakDrawingPiecePlaced('ball_bottom_center', soundEnabled);
-      checkBallVictory(
+      if (!checkBallVictory(
         isBallCapPlaced,
         isBallTopMidPlaced,
         isBallTopRightPlaced,
@@ -3946,7 +4194,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         isBallBottomLeftPlaced,
         true,
         isBallBottomRightPlaced
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('ball_bottom_center', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3961,8 +4211,7 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsBallBottomRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('ball_bottom_right', soundEnabled);
-      checkBallVictory(
+      if (!checkBallVictory(
         isBallCapPlaced,
         isBallTopMidPlaced,
         isBallTopRightPlaced,
@@ -3970,7 +4219,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         isBallBottomLeftPlaced,
         isBallBottomCenterPlaced,
         true
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('ball_bottom_right', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -3986,7 +4237,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (nextBody && nextTL && nextBL && nextTR && nextBR) {
       triggerVictory('butterfly');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Butterfly (zaq4_dc7377b4.PNG)
@@ -3999,8 +4252,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsButterflyBodyPlaced(true);
-      sounds.speakDrawingPiecePlaced('butterfly_body', soundEnabled);
-      checkButterflyVictory(true, isButterflyWingTLPlaced, isButterflyWingBLPlaced, isButterflyWingTRPlaced, isButterflyWingBRPlaced);
+      if (!checkButterflyVictory(true, isButterflyWingTLPlaced, isButterflyWingBLPlaced, isButterflyWingTRPlaced, isButterflyWingBRPlaced)) {
+        sounds.speakDrawingPiecePlaced('butterfly_body', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4015,8 +4269,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsButterflyWingTLPlaced(true);
-      sounds.speakDrawingPiecePlaced('butterfly_wing_tl', soundEnabled);
-      checkButterflyVictory(isButterflyBodyPlaced, true, isButterflyWingBLPlaced, isButterflyWingTRPlaced, isButterflyWingBRPlaced);
+      if (!checkButterflyVictory(isButterflyBodyPlaced, true, isButterflyWingBLPlaced, isButterflyWingTRPlaced, isButterflyWingBRPlaced)) {
+        sounds.speakDrawingPiecePlaced('butterfly_wing_tl', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4031,8 +4286,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsButterflyWingBLPlaced(true);
-      sounds.speakDrawingPiecePlaced('butterfly_wing_bl', soundEnabled);
-      checkButterflyVictory(isButterflyBodyPlaced, isButterflyWingTLPlaced, true, isButterflyWingTRPlaced, isButterflyWingBRPlaced);
+      if (!checkButterflyVictory(isButterflyBodyPlaced, isButterflyWingTLPlaced, true, isButterflyWingTRPlaced, isButterflyWingBRPlaced)) {
+        sounds.speakDrawingPiecePlaced('butterfly_wing_bl', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4047,8 +4303,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsButterflyWingTRPlaced(true);
-      sounds.speakDrawingPiecePlaced('butterfly_wing_tr', soundEnabled);
-      checkButterflyVictory(isButterflyBodyPlaced, isButterflyWingTLPlaced, isButterflyWingBLPlaced, true, isButterflyWingBRPlaced);
+      if (!checkButterflyVictory(isButterflyBodyPlaced, isButterflyWingTLPlaced, isButterflyWingBLPlaced, true, isButterflyWingBRPlaced)) {
+        sounds.speakDrawingPiecePlaced('butterfly_wing_tr', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4063,8 +4320,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsButterflyWingBRPlaced(true);
-      sounds.speakDrawingPiecePlaced('butterfly_wing_br', soundEnabled);
-      checkButterflyVictory(isButterflyBodyPlaced, isButterflyWingTLPlaced, isButterflyWingBLPlaced, isButterflyWingTRPlaced, true);
+      if (!checkButterflyVictory(isButterflyBodyPlaced, isButterflyWingTLPlaced, isButterflyWingBLPlaced, isButterflyWingTRPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('butterfly_wing_br', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4079,7 +4337,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (nextRim && nextHandle && nextBody && nextBase) {
       triggerVictory('jug');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Jug (z22.PNG / z22_e5a5244c.PNG)
@@ -4092,8 +4352,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsJugRimPlaced(true);
-      sounds.speakDrawingPiecePlaced('jug_rim', soundEnabled);
-      checkJugVictory(true, isJugHandlePlaced, isJugBodyPlaced, isJugBasePlaced);
+      if (!checkJugVictory(true, isJugHandlePlaced, isJugBodyPlaced, isJugBasePlaced)) {
+        sounds.speakDrawingPiecePlaced('jug_rim', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4108,8 +4369,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsJugHandlePlaced(true);
-      sounds.speakDrawingPiecePlaced('jug_handle', soundEnabled);
-      checkJugVictory(isJugRimPlaced, true, isJugBodyPlaced, isJugBasePlaced);
+      if (!checkJugVictory(isJugRimPlaced, true, isJugBodyPlaced, isJugBasePlaced)) {
+        sounds.speakDrawingPiecePlaced('jug_handle', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4124,8 +4386,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsJugBodyPlaced(true);
-      sounds.speakDrawingPiecePlaced('jug_body', soundEnabled);
-      checkJugVictory(isJugRimPlaced, isJugHandlePlaced, true, isJugBasePlaced);
+      if (!checkJugVictory(isJugRimPlaced, isJugHandlePlaced, true, isJugBasePlaced)) {
+        sounds.speakDrawingPiecePlaced('jug_body', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4140,8 +4403,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsJugBasePlaced(true);
-      sounds.speakDrawingPiecePlaced('jug_base', soundEnabled);
-      checkJugVictory(isJugRimPlaced, isJugHandlePlaced, isJugBodyPlaced, true);
+      if (!checkJugVictory(isJugRimPlaced, isJugHandlePlaced, isJugBodyPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('jug_base', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4158,7 +4422,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (nextBody && nextLeft && nextRight && nextStem && nextTL && nextTR) {
       triggerVictory('capsicum');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Capsicum (z33.PNG)
@@ -4171,15 +4437,16 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCapsicumBodyPlaced(true);
-      sounds.speakDrawingPiecePlaced('capsicum_body', soundEnabled);
-      checkCapsicumVictory(
+      if (!checkCapsicumVictory(
         true,
         isCapsicumLeftLobePlaced,
         isCapsicumRightLobePlaced,
         isCapsicumStemPlaced,
         isCapsicumTopLeftPlaced,
         isCapsicumTopRightPlaced
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('capsicum_body', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4194,15 +4461,16 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCapsicumLeftLobePlaced(true);
-      sounds.speakDrawingPiecePlaced('capsicum_lobe', soundEnabled);
-      checkCapsicumVictory(
+      if (!checkCapsicumVictory(
         isCapsicumBodyPlaced,
         true,
         isCapsicumRightLobePlaced,
         isCapsicumStemPlaced,
         isCapsicumTopLeftPlaced,
         isCapsicumTopRightPlaced
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('capsicum_lobe', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4217,15 +4485,16 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCapsicumRightLobePlaced(true);
-      sounds.speakDrawingPiecePlaced('capsicum_lobe', soundEnabled);
-      checkCapsicumVictory(
+      if (!checkCapsicumVictory(
         isCapsicumBodyPlaced,
         isCapsicumLeftLobePlaced,
         true,
         isCapsicumStemPlaced,
         isCapsicumTopLeftPlaced,
         isCapsicumTopRightPlaced
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('capsicum_lobe', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4240,15 +4509,16 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCapsicumStemPlaced(true);
-      sounds.speakDrawingPiecePlaced('capsicum_stem', soundEnabled);
-      checkCapsicumVictory(
+      if (!checkCapsicumVictory(
         isCapsicumBodyPlaced,
         isCapsicumLeftLobePlaced,
         isCapsicumRightLobePlaced,
         true,
         isCapsicumTopLeftPlaced,
         isCapsicumTopRightPlaced
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('capsicum_stem', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4263,15 +4533,16 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCapsicumTopLeftPlaced(true);
-      sounds.speakDrawingPiecePlaced('capsicum_lobe', soundEnabled);
-      checkCapsicumVictory(
+      if (!checkCapsicumVictory(
         isCapsicumBodyPlaced,
         isCapsicumLeftLobePlaced,
         isCapsicumRightLobePlaced,
         isCapsicumStemPlaced,
         true,
         isCapsicumTopRightPlaced
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('capsicum_lobe', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4286,15 +4557,16 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsCapsicumTopRightPlaced(true);
-      sounds.speakDrawingPiecePlaced('capsicum_lobe', soundEnabled);
-      checkCapsicumVictory(
+      if (!checkCapsicumVictory(
         isCapsicumBodyPlaced,
         isCapsicumLeftLobePlaced,
         isCapsicumRightLobePlaced,
         isCapsicumStemPlaced,
         isCapsicumTopLeftPlaced,
         true
-      );
+      )) {
+        sounds.speakDrawingPiecePlaced('capsicum_lobe', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4349,7 +4621,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
   ) => {
     if (nextTL && nextTR && nextBL && nextBR && nextTail) {
       triggerVictory('kite');
+      return true;
     }
+    return false;
   };
 
   // Drag handlers for Kite Pieces (zq15.PNG)
@@ -4362,8 +4636,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsKiteTLPlaced(true);
-      sounds.speakDrawingPiecePlaced('kite_quad', soundEnabled);
-      checkKiteVictory(true, isKiteTRPlaced, isKiteBLPlaced, isKiteBRPlaced, isKiteTailPlaced);
+      if (!checkKiteVictory(true, isKiteTRPlaced, isKiteBLPlaced, isKiteBRPlaced, isKiteTailPlaced)) {
+        sounds.speakDrawingPiecePlaced('kite_quad', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4378,8 +4653,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsKiteTRPlaced(true);
-      sounds.speakDrawingPiecePlaced('kite_quad', soundEnabled);
-      checkKiteVictory(isKiteTLPlaced, true, isKiteBLPlaced, isKiteBRPlaced, isKiteTailPlaced);
+      if (!checkKiteVictory(isKiteTLPlaced, true, isKiteBLPlaced, isKiteBRPlaced, isKiteTailPlaced)) {
+        sounds.speakDrawingPiecePlaced('kite_quad', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4394,8 +4670,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsKiteBLPlaced(true);
-      sounds.speakDrawingPiecePlaced('kite_quad', soundEnabled);
-      checkKiteVictory(isKiteTLPlaced, isKiteTRPlaced, true, isKiteBRPlaced, isKiteTailPlaced);
+      if (!checkKiteVictory(isKiteTLPlaced, isKiteTRPlaced, true, isKiteBRPlaced, isKiteTailPlaced)) {
+        sounds.speakDrawingPiecePlaced('kite_quad', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4410,8 +4687,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsKiteBRPlaced(true);
-      sounds.speakDrawingPiecePlaced('kite_quad', soundEnabled);
-      checkKiteVictory(isKiteTLPlaced, isKiteTRPlaced, isKiteBLPlaced, true, isKiteTailPlaced);
+      if (!checkKiteVictory(isKiteTLPlaced, isKiteTRPlaced, isKiteBLPlaced, true, isKiteTailPlaced)) {
+        sounds.speakDrawingPiecePlaced('kite_quad', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4426,69 +4704,9 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
     if (checkDroppedInOutline(info.point.x, info.point.y)) {
       setIsKiteTailPlaced(true);
-      sounds.speakDrawingPiecePlaced('kite_tail', soundEnabled);
-      checkKiteVictory(isKiteTLPlaced, isKiteTRPlaced, isKiteBLPlaced, isKiteBRPlaced, true);
-    } else {
-      sounds.speakDrawingWrongDrop(soundEnabled);
-    }
-  };
-
-  // Mango drag handlers
-  const handleMangoBodyDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const distance = Math.hypot(info.offset.x, info.offset.y);
-    if (distance < 12) {
-      setMangoBodyColor(selectedColor.hex);
-      sounds.speakDrawingPieceColored('mango', soundEnabled);
-      return;
-    }
-    if (checkDroppedInOutline(info.point.x, info.point.y)) {
-      setIsMangoBodyPlaced(true);
-      triggerVictory('mango');
-    } else {
-      sounds.speakDrawingWrongDrop(soundEnabled);
-    }
-  };
-
-  const handleSplash1DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const distance = Math.hypot(info.offset.x, info.offset.y);
-    if (distance < 12) {
-      setSplash1Color(selectedColor.hex);
-      sounds.speakDrawingPieceColored('splash', soundEnabled);
-      return;
-    }
-    if (checkDroppedInOutline(info.point.x, info.point.y)) {
-      setIsSplash1Placed(true);
-      sounds.speakDrawingPiecePlaced('splash', soundEnabled);
-    } else {
-      sounds.speakDrawingWrongDrop(soundEnabled);
-    }
-  };
-
-  const handleSplash2DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const distance = Math.hypot(info.offset.x, info.offset.y);
-    if (distance < 12) {
-      setSplash2Color(selectedColor.hex);
-      sounds.speakDrawingPieceColored('splash', soundEnabled);
-      return;
-    }
-    if (checkDroppedInOutline(info.point.x, info.point.y)) {
-      setIsSplash2Placed(true);
-      sounds.speakDrawingPiecePlaced('splash', soundEnabled);
-    } else {
-      sounds.speakDrawingWrongDrop(soundEnabled);
-    }
-  };
-
-  const handleSplash3DragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const distance = Math.hypot(info.offset.x, info.offset.y);
-    if (distance < 12) {
-      setSplash3Color(selectedColor.hex);
-      sounds.speakDrawingPieceColored('splash', soundEnabled);
-      return;
-    }
-    if (checkDroppedInOutline(info.point.x, info.point.y)) {
-      setIsSplash3Placed(true);
-      sounds.speakDrawingPiecePlaced('splash', soundEnabled);
+      if (!checkKiteVictory(isKiteTLPlaced, isKiteTRPlaced, isKiteBLPlaced, isKiteBRPlaced, true)) {
+        sounds.speakDrawingPiecePlaced('kite_tail', soundEnabled);
+      }
     } else {
       sounds.speakDrawingWrongDrop(soundEnabled);
     }
@@ -4527,10 +4745,13 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
   };
 
-  // NEXT Button Handler: cycles TULIP -> AIRPLANE -> ELEPHANT -> BANANA -> SCISSORS -> PURSE -> GLASSES -> TRACTOR -> CAKE -> CANDLE -> HOUSE -> BOAT -> BUS -> PINWHEEL -> CATERPILLAR -> HEN -> ICECREAM -> LOLLIPOP -> DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> MANGO -> APPLE -> TULIP
+  // NEXT Button Handler: cycles MANGO -> TULIP -> AIRPLANE -> ELEPHANT -> BANANA -> SCISSORS -> PURSE -> GLASSES -> TRACTOR -> CAKE -> CANDLE -> HOUSE -> BOAT -> BUS -> PINWHEEL -> CATERPILLAR -> HEN -> ICECREAM -> LOLLIPOP -> DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> APPLE -> MANGO
   const handleNext = () => {
     sounds.playPop(soundEnabled);
-    if (currentStage === 'TULIP') {
+    if (currentStage === 'MANGO') {
+      setCurrentStage('TULIP');
+      sounds.speakDrawingNext('tulip', soundEnabled);
+    } else if (currentStage === 'TULIP') {
       setCurrentStage('AIRPLANE');
       sounds.speakDrawingNext('airplane', soundEnabled);
     } else if (currentStage === 'AIRPLANE') {
@@ -4612,18 +4833,27 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
       setCurrentStage('KITE');
       sounds.speakDrawingNext('kite', soundEnabled);
     } else if (currentStage === 'KITE') {
-      setCurrentStage('MANGO');
-      sounds.speakDrawingNext('mango', soundEnabled);
-    } else if (currentStage === 'MANGO') {
       setCurrentStage('APPLE');
       sounds.speakDrawingNext('apple', soundEnabled);
     } else {
-      setCurrentStage('TULIP');
-      sounds.speakDrawingNext('tulip', soundEnabled);
+      setCurrentStage('MANGO');
+      sounds.speakDrawingNext('mango', soundEnabled);
     }
   };
 
   // Reset Handlers
+  const handleResetMango = () => {
+    setIsMangoStemPlaced(false);
+    setIsMangoLeafTopPlaced(false);
+    setIsMangoLeafBotPlaced(false);
+    setIsMangoBodyPlaced(false);
+    setMangoStemColor('#ffffff');
+    setMangoLeafTopColor('#ffffff');
+    setMangoLeafBotColor('#ffffff');
+    setMangoBodyColor('#ffffff');
+    sounds.playPop(soundEnabled);
+  };
+
   const handleResetTulip = () => {
     setIsTulipPetalTopPlaced(false);
     setIsTulipPetalLeftInnerPlaced(false);
@@ -5058,18 +5288,6 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     sounds.playPop(soundEnabled);
   };
 
-  const handleResetMango = () => {
-    setIsMangoBodyPlaced(false);
-    setIsSplash1Placed(false);
-    setIsSplash2Placed(false);
-    setIsSplash3Placed(false);
-    setMangoBodyColor('#ffffff');
-    setSplash1Color('#ffffff');
-    setSplash2Color('#ffffff');
-    setSplash3Color('#ffffff');
-    sounds.playPop(soundEnabled);
-  };
-
   const handleResetApple = () => {
     setIsAppleBodyPlaced(false);
     setIsAppleLeafPlaced(false);
@@ -5149,7 +5367,204 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
         id="drawing-main-stage"
         className="w-full flex-1 flex flex-row items-center justify-between px-2 sm:px-6 md:px-10 py-1 max-w-6xl mx-auto min-h-0 z-20 gap-2 sm:gap-6"
       >
-        {currentStage === 'TULIP' ? (
+        {currentStage === 'MANGO' ? (
+          // ================================================================
+          // MANGO (आम) GAME SCREEN (Fruits_Coloring_Pages_for_Kids___Fun_Printable_Learning_Activity_b8c6aa74.jfif)
+          // ================================================================
+          <>
+            {/* LEFT SIDE: MANGO OUTLINE */}
+            <div
+              ref={outlineAreaRef}
+              id="mango-outline-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[576/782] flex items-center justify-center"
+            >
+              {/* Placed Pieces fills under the outline */}
+              <svg
+                viewBox="0 0 576 782"
+                className="absolute inset-0 w-full h-full drop-shadow-md overflow-visible"
+              >
+                {/* 1. Placed Mango Body */}
+                {isMangoBodyPlaced && (
+                  <path
+                    d={MANGO_PLACED_BODY_PATH}
+                    fill={mangoBodyColor}
+                    onClick={() => {
+                      setMangoBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('mango_body', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 2. Placed Stem */}
+                {isMangoStemPlaced && (
+                  <path
+                    d={MANGO_PLACED_STEM_PATH}
+                    fill={mangoStemColor}
+                    onClick={() => {
+                      setMangoStemColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('mango_stem', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 3. Placed Leaf Top */}
+                {isMangoLeafTopPlaced && (
+                  <path
+                    d={MANGO_PLACED_LEAF_TOP_PATH}
+                    fill={mangoLeafTopColor}
+                    onClick={() => {
+                      setMangoLeafTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('mango_leaf_top', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+                {/* 4. Placed Leaf Bottom */}
+                {isMangoLeafBotPlaced && (
+                  <path
+                    d={MANGO_PLACED_LEAF_BOT_PATH}
+                    fill={mangoLeafBotColor}
+                    onClick={() => {
+                      setMangoLeafBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('mango_leaf_bot', soundEnabled);
+                    }}
+                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
+                  />
+                )}
+              </svg>
+
+              {/* Bold Thick Outline Image (transparent) */}
+              <img
+                src={mangoOutlineImg}
+                alt="Mango Outline"
+                className="relative z-10 w-full h-full object-contain pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
+              />
+            </div>
+
+            {/* RIGHT SIDE: MANGO CUTTING PIECES */}
+            <div
+              id="mango-cutting-container"
+              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] flex items-center justify-center"
+            >
+              {isMangoStemPlaced &&
+                isMangoLeafTopPlaced &&
+                isMangoLeafBotPlaced &&
+                isMangoBodyPlaced && (
+                  <div className="absolute top-0 right-2 z-40">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handleResetMango}
+                      className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
+                    >
+                      ↺ फिर से बनाएँ
+                    </motion.button>
+                  </div>
+                )}
+
+              <div className="relative w-full max-w-[460px] h-full">
+                {/* 1. Mango Body */}
+                {!isMangoBodyPlaced && (
+                  <motion.div
+                    id="cutting-mango-body"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleMangoBodyDragEnd}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setMangoBodyColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('mango_body', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '4%', top: '10%', width: '54%', height: '80%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={MANGO_BODY_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <path d={MANGO_BODY_PATH} fill={mangoBodyColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 2. Leaf Top Blade */}
+                {!isMangoLeafTopPlaced && (
+                  <motion.div
+                    id="cutting-mango-leaf-top"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleMangoLeafTopDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setMangoLeafTopColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('mango_leaf_top', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '61%', top: '8%', width: '36%', height: '26%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={MANGO_LEAF_TOP_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-12" y="-12" width="297" height="208" fill="transparent" />
+                      <path d={MANGO_LEAF_TOP_PATH} fill={mangoLeafTopColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 3. Leaf Bottom Blade */}
+                {!isMangoLeafBotPlaced && (
+                  <motion.div
+                    id="cutting-mango-leaf-bot"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleMangoLeafBotDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setMangoLeafBotColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('mango_leaf_bot', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '61%', top: '38%', width: '35%', height: '21%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={MANGO_LEAF_BOT_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-12" y="-12" width="288" height="148" fill="transparent" />
+                      <path d={MANGO_LEAF_BOT_PATH} fill={mangoLeafBotColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+
+                {/* 4. Stem */}
+                {!isMangoStemPlaced && (
+                  <motion.div
+                    id="cutting-mango-stem"
+                    drag
+                    dragSnapToOrigin={true}
+                    dragElastic={0.15}
+                    onDragEnd={handleMangoStemDragEnd}
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => {
+                      setMangoStemColor(selectedColor.hex);
+                      sounds.speakDrawingPieceColored('mango_stem', soundEnabled);
+                    }}
+                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
+                    style={{ left: '69%', top: '63%', width: '20%', height: '29%' }}
+                    title="रंग भरें या खींचकर आउटलाइन में लगाएं!"
+                  >
+                    <svg viewBox={MANGO_STEM_VIEWBOX} className="w-full h-full drop-shadow-[0_4px_8px_rgba(0,0,0,0.25)] overflow-visible">
+                      <rect x="-25" y="-12" width="118" height="154" fill="transparent" />
+                      <path d={MANGO_STEM_PATH} fill={mangoStemColor} stroke="#e2e8f0" strokeWidth="1.5" />
+                    </svg>
+                  </motion.div>
+                )}
+              </div>
+            </div>
+          </>
+        ) : currentStage === 'TULIP' ? (
           // ================================================================
           // TULIP (ट्यूलिप फूल) GAME SCREEN (794674296795607881_4d711042.jfif)
           // ================================================================
@@ -14729,204 +15144,6 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
                   >
                     <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
                       ⭐ पतंग सही जगह लग गई! शाबाश! ⭐
-                    </div>
-                  </motion.div>
-                )}
-              </div>
-            </div>
-          </>
-        ) : currentStage === 'MANGO' ? (
-          // ================================================================
-          // MANGO GAME SCREEN (zq8.png & zq9.PNG)
-          // ================================================================
-          <>
-            {/* LEFT: Mango Outline */}
-            <div
-              ref={outlineAreaRef}
-              id="mango-outline-container"
-              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[420/580] flex items-center justify-center"
-            >
-              <svg
-                viewBox="0 0 420 580"
-                className="w-full h-full drop-shadow-md overflow-visible"
-              >
-                {isMangoBodyPlaced && (
-                  <path
-                    d={MANGO_BODY_PATH}
-                    fill={mangoBodyColor}
-                    onClick={() => {
-                      setMangoBodyColor(selectedColor.hex);
-                      sounds.speakDrawingPieceColored('mango', soundEnabled);
-                    }}
-                    className="cursor-pointer hover:opacity-95 transition-colors duration-150"
-                  />
-                )}
-                {isSplash1Placed && (
-                  <g transform="translate(340, 60) scale(1.1)">
-                    <path d={MANGO_SPLASH_1_PATH} fill={splash1Color} />
-                  </g>
-                )}
-                {isSplash2Placed && (
-                  <g transform="translate(330, 200) scale(1.0)">
-                    <path d={MANGO_SPLASH_2_PATH} fill={splash2Color} />
-                  </g>
-                )}
-                {isSplash3Placed && (
-                  <g transform="translate(350, 360) scale(1.0)">
-                    <path d={MANGO_SPLASH_3_PATH} fill={splash3Color} />
-                  </g>
-                )}
-                <path
-                  d={MANGO_STEM_PATH}
-                  fill="transparent"
-                  stroke="#111111"
-                  strokeWidth="14"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d={MANGO_STEM_BASE_PATH}
-                  fill="transparent"
-                  stroke="#111111"
-                  strokeWidth="12"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d={MANGO_LEAF_PATH}
-                  fill="transparent"
-                  stroke="#111111"
-                  strokeWidth="14"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d={MANGO_BODY_PATH}
-                  fill="transparent"
-                  stroke="#111111"
-                  strokeWidth="14"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-
-            {/* RIGHT: Mango Cutting */}
-            <div
-              id="mango-cutting-container"
-              className="relative flex-1 h-[70vh] max-h-[480px] min-h-[220px] aspect-[420/580] flex items-center justify-center"
-            >
-              {isMangoBodyPlaced && (
-                <div className="absolute top-0 right-2 z-40">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={handleResetMango}
-                    className="px-3 py-1 rounded-full bg-black/60 text-yellow-300 border border-yellow-300 text-xs sm:text-sm font-bold shadow-md cursor-pointer"
-                  >
-                    ↺ फिर से बनाएँ
-                  </motion.button>
-                </div>
-              )}
-              <div className="relative w-full h-full">
-                {/* 1. Splash 1 (Top Left) */}
-                {!isSplash1Placed && (
-                  <motion.div
-                    id="cutting-splash-1"
-                    drag
-                    dragSnapToOrigin={true}
-                    dragElastic={0.15}
-                    onDragEnd={handleSplash1DragEnd}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      setSplash1Color(selectedColor.hex);
-                      sounds.speakDrawingPieceColored('splash', soundEnabled);
-                    }}
-                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
-                    style={{ left: '16%', top: '16%', width: '22%', height: '20%' }}
-                  >
-                    <svg viewBox="0 0 90 110" className="w-full h-full drop-shadow-md">
-                      <path d={MANGO_SPLASH_1_PATH} fill={splash1Color} stroke="#e2e8f0" strokeWidth="1" />
-                    </svg>
-                  </motion.div>
-                )}
-
-                {/* 2. Splash 2 (Middle Left) */}
-                {!isSplash2Placed && (
-                  <motion.div
-                    id="cutting-splash-2"
-                    drag
-                    dragSnapToOrigin={true}
-                    dragElastic={0.15}
-                    onDragEnd={handleSplash2DragEnd}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      setSplash2Color(selectedColor.hex);
-                      sounds.speakDrawingPieceColored('splash', soundEnabled);
-                    }}
-                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
-                    style={{ left: '4%', top: '38%', width: '34%', height: '26%' }}
-                  >
-                    <svg viewBox="0 0 150 160" className="w-full h-full drop-shadow-md">
-                      <path d={MANGO_SPLASH_2_PATH} fill={splash2Color} stroke="#e2e8f0" strokeWidth="1" />
-                    </svg>
-                  </motion.div>
-                )}
-
-                {/* 3. Splash 3 (Bottom Left) */}
-                {!isSplash3Placed && (
-                  <motion.div
-                    id="cutting-splash-3"
-                    drag
-                    dragSnapToOrigin={true}
-                    dragElastic={0.15}
-                    onDragEnd={handleSplash3DragEnd}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      setSplash3Color(selectedColor.hex);
-                      sounds.speakDrawingPieceColored('splash', soundEnabled);
-                    }}
-                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
-                    style={{ left: '16%', top: '66%', width: '32%', height: '22%' }}
-                  >
-                    <svg viewBox="0 0 160 130" className="w-full h-full drop-shadow-md">
-                      <path d={MANGO_SPLASH_3_PATH} fill={splash3Color} stroke="#e2e8f0" strokeWidth="1" />
-                    </svg>
-                  </motion.div>
-                )}
-
-                {/* 4. Mango Fruit Body */}
-                {!isMangoBodyPlaced ? (
-                  <motion.div
-                    id="cutting-mango-body"
-                    drag
-                    dragSnapToOrigin={true}
-                    dragElastic={0.15}
-                    onDragEnd={handleMangoBodyDragEnd}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.96 }}
-                    onClick={() => {
-                      setMangoBodyColor(selectedColor.hex);
-                      sounds.speakDrawingPieceColored('mango', soundEnabled);
-                    }}
-                    className="absolute cursor-grab active:cursor-grabbing touch-none select-none z-30"
-                    style={{ left: '40%', top: '12%', width: '58%', height: '82%' }}
-                  >
-                    <svg viewBox="30 160 380 430" className="w-full h-full drop-shadow-md">
-                      <path d={MANGO_CUTTING_BODY_PATH} fill={mangoBodyColor} stroke="#e2e8f0" strokeWidth="1.2" />
-                    </svg>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    className="w-full h-full flex flex-col items-center justify-center gap-3"
-                  >
-                    <div className="text-white text-sm sm:text-base md:text-lg font-black bg-black/60 px-5 py-2.5 rounded-full border-2 border-yellow-400 shadow-xl text-center">
-                      ⭐ आम सही जगह लग गया! शाबाश! ⭐
                     </div>
                   </motion.div>
                 )}
