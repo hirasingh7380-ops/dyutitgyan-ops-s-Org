@@ -23,6 +23,7 @@ import { MatchWordStage } from './components/MatchWordStage';
 import { HindiBalloonPopStage } from './components/HindiBalloonPopStage';
 import { HindiMatchWordStage } from './components/HindiMatchWordStage';
 import { HindiFillInTheBlankStage } from './components/HindiFillInTheBlankStage';
+import { HindiWordBuilderStage } from './components/HindiWordBuilderStage';
 import { DrawingStage } from './components/DrawingStage';
 import { LandscapeWrapper } from './components/LandscapeWrapper';
 import { sounds } from './utils/audio';
@@ -210,7 +211,13 @@ export default function App() {
           />
         )
       ) : currentScreen === 'HINDI_GAME_PLAY' ? (
-        hindiGameMode === 'HINDI_BALLOON_POP' ? (
+        hindiGameMode === 'HINDI_WORD_BUILDER' ? (
+          <HindiWordBuilderStage
+            soundEnabled={soundEnabled}
+            onHome={() => setCurrentScreen('HINDI_MENU')}
+            onToggleSound={() => setSoundEnabled((prev) => !prev)}
+          />
+        ) : hindiGameMode === 'HINDI_BALLOON_POP' ? (
           <HindiBalloonPopStage
             soundEnabled={soundEnabled}
             onHome={() => setCurrentScreen('HINDI_MENU')}

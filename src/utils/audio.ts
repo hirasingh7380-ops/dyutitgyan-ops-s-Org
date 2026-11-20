@@ -1185,6 +1185,31 @@ class SoundManager {
     }
     this.playAudio(`drawing_next_${stage}`, text);
   }
+
+  // 11. Hindi Word Builder (शब्द जोड़): Shikshika Voice for 2-letter Hindi words
+  speakHindiWordBuilderIntro(soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playPop(soundEnabled);
+    this.playAudio(
+      'hindi_wb_intro',
+      'बच्चों, बाईं ओर से अक्षर और दाईं ओर से अक्षर जोड़कर नया हिंदी शब्द बनाओ!'
+    );
+  }
+
+  speakHindiWordBuilderComplete(word: string, audioKey: string, speechText: string, soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playWordDestroy(soundEnabled);
+    this.playAudio(audioKey, speechText || `${word}! शाबाश बच्चों!`);
+  }
+
+  speakHindiWordBuilderVictory(soundEnabled = true) {
+    if (!soundEnabled) return;
+    this.playVictory(soundEnabled);
+    this.playAudio(
+      'hindi_wb_victory',
+      'अरे वाह बच्चों! आपने सभी सोलह हिंदी शब्द बना दिए! बहुत-बहुत शाबाश!'
+    );
+  }
 }
 
 export const sounds = new SoundManager();

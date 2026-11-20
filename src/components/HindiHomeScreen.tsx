@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Volume2, VolumeX, Sparkles, ArrowLeft, Trophy, MousePointerClick } from 'lucide-react';
+import { Play, Volume2, VolumeX, Sparkles, ArrowLeft, Trophy, MousePointerClick, BookOpen } from 'lucide-react';
 import { motion } from 'motion/react';
 import { sounds } from '../utils/audio';
 import { HindiGameMode } from '../types';
@@ -54,7 +54,7 @@ export const HindiHomeScreen: React.FC<HindiHomeScreenProps> = ({
 
           <div className="flex items-center gap-1 bg-black/60 px-2.5 sm:px-3 py-1 rounded-full border border-white/20">
             <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-300" />
-            <span className="text-[11px] sm:text-sm font-bold text-yellow-300">हिंदी: 4 खेल (अ से ज्ञ)</span>
+            <span className="text-[11px] sm:text-sm font-bold text-yellow-300">हिंदी: 5 खेल (अ से ज्ञ)</span>
           </div>
 
           <div className="hidden sm:flex items-center gap-1.5 bg-emerald-950/70 px-2.5 py-1 rounded-full border border-emerald-400/50 text-emerald-200 text-xs font-medium">
@@ -107,9 +107,39 @@ export const HindiHomeScreen: React.FC<HindiHomeScreenProps> = ({
           स्वर व व्यंजन सीखें - शुद्ध हिंदी आवाज़ के साथ!
         </p>
 
-        {/* 4 Hindi Game Cards: Clickable, Fill in Blank, Balloon Pop, Match Word */}
-        <div className="grid grid-cols-2 landscape:grid-cols-4 sm:grid-cols-4 gap-2 sm:gap-3 w-full max-w-5xl mt-2 sm:mt-3">
-          {/* 1. Click The Letter (अक्षर पहचान) */}
+        {/* 5 Hindi Game Cards: Word Builder, Clickable, Fill in Blank, Balloon Pop, Match Word */}
+        <div className="grid grid-cols-2 landscape:grid-cols-5 sm:grid-cols-5 gap-2 sm:gap-2.5 w-full max-w-5xl mt-2 sm:mt-3">
+          {/* 1. Hindi Word Builder (शब्द जोड़) */}
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => handleSelectMode('HINDI_WORD_BUILDER')}
+            className="bg-gradient-to-b from-red-600 to-rose-700 active:from-red-700 active:to-rose-800 border-2 sm:border-3 border-white rounded-xl sm:rounded-2xl p-1.5 sm:p-2 text-center flex flex-col items-center justify-between gap-1 shadow-xl cursor-pointer h-28 sm:h-36 md:h-40 landscape:h-28 landscape:sm:h-36 min-h-[110px] touch-manipulation select-none group"
+          >
+            <div className="flex items-center gap-1 text-yellow-300 font-black text-[10px] sm:text-xs">
+              <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-300" />
+              <span>शब्द जोड़</span>
+            </div>
+
+            <div className="flex items-center gap-0.5 text-[11px] sm:text-sm font-black text-white">
+              <span className="bg-white/20 px-1 py-0.5 rounded text-yellow-200">न</span>
+              <span className="text-white/70">+</span>
+              <span className="bg-white/20 px-1 py-0.5 rounded text-yellow-200">ल</span>
+              <span className="text-white/70">=</span>
+              <span className="bg-white/20 px-1 py-0.5 rounded text-yellow-200">नल</span>
+            </div>
+
+            <p className="text-[8px] sm:text-[10px] font-medium text-white/95 leading-tight line-clamp-1">
+              अक्षर जोड़कर शब्द बनाएं
+            </p>
+
+            <div className="w-full bg-yellow-400 group-hover:bg-yellow-300 text-red-950 border border-white py-0.5 sm:py-1 rounded-lg font-black text-[9px] sm:text-xs flex items-center justify-center gap-1 shadow">
+              <Play className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-red-950" />
+              <span>खेलें (PLAY)</span>
+            </div>
+          </motion.button>
+
+          {/* 2. Click The Letter (अक्षर पहचान) */}
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.95 }}
