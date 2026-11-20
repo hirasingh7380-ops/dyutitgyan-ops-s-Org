@@ -670,11 +670,44 @@ const APPLE_STEM_PATH =
 const APPLE_LEAF_PATH =
   'M 205 110 C 220 52, 280 25, 335 38 C 305 85, 250 120, 205 110 Z';
 
-type GameStage = 'MANGO' | 'TULIP' | 'AIRPLANE' | 'ELEPHANT' | 'BANANA' | 'SCISSORS' | 'PURSE' | 'GLASSES' | 'TRACTOR' | 'CAKE' | 'CANDLE' | 'HOUSE' | 'BOAT' | 'BUS' | 'PINWHEEL' | 'CATERPILLAR' | 'HEN' | 'ICECREAM' | 'LOLLIPOP' | 'DUCK' | 'FLOWER' | 'UMBRELLA' | 'HAT' | 'BALL' | 'BUTTERFLY' | 'JUG' | 'CAPSICUM' | 'BRINJAL' | 'KITE' | 'APPLE';
+const STAGE_ORDER = [
+  'APPLE',       // 1
+  'MANGO',       // 2
+  'PINWHEEL',    // 3 (फिरकी)
+  'LOLLIPOP',    // 4
+  'ICECREAM',    // 5
+  'CANDLE',      // 6 (मोमबत्ती)
+  'JUG',         // 7
+  'HAT',         // 8
+  'BRINJAL',     // 9
+  'KITE',        // 10 (पतंग)
+  'BALL',        // 11
+  'UMBRELLA',    // 12 (छाता)
+  'GLASSES',     // 13 (चश्मा)
+  'DUCK',        // 14 (बतख)
+  'BUTTERFLY',   // 15 (तितली)
+  'TULIP',       // 16
+  'AIRPLANE',    // 17
+  'ELEPHANT',    // 18
+  'BANANA',      // 19
+  'SCISSORS',    // 20
+  'PURSE',       // 21
+  'TRACTOR',     // 22
+  'CAKE',        // 23
+  'HOUSE',       // 24
+  'BOAT',        // 25
+  'BUS',         // 26
+  'CATERPILLAR', // 27
+  'HEN',         // 28
+  'FLOWER',      // 29
+  'CAPSICUM',    // 30
+] as const;
+
+type GameStage = (typeof STAGE_ORDER)[number];
 
 export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled }) => {
-  // Current game stage: starts on MANGO (user attachment Fruits_Coloring_Pages_for_Kids___Fun_Printable_Learning_Activity_b8c6aa74.jfif)
-  const [currentStage, setCurrentStage] = useState<GameStage>('MANGO');
+  // Current game stage: starts on APPLE (1st in sequence)
+  const [currentStage, setCurrentStage] = useState<GameStage>('APPLE');
 
   // Currently active selected color from bottom 6 buttons
   const [selectedColor, setSelectedColor] = useState<ColorOption>(COLOR_OPTIONS[0]); // Default RED
@@ -4745,100 +4778,13 @@ export const DrawingStage: React.FC<DrawingStageProps> = ({ onHome, soundEnabled
     }
   };
 
-  // NEXT Button Handler: cycles MANGO -> TULIP -> AIRPLANE -> ELEPHANT -> BANANA -> SCISSORS -> PURSE -> GLASSES -> TRACTOR -> CAKE -> CANDLE -> HOUSE -> BOAT -> BUS -> PINWHEEL -> CATERPILLAR -> HEN -> ICECREAM -> LOLLIPOP -> DUCK -> FLOWER -> UMBRELLA -> HAT -> BALL -> BUTTERFLY -> JUG -> CAPSICUM -> BRINJAL -> KITE -> APPLE -> MANGO
+  // NEXT Button Handler: cycles 1..15 (APPLE -> MANGO -> PINWHEEL -> LOLLIPOP -> ICECREAM -> CANDLE -> JUG -> HAT -> BRINJAL -> KITE -> BALL -> UMBRELLA -> GLASSES -> DUCK -> BUTTERFLY) then 16..30 -> APPLE
   const handleNext = () => {
     sounds.playPop(soundEnabled);
-    if (currentStage === 'MANGO') {
-      setCurrentStage('TULIP');
-      sounds.speakDrawingNext('tulip', soundEnabled);
-    } else if (currentStage === 'TULIP') {
-      setCurrentStage('AIRPLANE');
-      sounds.speakDrawingNext('airplane', soundEnabled);
-    } else if (currentStage === 'AIRPLANE') {
-      setCurrentStage('ELEPHANT');
-      sounds.speakDrawingNext('elephant', soundEnabled);
-    } else if (currentStage === 'ELEPHANT') {
-      setCurrentStage('BANANA');
-      sounds.speakDrawingNext('banana', soundEnabled);
-    } else if (currentStage === 'BANANA') {
-      setCurrentStage('SCISSORS');
-      sounds.speakDrawingNext('scissors', soundEnabled);
-    } else if (currentStage === 'SCISSORS') {
-      setCurrentStage('PURSE');
-      sounds.speakDrawingNext('purse', soundEnabled);
-    } else if (currentStage === 'PURSE') {
-      setCurrentStage('GLASSES');
-      sounds.speakDrawingNext('glasses', soundEnabled);
-    } else if (currentStage === 'GLASSES') {
-      setCurrentStage('TRACTOR');
-      sounds.speakDrawingNext('tractor', soundEnabled);
-    } else if (currentStage === 'TRACTOR') {
-      setCurrentStage('CAKE');
-      sounds.speakDrawingNext('cake', soundEnabled);
-    } else if (currentStage === 'CAKE') {
-      setCurrentStage('CANDLE');
-      sounds.speakDrawingNext('candle', soundEnabled);
-    } else if (currentStage === 'CANDLE') {
-      setCurrentStage('HOUSE');
-      sounds.speakDrawingNext('house', soundEnabled);
-    } else if (currentStage === 'HOUSE') {
-      setCurrentStage('BOAT');
-      sounds.speakDrawingNext('boat', soundEnabled);
-    } else if (currentStage === 'BOAT') {
-      setCurrentStage('BUS');
-      sounds.speakDrawingNext('bus', soundEnabled);
-    } else if (currentStage === 'BUS') {
-      setCurrentStage('PINWHEEL');
-      sounds.speakDrawingNext('pinwheel', soundEnabled);
-    } else if (currentStage === 'PINWHEEL') {
-      setCurrentStage('CATERPILLAR');
-      sounds.speakDrawingNext('caterpillar', soundEnabled);
-    } else if (currentStage === 'CATERPILLAR') {
-      setCurrentStage('HEN');
-      sounds.speakDrawingNext('hen', soundEnabled);
-    } else if (currentStage === 'HEN') {
-      setCurrentStage('ICECREAM');
-      sounds.speakDrawingNext('icecream', soundEnabled);
-    } else if (currentStage === 'ICECREAM') {
-      setCurrentStage('LOLLIPOP');
-      sounds.speakDrawingNext('lollipop', soundEnabled);
-    } else if (currentStage === 'LOLLIPOP') {
-      setCurrentStage('DUCK');
-      sounds.speakDrawingNext('duck', soundEnabled);
-    } else if (currentStage === 'DUCK') {
-      setCurrentStage('FLOWER');
-      sounds.speakDrawingNext('flower', soundEnabled);
-    } else if (currentStage === 'FLOWER') {
-      setCurrentStage('UMBRELLA');
-      sounds.speakDrawingNext('umbrella', soundEnabled);
-    } else if (currentStage === 'UMBRELLA') {
-      setCurrentStage('HAT');
-      sounds.speakDrawingNext('hat', soundEnabled);
-    } else if (currentStage === 'HAT') {
-      setCurrentStage('BALL');
-      sounds.speakDrawingNext('ball', soundEnabled);
-    } else if (currentStage === 'BALL') {
-      setCurrentStage('BUTTERFLY');
-      sounds.speakDrawingNext('butterfly', soundEnabled);
-    } else if (currentStage === 'BUTTERFLY') {
-      setCurrentStage('JUG');
-      sounds.speakDrawingNext('jug', soundEnabled);
-    } else if (currentStage === 'JUG') {
-      setCurrentStage('CAPSICUM');
-      sounds.speakDrawingNext('capsicum', soundEnabled);
-    } else if (currentStage === 'CAPSICUM') {
-      setCurrentStage('BRINJAL');
-      sounds.speakDrawingNext('brinjal', soundEnabled);
-    } else if (currentStage === 'BRINJAL') {
-      setCurrentStage('KITE');
-      sounds.speakDrawingNext('kite', soundEnabled);
-    } else if (currentStage === 'KITE') {
-      setCurrentStage('APPLE');
-      sounds.speakDrawingNext('apple', soundEnabled);
-    } else {
-      setCurrentStage('MANGO');
-      sounds.speakDrawingNext('mango', soundEnabled);
-    }
+    const currentIndex = STAGE_ORDER.indexOf(currentStage);
+    const nextStage = STAGE_ORDER[(currentIndex + 1) % STAGE_ORDER.length];
+    setCurrentStage(nextStage);
+    sounds.speakDrawingNext(nextStage.toLowerCase() as Lowercase<GameStage>, soundEnabled);
   };
 
   // Reset Handlers
